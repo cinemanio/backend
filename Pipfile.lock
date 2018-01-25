@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "13dcaed2bc4d934586c9dcf6686c6e0fd5918aaa8198f2f81b172d736a82d841"
+            "sha256": "c1820fe6e47395409579dd79738c45499714c2d72b842c26a9a2a745b056455c"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -92,6 +92,12 @@
                 "sha256:6fb35133b61e7295d43c1f7added952e5dfe689ae65662d2fb5fe7ea1a397eba"
             ],
             "version": "==1.9.9"
+        },
+        "django-modeltranslation": {
+            "hashes": [
+                "sha256:a73d23cee554eb3f88201eecf8a5aee85926cc3b498ad31b5ee5e0ef1ee81da8"
+            ],
+            "version": "==0.12.1"
         },
         "factory-boy": {
             "hashes": [
@@ -236,11 +242,11 @@
         },
         "typing": {
             "hashes": [
-                "sha256:349b1f9c109c84b53ac79ac1d822eaa68fc91d63b321bd9392df15098f746f53",
-                "sha256:63a8255fe7c6269916baa440eb9b6a67139b0b97a01af632e7bd2842e1e02f15",
-                "sha256:d514bd84b284dd3e844f0305ac07511f097e325171f6cc4a20878d11ad771849"
+                "sha256:b2c689d54e1144bbcfd191b0832980a21c2dbcf7b5ff7a66248a60c90e951eb8",
+                "sha256:3a887b021a77b292e151afb75323dea88a7bc1b3dfa92176cff8e44c8b68bddf",
+                "sha256:d400a9344254803a2368533e4533a4200d21eb7b6b729c173bc38201a74db3f2"
             ],
-            "version": "==3.6.2"
+            "version": "==3.6.4"
         },
         "vine": {
             "hashes": [

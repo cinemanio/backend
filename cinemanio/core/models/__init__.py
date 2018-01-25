@@ -1,12 +1,13 @@
+from .cast import Cast
+from .movie import Movie
+from .person import Person
 from .properties import (
     Country,
     Role,
     Genre,
     Type,
+    Language,
 )
-from .movie import Movie
-from .person import Person
-from .cast import Cast
 
 __all__ = [
     'Movie',
@@ -16,4 +17,5 @@ __all__ = [
     'Role',
     'Genre',
     'Type',
+    'Language',
 ]

@@ -25,7 +25,7 @@ class PropertyModel(CachingMixin, models.Model):
     """
     Abstract base model for property models (Genre, Type, Language, Country, Role)
     """
-    name = models.CharField(_('Name'), max_length=50, null=False, default='')
+    name = models.CharField(_('Name'), max_length=50, default='')
 
     objects = CachingManagerNew()
 
