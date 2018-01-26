@@ -9,16 +9,17 @@ name = "pypi"
 
 django = "==2.0.1"
 django-debug-toolbar = "*"
-ipython = "*"
 django-extensions = "*"
 celery = "*"
 django-cache-machine = "*"
-factory-boy = "*"
 django-modeltranslation = "*"
+"a5b59a8" = {path = "git+git@github.com:deschler/django-modeltranslation.git#egg=django_modeltranslation", editable = true}
 
 
 [dev-packages]
 
+ipython = "*"
+factory-boy = "*"
 
 
 [requires]

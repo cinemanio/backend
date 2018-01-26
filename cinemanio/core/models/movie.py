@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
 # from cinemanio.core.models import Role
@@ -64,4 +64,8 @@ class Movie(BaseModel):
         verbose_name_plural = _('movies')
 
     def __repr__(self):
-        return '{title} ({year})'.format(title=self.title, year=self.year)
+        info = []
+        if get_language() != 'en' and self.title != self.title_en:
+            info += [self.title_en]
+        info += [str(self.year)]
+        return '{title} ({info})'.format(title=self.title, info=', '.join(info))

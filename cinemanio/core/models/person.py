@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
 
@@ -43,5 +43,12 @@ class Person(BaseModel):
     def full_name(self):
         return ' '.join([self.first_name, self.last_name]).strip()
 
+    @property
+    def full_name_en(self):
+        return ' '.join([self.first_name_en, self.last_name_en]).strip()
+
     def __repr__(self):
-        return self.full_name
+        names = [self.full_name]
+        if get_language() != 'en' and self.full_name != self.full_name_en:
+            names += [self.full_name_en]
+        return ', '.join(names)

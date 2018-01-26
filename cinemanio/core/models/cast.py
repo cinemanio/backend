@@ -14,8 +14,6 @@ class Cast(models.Model):
     role = models.ForeignKey('Role', verbose_name=_('Role'), related_name='roles', on_delete=models.CASCADE)
     name = models.CharField(_('Role name'), max_length=300, blank=True, default='')
 
-    objects = models.Manager()
-
     class Meta:
         verbose_name = _('cast')
         verbose_name_plural = _('cast')

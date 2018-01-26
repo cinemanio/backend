@@ -1,11 +1,18 @@
-from django.test import TestCase
+from django.utils import translation
 
-from cinemanio.core.models.person import ACTOR_ID
 from cinemanio.core.models import Movie, Person, Cast, Role
 from cinemanio.core.models.factories import MovieFactory, PersonFactory, CastFactory
+from cinemanio.core.tests.base import BaseTestCase
 
 
-class ModelsTest(TestCase):
+class ModelsTest(BaseTestCase):
+    def easy_rider(self):
+        return MovieFactory(title_en='Easy Rider', title_ru='Беспечный Ездок', year=1969)
+
+    def jack(self):
+        return PersonFactory(first_name_en='Jack', last_name_en='Nicholson',
+                             first_name_ru='Джек', last_name_ru='Николсон')
+
     def test_movie_with_cast(self):
         movie = MovieFactory()
         movie.cast.add(CastFactory())
@@ -25,16 +32,23 @@ class ModelsTest(TestCase):
         self.assertEqual(person.career.count(), 2)
 
     def test_movie_repr(self):
-        movie = MovieFactory(title='Ну погоди!', year=2010)
-        self.assertEqual(repr(movie), 'Ну погоди! (2010)')
+        movie = self.easy_rider()
+        translation.activate('en')
+        self.assertEqual(repr(movie), 'Easy Rider (1969)')
+        translation.activate('ru')
+        self.assertEqual(repr(movie), 'Беспечный Ездок (Easy Rider, 1969)')
 
     def test_person_repr(self):
-        person = PersonFactory(first_name='Jimi', last_name='Hendrix')
-        self.assertEqual(repr(person), 'Jimi Hendrix')
+        person = self.jack()
+        translation.activate('en')
+        self.assertEqual(repr(person), 'Jack Nicholson')
+        translation.activate('ru')
+        self.assertEqual(repr(person), 'Джек Николсон, Jack Nicholson')
 
     def test_cast_repr(self):
-        Role.objects.create(id=ACTOR_ID, name='actor')  # TODO: move to fixtures
-        movie = MovieFactory(title='Ну погоди!', year=2010)
-        person = PersonFactory(first_name='Jimi', last_name='Hendrix')
-        cast = CastFactory(movie=movie, person=person, role=Role.objects.get_actor(), name='wolf')
-        self.assertEqual(repr(cast), 'Ну погоди! - Jimi Hendrix (actor: wolf)')
+        cast = CastFactory(movie=self.easy_rider(), person=self.jack(),
+                           role=Role.objects.get_actor(), name_en='George Hanson', name_ru='Джордж Хэнсон')
+        translation.activate('en')
+        self.assertEqual(repr(cast), 'Easy Rider - Jack Nicholson (actor: George Hanson)')
+        translation.activate('ru')
+        self.assertEqual(repr(cast), 'Беспечный Ездок - Джек Николсон (актер: Джордж Хэнсон)')
