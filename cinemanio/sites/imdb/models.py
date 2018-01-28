@@ -20,6 +20,10 @@ class ImdbMovie(models.Model, UrlMixin):
 
     link = 'http://www.imdb.com/title/tt{id}/'
 
+    def import_data(self, roles=False):
+        from cinemanio.sites.imdb.importer import ImdbMovieImporter
+        ImdbMovieImporter(self.movie, self.id).get_applied_data(roles=roles)
+
 
 class ImdbPerson(models.Model, UrlMixin):
     """
@@ -29,3 +33,7 @@ class ImdbPerson(models.Model, UrlMixin):
     person = models.OneToOneField(Person, related_name='imdb', on_delete=models.CASCADE)
 
     link = 'http://www.imdb.com/name/nm{id}/'
+
+    def import_data(self, roles=False):
+        from cinemanio.sites.imdb.importer import ImdbPersonImporter
+        ImdbPersonImporter(self.person, self.id).get_applied_data(roles=roles)

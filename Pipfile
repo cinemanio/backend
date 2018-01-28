@@ -17,12 +17,16 @@ django-modeltranslation = "*"
 django-reversion = "*"
 django-celery = "*"
 celerymon = "*"
+imdbpy = "*"
+vcrpy-unittest = "*"
+"e1f7432" = {path = "git+git@github.com:alberanid/imdbpy.git#egg=imdbpy", editable = true}
 
 
 [dev-packages]
 
 ipython = "*"
 factory-boy = "*"
+ipdb = "*"
 
 
 [requires]
