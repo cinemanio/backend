@@ -28,7 +28,12 @@ class UserAttitude(AttitudeBase):
 
 
 class UserAttitudeCount(models.Model):
-    object = models.ForeignKey(User, related_name='attitudes_count', on_delete=models.CASCADE)
+    object = models.OneToOneField(User, related_name='attitudes_count', on_delete=models.CASCADE)
+    movies = models.PositiveIntegerField(default=0, verbose_name=_('Familiar movies count'))
+    persons = models.PositiveIntegerField(default=0, verbose_name=_('Familiar persons count'))
 
+
+User.add_to_class('familiar_users_back', models.ManyToManyField(
+    'self', verbose_name=_('Attitudes'), through=UserAttitude, related_name='familiar_users', symmetrical=False))
 
 register_attitude_fields(UserAttitude, UserAttitudeCount)

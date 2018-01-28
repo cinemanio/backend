@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cinemanio.core.models import Movie
 from cinemanio.attitudes.models.base import AttitudeBase, register_attitude_fields
+from cinemanio.core.models import Movie
 
 
 class MovieAttitude(AttitudeBase):
@@ -52,7 +53,10 @@ class MovieAttitude(AttitudeBase):
 
 
 class MovieAttitudeCount(models.Model):
-    object = models.ForeignKey(Movie, related_name='attitudes_count', on_delete=models.CASCADE)
+    object = models.OneToOneField(Movie, related_name='attitudes_count', on_delete=models.CASCADE)
 
+
+get_user_model().add_to_class('familiar_movies', models.ManyToManyField(
+    Movie, verbose_name=_('Attitudes'), through=MovieAttitude, related_name='attitudes_users'))
 
 register_attitude_fields(MovieAttitude, MovieAttitudeCount)

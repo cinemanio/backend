@@ -49,8 +49,6 @@ class Movie(BaseModel):
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), related_name='movies', blank=True)
     persons = models.ManyToManyField('Person', verbose_name=_('Persons'), through='Cast')
 
-    # persons_count = ForeignCountField(Role, 'movie', 'persons', verbose_name=_('Persons count'), distinct=True)
-
     sequel_for = models.ForeignKey('self', verbose_name=_('Sequel for movie'), related_name='prequels', blank=True,
                                    null=True, on_delete=models.CASCADE)
     prequel_for = models.ForeignKey('self', verbose_name=_('Prequel for movie'), related_name='sequels', blank=True,

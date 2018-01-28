@@ -32,8 +32,6 @@ class Person(BaseModel):
                                 on_delete=models.CASCADE)
     movies = models.ManyToManyField('Movie', verbose_name=_('Movies'), through='Cast')
 
-    # movies_count = ForeignCountField(Role, 'person', 'movies', verbose_name=_('Movies count'), distinct=True)
-
     class Meta:
         verbose_name = _('person')
         verbose_name_plural = _('persons')

@@ -51,9 +51,7 @@ class AttitudesTest(TestCase):
         """
         Signal should delete records with False attitudes
         """
-        ma = MovieAttitudeFactory()
-        ma.seen = True
-        ma.save()
+        ma = MovieAttitudeFactory(seen=True)
         attitude_changed.send(sender=MovieAttitude, instance=ma, code='seen')
 
         self.assertEqual(MovieAttitude.objects.count(), 1)
@@ -63,3 +61,33 @@ class AttitudesTest(TestCase):
         attitude_changed.send(sender=MovieAttitude, instance=ma, code=None)
 
         self.assertEqual(MovieAttitude.objects.count(), 0)
+
+    def test_count_of_familiar_objects(self):
+        """
+        Count of user familiar objects
+        """
+        ma1 = MovieAttitudeFactory(seen=True)
+        attitude_changed.send(sender=MovieAttitude, instance=ma1, code='seen')
+
+        count = ma1.user.attitudes_count
+        self.assertEqual(count.movies, 1)
+
+        ma2 = MovieAttitudeFactory(user=ma1.user, seen=True)
+        attitude_changed.send(sender=MovieAttitude, instance=ma2, code='seen')
+
+        count.refresh_from_db()
+        self.assertEqual(count.movies, 2)
+
+        ma1.seen = False
+        ma1.save()
+        attitude_changed.send(sender=MovieAttitude, instance=ma1, code=None)
+
+        count.refresh_from_db()
+        self.assertEqual(count.movies, 1)
+
+        ma2.seen = False
+        ma2.save()
+        attitude_changed.send(sender=MovieAttitude, instance=ma2, code=None)
+
+        count.refresh_from_db()
+        self.assertEqual(count.movies, 0)
