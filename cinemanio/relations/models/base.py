@@ -2,12 +2,14 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from cinemanio.relations.signals import relation_changed
+
 User = get_user_model()
 
 
-class AttitudeBase(models.Model):
+class RelationBase(models.Model):
     """
-    Base model for all attitudes models
+    Base model for all relations models
     """
 
     class Meta:
@@ -73,7 +75,7 @@ class AttitudeBase(models.Model):
 
     # def save(self, **kwargs):
     #     u"""При сохранении пересчитываем кол-ва отдельных отношений и общее кол-во отношений объекта"""
-    #     super(AttitudeBase, self).save(**kwargs)
+    #     super(RelationBase, self).save(**kwargs)
     #
     #     table_name = self.__class__.__name__.lower()
     #     for code, name in self.get_codename_fields():
@@ -99,7 +101,7 @@ class AttitudeBase(models.Model):
     #     return False
 
 
-def register_attitude_fields(attitude_model, attitude_count_model):
+def register_relation_fields(attitude_model, attitude_count_model):
     for code, name in attitude_model.get_codename_fields():
         attitude_model.add_to_class(code, models.BooleanField(verbose_name=name, default=False, db_index=True))
         attitude_count_model.add_to_class('%ss_count' % code, models.PositiveIntegerField(default=0, db_index=True))

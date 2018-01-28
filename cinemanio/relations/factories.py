@@ -1,30 +1,30 @@
 import factory
 from factory.django import DjangoModelFactory
 
-from cinemanio.attitudes.models import MovieAttitude, PersonAttitude, UserAttitude
+from cinemanio.relations.models import MovieRelation, PersonRelation, UserRelation
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.users.factories import UserFactory
 
 
-class MovieAttitudeFactory(DjangoModelFactory):
+class MovieRelationFactory(DjangoModelFactory):
     object = factory.SubFactory(MovieFactory)
     user = factory.SubFactory(UserFactory)
 
     class Meta:
-        model = MovieAttitude
+        model = MovieRelation
 
 
-class PersonAttitudeFactory(DjangoModelFactory):
+class PersonRelationFactory(DjangoModelFactory):
     object = factory.SubFactory(PersonFactory)
     user = factory.SubFactory(UserFactory)
 
     class Meta:
-        model = PersonAttitude
+        model = PersonRelation
 
 
-class UserAttitudeFactory(DjangoModelFactory):
+class UserRelationFactory(DjangoModelFactory):
     object = factory.SubFactory(UserFactory)
     user = factory.SubFactory(UserFactory)
 
     class Meta:
-        model = UserAttitude
+        model = UserRelation

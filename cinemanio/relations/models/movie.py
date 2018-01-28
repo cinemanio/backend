@@ -2,15 +2,15 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cinemanio.attitudes.models.base import AttitudeBase, register_attitude_fields
+from cinemanio.relations.models.base import RelationBase, register_relation_fields
 from cinemanio.core.models import Movie
 
 
-class MovieAttitude(AttitudeBase):
-    class Meta(AttitudeBase.Meta):
+class MovieRelation(RelationBase):
+    class Meta(RelationBase.Meta):
         pass
 
-    object = models.ForeignKey(Movie, related_name='attitudes', on_delete=models.CASCADE)
+    object = models.ForeignKey(Movie, related_name='relations', on_delete=models.CASCADE)
     fields = (
         ('fav', _('Fav'), _('Faved'), _('faved movie'), _('You faved movie %s')),
         ('like', _('Like'), _('Liked'), _('liked movie'), _('You liked movie %s')),
@@ -52,11 +52,11 @@ class MovieAttitude(AttitudeBase):
                 self.fav = False
 
 
-class MovieAttitudeCount(models.Model):
-    object = models.OneToOneField(Movie, related_name='attitudes_count', on_delete=models.CASCADE)
+class MovieRelationCount(models.Model):
+    object = models.OneToOneField(Movie, related_name='relations_count', on_delete=models.CASCADE)
 
 
 get_user_model().add_to_class('familiar_movies', models.ManyToManyField(
-    Movie, verbose_name=_('Attitudes'), through=MovieAttitude, related_name='attitudes_users'))
+    Movie, verbose_name=_('Relations'), through=MovieRelation, related_name='relations_users'))
 
-register_attitude_fields(MovieAttitude, MovieAttitudeCount)
+register_relation_fields(MovieRelation, MovieRelationCount)

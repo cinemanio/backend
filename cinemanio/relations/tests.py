@@ -1,15 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from cinemanio.attitudes.models import MovieAttitude, PersonAttitude
-from cinemanio.core.factories import MovieFactory
-from cinemanio.attitudes.factories import MovieAttitudeFactory
-from cinemanio.attitudes.signals import attitude_changed
+from cinemanio.relations.models import MovieRelation, PersonRelation
+from cinemanio.relations.factories import MovieRelationFactory
+from cinemanio.relations.signals import relation_changed
 
 User = get_user_model()
 
 
-class AttitudesFieldsTest(TestCase):
+class RelationsFieldsTest(TestCase):
     def assertAllTrue(self, *args):
         for arg in args:
             self.assertTrue(arg)
@@ -19,7 +18,7 @@ class AttitudesFieldsTest(TestCase):
             self.assertFalse(arg)
 
     def test_movie_attitude_fields(self):
-        ma = MovieAttitude()
+        ma = MovieRelation()
         self.assertAllFalse(ma.fav, ma.like, ma.seen, ma.dislike, ma.want, ma.ignore, ma.have)
         ma.like = True
         self.assertAllTrue(ma.seen)
@@ -33,7 +32,7 @@ class AttitudesFieldsTest(TestCase):
         self.assertAllTrue(ma.dislike, ma.seen)
 
     def test_person_attitude_fields(self):
-        ma = PersonAttitude()
+        ma = PersonRelation()
         self.assertAllFalse(ma.fav, ma.like, ma.dislike)
         ma.fav = True
         self.assertAllTrue(ma.like)
@@ -46,48 +45,48 @@ class AttitudesFieldsTest(TestCase):
         self.assertAllFalse(ma.fav)
 
 
-class AttitudesTest(TestCase):
-    def test_delete_empty_attitudes(self):
+class RelationsTest(TestCase):
+    def test_delete_empty_relations(self):
         """
-        Signal should delete records with False attitudes
+        Signal should delete records with False relations
         """
-        ma = MovieAttitudeFactory(seen=True)
-        attitude_changed.send(sender=MovieAttitude, instance=ma, code='seen')
+        ma = MovieRelationFactory(seen=True)
+        relation_changed.send(sender=MovieRelation, instance=ma, code='seen')
 
-        self.assertEqual(MovieAttitude.objects.count(), 1)
+        self.assertEqual(MovieRelation.objects.count(), 1)
 
         ma.seen = False
         ma.save()
-        attitude_changed.send(sender=MovieAttitude, instance=ma, code=None)
+        relation_changed.send(sender=MovieRelation, instance=ma, code=None)
 
-        self.assertEqual(MovieAttitude.objects.count(), 0)
+        self.assertEqual(MovieRelation.objects.count(), 0)
 
     def test_count_of_familiar_objects(self):
         """
         Count of user familiar objects
         """
-        ma1 = MovieAttitudeFactory(seen=True)
-        attitude_changed.send(sender=MovieAttitude, instance=ma1, code='seen')
+        ma1 = MovieRelationFactory(seen=True)
+        relation_changed.send(sender=MovieRelation, instance=ma1, code='seen')
 
-        count = ma1.user.attitudes_count
+        count = ma1.user.relations_count
         self.assertEqual(count.movies, 1)
 
-        ma2 = MovieAttitudeFactory(user=ma1.user, seen=True)
-        attitude_changed.send(sender=MovieAttitude, instance=ma2, code='seen')
+        ma2 = MovieRelationFactory(user=ma1.user, seen=True)
+        relation_changed.send(sender=MovieRelation, instance=ma2, code='seen')
 
         count.refresh_from_db()
         self.assertEqual(count.movies, 2)
 
         ma1.seen = False
         ma1.save()
-        attitude_changed.send(sender=MovieAttitude, instance=ma1, code=None)
+        relation_changed.send(sender=MovieRelation, instance=ma1, code=None)
 
         count.refresh_from_db()
         self.assertEqual(count.movies, 1)
 
         ma2.seen = False
         ma2.save()
-        attitude_changed.send(sender=MovieAttitude, instance=ma2, code=None)
+        relation_changed.send(sender=MovieRelation, instance=ma2, code=None)
 
         count.refresh_from_db()
         self.assertEqual(count.movies, 0)

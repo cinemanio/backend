@@ -1,6 +1,6 @@
 from celery.task import Task
 
-from cinemanio.attitudes.models import MovieAttitude, PersonAttitude, UserAttitudeCount
+from cinemanio.relations.models import MovieRelation, PersonRelation, UserRelationCount
 from cinemanio.users.models import User
 
 
@@ -11,16 +11,16 @@ class RecountFamiliarObjects(Task):
     def run(self, sender, user_id, **kwargs):
         user = User.objects.get(id=user_id)
 
-        count = UserAttitudeCount.objects.get_or_create(object=user)[0]
+        count = UserRelationCount.objects.get_or_create(object=user)[0]
 
-        if sender == MovieAttitude:
+        if sender == MovieRelation:
             count.movies = user.familiar_movies.count()
-        elif sender == PersonAttitude:
+        elif sender == PersonRelation:
             count.persons = user.familiar_persons.count()
         count.save()
 
 
-class DeleteEmptyAttitudes(Task):
+class DeleteEmptyRelations(Task):
     significant_kwargs = []
     herd_avoidance_timeout = 0
 

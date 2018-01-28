@@ -161,23 +161,23 @@ class User(AbstractUser):
 
     # @property
     # def related_profile_attitudes(self):
-    #     from movister.attitudes.models import Profile_Attitudes
+    #     from movister.relations.models import Profile_Attitudes
     #
     #     return Profile_Attitudes.objects.filter(user=self)
 
-    def friends_experts(self):
-        return [pa.object for pa in self.related_profile_attitudes.filter(friend=True, expert=True)]
-
-    def friends(self, only=False):
-        attitudes = self.related_profile_attitudes.filter(friend=True)
-        if only:
-            attitudes = attitudes.filter(expert=False)
-        return [pa.object for pa in attitudes]
-
-    def experts(self, only=False):
-        attitudes = self.related_profile_attitudes.filter(expert=True)
-        if only:
-            attitudes = attitudes.filter(friend=False)
-        return [pa.object for pa in attitudes]
+    # def friends_experts(self):
+    #     return [pa.object for pa in self.related_profile_attitudes.filter(friend=True, expert=True)]
+    #
+    # def friends(self, only=False):
+    #     attitudes = self.related_profile_attitudes.filter(friend=True)
+    #     if only:
+    #         attitudes = attitudes.filter(expert=False)
+    #     return [pa.object for pa in attitudes]
+    #
+    # def experts(self, only=False):
+    #     attitudes = self.related_profile_attitudes.filter(expert=True)
+    #     if only:
+    #         attitudes = attitudes.filter(friend=False)
+    #     return [pa.object for pa in attitudes]
 
 # Profile._meta.get_field('email')._unique = True
