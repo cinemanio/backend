@@ -115,7 +115,7 @@ class ImdbPersonImporter(ImdbImporterBase):
     def _get_name_eng(self):
         name = self.imdb_object.data.get('name')
 
-        # 'name': u'IMDb, Robert De Niro -'
+        # 'name': 'IMDb, Robert De Niro -'
         if name.find('IMDb') != -1:
             name = re.sub(r'IMDb, (.+) -', r'\1', name)
             names = name.split()
@@ -301,25 +301,25 @@ class ImdbMovieImporter(ImdbImporterBase):
     def _get_types(self):
         ids = []
         data = self.imdb_object.data
-        if data.get('genres') and u'Documentary' in data.get('genres'):
+        if data.get('genres') and 'Documentary' in data.get('genres'):
             ids += [7]
-        if data.get('genres') and u'Animation' in data.get('genres'):
+        if data.get('genres') and 'Animation' in data.get('genres'):
             ids += [5]
-        if data.get('genres') and u'Short' in data.get('genres'):
+        if data.get('genres') and 'Short' in data.get('genres'):
             ids += [3]
-        if data.get('genres') and (u'Musical' in data.get('genres') or u'Music' in data.get('genres')):
+        if data.get('genres') and ('Musical' in data.get('genres') or 'Music' in data.get('genres')):
             ids += [12]
-        if data.get('color info') and u'Black and White' in data.get('color info') \
-                and u'Color' not in data.get('color info'):
+        if data.get('color info') and 'Black and White' in data.get('color info') \
+                and 'Color' not in data.get('color info'):
             ids += [14]
-        if data.get('sound mix') and u'Silent' in data.get('sound mix') \
-                or data.get('languages') and u'None' in data.get('languages'):
+        if data.get('sound mix') and 'Silent' in data.get('sound mix') \
+                or data.get('languages') and 'None' in data.get('languages'):
             ids += [1]
 
-        if data.get('kind') in [u'tv series', u'tv mini series']:
+        if data.get('kind') in ['tv series', 'tv mini series']:
             ids += [2]  # многосерийный
         # 'number of seasons': 5
-        # 'series years': u'2004-2006'
+        # 'series years': '2004-2006'
         # if data.get('number of seasons') > 1 or data.get('series years') and len(data.get('series years')) == 9:
         #     ids += [10]  # сериал
         return ids
