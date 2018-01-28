@@ -6,15 +6,11 @@ from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 
 USA_ID = 98
-MATRIX_ID = 133093
 
 
 class ImdbImporterTest(BaseTestCase):
     def test_get_movie_matrix(self):
-        """
-        Get basic movie data from IMDB - Matrix
-        """
-        imdb_movie = ImdbMovieFactory(id=MATRIX_ID, movie__year=None)
+        imdb_movie = ImdbMovieFactory(id=133093, movie__year=None)
         imdb_movie.import_data()
 
         self.assertEqual(imdb_movie.movie.title, 'The Matrix')
@@ -28,30 +24,23 @@ class ImdbImporterTest(BaseTestCase):
         self.assertQuerysetEqual(imdb_movie.movie.types.all(), [])
         # self.assertEqual(imdb_movie.movie.russia_start, datetime.date(1999, 10, 14))
 
-    def test_get_movie_runtime(self):
-        """
-        Get basic movie data from IMDB - runtime in format "xxxxx:17"
-        """
+    def test_get_movie_runtime_different_format(self):
+        # runtime in format "xxxxx:17"
         imdb_movie = ImdbMovieFactory(id=1524546)
         imdb_movie.import_data()
         self.assertEqual(imdb_movie.movie.runtime, 17)
 
-    # TODO: strange test
-    # def test_get_movie_black_white_types1(self):
-    #     imdb_object = ImdbMovie(Movie(), 64276)
-    #     initial = imdb_object.get_applied_data()
-    #     self.assertEqual(initial.get('types'), [])
+    def test_movie_types_no_black_and_white_easy_rider(self):
+        imdb_movie = ImdbMovieFactory(id=64276)
+        imdb_movie.import_data()
+        self.assertQuerysetEqual(imdb_movie.movie.types.all(), [])
 
-    # TODO: strange test
-    # def test_get_movie_black_white_types2(self):
-    #     imdb_object = ImdbMovie(Movie(), 2076220)
-    #     initial = imdb_object.get_applied_data()
-    #     self.assertEqual(initial.get('types'), [])
+    def test_movie_types_adams_family(self):
+        imdb_movie = ImdbMovieFactory(id=57729)
+        imdb_movie.import_data()
+        self.assertQuerysetEqual(imdb_movie.movie.types.all(), ['Black and white', 'TV Series'])
 
-    def test_get_person(self):
-        """
-        Get basic movie data from IMDB - Dennis Hopper
-        """
+    def test_get_person_dennis_hopper(self):
         imdb_person = ImdbPersonFactory(id=454)
         imdb_person.import_data()
 
@@ -60,41 +49,6 @@ class ImdbImporterTest(BaseTestCase):
         self.assertEqual(imdb_person.person.date_birth, datetime.date(1936, 5, 17))
         self.assertEqual(imdb_person.person.date_death, datetime.date(2010, 5, 29))
         self.assertEqual(imdb_person.person.country.id, USA_ID)
-
-    # def test_admin_command_and_multirelation_objects(self):
-    #     """
-    #     Тест на назначение и сохранение связанных объектов и на дополнение информации с imdb через админ-комманду
-    #     1. Дополняем пустой объект данными с IMDb и сохраняем
-    #     2. Заново получаем дополненный объект и проверяем его мульти-отношения и дату старта проката
-    #     3. Очищаем мульти-отношения и дату, запускаем админ-комманду на дополнение
-    #     4. Получаем объект из локальной базы и проверяем дату и мульти-отношения
-    #     """
-    #     object = Movie()
-    #     ImdbMovie(object, self.movie['id']).get_applied_data()
-    #     object.save()
-    #
-    #     imdb_object = ImdbMovie(object, self.movie['id'])
-    #     initial = imdb_object.get_applied_data()
-    #     self.assertEqual(initial.get('languages'), self.movie['languages'])
-    #     self.assertEqual(object.languages.count(), 1)
-    #     self.assertEqual(list(object.languages.all().values_list('id', flat=True)), self.movie['languages'])
-    #
-    #     self.assertEqual(initial.get('russia_start'), datetime.date(1999, 10, 14))
-    #     self.assertEqual(object.russia_start, datetime.date(1999, 10, 14))
-    #
-    #     # clear all multirelation-object
-    #     object.languages.clear()
-    #     object.russia_start = None
-    #     self.assertEqual(object.languages.count(), 0)
-    #     command = Command()
-    #     command.import_data(object)
-    #     self.assertEqual(object.languages.count(), 1)
-    #     self.assertEqual(object.russia_start, datetime.date(1999, 10, 14))
-    #
-    #     # get object from local database
-    #     object = Movie.objects.get(imdb_id=self.movie['id'])
-    #     self.assertEqual(object.russia_start, datetime.date(1999, 10, 14))
-    #     self.assertEqual(list(object.languages.all().values_list('id', flat=True)), self.movie['languages'])
 
     # TODO: no cast, only directors waiting for https://github.com/alberanid/imdbpy/issues/103
     # def test_add_roles_to_movie_by_imdb(self):
@@ -105,7 +59,7 @@ class ImdbImporterTest(BaseTestCase):
     #     # Neo
     #     imdb_person2 = ImdbPersonFactory(id=206)
     #
-    #     ImdbMovie(movie, MATRIX_ID).get_applied_data(roles=True)
+    #     ImdbMovie(movie, 133093).get_applied_data(roles=True)
     #
     #     self.assertEqual(Cast.objects.count(), 4)
     #     self.assertTrue(movie.cast.get(person=imdb_person1.person, role=Role.objects.get_director()))
@@ -120,7 +74,7 @@ class ImdbImporterTest(BaseTestCase):
     #
     #     role = Role.objects.get_actor()
     #
-    #     ImdbMovie(movie, MATRIX_ID).get_applied_data(roles=True)
+    #     ImdbMovie(movie, 133093).get_applied_data(roles=True)
     #
     #     self.assertEqual(Cast.objects.count(), 2)
     #

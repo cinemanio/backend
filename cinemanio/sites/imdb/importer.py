@@ -309,10 +309,9 @@ class ImdbMovieImporter(ImdbImporterBase):
             ids += [3]
         if data.get('genres') and (u'Musical' in data.get('genres') or u'Music' in data.get('genres')):
             ids += [12]
-        # issue https://github.com/alberanid/imdbpy/issues/29
-        # if data.get('color info') and u'Black and White' in data.get('color info') \
-        #         and u'Color' not in data.get('color info'):
-        #     ids += [14]
+        if data.get('color info') and u'Black and White' in data.get('color info') \
+                and u'Color' not in data.get('color info'):
+            ids += [14]
         if data.get('sound mix') and u'Silent' in data.get('sound mix') \
                 or data.get('languages') and u'None' in data.get('languages'):
             ids += [1]
