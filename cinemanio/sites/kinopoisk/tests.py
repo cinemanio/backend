@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from cinemanio.core.models.factories import MovieFactory, PersonFactory
-from cinemanio.sources.kinopoisk.models import KinopoiskMovie, KinopoiskPerson
+from cinemanio.core.factories import MovieFactory, PersonFactory
+from cinemanio.sites.kinopoisk.models import KinopoiskMovie, KinopoiskPerson
 
 
 class KinopoiskTest(TestCase):

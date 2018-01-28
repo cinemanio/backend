@@ -1,7 +1,7 @@
 from django.utils import translation
 
 from cinemanio.core.models import Movie, Person, Cast, Role
-from cinemanio.core.models.factories import MovieFactory, PersonFactory, CastFactory
+from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase
 
 

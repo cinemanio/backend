@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,12 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third party apps
     'django_extensions',
     'debug_toolbar',
+    'reversion',
+    'djcelery',
+    'celerymon',
+
+    # cinemanio apps
     'cinemanio.core',
-    'cinemanio.sources.imdb',
-    'cinemanio.sources.kinopoisk',
-    'cinemanio.sources.wikipedia',
+    'cinemanio.users',
+    'cinemanio.attitudes',
+    'cinemanio.sites.imdb',
+    'cinemanio.sites.kinopoisk',
+    'cinemanio.sites.wikipedia',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +88,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cinemanio.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -88,6 +98,8 @@ DATABASES = {
     }
 }
 
+
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -132,3 +144,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# celery
+CELERY_HOST = '127.0.0.1'
+BROKER_URL = 'amqp://movister:bk8G@%s:5672/movister_host' % CELERY_HOST
+CELERY_SEND_TASK_ERROR_EMAILS = True
+CELERY_TASK_RESULT_EXPIRES = None
+CELERY_ACKS_LATE = True
+CELERYD_CONCURRENCY = 3
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERYCAM_EXPIRE_SUCCESS = timedelta(days=5)
+CELERYCAM_EXPIRE_ERROR = timedelta(days=10)
+CELERYCAM_EXPIRE_PENDING = timedelta(days=10)

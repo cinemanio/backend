@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from cinemanio.core.models.factories import MovieFactory, PersonFactory
-from cinemanio.sources.imdb.models import ImdbMovie, ImdbPerson
+from cinemanio.core.factories import MovieFactory, PersonFactory
+from cinemanio.sites.imdb.models import ImdbMovie, ImdbPerson
 
 
 class ImdbTest(TestCase):

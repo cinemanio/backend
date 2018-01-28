@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from cinemanio.core.models.factories import MovieFactory, PersonFactory
-from cinemanio.sources.wikipedia.models import WikipediaPage
+from cinemanio.core.factories import MovieFactory, PersonFactory
+from cinemanio.sites.wikipedia.models import WikipediaPage
 
 
 class WikipediaTest(TestCase):

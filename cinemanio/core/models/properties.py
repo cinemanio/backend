@@ -33,7 +33,10 @@ class PropertyModel(CachingMixin, models.Model):
         abstract = True
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
 
