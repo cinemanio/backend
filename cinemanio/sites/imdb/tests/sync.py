@@ -8,10 +8,10 @@ from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 USA_ID = 98
 
 
-class ImdbImporterTest(BaseTestCase):
+class ImdbSyncTest(BaseTestCase):
     def test_get_movie_matrix(self):
         imdb_movie = ImdbMovieFactory(id=133093, movie__year=None)
-        imdb_movie.import_data()
+        imdb_movie.sync()
 
         self.assertEqual(imdb_movie.movie.title, 'The Matrix')
         # self.assertEqual(imdb_movie.movie.title_ru, u'Матрица')
@@ -27,22 +27,22 @@ class ImdbImporterTest(BaseTestCase):
     def test_get_movie_runtime_different_format(self):
         # runtime in format "xxxxx:17"
         imdb_movie = ImdbMovieFactory(id=1524546)
-        imdb_movie.import_data()
+        imdb_movie.sync()
         self.assertEqual(imdb_movie.movie.runtime, 17)
 
     def test_movie_types_no_black_and_white_easy_rider(self):
         imdb_movie = ImdbMovieFactory(id=64276)
-        imdb_movie.import_data()
+        imdb_movie.sync()
         self.assertQuerysetEqual(imdb_movie.movie.types.all(), [])
 
     def test_movie_types_adams_family(self):
         imdb_movie = ImdbMovieFactory(id=57729)
-        imdb_movie.import_data()
+        imdb_movie.sync()
         self.assertQuerysetEqual(imdb_movie.movie.types.all(), ['Black and white', 'TV Series'])
 
     def test_get_person_dennis_hopper(self):
         imdb_person = ImdbPersonFactory(id=454)
-        imdb_person.import_data()
+        imdb_person.sync()
 
         self.assertEqual(imdb_person.person.first_name_en, 'Dennis')
         self.assertEqual(imdb_person.person.last_name_en, 'Hopper')
@@ -97,7 +97,7 @@ class ImdbImporterTest(BaseTestCase):
         imdb_movie2 = ImdbMovieFactory(id=108399)
 
         imdb_person = ImdbPersonFactory(id=454)
-        imdb_person.import_data(roles=True)
+        imdb_person.sync(roles=True)
 
         career = imdb_person.person.career
         self.assertEqual(career.count(), 4)
@@ -119,7 +119,7 @@ class ImdbImporterTest(BaseTestCase):
         # writer, Dostoevskiy
         imdb_movie = ImdbMovieFactory(id=475730)
         imdb_person = ImdbPersonFactory(id=234502)
-        imdb_person.import_data(roles=True)
+        imdb_person.sync(roles=True)
 
         self.assertTrue(imdb_person.person.career.filter(movie=imdb_movie.movie, role=Role.objects.get_author()))
 
@@ -133,7 +133,7 @@ class ImdbImporterTest(BaseTestCase):
 
         self.assertEqual(Cast.objects.count(), 1)
 
-        imdb_person.import_data(roles=True)
+        imdb_person.sync(roles=True)
 
         self.assertEqual(Cast.objects.count(), 4)
 
@@ -149,7 +149,7 @@ class ImdbImporterTest(BaseTestCase):
     # TODO: imdb stop returns original title for this movie
     # def test_movie_title_en(self):
     #     imdb_movie = ImdbMovieFactory(id=190332)
-    #     imdb_movie.import_data()
+    #     imdb_movie.sync()
     #
     #     self.assertEqual(imdb_movie.movie.title, 'Wo hu cang long')
     #     self.assertEqual(imdb_movie.movie.title_en, 'Crouching Tiger, Hidden Dragon')

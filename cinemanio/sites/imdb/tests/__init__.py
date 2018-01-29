@@ -1,7 +1,7 @@
 from .models import ImdbTest
-from .importer import ImdbImporterTest
+from .sync import ImdbSyncTest
 
 __all__ = [
     'ImdbTest',
-    'ImdbImporterTest',
+    'ImdbSyncTest',
 ]

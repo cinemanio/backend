@@ -20,7 +20,7 @@ class ImdbMovie(models.Model, UrlMixin):
 
     link = 'http://www.imdb.com/title/tt{id}/'
 
-    def import_data(self, roles=False):
+    def sync(self, roles=False):
         from cinemanio.sites.imdb.importer import ImdbMovieImporter
         ImdbMovieImporter(self.movie, self.id).get_applied_data(roles=roles)
 
@@ -34,6 +34,6 @@ class ImdbPerson(models.Model, UrlMixin):
 
     link = 'http://www.imdb.com/name/nm{id}/'
 
-    def import_data(self, roles=False):
+    def sync(self, roles=False):
         from cinemanio.sites.imdb.importer import ImdbPersonImporter
         ImdbPersonImporter(self.person, self.id).get_applied_data(roles=roles)
