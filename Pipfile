@@ -13,7 +13,7 @@ django-extensions = "*"
 celery = "*"
 django-cache-machine = "*"
 django-modeltranslation = "*"
-"a5b59a8" = {path = "git+git@github.com:deschler/django-modeltranslation.git#egg=django_modeltranslation", editable = true}
+"e2b4cad" = {path = "git+git@github.com:deschler/django-modeltranslation.git#egg=django_modeltranslation", editable = true}
 django-reversion = "*"
 django-celery = "*"
 celerymon = "*"

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "255e1868e617ae1a60c047769548d51fefcdb1f5dce2f3703aaab4522d3ca0a8"
+            "sha256": "6c5ac274efda9fd120bc0e57fe61eb22c58f999a1deb373efb2b04ba85acf1ed"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -29,10 +29,6 @@
         ]
     },
     "default": {
-        "a5b59a8": {
-            "editable": true,
-            "path": "git+git@github.com:deschler/django-modeltranslation.git#egg=django_modeltranslation"
-        },
         "amqp": {
             "hashes": [
                 "sha256:e0ed0ce6b8ffe5690a2e856c7908dc557e0e605283d6885dd1361d79f2928908",
@@ -147,6 +143,10 @@
             "editable": true,
             "path": "git+git@github.com:alberanid/imdbpy.git#egg=imdbpy"
         },
+        "e2b4cad": {
+            "editable": true,
+            "path": "git+git@github.com:deschler/django-modeltranslation.git#egg=django_modeltranslation"
+        },
         "future": {
             "hashes": [
                 "sha256:e39ced1ab767b5936646cedba8bcce582398233d6a627067d4c6a454c90cfedb"
@@ -162,9 +162,9 @@
         },
         "kinopoiskpy": {
             "hashes": [
-                "sha256:c20124767c9e91f572bc30f01021da1dc83ce52b2625aa3f9fd05e76c0f2755e"
+                "sha256:a34d158552ca08625c16df888561f522b13f6229bfa5da26e6bd428ece7b858f"
             ],
-            "version": "==0.6.12"
+            "version": "==0.7.0"
         },
         "kombu": {
             "hashes": [
