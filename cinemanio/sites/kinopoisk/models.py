@@ -41,6 +41,9 @@ class KinopoiskMovie(KinopoiskBase, UrlMixin):
     def sync_trailers(self):
         pass
 
+    def sync_cast(self):
+        pass
+
 
 class KinopoiskPerson(KinopoiskBase, UrlMixin):
     """
@@ -60,4 +63,7 @@ class KinopoiskPerson(KinopoiskBase, UrlMixin):
         pass
 
     def sync_trailers(self):
+        pass
+
+    def sync_career(self):
         pass
