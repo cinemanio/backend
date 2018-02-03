@@ -12,6 +12,7 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         kinopoisk.sync_details()
 
         self.assertEqual(kinopoisk.rating, 6.120)
+        self.assertGreaterEqual(kinopoisk.votes, 1759)
         self.assertGreater(len(kinopoisk.info), 100)
 
     def test_person_johny_depp(self):
@@ -30,7 +31,7 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         movie1 = MovieFactory(**movie_kwargs1)
         movie2 = MovieFactory(**movie_kwargs2)
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
-        kp_person.sync_details()
+        kp_person.sync_career()
 
         self.assert_dennis_hopper_career(kp_person, movie1, movie2)
 
@@ -38,7 +39,7 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         kp_movie1 = KinopoiskMovieFactory(id=4220)  # Easy rider: director, Billy, writer
         kp_movie2 = KinopoiskMovieFactory(id=4149)  # True Romance: Clifford Worley
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
-        kp_person.sync_details()
+        kp_person.sync_career()
 
         self.assert_dennis_hopper_career(kp_person, kp_movie1.movie, kp_movie2.movie)
 

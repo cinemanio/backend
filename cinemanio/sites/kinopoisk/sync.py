@@ -10,7 +10,7 @@ from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role,
 from cinemanio.core.models.person import ACTOR_ID, DIRECTOR_ID, SCENARIST_ID, PRODUCER_ID, EDITOR_ID
 # from cinemanio.sites.kinopoisk.models import KinopoiskMovie, KinopoiskPerson
 
-# from kinopoisk.movie import Movie as KinoMovie
+from kinopoisk.movie import Movie as KinoMovie
 from kinopoisk.person import Person as KinoPerson
 
 
@@ -69,18 +69,31 @@ from kinopoisk.person import Person as KinoPerson
 #         self.apply_remote_data(data, roles=roles)
 #         return data
 
+class SyncBase:
+    _remote_obj = None
+    model = None
 
-class PersonSyncMixin:
+    @property
+    def remote_obj(self):
+        if self._remote_obj is None:
+            self._remote_obj = self.model(id=self.id)
+        return self._remote_obj
+
+    def populate(self, name):
+        # TODO: implement smart reading
+        self.remote_obj.get_content(name)
+
+
+class PersonSyncMixin(SyncBase):
     """
     Sync mixin of person data from Kinopoisk
     """
+    model = KinoPerson
+
     def sync_details(self):
-        person = KinoPerson(id=self.id)
-        person.get_content('main_page')
+        self.populate('main_page')
 
-        self.info = person.information
-
-        self._sync_roles(person)
+        self.info = self.remote_obj.information
 
     def sync_images(self):
         pass
@@ -88,75 +101,7 @@ class PersonSyncMixin:
     def sync_trailers(self):
         pass
 
-    # model = Person
-    #
-    # def get_imdb_object(self, id):
-    #     return self.imdb.get_person(id)
-    #
-    # def apply_remote_data(self, data, roles):
-    #     """
-    #     Update person with remote data
-    #     """
-    #     for field in ['date_birth', 'date_death']:
-    #         setattr(self.object, field, data.get(field, None))
-    #
-    #     try:
-    #         self.object.country = Country.objects.get(id=data.get('country'))
-    #     except Country.DoesNotExist:
-    #         pass
-    #
-    #     for field in ['first_name_en', 'last_name_en']:
-    #         if not getattr(self.object, field):
-    #             setattr(self.object, field, data.get(field, None))
-    #
-    #     # if object in database, we can update m2m fields
-    #     if self.object.id:
-    #         if roles:
-    #             self._add_roles()
-    #
-    # def get_remote_data(self):
-    #     """
-    #     Return dict with essential remote data
-    #     """
-    #     data = {
-    #         'imdb_id': self.imdb_object.personID,
-    #         'first_name_en': self._get_name_eng()[0],
-    #         'last_name_en': self._get_name_eng()[1],
-    #         'date_birth': self._get_date('birth date'),
-    #         'date_death': self._get_date('death date'),
-    #         'country': self._get_country()
-    #     }
-    #     return data
-    #
-    # def _get_name_eng(self):
-    #     name = self.imdb_object.data.get('name')
-    #
-    #     # 'name': 'IMDb, Robert De Niro -'
-    #     if name.find('IMDb') != -1:
-    #         name = re.sub(r'IMDb, (.+) -', r'\1', name)
-    #         names = name.split()
-    #         first = names[0]
-    #         last = ' '.join(names[1:]) if len(names) > 1 else ''
-    #     else:
-    #         last, first = self.get_name_parts(name)
-    #
-    #     return first, last
-    #
-    # def _get_date(self, field):
-    #     date = self.imdb_object.data.get(field)
-    #     try:
-    #         return parser.parse(date).date()
-    #     except ValueError:
-    #         return None
-    #
-    # def _get_country(self):
-    #     birth_notes = self.imdb_object.data.get('birth notes')
-    #     for country in Country.objects.all():
-    #         if country.imdb_id and birth_notes.find(country.imdb_id) != -1:
-    #             return country.id
-    #     return None
-
-    def _sync_roles(self, person):
+    def sync_career(self):
         """
         Find movies of current person by imdb_id or title:
         1. Trying find movie by kinopoisk_id
@@ -164,6 +109,7 @@ class PersonSyncMixin:
         3. Trying find movie by title among all movies
         If found update kinopoisk_id of movie, create/update role and role's role_en
         """
+        self.populate('main_page')
         role_map = {
             'actor': ACTOR_ID,
             'director': DIRECTOR_ID,
@@ -172,7 +118,7 @@ class PersonSyncMixin:
             'hrono_titr_male': None,
             'himself': ACTOR_ID,
         }
-        for role_key, roles in person.career.items():
+        for role_key, roles in self.remote_obj.career.items():
             role_id = role_map.get(role_key, None)
             if role_id is None:
                 continue
@@ -223,164 +169,34 @@ class PersonSyncMixin:
                         cast.save(update_fields=[field_name])
 
 
-# class KinopoiskMovieImporter(KinopoiskImporterBase):
-#     """
-#     Importer of movie data from IMDB
-#     """
-#     model = Movie
-#
-#     def get_imdb_object(self, id):
-#         return self.imdb.get_movie(id)
-#
-#     def apply_remote_data(self, data, roles):
-#         """
-#         Update movie with remote data
-#         """
-#         if data.get('imdb_rating', None):
-#             self.object.imdb.rating = data['imdb_rating']
-#
-#         for field in ['runtime']:
-#             if data.get(field, None) is not None:
-#                 setattr(self.object, field, data[field])
-#
-#         for field in ['title_en', 'title_ru', 'title', 'year']:
-#             if data.get(field, None) is not None and not getattr(self.object, field):
-#                 setattr(self.object, field, data[field])
-#
-#         # if object in database, we can update m2m fields
-#         if self.object.id:
-#             for field in ['genres', 'countries', 'languages', 'types']:
-#                 if not getattr(self.object, field).all():
-#                     objects = []
-#                     for id in data.get(field, []):
-#                         try:
-#                             model = self.object._meta.get_field(field).related_model
-#                             objects += [model.objects.get(id=id)]
-#                         except ObjectDoesNotExist:
-#                             pass
-#                     getattr(self.object, field).set(objects)
-#
-#             if roles:
-#                 self._add_roles()
-#
-#     def get_remote_data(self):
-#         """
-#         Return dict with essential remote data
-#         """
-#         try:
-#             runtimes = self.imdb_object.data.get('runtimes')[0].split(':')
-#             runtimes = int(runtimes[1] if len(runtimes) > 1 else runtimes[0])
-#         except (IndexError, TypeError):
-#             runtimes = None
-#
-#         data = {
-#             'imdb_id': self.imdb_object.movieID,
-#             'title': self.imdb_object.data.get('title'),
-#             'title_ru': self._get_title('ru'),
-#             'title_en': self._get_title('en'),
-#             # 'russia_start': self._get_russia_start(self.imdb),
-#             'year': self.imdb_object.data.get('year'),
-#             'imdb_rating': self.imdb_object.data.get('rating'),
-#             'runtime': runtimes,
-#             'genres': self._get_genres(),
-#             'countries': self._get_countries(),
-#             'languages': self._get_languages(),
-#             'types': self._get_types(),
-#         }
-#         return data
-#
-#     def _get_russia_start(self, imdb):
-#         releases = imdb.get_movie_release_dates(self.imdb_id)
-#         for date in releases['data'].get('release dates', []):
-#             date = date.split('::')
-#             if len(date) != 2:
-#                 date += date
-#             if re.findall(r'russia', date[0], re.I):
-#                 try:
-#                     return parser.parse(re.sub(r'^(\d+ \w+ \d{4}).*$', r'\1', date[1])).date()
-#                 except ValueError:
-#                     pass
-#         return None
-#
-#     def _get_title(self, language):
-#
-#         lang_dict = {
-#             'en': r'(International|UK|USA)',
-#             'ru': r'(russia|\[ru\])',
-#         }
-#         regexp = lang_dict[language]
-#
-#         # print self.imdb_object.data.get('akas', [])
-#         for title in self.imdb_object.data.get('akas', []):
-#             title = title.split('::')
-#             if len(title) != 2:
-#                 title += title
-#
-#             if re.findall(regexp, title[1], re.I):
-#                 return re.sub(r'^"(.+)"$', r'\1', title[0].strip())
-#         return ''
-#
-#     def _get_types(self):
-#         ids = []
-#         data = self.imdb_object.data
-#         if data.get('genres') and 'Documentary' in data.get('genres'):
-#             ids += [7]
-#         if data.get('genres') and 'Animation' in data.get('genres'):
-#             ids += [5]
-#         if data.get('genres') and 'Short' in data.get('genres'):
-#             ids += [3]
-#         if data.get('genres') and ('Musical' in data.get('genres') or 'Music' in data.get('genres')):
-#             ids += [12]
-#         if data.get('color info') and 'Black and White' in data.get('color info') \
-#                 and 'Color' not in data.get('color info'):
-#             ids += [14]
-#         if data.get('sound mix') and 'Silent' in data.get('sound mix') \
-#                 or data.get('languages') and 'None' in data.get('languages'):
-#             ids += [1]
-#
-#         if data.get('kind') in ['tv series', 'tv mini series']:
-#             ids += [2]  # многосерийный
-#         # 'number of seasons': 5
-#         # 'series years': '2004-2006'
-#         # if data.get('number of seasons') > 1 or data.get('series years') and len(data.get('series years')) == 9:
-#         #     ids += [10]  # сериал
-#         return ids
-#
-#     def _get_genres(self):
-#         ids = []
-#         for item in self.imdb_object.data.get('genres', []):
-#             try:
-#                 ids += [Genre.objects.get(imdb_id=item).id]
-#             except Genre.DoesNotExist:
-#                 pass
-#         return ids
-#
-#     def _get_languages(self):
-#         ids = []
-#         for item in self.imdb_object.data.get('languages', []):
-#             try:
-#                 ids += [Language.objects.get(imdb_id=item).id]
-#             except Language.DoesNotExist:
-#                 pass
-#         return ids
-#
-#     def _get_countries(self):
-#         ids = []
-#         for item in self.imdb_object.data.get('countries', []):
-#             try:
-#                 ids += [Country.objects.get(imdb_id=item.replace('United States', 'USA')).id]
-#             except Country.DoesNotExist:
-#                 pass
-#         return ids
-#
-#     def _add_roles(self):
-#         """
-#         Find persons of current movie by imdb_id or name:
-#         1. Trying find person by imdb_id
-#         2. Trying find person by name among movie's persons
-#         3. Trying find person by name among all persons
-#         If found update imdb_id of person, create/update role and role's name_en
-#         """
+class MovieSyncMixin(SyncBase):
+    """
+    Sync mixin of movie data from Kinopoisk
+    """
+    model = KinoMovie
+
+    def sync_details(self):
+        self.populate('main_page')
+
+        self.info = self.remote_obj.plot
+        self.rating = self.remote_obj.rating
+        self.votes = self.remote_obj.votes
+
+    def sync_images(self):
+        pass
+
+    def sync_trailers(self):
+        pass
+
+    def sync_cast(self):
+        """
+        Find persons of current movie by imdb_id or name:
+        1. Trying find person by imdb_id
+        2. Trying find person by name among movie's persons
+        3. Trying find person by name among all persons
+        If found update imdb_id of person, create/update role and role's name_en
+        """
+        self.populate('cast')
 #         role_list = (
 #             (DIRECTOR_ID, 'director'),
 #             (ACTOR_ID, 'cast'),
