@@ -28,3 +28,7 @@ class BaseTestCase(TestCase):
     @property
     def author(self):
         return Role.objects.get_author()
+
+    @property
+    def scenarist(self):
+        return Role.objects.get_scenarist()

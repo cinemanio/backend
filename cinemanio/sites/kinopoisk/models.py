@@ -1,9 +1,12 @@
+import logging
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from kinopoisk.movie import Movie as KinoMovie
-from kinopoisk.person import Person as KinoPerson
 
 from cinemanio.core.models import Movie, Person
+from cinemanio.sites.kinopoisk.sync import PersonSyncMixin
+
+logger = logging.getLogger(__name__)
 
 
 class KinopoiskBase(models.Model):
@@ -11,6 +14,10 @@ class KinopoiskBase(models.Model):
 
     class Meta:
         abstract = True
+
+    @property
+    def logger(self):
+        return logger
 
 
 class UrlMixin:
@@ -45,7 +52,7 @@ class KinopoiskMovie(KinopoiskBase, UrlMixin):
         pass
 
 
-class KinopoiskPerson(KinopoiskBase, UrlMixin):
+class KinopoiskPerson(KinopoiskBase, UrlMixin, PersonSyncMixin):
     """
     Kinopoisk person model
     """
@@ -53,17 +60,3 @@ class KinopoiskPerson(KinopoiskBase, UrlMixin):
     person = models.OneToOneField(Person, related_name='kinopoisk', on_delete=models.CASCADE)
 
     link = 'http://www.kinopoisk.ru/name/{id}/'
-
-    def sync_details(self):
-        person = KinoPerson(id=self.id)
-        person.get_content('main_page')
-        self.info = person.information
-
-    def sync_images(self):
-        pass
-
-    def sync_trailers(self):
-        pass
-
-    def sync_career(self):
-        pass

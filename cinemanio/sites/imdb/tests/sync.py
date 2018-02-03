@@ -102,23 +102,23 @@ class ImdbSyncTest(BaseTestCase):
         imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
         imdb_person.sync(roles=True)
 
-        career = imdb_person.person.career
-        self.assertEqual(career.count(), 4)
-        self.assertTrue(career.get(movie=imdb_movie1.movie, role=self.director))
-        self.assertTrue(career.get(movie=imdb_movie1.movie, role=self.author))
-        self.assertEqual(career.get(movie=imdb_movie1.movie, role=self.actor).name_en, 'Billy')
-        self.assertEqual(career.get(movie=imdb_movie2.movie, role=self.actor).name_en, 'Clifford Worley')
+        self.assert_dennis_hopper_career(imdb_person, imdb_movie1.movie, imdb_movie2.movie)
 
     def test_add_roles_to_person_by_movie_titles(self):
-        movie1 = MovieFactory(title_en='Easy Rider')
-        movie2 = MovieFactory(title_en='True Romance')
+        movie1 = MovieFactory(title_en='Easy Rider', year=1969)
+        movie2 = MovieFactory(title_en='True Romance', year=1993)
         imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
         imdb_person.sync(roles=True)
 
+        self.assert_dennis_hopper_career(imdb_person, movie1, movie2)
+
+    def assert_dennis_hopper_career(self, imdb_person, movie1, movie2):
         career = imdb_person.person.career
         self.assertEqual(movie1.imdb.id, 64276)
         self.assertEqual(movie2.imdb.id, 108399)
         self.assertEqual(career.count(), 4)
+        self.assertTrue(career.get(movie=movie1, role=self.director))
+        self.assertTrue(career.get(movie=movie1, role=self.author))
         self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, 'Billy')
         self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
 

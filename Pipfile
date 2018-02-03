@@ -21,6 +21,8 @@ imdbpy = "*"
 vcrpy-unittest = "*"
 "e1f7432" = {path = "git+git@github.com:alberanid/imdbpy.git#egg=imdbpy", editable = true}
 kinopoiskpy = "*"
+alphabet-detector = "*"
+parameterized = "*"
 
 
 [dev-packages]

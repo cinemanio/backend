@@ -165,6 +165,7 @@ class ImdbPersonImporter(ImdbImporterBase):
             for imdb_movie in self.imdb_object.data.get(imdb_key, []):
                 imdb_id = self.imdb.get_imdbID(imdb_movie)
                 title = imdb_movie.data['title']
+                year = imdb_movie.data.get('year')
                 cast = movie = None
 
                 # if writer has note story or novel, then it must be a
@@ -177,14 +178,14 @@ class ImdbPersonImporter(ImdbImporterBase):
                     cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
                 except Movie.DoesNotExist:
                     try:
-                        # get movie by name among person's movies and save imdb_id for future
-                        cast = self.object.career.get(movie__title_en=title, role=role)
+                        # get movie by name among person's movies
+                        cast = self.object.career.get(movie__title_en=title, movie__year=year, role=role)
                         movie = cast.movie
                         created = False
                     except Cast.DoesNotExist:
                         try:
                             # get movie by name among all movies
-                            movie = Movie.objects.get(title_en=title, imdb=None)
+                            movie = Movie.objects.get(title_en=title, year=year, imdb=None)
                             cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
                         except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
                             continue
@@ -193,7 +194,8 @@ class ImdbPersonImporter(ImdbImporterBase):
                     self.logger.info(
                         'Create cast for person %s in movie %s with role %s' % (self.object, movie, role))
 
-                ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
+                if movie:
+                    ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
 
                 # save name of role for actors
                 if role.is_actor() and imdb_movie.notes and cast and not cast.name_en:

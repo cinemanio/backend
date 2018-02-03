@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6c5ac274efda9fd120bc0e57fe61eb22c58f999a1deb373efb2b04ba85acf1ed"
+            "sha256": "35f69d1014b98c1c4a78fde4500f30b4235b37275f7e55ff60398bddb26ab16e"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -29,6 +29,12 @@
         ]
     },
     "default": {
+        "alphabet-detector": {
+            "hashes": [
+                "sha256:e30f3d6a05250a097c59095a5c269810bcaa09c414eaf85629753da788129ea4"
+            ],
+            "version": "==0.0.7"
+        },
         "amqp": {
             "hashes": [
                 "sha256:e0ed0ce6b8ffe5690a2e856c7908dc557e0e605283d6885dd1361d79f2928908",
@@ -162,9 +168,9 @@
         },
         "kinopoiskpy": {
             "hashes": [
-                "sha256:a34d158552ca08625c16df888561f522b13f6229bfa5da26e6bd428ece7b858f"
+                "sha256:0f8eed383adba610bed7948f49947caf7f66e657258d738dc815e3beea2d0616"
             ],
-            "version": "==0.7.0"
+            "version": "==0.7.1"
         },
         "kombu": {
             "hashes": [
@@ -232,6 +238,13 @@
                 "sha256:fb4412490324705dcd2172baa8a3ea58ae23c5f982476805cad58ae929fe2a52"
             ],
             "version": "==4.1.0"
+        },
+        "parameterized": {
+            "hashes": [
+                "sha256:cf5fa4f295dfb823cebdb27a00566113f2fbb71c7d5ca7b7a1019fd20c8a0811",
+                "sha256:caf58e717097735de0d7e15386a46ffa5ce25bb6a13a43716a8854a8d34841e2"
+            ],
+            "version": "==0.6.1"
         },
         "pbr": {
             "hashes": [
