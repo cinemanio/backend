@@ -79,10 +79,6 @@ class SyncBase:
             self._remote_obj = self.model(id=self.id)
         return self._remote_obj
 
-    def populate(self, name):
-        # TODO: implement smart reading
-        self.remote_obj.get_content(name)
-
 
 class PersonSyncMixin(SyncBase):
     """
@@ -91,7 +87,7 @@ class PersonSyncMixin(SyncBase):
     model = KinoPerson
 
     def sync_details(self):
-        self.populate('main_page')
+        self.remote_obj.get_content('main_page')
 
         self.info = self.remote_obj.information
 
@@ -109,7 +105,7 @@ class PersonSyncMixin(SyncBase):
         3. Trying find movie by title among all movies
         If found update kinopoisk_id of movie, create/update role and role's role_en
         """
-        self.populate('main_page')
+        self.remote_obj.get_content('main_page')
         role_map = {
             'actor': ACTOR_ID,
             'director': DIRECTOR_ID,
@@ -176,7 +172,7 @@ class MovieSyncMixin(SyncBase):
     model = KinoMovie
 
     def sync_details(self):
-        self.populate('main_page')
+        self.remote_obj.get_content('main_page')
 
         self.info = self.remote_obj.plot
         self.rating = self.remote_obj.rating
@@ -196,7 +192,7 @@ class MovieSyncMixin(SyncBase):
         3. Trying find person by name among all persons
         If found update imdb_id of person, create/update role and role's name_en
         """
-        self.populate('cast')
+        self.remote_obj.get_content('cast')
 #         role_list = (
 #             (DIRECTOR_ID, 'director'),
 #             (ACTOR_ID, 'cast'),

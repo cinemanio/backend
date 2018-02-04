@@ -5,9 +5,6 @@ from cinemanio.users.models import User
 
 
 class RecountFamiliarObjects(Task):
-    significant_kwargs = []
-    herd_avoidance_timeout = 0
-
     def run(self, sender, user_id, **kwargs):
         user = User.objects.get(id=user_id)
 
@@ -21,9 +18,6 @@ class RecountFamiliarObjects(Task):
 
 
 class DeleteEmptyRelations(Task):
-    significant_kwargs = []
-    herd_avoidance_timeout = 0
-
     def run(self, sender, instance_id, **kwargs):
         instance = sender.objects.get(id=instance_id)
         attitude = False
@@ -32,3 +26,11 @@ class DeleteEmptyRelations(Task):
 
         if not attitude:
             instance.delete()
+
+
+class RecountObjectRelations(Task):
+    def run(self, sender, instance, **kwargs):
+        relations_counts = {}
+        for code in instance.codes:
+            relations_counts[code] = sender.objects.filter(object_id=instance.object.id, **{code: True}).count()
+        sender.count_model.objects.update_or_create(object_id=instance.object.id, defaults=relations_counts)

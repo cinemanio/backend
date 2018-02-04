@@ -17,21 +17,17 @@ class RelationBase(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # def __unicode__(self):
-    #     return ' | '.join([self.object.__unicode__(), self.user.__unicode__(), \
-    #                        ', '.join([tuple[0] + '=' + str(getattr(self, tuple[0])) for tuple in self.fields])])
+    def __repr__(self):
+        return ' | '.join([repr(self.object), repr(self.user),
+                           ', '.join(['{}={}'.format(code, getattr(self, code)) for code in self.codes])])
+
+    def __str__(self):
+        return repr(self)
 
     def __setattr__(self, name, value):
         """
-        Call on every model property change. If change `object`, define `object_id`
+        Call on every model property change.
         """
-        model = self._meta.get_field('object').related_model
-        if name == 'object' and not isinstance(value, model):
-            name = 'object_id'
-            try:
-                value = int(value)
-            except:
-                raise TypeError(_('Field "object" must be integer or %s' % type(model)))
         self.correct_fields(name, value)
         super().__setattr__(name, value)
 
@@ -99,7 +95,8 @@ class RelationBase(models.Model):
     #     return False
 
 
-def register_relation_fields(attitude_model, attitude_count_model):
-    for code, name in attitude_model.get_codename_fields():
-        attitude_model.add_to_class(code, models.BooleanField(verbose_name=name, default=False, db_index=True))
-        attitude_count_model.add_to_class('%ss_count' % code, models.PositiveIntegerField(default=0, db_index=True))
+def register_relation_fields(relation_model, relation_count_model):
+    relation_model.count_model = relation_count_model
+    for code, name in relation_model.get_codename_fields():
+        relation_model.add_to_class(code, models.BooleanField(verbose_name=name, default=False, db_index=True))
+        relation_count_model.add_to_class(code, models.PositiveIntegerField(default=0, db_index=True))

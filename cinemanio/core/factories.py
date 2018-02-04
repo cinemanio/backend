@@ -15,6 +15,8 @@ class MovieFactory(DjangoModelFactory):
 
 class PersonFactory(DjangoModelFactory):
     gender = factory.LazyAttribute(lambda o: random.choice([1, 0]))
+    first_name_en = ''
+    last_name_en = ''
 
     class Meta:
         model = Person

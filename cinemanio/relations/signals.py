@@ -2,7 +2,7 @@ from django.dispatch import Signal
 from django.dispatch import receiver
 
 from cinemanio.relations.models import MovieRelation, PersonRelation, UserRelation
-from cinemanio.relations.tasks import RecountFamiliarObjects, DeleteEmptyRelations
+from cinemanio.relations.tasks import RecountFamiliarObjects, DeleteEmptyRelations, RecountObjectRelations
 
 relation_changed = Signal(providing_args=['instance', 'code', 'request'])
 
@@ -24,3 +24,12 @@ def recount_familiar_objects(sender, instance, **kwargs):
     Recount familiar movies | persons for user
     """
     RecountFamiliarObjects.delay(sender, instance.user.id)
+
+
+@receiver(relation_changed, sender=MovieRelation)
+@receiver(relation_changed, sender=PersonRelation)
+def recount_relations(sender, instance, **kwargs):
+    """
+    Recount relations for movie | person
+    """
+    RecountObjectRelations.delay(sender, instance)
