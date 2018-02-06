@@ -2,7 +2,6 @@ import logging
 import re
 
 from dateutil import parser
-from django.core.exceptions import ObjectDoesNotExist
 from imdb import IMDb
 from imdb.Character import Character
 from imdb.utils import RolesList
@@ -229,16 +228,9 @@ class ImdbMovieImporter(ImdbImporterBase):
         # if object in database, we can update m2m fields
         if self.object.id:
             for field in ['genres', 'countries', 'languages', 'types']:
-                if not getattr(self.object, field).all():
-                    objects = []
-                    for id in data.get(field, []):
-                        try:
-                            model = self.object._meta.get_field(field).related_model
-                            objects += [model.objects.get(id=id)]
-                        except ObjectDoesNotExist:
-                            pass
-                    getattr(self.object, field).set(objects)
-
+                if getattr(self.object, field).count() == 0:
+                    model = self.object._meta.get_field(field).related_model
+                    getattr(self.object, field).set(model.objects.filter(id__in=data[field]))
             if roles:
                 self._add_roles()
 
@@ -326,30 +318,20 @@ class ImdbMovieImporter(ImdbImporterBase):
         return ids
 
     def _get_genres(self):
-        ids = []
-        for item in self.imdb_object.data.get('genres', []):
-            try:
-                ids += [Genre.objects.get(imdb__name=item).id]
-            except Genre.DoesNotExist:
-                pass
-        return ids
+        genres = set(self.imdb_object.data.get('genres', []))#.difference({'Short'})
+        return self._get_m2m_ids(Genre, genres)
 
     def _get_languages(self):
-        ids = []
-        for item in self.imdb_object.data.get('languages', []):
-            try:
-                ids += [Language.objects.get(imdb__name=item).id]
-            except Language.DoesNotExist:
-                pass
-        return ids
+        return self._get_m2m_ids(Language, self.imdb_object.data.get('languages', []))
 
     def _get_countries(self):
-        ids = []
-        for item in self.imdb_object.data.get('countries', []):
-            try:
-                ids += [Country.objects.get(imdb__name=item.replace('United States', 'USA')).id]
-            except Country.DoesNotExist:
-                pass
+        return self._get_m2m_ids(Country, self.imdb_object.data.get('countries', []),
+                                 lambda i: i.replace('United States', 'USA'))
+
+    def _get_m2m_ids(self, model, values, callback=lambda i: i):
+        ids = model.objects.filter(imdb__name__in=[callback(i) for i in values]).values('id')
+        if len(ids) != len(values):
+            self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
         return ids
 
     def _add_roles(self):

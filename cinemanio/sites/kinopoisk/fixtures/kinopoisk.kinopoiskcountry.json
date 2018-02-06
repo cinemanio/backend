@@ -1,0 +1,770 @@
+[
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 837,
+    "fields": {
+      "name": "Australia",
+      "country": 1
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 838,
+    "fields": {
+      "name": "Austria",
+      "country": 2
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 839,
+    "fields": {
+      "name": "Azerbaijan",
+      "country": 3
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 840,
+    "fields": {
+      "name": "Albania",
+      "country": 4
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 841,
+    "fields": {
+      "name": "Algeria",
+      "country": 5
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 842,
+    "fields": {
+      "name": "Argentina",
+      "country": 6
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 843,
+    "fields": {
+      "name": "Armenia",
+      "country": 7
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 844,
+    "fields": {
+      "name": "Afghanistan",
+      "country": 8
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 845,
+    "fields": {
+      "name": "Belarus",
+      "country": 9
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 846,
+    "fields": {
+      "name": "Belgium",
+      "country": 10
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 847,
+    "fields": {
+      "name": "Benin",
+      "country": 11
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 848,
+    "fields": {
+      "name": "Bulgaria",
+      "country": 12
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 849,
+    "fields": {
+      "name": "Bolivia",
+      "country": 13
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 850,
+    "fields": {
+      "name": "Bosnia and Herzegovina",
+      "country": 14
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 851,
+    "fields": {
+      "name": "Brazil",
+      "country": 15
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 852,
+    "fields": {
+      "name": "UK",
+      "country": 16
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 853,
+    "fields": {
+      "name": "Hungary",
+      "country": 17
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 854,
+    "fields": {
+      "name": "Vietnam",
+      "country": 18
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 855,
+    "fields": {
+      "name": null,
+      "country": 19
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 856,
+    "fields": {
+      "name": "Germany",
+      "country": 20
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 857,
+    "fields": {
+      "name": "Hong Kong",
+      "country": 21
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 858,
+    "fields": {
+      "name": "Greece",
+      "country": 22
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 859,
+    "fields": {
+      "name": "Georgia",
+      "country": 23
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 860,
+    "fields": {
+      "name": "Denmark",
+      "country": 24
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 861,
+    "fields": {
+      "name": "Egypt",
+      "country": 25
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 862,
+    "fields": {
+      "name": "Israel",
+      "country": 26
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 863,
+    "fields": {
+      "name": "India",
+      "country": 27
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 864,
+    "fields": {
+      "name": "Iraq",
+      "country": 28
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 865,
+    "fields": {
+      "name": "Iran",
+      "country": 29
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 866,
+    "fields": {
+      "name": "Ireland",
+      "country": 30
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 867,
+    "fields": {
+      "name": "Iceland",
+      "country": 31
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 868,
+    "fields": {
+      "name": "Spain",
+      "country": 32
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 869,
+    "fields": {
+      "name": "Italy",
+      "country": 33
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 870,
+    "fields": {
+      "name": "Kazakhstan",
+      "country": 34
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 871,
+    "fields": {
+      "name": "Canada",
+      "country": 35
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 872,
+    "fields": {
+      "name": "Kenya",
+      "country": 36
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 873,
+    "fields": {
+      "name": "China",
+      "country": 37
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 874,
+    "fields": {
+      "name": null,
+      "country": 38
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 875,
+    "fields": {
+      "name": "Cuba",
+      "country": 39
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 876,
+    "fields": {
+      "name": "Latvia",
+      "country": 40
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 877,
+    "fields": {
+      "name": "Lebanon",
+      "country": 41
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 878,
+    "fields": {
+      "name": "Liberia",
+      "country": 42
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 879,
+    "fields": {
+      "name": "Lithuania",
+      "country": 43
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 880,
+    "fields": {
+      "name": "Liechtenstein",
+      "country": 44
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 881,
+    "fields": {
+      "name": "Luxembourg",
+      "country": 45
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 882,
+    "fields": {
+      "name": "Malaysia",
+      "country": 46
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 883,
+    "fields": {
+      "name": "Malta",
+      "country": 47
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 884,
+    "fields": {
+      "name": "Morocco",
+      "country": 48
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 885,
+    "fields": {
+      "name": "Mexico",
+      "country": 49
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 886,
+    "fields": {
+      "name": "Monaco",
+      "country": 50
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 887,
+    "fields": {
+      "name": "Mongolia",
+      "country": 51
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 888,
+    "fields": {
+      "name": "Nigeria",
+      "country": 52
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 889,
+    "fields": {
+      "name": "Netherlands",
+      "country": 53
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 890,
+    "fields": {
+      "name": "New Zealand",
+      "country": 54
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 891,
+    "fields": {
+      "name": "Norway",
+      "country": 55
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 892,
+    "fields": {
+      "name": "Pakistan",
+      "country": 56
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 893,
+    "fields": {
+      "name": "Panama",
+      "country": 57
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 894,
+    "fields": {
+      "name": "Poland",
+      "country": 58
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 895,
+    "fields": {
+      "name": "Portugal",
+      "country": 59
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 896,
+    "fields": {
+      "name": "Puerto Rico",
+      "country": 60
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 897,
+    "fields": {
+      "name": "Russia",
+      "country": 61
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 898,
+    "fields": {
+      "name": "Romania",
+      "country": 62
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 899,
+    "fields": {
+      "name": "North Korea",
+      "country": 63
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 900,
+    "fields": {
+      "name": "Singapore",
+      "country": 64
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 901,
+    "fields": {
+      "name": "Slovakia",
+      "country": 65
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 902,
+    "fields": {
+      "name": null,
+      "country": 66
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 903,
+    "fields": {
+      "name": "Словения",
+      "country": 67
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 904,
+    "fields": {
+      "name": "СССР",
+      "country": 68
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 905,
+    "fields": {
+      "name": "США",
+      "country": 69
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 906,
+    "fields": {
+      "name": "Tajikistan",
+      "country": 70
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 907,
+    "fields": {
+      "name": "Taiwan",
+      "country": 71
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 908,
+    "fields": {
+      "name": "Thailand",
+      "country": 72
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 909,
+    "fields": {
+      "name": "Turkey",
+      "country": 73
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 910,
+    "fields": {
+      "name": "Uganda",
+      "country": 74
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 911,
+    "fields": {
+      "name": "Uzbekistan",
+      "country": 75
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 912,
+    "fields": {
+      "name": "Ukraine",
+      "country": 76
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 913,
+    "fields": {
+      "name": "Philippines",
+      "country": 77
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 914,
+    "fields": {
+      "name": "Finland",
+      "country": 78
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 915,
+    "fields": {
+      "name": "Kuwait",
+      "country": 79
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 916,
+    "fields": {
+      "name": "Serbia",
+      "country": 80
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 917,
+    "fields": {
+      "name": "France",
+      "country": 81
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 918,
+    "fields": {
+      "name": "Croatia",
+      "country": 82
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 919,
+    "fields": {
+      "name": null,
+      "country": 83
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 920,
+    "fields": {
+      "name": "Czech Republic",
+      "country": 84
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 921,
+    "fields": {
+      "name": "Chile",
+      "country": 85
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 922,
+    "fields": {
+      "name": "Switzerland",
+      "country": 86
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 923,
+    "fields": {
+      "name": "Sweden",
+      "country": 87
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 924,
+    "fields": {
+      "name": "Estonia",
+      "country": 88
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 925,
+    "fields": {
+      "name": "Republic of Macedonia",
+      "country": 89
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 926,
+    "fields": {
+      "name": "South Africa",
+      "country": 90
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 927,
+    "fields": {
+      "name": "South Korea",
+      "country": 91
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 928,
+    "fields": {
+      "name": "Japan",
+      "country": 92
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 929,
+    "fields": {
+      "name": "Peru",
+      "country": 93
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 930,
+    "fields": {
+      "name": "Jamaica",
+      "country": 94
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 931,
+    "fields": {
+      "name": "Venezuela",
+      "country": 95
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskcountry",
+    "pk": 932,
+    "fields": {
+      "name": "",
+      "country": 96
+    }
+  }
+]

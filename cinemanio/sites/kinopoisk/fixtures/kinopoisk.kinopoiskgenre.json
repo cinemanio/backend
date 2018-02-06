@@ -1,6 +1,6 @@
 [
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 171,
     "fields": {
       "name": null,
@@ -8,7 +8,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 172,
     "fields": {
       "name": "Biography",
@@ -16,23 +16,23 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 173,
     "fields": {
-      "name": "Action",
+      "name": "боевик",
       "genre": 3
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 174,
     "fields": {
-      "name": "Western",
+      "name": "",
       "genre": 4
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 175,
     "fields": {
       "name": "War",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 176,
     "fields": {
       "name": null,
@@ -48,7 +48,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 177,
     "fields": {
       "name": null,
@@ -56,7 +56,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 178,
     "fields": {
       "name": "History",
@@ -64,7 +64,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 179,
     "fields": {
       "name": null,
@@ -72,7 +72,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 180,
     "fields": {
       "name": null,
@@ -80,7 +80,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 181,
     "fields": {
       "name": "Romance",
@@ -88,7 +88,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 182,
     "fields": {
       "name": "Mystery",
@@ -96,7 +96,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 183,
     "fields": {
       "name": null,
@@ -104,15 +104,15 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 184,
     "fields": {
-      "name": "Sci-Fi",
+      "name": "фантастика",
       "genre": 14
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 185,
     "fields": {
       "name": "Film-Noir",
@@ -120,7 +120,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 186,
     "fields": {
       "name": null,
@@ -128,7 +128,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 187,
     "fields": {
       "name": null,
@@ -136,7 +136,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 188,
     "fields": {
       "name": "Adventure",
@@ -144,7 +144,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 189,
     "fields": {
       "name": null,
@@ -152,7 +152,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 190,
     "fields": {
       "name": null,
@@ -160,7 +160,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 191,
     "fields": {
       "name": "Sport",
@@ -168,7 +168,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 192,
     "fields": {
       "name": null,
@@ -176,7 +176,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 193,
     "fields": {
       "name": null,
@@ -184,7 +184,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 194,
     "fields": {
       "name": null,
@@ -192,7 +192,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 195,
     "fields": {
       "name": "Thriller",
@@ -200,7 +200,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 196,
     "fields": {
       "name": "Horror",
@@ -208,7 +208,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 197,
     "fields": {
       "name": "Fantasy",
@@ -216,7 +216,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 198,
     "fields": {
       "name": null,
@@ -224,7 +224,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 199,
     "fields": {
       "name": "Drama",
@@ -232,7 +232,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 200,
     "fields": {
       "name": "Comedy",
@@ -240,7 +240,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 201,
     "fields": {
       "name": "Crime",
@@ -248,7 +248,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 202,
     "fields": {
       "name": null,
@@ -256,7 +256,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 203,
     "fields": {
       "name": null,
@@ -264,19 +264,11 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 204,
     "fields": {
       "name": null,
       "genre": 34
-    }
-  },
-  {
-    "model": "imdb.imdbgenre",
-    "pk": 205,
-    "fields": {
-      "name": "Family",
-      "genre": 35
     }
   }
 ]

@@ -1,8 +1,7 @@
-# import logging
 # import re
 #
 # from dateutil import parser
-# from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from alphabet_detector import AlphabetDetector
 
@@ -173,9 +172,47 @@ class MovieSyncMixin(SyncBase):
     def sync_details(self):
         self.remote_obj.get_content('main_page')
 
-        self.info = self.remote_obj.plot
-        self.rating = self.remote_obj.rating
-        self.votes = self.remote_obj.votes
+        fields_map = (
+            ('info', 'plot'),
+            ('rating', 'rating'),
+            ('votes', 'votes'),
+        )
+        for field1, field2 in fields_map:
+            setattr(self, field1, getattr(self.remote_obj, field2))
+
+        fields_map = (
+            ('title_ru', 'title'),
+            ('title_en', 'title_en'),
+            ('year', 'year'),
+            ('runtime', 'runtime'),
+        )
+
+        for field1, field2 in fields_map:
+            value = getattr(self.remote_obj, field2)
+            if value and not getattr(self.movie, field1):
+                setattr(self.movie, field1, value)
+
+        data = {
+            'genres': self._get_genres(),
+            'countries': self._get_countries(),
+        }
+
+        for field, ids in data.items():
+            if getattr(self.movie, field).count() == 0:
+                model = self.movie._meta.get_field(field).related_model
+                getattr(self.movie, field).set(model.objects.filter(id__in=data[field]))
+
+    def _get_genres(self):
+        return self._get_m2m_ids(Genre, self.remote_obj.genres)
+
+    def _get_countries(self):
+        return self._get_m2m_ids(Country, self.remote_obj.countries)
+
+    def _get_m2m_ids(self, model, values):
+        ids = model.objects.filter(kinopoisk__name__in=values).values('id')
+        if len(ids) != len(values):
+            self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
+        return ids
 
     def sync_images(self):
         pass

@@ -7,13 +7,25 @@ from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory, Kinopoisk
 
 
 class KinopoiskSyncTest(VCRMixin, BaseTestCase):
-    def test_movie_redacted(self):
-        kinopoisk = KinopoiskMovieFactory(id=278229)
+    fixtures = BaseTestCase.fixtures + [
+        'kinopoisk.kinopoiskgenre.json',
+        'kinopoisk.kinopoiskcountry.json',
+    ]
+
+    def test_movie_matrix(self):
+        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None)
         kinopoisk.sync_details()
 
-        self.assertEqual(kinopoisk.rating, 6.120)
-        self.assertGreaterEqual(kinopoisk.votes, 1759)
+        self.assertEqual(kinopoisk.rating, 8.491)
+        self.assertGreaterEqual(kinopoisk.votes, 321684)
         self.assertGreater(len(kinopoisk.info), 100)
+
+        self.assertEqual(kinopoisk.movie.title_ru, 'Матрица')
+        self.assertEqual(kinopoisk.movie.title_en, 'The Matrix')
+        self.assertEqual(kinopoisk.movie.year, 1999)
+        self.assertEqual(kinopoisk.movie.runtime, 136)
+        self.assertQuerysetEqual(kinopoisk.movie.genres.all(), ['Action', 'Sci-Fi'])
+        self.assertQuerysetEqual(kinopoisk.movie.countries.all(), ['USA'])
 
     def test_person_johny_depp(self):
         kinopoisk = KinopoiskPersonFactory(id=6245)
