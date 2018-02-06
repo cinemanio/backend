@@ -7,7 +7,6 @@ from django.db.models import Q
 from alphabet_detector import AlphabetDetector
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
-from cinemanio.core.models.person import ACTOR_ID, DIRECTOR_ID, SCENARIST_ID, PRODUCER_ID, EDITOR_ID
 # from cinemanio.sites.kinopoisk.models import KinopoiskMovie, KinopoiskPerson
 
 from kinopoisk.movie import Movie as KinoMovie
@@ -107,12 +106,12 @@ class PersonSyncMixin(SyncBase):
         """
         self.remote_obj.get_content('main_page')
         role_map = {
-            'actor': ACTOR_ID,
-            'director': DIRECTOR_ID,
-            'writer': SCENARIST_ID,
-            'editor': EDITOR_ID,
+            'actor': Role.ACTOR_ID,
+            'director': Role.DIRECTOR_ID,
+            'writer': Role.SCENARIST_ID,
+            'editor': Role.EDITOR_ID,
             'hrono_titr_male': None,
-            'himself': ACTOR_ID,
+            'himself': Role.ACTOR_ID,
         }
         for role_key, roles in self.remote_obj.career.items():
             role_id = role_map.get(role_key, None)

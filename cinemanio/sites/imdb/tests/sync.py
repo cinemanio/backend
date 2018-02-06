@@ -4,10 +4,16 @@ from cinemanio.core.factories import MovieFactory
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 
-USA_ID = 98
+USA_ID = 69
 
 
 class ImdbSyncTest(BaseTestCase):
+    fixtures = BaseTestCase.fixtures + [
+        'imdb.imdbgenre.json',
+        'imdb.imdbcountry.json',
+        'imdb.imdblanguage.json',
+    ]
+
     def test_get_movie_matrix(self):
         imdb_movie = ImdbMovieFactory(id=133093, movie__year=None)
         imdb_movie.sync()

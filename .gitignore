@@ -1,1 +1,6 @@
 db.sqlite3
+.env*
+
+cinemanio/migration/
+cinemanio/sites/movister/
+cinemanio/settings_migration.py

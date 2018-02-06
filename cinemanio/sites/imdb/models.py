@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cinemanio.core.models import Movie, Person
+from cinemanio.core.models import Movie, Person, Genre, Language, Country
 
 
 class UrlMixin:
@@ -37,3 +37,24 @@ class ImdbPerson(models.Model, UrlMixin):
     def sync(self, roles=False):
         from cinemanio.sites.imdb.importer import ImdbPersonImporter
         ImdbPersonImporter(self.person, self.id).get_applied_data(roles=roles)
+
+
+class ImdbPropBase(models.Model):
+    name = models.CharField(_('IMDb name'), max_length=50, null=True, unique=True)
+
+    class Meta:
+        abstract = True
+
+
+class ImdbGenre(ImdbPropBase):
+    genre = models.OneToOneField(Genre, related_name='imdb', on_delete=models.CASCADE)
+
+
+class ImdbLanguage(ImdbPropBase):
+    language = models.OneToOneField(Language, related_name='imdb', on_delete=models.CASCADE)
+    code = models.CharField(_('IMDb code'), max_length=2, null=True, unique=True)
+
+
+class ImdbCountry(ImdbPropBase):
+    country = models.OneToOneField(Country, related_name='imdb', on_delete=models.CASCADE)
+    code = models.CharField(_('IMDb code'), max_length=2, null=True, unique=True)

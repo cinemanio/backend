@@ -3,16 +3,6 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cinemanio.core.models.person import (
-    ACTOR_ID,
-    DIRECTOR_ID,
-    SCENARIST_ID,
-    OPERATOR_ID,
-    COMPOSER_ID,
-    AUTHOR_ID,
-    MUSICIAN_ID,
-)
-
 
 class CachingManagerNew(CachingManager):
     def get_queryset(self):
@@ -40,17 +30,7 @@ class PropertyModel(CachingMixin, models.Model):
         return self.name
 
 
-class PropertyImdbModel(PropertyModel):
-    """
-    Abstract base model for property models with imdb connection (Genre, Language, Country)
-    """
-    imdb_id = models.CharField(_('IMDb name'), max_length=50, null=True, unique=True, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class Genre(PropertyImdbModel):
+class Genre(PropertyModel):
     """
     Movie genre
     """
@@ -60,7 +40,7 @@ class Genre(PropertyImdbModel):
         verbose_name_plural = _('genres')
 
 
-class Language(PropertyImdbModel):
+class Language(PropertyModel):
     """
     Movie language
     """
@@ -70,7 +50,7 @@ class Language(PropertyImdbModel):
         verbose_name_plural = _('languages')
 
 
-class Country(PropertyImdbModel):
+class Country(PropertyModel):
     """
     Country of movie or person
     """
@@ -84,63 +64,14 @@ class Type(PropertyModel):
     """
     Movie type
     """
+    DOCUMENTARY_ID = 7
+    ANIMATION_ID = 5
+    SHORT_ID = 5
+    MUSICAL_ID = 12
+    BLACK_AND_WHITE_ID = 14
+    SILENT_ID = 1
+    SERIES_ID = 2
 
     class Meta(PropertyModel.Meta):
         verbose_name = _('type')
         verbose_name_plural = _('types')
-
-
-class RoleManager(models.Manager):
-    def get_actor(self):
-        return self.get(id=ACTOR_ID)
-
-    def get_director(self):
-        return self.get(id=DIRECTOR_ID)
-
-    def get_author(self):
-        return self.get(id=AUTHOR_ID)
-
-    def get_operator(self):
-        return self.get(id=OPERATOR_ID)
-
-    def get_scenarist(self):
-        return self.get(id=SCENARIST_ID)
-
-    def get_composer(self):
-        return self.get(id=COMPOSER_ID)
-
-
-class Role(PropertyModel):
-    """
-    Role Model
-    """
-    objects = RoleManager()
-
-    class Meta(PropertyModel.Meta):
-        verbose_name = _('role')
-        verbose_name_plural = _('roles')
-
-    def get_name(self, gender=1):
-        # TODO: conversion Actor -> Actress depends on gender
-        return self.name
-
-    def is_actor(self):
-        return self.id == ACTOR_ID
-
-    def is_director(self):
-        return self.id == DIRECTOR_ID
-
-    def is_author(self):
-        return self.id == AUTHOR_ID
-
-    def is_operator(self):
-        return self.id == OPERATOR_ID
-
-    def is_scenarist(self):
-        return self.id == SCENARIST_ID
-
-    def is_composer(self):
-        return self.id == COMPOSER_ID
-
-    def is_musician(self):
-        return self.id == MUSICIAN_ID

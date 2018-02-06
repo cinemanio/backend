@@ -7,8 +7,7 @@ from imdb import IMDb
 from imdb.Character import Character
 from imdb.utils import RolesList
 
-from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
-from cinemanio.core.models.person import ACTOR_ID, DIRECTOR_ID, SCENARIST_ID, PRODUCER_ID, EDITOR_ID
+from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast, Type
 from cinemanio.sites.imdb.models import ImdbMovie
 
 
@@ -135,8 +134,8 @@ class ImdbPersonImporter(ImdbImporterBase):
 
     def _get_country(self):
         birth_notes = self.imdb_object.data.get('birth notes')
-        for country in Country.objects.all():
-            if country.imdb_id and birth_notes.find(country.imdb_id) != -1:
+        for country in Country.objects.select_related('imdb'):
+            if country.imdb.name and birth_notes.find(country.imdb.name) != -1:
                 return country.id
         return None
 
@@ -149,16 +148,16 @@ class ImdbPersonImporter(ImdbImporterBase):
         If found update imdb_id of movie, create/update role and role's role_en
         """
         role_list = (
-            (DIRECTOR_ID, 'director'),
-            (DIRECTOR_ID, 'director movie'),
-            (ACTOR_ID, 'actor'),
-            (ACTOR_ID, 'actress'),
-            (PRODUCER_ID, 'producer'),
-            (EDITOR_ID, 'editor movie'),
-            (SCENARIST_ID, 'writer'),
-            (SCENARIST_ID, 'writer movie'),
-            (SCENARIST_ID, 'writer tv'),
-            (SCENARIST_ID, 'writer short'),
+            (Role.DIRECTOR_ID, 'director'),
+            (Role.DIRECTOR_ID, 'director movie'),
+            (Role.ACTOR_ID, 'actor'),
+            (Role.ACTOR_ID, 'actress'),
+            (Role.PRODUCER_ID, 'producer'),
+            (Role.EDITOR_ID, 'editor movie'),
+            (Role.SCENARIST_ID, 'writer'),
+            (Role.SCENARIST_ID, 'writer movie'),
+            (Role.SCENARIST_ID, 'writer tv'),
+            (Role.SCENARIST_ID, 'writer short'),
         )
         for role_id, imdb_key in role_list:
             role = Role.objects.get(id=role_id)
@@ -304,22 +303,22 @@ class ImdbMovieImporter(ImdbImporterBase):
         ids = []
         data = self.imdb_object.data
         if data.get('genres') and 'Documentary' in data.get('genres'):
-            ids += [7]
+            ids += [Type.DOCUMENTARY_ID]
         if data.get('genres') and 'Animation' in data.get('genres'):
-            ids += [5]
+            ids += [Type.ANIMATION_ID]
         if data.get('genres') and 'Short' in data.get('genres'):
-            ids += [3]
+            ids += [Type.SHORT_ID]
         if data.get('genres') and ('Musical' in data.get('genres') or 'Music' in data.get('genres')):
-            ids += [12]
+            ids += [Type.MUSICAL_ID]
         if data.get('color info') and 'Black and White' in data.get('color info') \
                 and 'Color' not in data.get('color info'):
-            ids += [14]
+            ids += [Type.BLACK_AND_WHITE_ID]
         if data.get('sound mix') and 'Silent' in data.get('sound mix') \
                 or data.get('languages') and 'None' in data.get('languages'):
-            ids += [1]
+            ids += [Type.SILENT_ID]
 
         if data.get('kind') in ['tv series', 'tv mini series']:
-            ids += [2]  # многосерийный
+            ids += [Type.SERIES_ID]
         # 'number of seasons': 5
         # 'series years': '2004-2006'
         # if data.get('number of seasons') > 1 or data.get('series years') and len(data.get('series years')) == 9:
@@ -330,7 +329,7 @@ class ImdbMovieImporter(ImdbImporterBase):
         ids = []
         for item in self.imdb_object.data.get('genres', []):
             try:
-                ids += [Genre.objects.get(imdb_id=item).id]
+                ids += [Genre.objects.get(imdb__name=item).id]
             except Genre.DoesNotExist:
                 pass
         return ids
@@ -339,7 +338,7 @@ class ImdbMovieImporter(ImdbImporterBase):
         ids = []
         for item in self.imdb_object.data.get('languages', []):
             try:
-                ids += [Language.objects.get(imdb_id=item).id]
+                ids += [Language.objects.get(imdb__name=item).id]
             except Language.DoesNotExist:
                 pass
         return ids
@@ -348,7 +347,7 @@ class ImdbMovieImporter(ImdbImporterBase):
         ids = []
         for item in self.imdb_object.data.get('countries', []):
             try:
-                ids += [Country.objects.get(imdb_id=item.replace('United States', 'USA')).id]
+                ids += [Country.objects.get(imdb__name=item.replace('United States', 'USA')).id]
             except Country.DoesNotExist:
                 pass
         return ids
@@ -362,11 +361,11 @@ class ImdbMovieImporter(ImdbImporterBase):
         If found update imdb_id of person, create/update role and role's name_en
         """
         role_list = (
-            (DIRECTOR_ID, 'director'),
-            (ACTOR_ID, 'cast'),
-            (PRODUCER_ID, 'producer'),
-            (EDITOR_ID, 'editor'),
-            (SCENARIST_ID, 'writer'),
+            (Role.DIRECTOR_ID, 'director'),
+            (Role.ACTOR_ID, 'cast'),
+            (Role.PRODUCER_ID, 'producer'),
+            (Role.EDITOR_ID, 'editor'),
+            (Role.SCENARIST_ID, 'writer'),
         )
         for role_id, imdb_key in role_list:
             role = Role.objects.get(id=role_id)

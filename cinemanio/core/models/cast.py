@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cinemanio.core.models.person import ACTOR_ID, ACTOR_VOICE_ID
-
 
 class Cast(models.Model):
     """
@@ -31,6 +29,7 @@ class Cast(models.Model):
             role=role)
 
     def save(self, **kwargs):
-        if self.role.id not in [ACTOR_ID, ACTOR_VOICE_ID]:
+        from cinemanio.core.models import Role
+        if self.role.id not in [Role.ACTOR_ID, Role.ACTOR_VOICE_ID]:
             self.name = ''
         super(Cast, self).save(**kwargs)

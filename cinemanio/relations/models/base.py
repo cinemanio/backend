@@ -25,9 +25,7 @@ class RelationBase(models.Model):
         return repr(self)
 
     def __setattr__(self, name, value):
-        """
-        Call on every model property change.
-        """
+        """Call on every model property change"""
         self.correct_fields(name, value)
         super().__setattr__(name, value)
 

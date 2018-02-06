@@ -1,9 +1,9 @@
 from .cast import Cast
 from .movie import Movie
 from .person import Person
+from .role import Role
 from .properties import (
     Country,
-    Role,
     Genre,
     Type,
     Language,

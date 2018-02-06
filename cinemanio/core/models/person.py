@@ -3,17 +3,6 @@ from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
 
-ACTOR_ID = 63
-ACTOR_VOICE_ID = 1
-DIRECTOR_ID = 64
-SCENARIST_ID = 228
-OPERATOR_ID = 226
-PRODUCER_ID = 227
-COMPOSER_ID = 229
-EDITOR_ID = 282
-AUTHOR_ID = 34468
-MUSICIAN_ID = 40535
-
 
 class Person(BaseModel):
     """

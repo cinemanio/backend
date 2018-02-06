@@ -23,6 +23,8 @@ vcrpy-unittest = "*"
 kinopoiskpy = "*"
 alphabet-detector = "*"
 parameterized = "*"
+django-environ = "*"
+"psycopg2" = "*"
 
 
 [dev-packages]

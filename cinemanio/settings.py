@@ -9,29 +9,27 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
 import os
+import environ
 from datetime import timedelta
 
+env = environ.Env()
+env.read_env('.env')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u25$0bg_6r-#4p*be3xed(c+8i2t)$+dm+^nig6)@yy_27yy(0'
+SECRET_KEY = env.str('DJANGO_SECRET_KEY', default='u25$0bg_6r-#4p*be3xed(c+8i2t)$+dm+^nig6)@yy_27yy(0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=['.cineman.io'])
 
 # Application definition
-
 INSTALLED_APPS = [
     'modeltranslation',  # before admin for integration
     'django.contrib.admin',
@@ -93,8 +91,12 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': env.str('DJANGO_DATABASE_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': env.str('DJANGO_DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': env.str('DJANGO_DATABASE_USER', ''),
+        'PASSWORD': env.str('DJANGO_DATABASE_PASSWORD', ''),
+        'HOST': env.str('DJANGO_DATABASE_HOST', 'localhost'),
+        'CONN_MAX_AGE': env.int('DJANGO_DATABASE_CONN_MAX_AGE', 300),
     }
 }
 
@@ -157,3 +159,9 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERYCAM_EXPIRE_SUCCESS = timedelta(days=5)
 CELERYCAM_EXPIRE_ERROR = timedelta(days=10)
 CELERYCAM_EXPIRE_PENDING = timedelta(days=10)
+
+SENTRY_DSN = env.str('SENTRY_DSN', None)
+RAVEN_CONFIG = {
+    'dsn': SENTRY_DSN,
+    'release': '0.3.6',
+}
