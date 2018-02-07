@@ -27,8 +27,8 @@ class MovieAdmin(VersionAdmin):
             'classes': ('collapse', 'collapsed'),
             'fields': ('sequel_for', 'prequel_for', 'remake_for'),
         }),
-        (_('Types, genres, languages and countries'), {
+        (_('Genres, languages and countries'), {
             'classes': ('collapse', 'collapsed'),
-            'fields': ('types', 'genres', 'languages', 'countries'),
+            'fields': ('genres', 'languages', 'countries'),
         }),
     )
