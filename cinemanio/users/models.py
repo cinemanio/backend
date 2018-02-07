@@ -28,7 +28,6 @@ class User(AbstractUser):
     about = models.TextField(_('About myself'), blank=True)
     city = models.CharField(_('City'), blank=True, max_length=50)
     genres = models.ManyToManyField('core.Genre', verbose_name=_('Favorite genres'), related_name='users', blank=True)
-    types = models.ManyToManyField('core.Type', verbose_name=_('Favorite types'), related_name='users', blank=True)
 
     # notification checkboxes
     email_about_answers = models.BooleanField(_('New answers'), help_text=_(

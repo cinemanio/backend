@@ -1,17 +1,9 @@
 [
   {
     "model": "kinopoisk.kinopoiskgenre",
-    "pk": 171,
-    "fields": {
-      "name": null,
-      "genre": 1
-    }
-  },
-  {
-    "model": "kinopoisk.kinopoiskgenre",
     "pk": 172,
     "fields": {
-      "name": "Biography",
+      "name": "биография",
       "genre": 2
     }
   },
@@ -27,7 +19,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 174,
     "fields": {
-      "name": "",
+      "name": "вестерн",
       "genre": 4
     }
   },
@@ -35,7 +27,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 175,
     "fields": {
-      "name": "War",
+      "name": "военный",
       "genre": 5
     }
   },
@@ -43,7 +35,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 176,
     "fields": {
-      "name": null,
+      "name": "детектив",
       "genre": 6
     }
   },
@@ -51,7 +43,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 177,
     "fields": {
-      "name": null,
+      "name": "детский",
       "genre": 7
     }
   },
@@ -59,7 +51,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 178,
     "fields": {
-      "name": "History",
+      "name": "история",
       "genre": 8
     }
   },
@@ -83,7 +75,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 181,
     "fields": {
-      "name": "Romance",
+      "name": "мелодрама",
       "genre": 11
     }
   },
@@ -91,7 +83,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 182,
     "fields": {
-      "name": "Mystery",
+      "name": null,
       "genre": 12
     }
   },
@@ -115,7 +107,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 185,
     "fields": {
-      "name": "Film-Noir",
+      "name": "фильм-нуар",
       "genre": 15
     }
   },
@@ -139,7 +131,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 188,
     "fields": {
-      "name": "Adventure",
+      "name": "приключения",
       "genre": 18
     }
   },
@@ -163,7 +155,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 191,
     "fields": {
-      "name": "Sport",
+      "name": "спорт",
       "genre": 21
     }
   },
@@ -195,7 +187,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 195,
     "fields": {
-      "name": "Thriller",
+      "name": "триллер",
       "genre": 25
     }
   },
@@ -203,7 +195,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 196,
     "fields": {
-      "name": "Horror",
+      "name": "ужасы",
       "genre": 26
     }
   },
@@ -211,7 +203,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 197,
     "fields": {
-      "name": "Fantasy",
+      "name": "фэнтези",
       "genre": 27
     }
   },
@@ -219,7 +211,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 198,
     "fields": {
-      "name": null,
+      "name": "для взрослых",
       "genre": 28
     }
   },
@@ -227,7 +219,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 199,
     "fields": {
-      "name": "Drama",
+      "name": "драма",
       "genre": 29
     }
   },
@@ -235,7 +227,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 200,
     "fields": {
-      "name": "Comedy",
+      "name": "комедия",
       "genre": 30
     }
   },
@@ -243,7 +235,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 201,
     "fields": {
-      "name": "Crime",
+      "name": "криминал",
       "genre": 31
     }
   },
@@ -269,6 +261,150 @@
     "fields": {
       "name": null,
       "genre": 34
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 205,
+    "fields": {
+      "name": "семейный",
+      "genre": 35
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 206,
+    "fields": {
+      "name": null,
+      "genre": 36
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 207,
+    "fields": {
+      "name": "сериал",
+      "genre": 37
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 208,
+    "fields": {
+      "name": "короткометражка",
+      "genre": 38
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 209,
+    "fields": {
+      "name": null,
+      "genre": 39
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 210,
+    "fields": {
+      "name": "мультфильм",
+      "genre": 40
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 211,
+    "fields": {
+      "name": "аниме",
+      "genre": 41
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 212,
+    "fields": {
+      "name": "документальный",
+      "genre": 42
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 213,
+    "fields": {
+      "name": null,
+      "genre": 43
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 214,
+    "fields": {
+      "name": null,
+      "genre": 44
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 215,
+    "fields": {
+      "name": null,
+      "genre": 45
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 216,
+    "fields": {
+      "name": null,
+      "genre": 46
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 217,
+    "fields": {
+      "name": "мюзикл",
+      "genre": 47
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 218,
+    "fields": {
+      "name": null,
+      "genre": 48
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 219,
+    "fields": {
+      "name": null,
+      "genre": 49
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 220,
+    "fields": {
+      "name": null,
+      "genre": 50
+    }
+  },
+  {
+    "model": "kinopoisk.kinopoiskgenre",
+    "pk": 221,
+    "fields": {
+      "name": null,
+      "genre": 51
+    }
+  },
+  {
+    "model": "imdb.imdbgenre",
+    "pk": 222,
+    "fields": {
+      "name": "музыка",
+      "genre": 52
     }
   }
 ]

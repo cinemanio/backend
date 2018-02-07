@@ -43,7 +43,6 @@ class Movie(BaseModel):
 
     award = models.IntegerField(_('Main award'), choices=AWARD_CHOICES, blank=True, null=True)
 
-    types = models.ManyToManyField('Type', verbose_name=_('Movie types'), related_name='movies', blank=True)
     genres = models.ManyToManyField('Genre', verbose_name=_('Genres'), related_name='movies', blank=True)
     languages = models.ManyToManyField('Language', verbose_name=_('Languages'), related_name='movies', blank=True)
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), related_name='movies', blank=True)

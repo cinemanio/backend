@@ -9,7 +9,6 @@ class BaseTestCase(TestCase):
         'core.role.json',
         'core.genre.json',
         'core.country.json',
-        'core.type.json',
         'core.language.json',
     ]
 

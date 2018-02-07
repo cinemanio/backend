@@ -26,7 +26,6 @@ class ImdbSyncTest(BaseTestCase):
         self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Action', 'Sci-Fi'])
         self.assertQuerysetEqual(imdb_movie.movie.languages.all(), ['English'])
         self.assertQuerysetEqual(imdb_movie.movie.countries.all(), ['USA'])
-        self.assertQuerysetEqual(imdb_movie.movie.types.all(), [])
         # self.assertEqual(imdb_movie.movie.russia_start, datetime.date(1999, 10, 14))
 
     def test_get_movie_runtime_different_format(self):
@@ -35,15 +34,16 @@ class ImdbSyncTest(BaseTestCase):
         imdb_movie.sync()
         self.assertEqual(imdb_movie.movie.runtime, 17)
 
-    def test_movie_types_no_black_and_white_easy_rider(self):
+    def test_movie_genres_no_black_and_white_easy_rider(self):
         imdb_movie = ImdbMovieFactory(id=64276)
         imdb_movie.sync()
-        self.assertQuerysetEqual(imdb_movie.movie.types.all(), [])
+        self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Adventure', 'Drama'])
 
-    def test_movie_types_adams_family(self):
+    def test_movie_genres_adams_family(self):
         imdb_movie = ImdbMovieFactory(id=57729)
         imdb_movie.sync()
-        self.assertQuerysetEqual(imdb_movie.movie.types.all(), ['Black and white', 'TV Series'])
+        self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Comedy', 'Family', 'Horror',
+                                                                 'TV Series'])
 
     def test_get_person_dennis_hopper(self):
         imdb_person = ImdbPersonFactory(id=454)

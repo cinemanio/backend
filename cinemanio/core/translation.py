@@ -1,6 +1,6 @@
 from modeltranslation.translator import register, TranslationOptions
 
-from cinemanio.core.models import Cast, Genre, Type, Language, Country, Role, Movie, Person
+from cinemanio.core.models import Cast, Genre, Language, Country, Role, Movie, Person
 
 
 class OptionsMixin:
@@ -13,7 +13,6 @@ class CastTranslationOptions(TranslationOptions, OptionsMixin):
 
 
 @register(Genre)
-@register(Type)
 @register(Language)
 @register(Country)
 @register(Role)

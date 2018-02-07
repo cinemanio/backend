@@ -6,7 +6,7 @@ from imdb import IMDb
 from imdb.Character import Character
 from imdb.utils import RolesList
 
-from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast, Type
+from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
 from cinemanio.sites.imdb.models import ImdbMovie
 
 
@@ -227,7 +227,7 @@ class ImdbMovieImporter(ImdbImporterBase):
 
         # if object in database, we can update m2m fields
         if self.object.id:
-            for field in ['genres', 'countries', 'languages', 'types']:
+            for field in ['genres', 'countries', 'languages']:
                 if getattr(self.object, field).count() == 0:
                     model = self.object._meta.get_field(field).related_model
                     getattr(self.object, field).set(model.objects.filter(id__in=data[field]))
@@ -253,10 +253,9 @@ class ImdbMovieImporter(ImdbImporterBase):
             'year': self.imdb_object.data.get('year'),
             'imdb_rating': self.imdb_object.data.get('rating'),
             'runtime': runtimes,
-            'genres': self._get_genres(),
+            'genres': self._get_genres() + self._get_types(),
             'countries': self._get_countries(),
             'languages': self._get_languages(),
-            'types': self._get_types(),
         }
         return data
 
@@ -294,23 +293,15 @@ class ImdbMovieImporter(ImdbImporterBase):
     def _get_types(self):
         ids = []
         data = self.imdb_object.data
-        if data.get('genres') and 'Documentary' in data.get('genres'):
-            ids += [Type.DOCUMENTARY_ID]
-        if data.get('genres') and 'Animation' in data.get('genres'):
-            ids += [Type.ANIMATION_ID]
-        if data.get('genres') and 'Short' in data.get('genres'):
-            ids += [Type.SHORT_ID]
-        if data.get('genres') and ('Musical' in data.get('genres') or 'Music' in data.get('genres')):
-            ids += [Type.MUSICAL_ID]
         if data.get('color info') and 'Black and White' in data.get('color info') \
                 and 'Color' not in data.get('color info'):
-            ids += [Type.BLACK_AND_WHITE_ID]
+            ids += [Genre.BLACK_AND_WHITE_ID]
         if data.get('sound mix') and 'Silent' in data.get('sound mix') \
                 or data.get('languages') and 'None' in data.get('languages'):
-            ids += [Type.SILENT_ID]
+            ids += [Genre.SILENT_ID]
 
         if data.get('kind') in ['tv series', 'tv mini series']:
-            ids += [Type.SERIES_ID]
+            ids += [Genre.SERIES_ID]
         # 'number of seasons': 5
         # 'series years': '2004-2006'
         # if data.get('number of seasons') > 1 or data.get('series years') and len(data.get('series years')) == 9:
@@ -329,10 +320,10 @@ class ImdbMovieImporter(ImdbImporterBase):
                                  lambda i: i.replace('United States', 'USA'))
 
     def _get_m2m_ids(self, model, values, callback=lambda i: i):
-        ids = model.objects.filter(imdb__name__in=[callback(i) for i in values]).values('id')
+        ids = model.objects.filter(imdb__name__in=[callback(i) for i in values]).values_list('id', flat=True)
         if len(ids) != len(values):
             self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
-        return ids
+        return list(ids)
 
     def _add_roles(self):
         """

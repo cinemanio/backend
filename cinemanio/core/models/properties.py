@@ -34,6 +34,13 @@ class Genre(PropertyModel):
     """
     Movie genre
     """
+    DOCUMENTARY_ID = 42
+    ANIMATION_ID = 40
+    SHORT_ID = 38
+    MUSICAL_ID = 47
+    BLACK_AND_WHITE_ID = 49
+    SILENT_ID = 36
+    SERIES_ID = 37
 
     class Meta(PropertyModel.Meta):
         verbose_name = _('genre')
@@ -58,20 +65,3 @@ class Country(PropertyModel):
     class Meta(PropertyModel.Meta):
         verbose_name = _('country')
         verbose_name_plural = _('countries')
-
-
-class Type(PropertyModel):
-    """
-    Movie type
-    """
-    DOCUMENTARY_ID = 7
-    ANIMATION_ID = 5
-    SHORT_ID = 5
-    MUSICAL_ID = 12
-    BLACK_AND_WHITE_ID = 14
-    SILENT_ID = 1
-    SERIES_ID = 2
-
-    class Meta(PropertyModel.Meta):
-        verbose_name = _('type')
-        verbose_name_plural = _('types')

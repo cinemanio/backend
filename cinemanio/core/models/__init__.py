@@ -5,7 +5,6 @@ from .role import Role
 from .properties import (
     Country,
     Genre,
-    Type,
     Language,
 )
 
@@ -16,6 +15,5 @@ __all__ = [
     'Country',
     'Role',
     'Genre',
-    'Type',
     'Language',
 ]
