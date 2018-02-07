@@ -241,14 +241,6 @@
   },
   {
     "model": "kinopoisk.kinopoiskgenre",
-    "pk": 202,
-    "fields": {
-      "name": null,
-      "genre": 32
-    }
-  },
-  {
-    "model": "kinopoisk.kinopoiskgenre",
     "pk": 203,
     "fields": {
       "name": null,
@@ -283,7 +275,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 207,
     "fields": {
-      "name": "сериал",
+      "name": null,
       "genre": 37
     }
   },
@@ -347,7 +339,7 @@
     "model": "kinopoisk.kinopoiskgenre",
     "pk": 215,
     "fields": {
-      "name": null,
+      "name": "сериал",
       "genre": 45
     }
   },
@@ -400,7 +392,7 @@
     }
   },
   {
-    "model": "imdb.imdbgenre",
+    "model": "kinopoisk.kinopoiskgenre",
     "pk": 222,
     "fields": {
       "name": "музыка",

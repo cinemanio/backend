@@ -28,6 +28,7 @@ SECRET_KEY = env.str('DJANGO_SECRET_KEY', default='u25$0bg_6r-#4p*be3xed(c+8i2t)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=['.cineman.io'])
+INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [

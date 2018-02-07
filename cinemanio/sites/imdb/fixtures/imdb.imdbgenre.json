@@ -241,14 +241,6 @@
   },
   {
     "model": "imdb.imdbgenre",
-    "pk": 202,
-    "fields": {
-      "name": null,
-      "genre": 32
-    }
-  },
-  {
-    "model": "imdb.imdbgenre",
     "pk": 203,
     "fields": {
       "name": null,

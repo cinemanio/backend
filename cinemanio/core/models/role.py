@@ -26,7 +26,7 @@ class RoleManager(models.Manager):
 
 class Role(PropertyModel):
     """
-    Role Model
+    Role model
     """
     ACTOR_ID = 1
     ACTOR_VOICE_ID = 22

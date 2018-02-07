@@ -271,15 +271,6 @@
   },
   {
     "model": "core.genre",
-    "pk": 32,
-    "fields": {
-      "name": "Romance",
-      "name_en": "Romance",
-      "name_ru": "\u0420\u043e\u043c\u0430\u043d\u0442\u0438\u043a\u0430"
-    }
-  },
-  {
-    "model": "core.genre",
     "pk": 33,
     "fields": {
       "name": "Space sci-fi",
@@ -318,8 +309,8 @@
     "model": "core.genre",
     "pk": 37,
     "fields": {
-      "name": "TV Series",
-      "name_en": "TV Series",
+      "name": "Multi-parts",
+      "name_en": "Multi-parts",
       "name_ru": "\u041c\u043d\u043e\u0433\u043e\u0441\u0435\u0440\u0438\u0439\u043d\u044b\u0439"
     }
   },
@@ -390,8 +381,8 @@
     "model": "core.genre",
     "pk": 45,
     "fields": {
-      "name": "Serial",
-      "name_en": "Serial",
+      "name": "Series",
+      "name_en": "Series",
       "name_ru": "\u0421\u0435\u0440\u0438\u0430\u043b"
     }
   },

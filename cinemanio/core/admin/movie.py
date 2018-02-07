@@ -9,7 +9,7 @@ from cinemanio.core.models import Movie
 @register(Movie)
 class MovieAdmin(VersionAdmin):
     """
-    Movie Admin Model
+    Movie admin model
     """
     list_display = ('id', 'year', 'title')
     list_display_links = ('title',)
