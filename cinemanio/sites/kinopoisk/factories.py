@@ -6,6 +6,7 @@ from cinemanio.core.factories import MovieFactory, PersonFactory
 
 
 class KinopoiskMovieFactory(DjangoModelFactory):
+    id = factory.Sequence(lambda n: n)
     movie = factory.SubFactory(MovieFactory)
 
     class Meta:
@@ -13,6 +14,7 @@ class KinopoiskMovieFactory(DjangoModelFactory):
 
 
 class KinopoiskPersonFactory(DjangoModelFactory):
+    id = factory.Sequence(lambda n: n)
     person = factory.SubFactory(PersonFactory)
 
     class Meta:

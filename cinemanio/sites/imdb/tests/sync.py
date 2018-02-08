@@ -43,7 +43,7 @@ class ImdbSyncTest(BaseTestCase):
         imdb_movie = ImdbMovieFactory(id=57729)
         imdb_movie.sync()
         self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Comedy', 'Family', 'Horror',
-                                                                 'TV Series'])
+                                                                 'Series'])
 
     def test_get_person_dennis_hopper(self):
         imdb_person = ImdbPersonFactory(id=454)

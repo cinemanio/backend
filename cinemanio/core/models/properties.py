@@ -40,7 +40,7 @@ class Genre(PropertyModel):
     MUSICAL_ID = 47
     BLACK_AND_WHITE_ID = 49
     SILENT_ID = 36
-    SERIES_ID = 37
+    SERIES_ID = 45
 
     class Meta(PropertyModel.Meta):
         verbose_name = _('genre')

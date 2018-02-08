@@ -10,30 +10,30 @@ admin.site.unregister(Movie)
 admin.site.unregister(Person)
 
 
-class ImdbMovieInline(TabularInline):
+class InlineBase(TabularInline):
     classes = ('collapse', 'collapsed',)
+
+
+class ImdbMovieInline(InlineBase):
     model = ImdbMovie
 
 
-class KinopoiskMovieInline(TabularInline):
-    classes = ('collapse', 'collapsed',)
+class KinopoiskMovieInline(InlineBase):
     model = KinopoiskMovie
 
 
-class ImdbPersonInline(TabularInline):
-    classes = ('collapse', 'collapsed',)
+class ImdbPersonInline(InlineBase):
     model = ImdbPerson
 
 
-class KinopoiskPersonInline(TabularInline):
-    classes = ('collapse', 'collapsed',)
+class KinopoiskPersonInline(InlineBase):
     model = KinopoiskPerson
 
 
 @register(Movie)
 class SitesMovieAdmin(MovieAdmin):
-    list_display = MovieAdmin.list_display + ['imdb_id', 'imdb_rating',
-                                              'kinopoisk_id', 'kinopoisk_rating']
+    list_display = MovieAdmin.list_display + ['imdb_id', 'imdb_rating', 'kinopoisk_id', 'kinopoisk_rating']
+    list_select_related = ('imdb', 'kinopoisk')
     inlines = [ImdbMovieInline, KinopoiskMovieInline] + MovieAdmin.inlines
 
     def imdb_id(self, obj):
@@ -48,13 +48,11 @@ class SitesMovieAdmin(MovieAdmin):
     def kinopoisk_rating(self, obj):
         return obj.kinopoisk.rating
 
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related('imdb', 'kinopoisk')
-
 
 @register(Person)
 class SitesPersonAdmin(PersonAdmin):
     list_display = PersonAdmin.list_display + ['imdb_id', 'kinopoisk_id']
+    list_select_related = ('imdb', 'kinopoisk')
     inlines = [ImdbPersonInline, KinopoiskPersonInline] + PersonAdmin.inlines
 
     def imdb_id(self, obj):
@@ -62,6 +60,3 @@ class SitesPersonAdmin(PersonAdmin):
 
     def kinopoisk_id(self, obj):
         return obj.kinopoisk.id
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related('imdb', 'kinopoisk')
