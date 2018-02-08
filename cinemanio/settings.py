@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'cinemanio.core',
     'cinemanio.users',
     'cinemanio.relations',
+    'cinemanio.sites',
     'cinemanio.sites.imdb',
     'cinemanio.sites.kinopoisk',
     'cinemanio.sites.wikipedia',

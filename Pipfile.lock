@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a811a6bb7d45c85f91a2a3b4bbacc19c03c21e6caea83fe7589991fd29befadc"
+            "sha256": "d50207a1b38b870cc9d25de4a048b79077e477a406d338702429e7b2ee8e1a61"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -109,6 +109,13 @@
                 "sha256:d96b804be412a5125a594023ec524a2010a6ffa4d408e5482ab6ff3cb97ec12f"
             ],
             "version": "==2.0.1"
+        },
+        "django-ajax-selects": {
+            "hashes": [
+                "sha256:8787794d68da2df95a53f61eab68c7d736572668b1c9b2f405eab60e0a06ddbe",
+                "sha256:2f72d3c1b92e1da736844236b7c7bafbef17caa694e43ac194f76fbb244f941f"
+            ],
+            "version": "==1.7.0"
         },
         "django-cache-machine": {
             "hashes": [

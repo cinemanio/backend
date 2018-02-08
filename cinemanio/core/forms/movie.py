@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm
 
 from cinemanio.core.models import Movie
 
@@ -7,7 +7,6 @@ class MovieForm(ModelForm):
     """
     Movie Form
     """
-
     class Meta:
         model = Movie
         fields = (

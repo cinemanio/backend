@@ -65,7 +65,7 @@ class User(AbstractUser):
 
     def save(self, **kwargs):
         self.lj = self.lj or None
-        super(User, self).save(**kwargs)
+        super().save(**kwargs)
 
     @property
     def name(self):

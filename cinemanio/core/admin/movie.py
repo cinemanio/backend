@@ -4,6 +4,7 @@ from reversion.admin import VersionAdmin
 
 from cinemanio.core.forms import MovieForm
 from cinemanio.core.models import Movie
+from cinemanio.core.admin.cast import CastInline
 
 
 @register(Movie)
@@ -11,10 +12,12 @@ class MovieAdmin(VersionAdmin):
     """
     Movie admin model
     """
-    list_display = ('id', 'year', 'title')
-    list_display_links = ('title',)
+    list_display = ['id', 'year', 'title_en', 'title_ru']
+    list_display_links = ('id',)
     search_fields = ('title', 'title_ru', 'title_en')
+    autocomplete_fields = ['sequel_for', 'prequel_for', 'remake_for']
     form = MovieForm
+    inlines = [CastInline]
     fieldsets = (
         (None, {
             'fields': (

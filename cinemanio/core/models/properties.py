@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class CachingManagerNew(CachingManager):
     def get_queryset(self):
-        qs = super(CachingManagerNew, self).get_queryset()
+        qs = super().get_queryset()
         qs.timeout = getattr(settings, 'CACHING_QUERYSET_TIMEOUT', 0)
         return qs
 
@@ -27,7 +27,7 @@ class PropertyModel(CachingMixin, models.Model):
         return self.name
 
     def __str__(self):
-        return self.name
+        return repr(self)
 
 
 class Genre(PropertyModel):

@@ -14,7 +14,7 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         translation.activate('en')
-        super(BaseTestCase, self).setUp()
+        super().setUp()
 
     @property
     def actor(self):
