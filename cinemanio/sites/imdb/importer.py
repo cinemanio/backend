@@ -7,7 +7,7 @@ from imdb.Character import Character
 from imdb.utils import RolesList
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
-from cinemanio.sites.imdb.models import ImdbMovie
+from cinemanio.sites.imdb.models import ImdbMovie, ImdbPerson
 
 
 class ImdbImporterBase:
@@ -183,7 +183,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                     except Cast.DoesNotExist:
                         try:
                             # get movie by name among all movies
-                            movie = Movie.objects.get(title_en=title, year=year, imdb=None)
+                            movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
                             cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
                         except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
                             continue
@@ -373,10 +373,8 @@ class ImdbMovieImporter(ImdbImporterBase):
                     self.logger.info(
                         'Create role for person %s in movie %s with role %s' % (person, self.object, role))
 
-                # save imdb_id for future
-                if person and not person.imdb.id:
-                    person.imdb.id = imdb_id
-                    person.save(update_fields=['imdb_id'])
+                if person:
+                    ImdbPerson.objects.update_or_create(person=person, defaults={'id': int(imdb_id)})
 
                 # save name of role for actors
                 if role.is_actor() and imdb_person.currentRole and cast and not cast.name_en:

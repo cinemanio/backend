@@ -23,6 +23,9 @@ class RoleManager(models.Manager):
     def get_composer(self):
         return self.get(id=Role.COMPOSER_ID)
 
+    def get_producer(self):
+        return self.get(id=Role.PRODUCER_ID)
+
 
 class Role(PropertyModel):
     """
@@ -38,6 +41,7 @@ class Role(PropertyModel):
     EDITOR_ID = 15
     AUTHOR_ID = 12
     MUSICIAN_ID = 21
+    WRITER_ID = 12
 
     objects = RoleManager()
 

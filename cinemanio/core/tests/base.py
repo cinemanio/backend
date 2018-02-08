@@ -25,6 +25,10 @@ class BaseTestCase(TestCase):
         return Role.objects.get_director()
 
     @property
+    def producer(self):
+        return Role.objects.get_producer()
+
+    @property
     def author(self):
         return Role.objects.get_author()
 
