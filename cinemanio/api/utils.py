@@ -1,6 +1,6 @@
 import graphene
-from graphene.utils.str_converters import to_snake_case
 from django.db.models.fields.related import ForeignKey
+from graphene.utils.str_converters import to_snake_case
 from graphene_django.filter import DjangoFilterConnectionField as _DjangoFilterConnectionField
 
 
@@ -19,7 +19,10 @@ class DjangoFilterConnectionField(_DjangoFilterConnectionField):
 
     @staticmethod
     def merge_querysets(default_queryset, queryset):
-        queryset_merged = _DjangoFilterConnectionField.merge_querysets(default_queryset, queryset)
+        if default_queryset.query.distinct != queryset.query.distinct:
+            queryset_merged = default_queryset
+        else:
+            queryset_merged = _DjangoFilterConnectionField.merge_querysets(default_queryset, queryset)
         queryset_merged.query.select_related = queryset.query.select_related
         return queryset_merged
 

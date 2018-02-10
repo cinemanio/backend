@@ -1,6 +1,7 @@
-from .queries import MovieGraphqlTestCase, MoviesGraphqlTestCase
+from .movie import MovieQueryTestCase
+from .movies import MoviesQueryTestCase
 
 __all__ = [
-    'MovieGraphqlTestCase',
-    'MoviesGraphqlTestCase',
+    'MovieQueryTestCase',
+    'MoviesQueryTestCase',
 ]

@@ -1,24 +1,12 @@
-from unittest import skip
-
-# from django.utils import timezone
 from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.movie import MovieNode
-from cinemanio.api.schema.properties import GenreType
+from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory
-from cinemanio.core.models import Movie
 from cinemanio.core.tests.base import BaseTestCase
-from cinemanio.schema import schema
 
 
-def execute(query):
-    query = '''%s''' % query
-    result = schema.execute(query)
-    assert not result.errors, result.errors
-    return result.data
-
-
-class MovieGraphqlTestCase(BaseTestCase):
+class MovieQueryTestCase(BaseTestCase):
     def assertM2MRel(self, result, queryset, fieldname='name'):
         self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
 
@@ -70,83 +58,3 @@ class MovieGraphqlTestCase(BaseTestCase):
         self.assertEqual(result['movie']['remakeFor']['title'], m.remake_for.title)
         self.assertEqual(result['movie']['remakeFor']['year'], m.remake_for.year)
         self.assertEqual(result['movie']['remakeFor']['runtime'], m.remake_for.runtime)
-
-
-class MoviesGraphqlTestCase(BaseTestCase):
-    def setUp(self):
-        for i in range(100):
-            MovieFactory()
-
-    def assertCountNonZeroAndEqual(self, result, count):
-        self.assertGreater(count, 0)
-        self.assertEqual(len(result['movies']['edges']), count)
-
-    @skip('TODO: fix it')
-    def test_movies_query(self):
-        query = '''
-            {
-              movies {
-                edges {
-                  node {
-                    title, year, runtime
-                    genres { name }
-                    countries { name }
-                    languages { name }
-                  }
-                }
-              }
-            }
-            '''
-        with self.assertNumQueries(2):
-            result = execute(query)
-        self.assertCountNonZeroAndEqual(result, Movie.objects.count())
-
-    def test_movies_query_limit(self):
-        query = '''
-            {
-              movies(first: 10) {
-                edges {
-                  node {
-                    title
-                  }
-                }
-              }
-            }
-            '''
-        with self.assertNumQueries(2):
-            result = execute(query)
-        self.assertCountNonZeroAndEqual(result, 10)
-
-    def test_movies_query_filter_by_year(self):
-        year = Movie.objects.all()[0].year
-        query = '''
-            {
-              movies(year: %d) {
-                edges {
-                  node {
-                    title
-                  }
-                }
-              }
-            }
-            ''' % year
-        with self.assertNumQueries(2):
-            result = execute(query)
-        self.assertCountNonZeroAndEqual(result, Movie.objects.filter(year=year).count())
-
-    def test_movies_query_filter_by_genre(self):
-        genre = Movie.objects.all()[0].genres.all()[0]
-        query = '''
-            {
-              movies(genres: "%s") {
-                edges {
-                  node {
-                    title
-                  }
-                }
-              }
-            }
-            ''' % to_global_id(GenreType._meta.name, genre.id)
-        with self.assertNumQueries(2):
-            result = execute(query)
-        self.assertCountNonZeroAndEqual(result, Movie.objects.filter(genres__in=[genre]).count())
