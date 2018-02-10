@@ -1,71 +1,11 @@
-# import re
-#
-# from dateutil import parser
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from alphabet_detector import AlphabetDetector
 
-from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
-# from cinemanio.sites.kinopoisk.models import KinopoiskMovie, KinopoiskPerson
+from cinemanio.core.models import Movie, Genre, Country, Role, Cast
 
 from kinopoisk.movie import Movie as KinoMovie
 from kinopoisk.person import Person as KinoPerson
 
-
-# class KinopoiskImporterBase:
-#     """
-#     Base importer of data from Kinopoisk
-#     """
-#     object = None
-#     imdb = None
-#     imdb_id = None
-#     _imdb_object = None
-#     model = None
-#
-#     logger = None
-#
-#     def __init__(self, object, imdb_id, logger=None):
-#         self.object = object
-#         self.imdb = IMDb()
-#         self.logger = logger or logging
-#         self.imdb_id = int(imdb_id)
-#
-#     @property
-#     def imdb_object(self):
-#         """
-#         Make request to imdb and save response to cache
-#         """
-#         if not self._imdb_object:
-#             self._imdb_object = self.get_imdb_object(self.imdb_id)
-#         return self._imdb_object
-#
-#     def get_imdb_object(self, id):
-#         raise NotImplementedError()
-#
-#     def get_name_parts(self, name):
-#         name_parts = name.split(', ')
-#         if len(name_parts) >= 2:
-#             last, first = name_parts[:2]
-#         else:
-#             last, first = '', name_parts[0]
-#         return last, first
-#
-#     def apply_remote_data(self, data, roles):
-#         """
-#         Update object with remote data
-#         """
-#         raise NotImplementedError
-#
-#     def get_remote_data(self):
-#         """
-#         Return dict with imdb data
-#         """
-#         raise NotImplementedError
-#
-#     def get_applied_data(self, roles=False):
-#         data = self.get_remote_data()
-#         self.apply_remote_data(data, roles=roles)
-#         return data
 
 class SyncBase:
     _remote_obj = None
@@ -97,7 +37,7 @@ class PersonSyncMixin(SyncBase):
 
     def sync_career(self):
         """
-        Find movies of current person by imdb_id or title:
+        Find movies of current person by kinopoisk_id or title:
         1. Trying find movie by kinopoisk_id
         2. Trying find movie by title among person's movies
         3. Trying find movie by title among all movies
@@ -198,9 +138,8 @@ class MovieSyncMixin(SyncBase):
         }
 
         for field, ids in data.items():
-            if getattr(self.movie, field).count() == 0:
-                model = self.movie._meta.get_field(field).related_model
-                getattr(self.movie, field).set(model.objects.filter(id__in=data[field]))
+            getattr(self.movie, field).set(
+                set(ids) | set(getattr(self.movie, field).values_list('id', flat=True)))
 
     def _get_genres(self):
         return self._get_m2m_ids(Genre, self.remote_obj.genres)
@@ -209,9 +148,9 @@ class MovieSyncMixin(SyncBase):
         return self._get_m2m_ids(Country, self.remote_obj.countries)
 
     def _get_m2m_ids(self, model, values):
-        ids = model.objects.filter(kinopoisk__name__in=values).values('id')
+        ids = model.objects.filter(kinopoisk__name__in=values).values_list('id', flat=True)
         if len(ids) != len(values):
-            self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
+            self.logger.error("Unable to find some of kinopoisk {}: {}".format(model.__name__, values))
         return ids
 
     def sync_images(self):
@@ -222,11 +161,11 @@ class MovieSyncMixin(SyncBase):
 
     def sync_cast(self):
         """
-        Find persons of current movie by imdb_id or name:
-        1. Trying find person by imdb_id
+        Find persons of current movie by kinopoisk_id or name:
+        1. Trying find person by kinopoisk_id
         2. Trying find person by name among movie's persons
         3. Trying find person by name among all persons
-        If found update imdb_id of person, create/update role and role's name_en
+        If found update kinopoisk_id of person, create/update role and role's name_en
         """
         self.remote_obj.get_content('cast')
 #         role_list = (

@@ -177,7 +177,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                 except Movie.DoesNotExist:
                     try:
                         # get movie by name among person's movies
-                        cast = self.object.career.get(movie__title_en=title, movie__year=year, role=role)
+                        cast = self.object.career.get(movie__title_en=title, role=role)
                         movie = cast.movie
                         created = False
                     except Cast.DoesNotExist:
@@ -228,9 +228,9 @@ class ImdbMovieImporter(ImdbImporterBase):
         # if object in database, we can update m2m fields
         if self.object.id:
             for field in ['genres', 'countries', 'languages']:
-                if getattr(self.object, field).count() == 0:
-                    model = self.object._meta.get_field(field).related_model
-                    getattr(self.object, field).set(model.objects.filter(id__in=data[field]))
+                getattr(self.object, field).set(
+                    set(data[field]) | set(getattr(self.object, field).values_list('id', flat=True)))
+
             if roles:
                 self._add_roles()
 

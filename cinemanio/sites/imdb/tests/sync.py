@@ -1,7 +1,8 @@
 import datetime
 from unittest import skip
 
-from cinemanio.core.factories import MovieFactory, PersonFactory
+from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
+from cinemanio.core.models import Genre
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 
@@ -67,6 +68,14 @@ class ImdbSyncTest(BaseTestCase):
         self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Comedy', 'Family', 'Horror',
                                                                  'Series'])
 
+    def test_movie_exists_genres_adams_family(self):
+        imdb_movie = ImdbMovieFactory(id=57729)
+        imdb_movie.movie.genres.set([Genre.BLACK_AND_WHITE_ID, Genre.DOCUMENTARY_ID])
+        self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Documentary'])
+        imdb_movie.sync()
+        self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Comedy', 'Documentary', 'Family',
+                                                                 'Horror', 'Series'])
+
     def test_get_person_dennis_hopper(self):
         imdb_person = ImdbPersonFactory(id=454)
         imdb_person.sync()
@@ -83,7 +92,6 @@ class ImdbSyncTest(BaseTestCase):
         imdb_person3 = ImdbPersonFactory(id=50390)  # other actor
         imdb_movie = ImdbMovieFactory(id=133093)
         imdb_movie.sync(roles=True)
-
         self.assert_matrix_cast(imdb_movie, imdb_person1.person, imdb_person2.person, imdb_person3.person)
 
     def test_add_roles_to_movie_by_names(self):
@@ -92,15 +100,24 @@ class ImdbSyncTest(BaseTestCase):
         person3 = PersonFactory(first_name_en='Jeremy', last_name_en='Ball')
         imdb_movie = ImdbMovieFactory(id=133093)
         imdb_movie.sync(roles=True)
-
         self.assert_matrix_cast(imdb_movie, person1, person2, person3)
+
+    def test_add_imdb_id_to_persons_of_movie(self):
+        imdb_movie = ImdbMovieFactory(id=133093)
+        cast1 = CastFactory(movie=imdb_movie.movie, person__first_name_en='Lilly', person__last_name_en='Wachowski',
+                            role=self.director)
+        cast2 = CastFactory(movie=imdb_movie.movie, person__first_name_en='Keanu', person__last_name_en='Reeves',
+                            role=self.actor)
+        cast3 = CastFactory(movie=imdb_movie.movie, person__first_name_en='Jeremy', person__last_name_en='Ball',
+                            role=self.actor)
+        imdb_movie.sync(roles=True)
+        self.assert_matrix_cast(imdb_movie, cast1.person, cast2.person, cast3.person)
 
     def test_add_movies_to_writer(self):
         # writer, Dostoevskiy
         imdb_movie = ImdbMovieFactory(id=475730)
         imdb_person = ImdbPersonFactory(id=234502)
         imdb_person.sync(roles=True)
-
         self.assertTrue(imdb_person.person.career.filter(movie=imdb_movie.movie, role=self.author))
 
     def test_add_roles_to_person_by_imdb_id(self):
@@ -108,7 +125,6 @@ class ImdbSyncTest(BaseTestCase):
         imdb_movie2 = ImdbMovieFactory(id=108399)  # True Romance: Clifford Worley
         imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
         imdb_person.sync(roles=True)
-
         self.assert_dennis_hopper_career(imdb_person, imdb_movie1.movie, imdb_movie2.movie)
 
     def test_add_roles_to_person_by_movie_titles(self):
@@ -116,21 +132,33 @@ class ImdbSyncTest(BaseTestCase):
         movie2 = MovieFactory(title_en='True Romance', year=1993)
         imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
         imdb_person.sync(roles=True)
-
         self.assert_dennis_hopper_career(imdb_person, movie1, movie2)
+
+    def test_add_imdb_id_to_movies_of_person(self):
+        imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
+        # TODO: fix if cast for easy rider with role actor, director will not be created
+        cast1 = CastFactory(person=imdb_person.person, movie__title_en='Easy Rider', role=self.director)
+        cast2 = CastFactory(person=imdb_person.person, movie__title_en='True Romance', role=self.actor)
+        imdb_person.sync(roles=True)
+        self.assert_dennis_hopper_career(imdb_person, cast1.movie, cast2.movie)
 
     @skip('notes are empty')
     def test_add_authors_to_movie(self):
         imdb_person = ImdbPersonFactory(id=234502)  # writer, Dostoevskiy
         imdb_movie = ImdbMovieFactory(id=475730)
         imdb_movie.sync(roles=True)
-
         self.assertTrue(imdb_movie.movie.cast.get(person=imdb_person.person, role=self.author))
 
     @skip('no original titles in response')
     def test_movie_title_en(self):
         imdb_movie = ImdbMovieFactory(id=190332)
         imdb_movie.sync()
-
         self.assertEqual(imdb_movie.movie.title, 'Wo hu cang long')
         self.assertEqual(imdb_movie.movie.title_en, 'Crouching Tiger, Hidden Dragon')
+
+    @skip('unfinished')
+    def test_2_persons_with_the_same_names(self):
+        imdb_person1 = ImdbPersonFactory(id=4129745)  # Allison Williams ID 4129745
+        imdb_person2 = ImdbPersonFactory(id=8656102)  # wrong Allison Williams ID 8656102
+        imdb_movie = ImdbMovieFactory(id=5052448)  # Get out, 2017
+        imdb_movie.sync(roles=True)

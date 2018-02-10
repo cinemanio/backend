@@ -3,6 +3,7 @@ from vcr_unittest import VCRMixin
 
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.core.models import Genre
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory, KinopoiskPersonFactory
 
 
@@ -27,10 +28,16 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         self.assertQuerysetEqual(kinopoisk.movie.genres.all(), ['Action', 'Sci-Fi'])
         self.assertQuerysetEqual(kinopoisk.movie.countries.all(), ['USA'])
 
+    def test_movie_with_genres_matrix(self):
+        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None)
+        kinopoisk.movie.genres.set([Genre.BLACK_AND_WHITE_ID, Genre.DOCUMENTARY_ID])
+        self.assertQuerysetEqual(kinopoisk.movie.genres.all(), ['Black and white', 'Documentary'])
+        kinopoisk.sync_details()
+        self.assertQuerysetEqual(kinopoisk.movie.genres.all(), ['Action', 'Black and white', 'Documentary', 'Sci-Fi'])
+
     def test_person_johny_depp(self):
         kinopoisk = KinopoiskPersonFactory(id=6245)
         kinopoisk.sync_details()
-
         self.assertGreater(len(kinopoisk.info), 100)
 
     @parameterized.expand([
@@ -44,7 +51,6 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         movie2 = MovieFactory(**movie_kwargs2)
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
         kp_person.sync_career()
-
         self.assert_dennis_hopper_career(kp_person, movie1, movie2)
 
     def test_add_roles_to_person_by_kinopoisk_id(self):
@@ -52,7 +58,6 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         kp_movie2 = KinopoiskMovieFactory(id=4149)  # True Romance: Clifford Worley
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
         kp_person.sync_career()
-
         self.assert_dennis_hopper_career(kp_person, kp_movie1.movie, kp_movie2.movie)
 
     def assert_dennis_hopper_career(self, kp_person, movie1, movie2):
