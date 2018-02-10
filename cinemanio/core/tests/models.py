@@ -1,7 +1,9 @@
+from unittest import skip
+from django.core.exceptions import ValidationError
 from django.utils import translation
 
-from cinemanio.core.models import Movie, Person, Cast, Role
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
+from cinemanio.core.models import Movie, Person, Cast, Role
 from cinemanio.core.tests.base import BaseTestCase
 
 
@@ -12,6 +14,13 @@ class ModelsTest(BaseTestCase):
     def jack(self):
         return PersonFactory(first_name_en='Jack', last_name_en='Nicholson',
                              first_name_ru='Джек', last_name_ru='Николсон')
+
+    @skip('Now validation occurs not on model, but on form level')
+    def test_movie_year(self):
+        with self.assertRaises(ValidationError):
+            MovieFactory(year=0)
+        with self.assertRaises(ValidationError):
+            MovieFactory(year=2100)
 
     def test_movie_with_cast(self):
         movie = MovieFactory()

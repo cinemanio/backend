@@ -25,6 +25,7 @@ alphabet-detector = "*"
 parameterized = "*"
 django-environ = "*"
 "psycopg2" = "*"
+django-filter = "*"
 
 
 [dev-packages]

@@ -1,8 +1,10 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
+
 # from cinemanio.core.models import Role
 # from cinemanio.core.fields import ForeignCountField
 
@@ -29,16 +31,20 @@ AWARD_CHOICES = (
     (1764, 'Эмми'),
 )
 
-YEAR_CHOICES = [(year, year) for year in range(timezone.now().year + 10, 1894, -1)]
-
 
 class Movie(BaseModel):
     """
     Movie model
     """
+    YEARS_RANGE = (1894, timezone.now().year + 10)
+
     title = models.CharField(_('Title'), max_length=200, default='')
 
-    year = models.SmallIntegerField(_('Year'), choices=YEAR_CHOICES, null=True, db_index=True)
+    year = models.PositiveSmallIntegerField(_('Year'), null=True, db_index=True,
+                                            help_text=_(
+                                                'Year in between {} and {}'.format(YEARS_RANGE[0], YEARS_RANGE[1])),
+                                            validators=[MinValueValidator(YEARS_RANGE[0]),
+                                                        MaxValueValidator(YEARS_RANGE[1])])
     runtime = models.SmallIntegerField(_('Runtime in minutes'), blank=True, null=True)
 
     award = models.IntegerField(_('Main award'), choices=AWARD_CHOICES, blank=True, null=True)
@@ -48,11 +54,11 @@ class Movie(BaseModel):
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), related_name='movies', blank=True)
     persons = models.ManyToManyField('Person', verbose_name=_('Persons'), through='Cast')
 
-    sequel_for = models.ForeignKey('self', verbose_name=_('Sequel for movie'), related_name='prequels', blank=True,
+    sequel_for = models.ForeignKey('Movie', verbose_name=_('Sequel for movie'), related_name='prequels', blank=True,
                                    null=True, on_delete=models.CASCADE)
-    prequel_for = models.ForeignKey('self', verbose_name=_('Prequel for movie'), related_name='sequels', blank=True,
+    prequel_for = models.ForeignKey('Movie', verbose_name=_('Prequel for movie'), related_name='sequels', blank=True,
                                     null=True, on_delete=models.CASCADE)
-    remake_for = models.ForeignKey('self', verbose_name=_('Remake of movie'), related_name='remakes', blank=True,
+    remake_for = models.ForeignKey('Movie', verbose_name=_('Remake of movie'), related_name='remakes', blank=True,
                                    null=True, on_delete=models.CASCADE)
     novel_isbn = models.IntegerField(_('ISBN'), blank=True, null=True)
 

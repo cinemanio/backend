@@ -142,7 +142,7 @@ class ImdbSyncTest(BaseTestCase):
         imdb_person.sync(roles=True)
         self.assert_dennis_hopper_career(imdb_person, cast1.movie, cast2.movie)
 
-    @skip('notes are empty')
+    @skip('notes are empty -> unable to distinguish author from scenarist')
     def test_add_authors_to_movie(self):
         imdb_person = ImdbPersonFactory(id=234502)  # writer, Dostoevskiy
         imdb_movie = ImdbMovieFactory(id=475730)

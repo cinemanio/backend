@@ -1,16 +1,32 @@
 import random
 
-from factory.django import DjangoModelFactory
 import factory
+from factory.django import DjangoModelFactory
 
-from cinemanio.core.models import Movie, Person, Genre, Role, Cast
+from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
 
 
 class MovieFactory(DjangoModelFactory):
+    title = factory.Faker('sentence', nb_words=3)
     year = factory.LazyAttribute(lambda o: random.randrange(1900, 2020))
 
     class Meta:
         model = Movie
+
+    @factory.post_generation
+    def genres(self, create, extracted, **kwargs):
+        if create:
+            self.genres.set(extracted or Genre.objects.order_by('?')[:random.randint(1, 4)])
+
+    @factory.post_generation
+    def languages(self, create, extracted, **kwargs):
+        if create:
+            self.languages.set(extracted or Language.objects.order_by('?')[:random.randint(1, 4)])
+
+    @factory.post_generation
+    def countries(self, create, extracted, **kwargs):
+        if create:
+            self.countries.set(extracted or Country.objects.order_by('?')[:random.randint(1, 4)])
 
 
 class PersonFactory(DjangoModelFactory):

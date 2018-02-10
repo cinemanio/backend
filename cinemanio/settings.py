@@ -46,11 +46,14 @@ INSTALLED_APPS = [
     'reversion',
     'djcelery',
     'celerymon',
+    'corsheaders',
+    'graphene_django',
 
     # cinemanio apps
     'cinemanio.core',
     'cinemanio.users',
     'cinemanio.relations',
+    'cinemanio.api',
     'cinemanio.sites',
     'cinemanio.sites.imdb',
     'cinemanio.sites.kinopoisk',
