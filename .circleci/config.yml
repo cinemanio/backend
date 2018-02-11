@@ -26,9 +26,8 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python3.6/site-packages"
-      - run:
-          command: |
-            pipenv run "python manage.py test --settings=cinemanio.settings_test"
+      - run: flake8 .
+      - run: pipenv run "python manage.py test --settings=cinemanio.settings_test"
       - store_test_results:
           path: test-results
       - store_artifacts:
