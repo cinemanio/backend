@@ -11,7 +11,7 @@ django = "==2.0.1"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
-django-modeltranslation = "*"
+django-modeltranslation = {git = "https://github.com/deschler/django-modeltranslation", editable = true}
 django-filter = "*"
 django-cors-headers = "*"
 django-reversion = "*"
@@ -19,15 +19,13 @@ django-celery = "*"
 django-environ = "*"
 celery = "*"
 celerymon = "*"
-imdbpy = "*"
 vcrpy-unittest = "*"
 kinopoiskpy = "*"
 alphabet-detector = "*"
 parameterized = "*"
 graphene-django = "*"
 "psycopg2" = "*"
-"e2b4cad" = {path = "git+git@github.com:deschler/django-modeltranslation.git#egg=django_modeltranslation", editable = true}
-"e1f7432" = {path = "git+git@github.com:alberanid/imdbpy.git#egg=imdbpy", editable = true}
+imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 
 
 [dev-packages]

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2de00cf6eb78c579354ac55455485c0705bfa174f867bdea7d641e7b0064f9b0"
+            "sha256": "5ce29a9a2d57a28d0581e415c5e27a9985a20df12b007cc7413f84b0b95d042a"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -159,16 +159,17 @@
             ],
             "version": "==1.1.0"
         },
+        "django-modeltranslation": {
+            "editable": true,
+            "git": "https://github.com/deschler/django-modeltranslation",
+            "ref": "e2b4cada97018dd7662c685b2410e553e3ec9477"
+        },
         "django-reversion": {
             "hashes": [
                 "sha256:f27249218ac901ec219869c9618e01d8c30436a4e8da1a64fcb652209b11e47d",
                 "sha256:2e105a2c74462ce7de97afdcfb187f27b88a547dda1216a8aab964d32a882edf"
             ],
             "version": "==2.0.13"
-        },
-        "e1f7432": {
-            "editable": true,
-            "path": "git+git@github.com:alberanid/imdbpy.git#egg=imdbpy"
         },
         "e2b4cad": {
             "editable": true,
@@ -213,6 +214,11 @@
                 "sha256:2c6a5de3089009e3da7c5dde64a141dbc8551d5b7f6cf4ed7c2568d0cc520a8f"
             ],
             "version": "==2.6"
+        },
+        "imdbpy": {
+            "editable": true,
+            "git": "https://github.com/alberanid/imdbpy",
+            "ref": "ffceeef52ff4fc028f1363b114fa80cef030214f"
         },
         "iso8601": {
             "hashes": [
