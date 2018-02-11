@@ -14,7 +14,8 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
     ]
 
     def test_movie_matrix(self):
-        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None)
+        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None, movie__title_en=None,
+                                          movie__genres=[], movie__countries=[])
         kinopoisk.sync_details()
 
         self.assertEqual(kinopoisk.rating, 8.491)

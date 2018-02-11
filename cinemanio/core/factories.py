@@ -21,6 +21,12 @@ class CountryFactory(DjangoModelFactory):
         model = Country
 
 
+def create_m2m_objects(self, create, extracted, relation_name, model):
+    if create:
+        value = extracted if (extracted is not None) else model.objects.order_by('?')[:random.randint(1, 4)]
+        getattr(self, relation_name).set(value)
+
+
 class MovieFactory(DjangoModelFactory):
     title = factory.Faker('sentence', nb_words=3)
     year = factory.LazyAttribute(lambda o: random.randrange(1900, 2020))
@@ -30,18 +36,15 @@ class MovieFactory(DjangoModelFactory):
 
     @factory.post_generation
     def genres(self, create, extracted, **kwargs):
-        if create:
-            self.genres.set(extracted or Genre.objects.order_by('?')[:random.randint(1, 4)])
+        create_m2m_objects(self, create, extracted, 'genres', Genre)
 
     @factory.post_generation
     def languages(self, create, extracted, **kwargs):
-        if create:
-            self.languages.set(extracted or Language.objects.order_by('?')[:random.randint(1, 4)])
+        create_m2m_objects(self, create, extracted, 'languages', Language)
 
     @factory.post_generation
     def countries(self, create, extracted, **kwargs):
-        if create:
-            self.countries.set(extracted or Country.objects.order_by('?')[:random.randint(1, 4)])
+        create_m2m_objects(self, create, extracted, 'countries', Country)
 
 
 class PersonFactory(DjangoModelFactory):

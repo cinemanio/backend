@@ -16,6 +16,9 @@ class ImdbSyncTest(BaseTestCase):
         'imdb.imdblanguage.json',
     ]
 
+    def imdb_dennis_hopper(self):
+        return ImdbPersonFactory(id=454, person__country=None, person__first_name_en='', person__last_name_en='')
+
     def assert_matrix_cast(self, imdb_movie, person1, person2, person3):
         cast = imdb_movie.movie.cast
         self.assertEqual(person1.imdb.id, 905152)
@@ -38,7 +41,8 @@ class ImdbSyncTest(BaseTestCase):
         self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
 
     def test_get_movie_matrix(self):
-        imdb_movie = ImdbMovieFactory(id=133093, movie__year=None)
+        imdb_movie = ImdbMovieFactory(id=133093, movie__year=None, movie__title='',
+                                      movie__genres=[], movie__languages=[], movie__countries=[])
         imdb_movie.sync()
 
         self.assertEqual(imdb_movie.movie.title, 'The Matrix')
@@ -58,18 +62,18 @@ class ImdbSyncTest(BaseTestCase):
         self.assertEqual(imdb_movie.movie.runtime, 17)
 
     def test_movie_genres_no_black_and_white_easy_rider(self):
-        imdb_movie = ImdbMovieFactory(id=64276)
+        imdb_movie = ImdbMovieFactory(id=64276, movie__genres=[])
         imdb_movie.sync()
         self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Adventure', 'Drama'])
 
     def test_movie_genres_adams_family(self):
-        imdb_movie = ImdbMovieFactory(id=57729)
+        imdb_movie = ImdbMovieFactory(id=57729, movie__genres=[])
         imdb_movie.sync()
         self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Comedy', 'Family', 'Horror',
                                                                  'Series'])
 
     def test_movie_exists_genres_adams_family(self):
-        imdb_movie = ImdbMovieFactory(id=57729)
+        imdb_movie = ImdbMovieFactory(id=57729, movie__genres=[])
         imdb_movie.movie.genres.set([Genre.BLACK_AND_WHITE_ID, Genre.DOCUMENTARY_ID])
         self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Black and white', 'Documentary'])
         imdb_movie.sync()
@@ -77,7 +81,7 @@ class ImdbSyncTest(BaseTestCase):
                                                                  'Horror', 'Series'])
 
     def test_get_person_dennis_hopper(self):
-        imdb_person = ImdbPersonFactory(id=454)
+        imdb_person = self.imdb_dennis_hopper()
         imdb_person.sync()
 
         self.assertEqual(imdb_person.person.first_name_en, 'Dennis')
@@ -116,26 +120,26 @@ class ImdbSyncTest(BaseTestCase):
     def test_add_movies_to_writer(self):
         # writer, Dostoevskiy
         imdb_movie = ImdbMovieFactory(id=475730)
-        imdb_person = ImdbPersonFactory(id=234502)
+        imdb_person = ImdbPersonFactory(id=234502, person__country=None)
         imdb_person.sync(roles=True)
         self.assertTrue(imdb_person.person.career.filter(movie=imdb_movie.movie, role=self.author))
 
     def test_add_roles_to_person_by_imdb_id(self):
         imdb_movie1 = ImdbMovieFactory(id=64276)  # Easy rider: director, Billy, writer
         imdb_movie2 = ImdbMovieFactory(id=108399)  # True Romance: Clifford Worley
-        imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
+        imdb_person = self.imdb_dennis_hopper()
         imdb_person.sync(roles=True)
         self.assert_dennis_hopper_career(imdb_person, imdb_movie1.movie, imdb_movie2.movie)
 
     def test_add_roles_to_person_by_movie_titles(self):
         movie1 = MovieFactory(title_en='Easy Rider', year=1969)
         movie2 = MovieFactory(title_en='True Romance', year=1993)
-        imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
+        imdb_person = self.imdb_dennis_hopper()
         imdb_person.sync(roles=True)
         self.assert_dennis_hopper_career(imdb_person, movie1, movie2)
 
     def test_add_imdb_id_to_movies_of_person(self):
-        imdb_person = ImdbPersonFactory(id=454)  # Dennis Hopper
+        imdb_person = self.imdb_dennis_hopper()
         # TODO: fix if cast for easy rider with role actor, director will not be created
         cast1 = CastFactory(person=imdb_person.person, movie__title_en='Easy Rider', role=self.director)
         cast2 = CastFactory(person=imdb_person.person, movie__title_en='True Romance', role=self.actor)
