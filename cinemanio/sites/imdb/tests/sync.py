@@ -24,9 +24,10 @@ class ImdbSyncTest(BaseTestCase):
         self.assertEqual(person1.imdb.id, 905152)
         self.assertEqual(person2.imdb.id, 206)
         self.assertEqual(person3.imdb.id, 50390)
-        self.assertEqual(cast.count(), 4)
+        self.assertEqual(cast.count(), 5)
         self.assertTrue(cast.get(person=person1, role=self.director))
         self.assertTrue(cast.get(person=person1, role=self.scenarist))
+        self.assertTrue(cast.get(person=person1, role=self.producer))
         self.assertEqual(cast.get(person=person2, role=self.actor).name_en, 'Neo')
         self.assertEqual(cast.get(person=person3, role=self.actor).name_en, 'Businessman')
 
