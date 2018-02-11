@@ -92,9 +92,9 @@ class ImdbSyncTest(BaseTestCase):
         self.assertEqual(imdb_person.person.country.id, USA_ID)
 
     def test_add_roles_to_movie_by_imdb_id(self):
-        imdb_person1 = ImdbPersonFactory(id=905152)  # director, scenarist
-        imdb_person2 = ImdbPersonFactory(id=206)  # Neo
-        imdb_person3 = ImdbPersonFactory(id=50390)  # other actor
+        imdb_person1 = ImdbPersonFactory(id=905152)  # Lilly Wachowski: director, scenarist, producer
+        imdb_person2 = ImdbPersonFactory(id=206)  # Keanu Reeves: Neo
+        imdb_person3 = ImdbPersonFactory(id=50390)  # Jeremy Ball: Businessman
         imdb_movie = ImdbMovieFactory(id=133093)
         imdb_movie.sync(roles=True)
         self.assert_matrix_cast(imdb_movie, imdb_person1.person, imdb_person2.person, imdb_person3.person)
