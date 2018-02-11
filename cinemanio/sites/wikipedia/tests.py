@@ -9,3 +9,8 @@ class WikipediaTest(TestCase):
         movie = MovieFactory()
         WikipediaPage.objects.create(name='Matrix', lang='en', content_object=movie)
         self.assertEqual(movie.wikipedia.first().url, 'http://en.wikipedia.org/wiki/Matrix')
+
+    def test_person_url(self):
+        person = PersonFactory()
+        WikipediaPage.objects.create(name='Matrix', lang='en', content_object=person)
+        self.assertEqual(person.wikipedia.first().url, 'http://en.wikipedia.org/wiki/Matrix')

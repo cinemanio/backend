@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
 User = get_user_model()
 
@@ -45,52 +44,53 @@ class RelationBase(models.Model):
     def get_codename_fields(cls):
         return cls.get_fieldname_list(1)
 
-    # @classmethod
-    # def get_pastname_fields(cls):
-    #     return cls.get_fieldname_list(2)
+        # @classmethod
+        # def get_pastname_fields(cls):
+        #     return cls.get_fieldname_list(2)
 
-    # @classmethod
-    # def get_fieldname(cls, type, code):
-    #     """
-    #     Return formcase name of field with defined type and code
-    #     """
-    #     types = {
-    #         'action': 3,
-    #         'notification': 4,
-    #         'notification_from_user': 5,
-    #     }
-    #     for field_code, action in cls.get_fieldname_list(types.get(type, 0)):
-    #         if code == field_code:
-    #             return str(action)
-    #
-    #     raise ValueError('There is no such field name  of type=%s and code=%s' % (type, code))
+        # @classmethod
+        # def get_fieldname(cls, type, code):
+        #     """
+        #     Return formcase name of field with defined type and code
+        #     """
+        #     types = {
+        #         'action': 3,
+        #         'notification': 4,
+        #         'notification_from_user': 5,
+        #     }
+        #     for field_code, action in cls.get_fieldname_list(types.get(type, 0)):
+        #         if code == field_code:
+        #             return str(action)
+        #
+        #     raise ValueError('There is no such field name  of type=%s and code=%s' % (type, code))
 
-    # def save(self, **kwargs):
-    #     u"""При сохранении пересчитываем кол-ва отдельных отношений и общее кол-во отношений объекта"""
-    #     super(RelationBase, self).save(**kwargs)
-    #
-    #     table_name = self.__class__.__name__.lower()
-    #     for code, name in self.get_codename_fields():
-    #         setattr(self.object, '%ss_count' % code,
-    #                 self.object.attitudes_users.filter(**{'%s__%s' % (table_name, code): True}).count())
-    #     setattr(self.object, 'attitudes_count', sum([getattr(self.object, '%ss_count' % code) for code in self.codes]))
-    #     self.object.save()
+        # def save(self, **kwargs):
+        #     u"""При сохранении пересчитываем кол-ва отдельных отношений и общее кол-во отношений объекта"""
+        #     super(RelationBase, self).save(**kwargs)
+        #
+        #     table_name = self.__class__.__name__.lower()
+        #     for code, name in self.get_codename_fields():
+        #         setattr(self.object, '%ss_count' % code,
+        #                 self.object.attitudes_users.filter(**{'%s__%s' % (table_name, code): True}).count())
+        #     setattr(self.object, 'attitudes_count', sum([getattr(self.object, '%ss_count' % code)
+        # for code in self.codes]))
+        #     self.object.save()
 
-    # def change(self, att_code):
-    #     if att_code in self.codes:
-    #         setattr(self, att_code, bool(1 - getattr(self, att_code)))
+        # def change(self, att_code):
+        #     if att_code in self.codes:
+        #         setattr(self, att_code, bool(1 - getattr(self, att_code)))
 
-    # def get_most_important(self):
-    #     u"""
-    #     Выбирает самое значимое отношение из всех возможных
-    #     """
-    #     for code in ['fav', 'like', 'dislike', 'seen', 'ignore', 'want', 'have', 'expert', 'friend']:
-    #         try:
-    #             if getattr(self, code) == True:
-    #                 return code
-    #         except:
-    #             pass
-    #     return False
+        # def get_most_important(self):
+        #     u"""
+        #     Выбирает самое значимое отношение из всех возможных
+        #     """
+        #     for code in ['fav', 'like', 'dislike', 'seen', 'ignore', 'want', 'have', 'expert', 'friend']:
+        #         try:
+        #             if getattr(self, code) == True:
+        #                 return code
+        #         except:
+        #             pass
+        #     return False
 
 
 def register_relation_fields(relation_model, relation_count_model):

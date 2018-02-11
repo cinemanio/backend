@@ -309,8 +309,7 @@ class ImdbMovieImporter(ImdbImporterBase):
         return ids
 
     def _get_genres(self):
-        genres = set(self.imdb_object.data.get('genres', []))#.difference({'Short'})
-        return self._get_m2m_ids(Genre, genres)
+        return self._get_m2m_ids(Genre, self.imdb_object.data.get('genres', []))
 
     def _get_languages(self):
         return self._get_m2m_ids(Language, self.imdb_object.data.get('languages', []))

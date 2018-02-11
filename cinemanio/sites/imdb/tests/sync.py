@@ -163,7 +163,7 @@ class ImdbSyncTest(BaseTestCase):
 
     @skip('unfinished')
     def test_2_persons_with_the_same_names(self):
-        imdb_person1 = ImdbPersonFactory(id=4129745)  # Allison Williams ID 4129745
-        imdb_person2 = ImdbPersonFactory(id=8656102)  # wrong Allison Williams ID 8656102
+        # imdb_person1 = ImdbPersonFactory(id=4129745)  # Allison Williams ID 4129745
+        # imdb_person2 = ImdbPersonFactory(id=8656102)  # wrong Allison Williams ID 8656102
         imdb_movie = ImdbMovieFactory(id=5052448)  # Get out, 2017
         imdb_movie.sync(roles=True)

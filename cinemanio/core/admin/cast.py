@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.forms.models import BaseInlineFormSet
+# from django.forms.models import BaseInlineFormSet
 
 from cinemanio.core.models import Cast
 

@@ -26,5 +26,5 @@ class MovieTranslationOptions(TranslationOptions, OptionsMixin):
 
 
 @register(Person)
-class MovieTranslationOptions(TranslationOptions, OptionsMixin):
+class PersonTranslationOptions(TranslationOptions, OptionsMixin):
     fields = ('first_name', 'last_name')

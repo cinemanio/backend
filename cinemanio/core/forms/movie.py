@@ -16,12 +16,6 @@ class MovieForm(ModelForm):
             'site_official_url', 'site_fan_url',
         )
 
-    # def __init__(self, *args, **kwargs):
-    #     super(MovieForm, self).__init__(*args, **kwargs)
-    #     for field in ['sequel_for', 'prequel_for', 'remake_for']:
-    #         self.fields[field].widget = AutoCompleteSelectWidget('movie', help_text=_('Type title of exists movie for context lookup'), template='autocompleteselectfield.html')
-    #     self.fields['russia_start'].widget = DateTimeWidget()
-
     # def clean_sequel_for(self):
     #     return self.check_relation('sequel_for')
     #
@@ -35,7 +29,8 @@ class MovieForm(ModelForm):
     #     u"""
     #     Обнуляем поля связей с другими фильмами, если в типе это не подтверждено
     #     Проверяем, что в поле не текущий фильм и что год фильма меньше года текущего фильма
-    #     TODO: перенести проверки в модель как кастомные валидаторы (http://docs.djangoproject.com/en/dev/ref/validators/#ref-validators)
+    #     TODO: перенести проверки в модель как кастомные валидаторы
+    #     (http://docs.djangoproject.com/en/dev/ref/validators/#ref-validators)
     #     и проверить тестами
     #     """
     #     types_fields_map = {

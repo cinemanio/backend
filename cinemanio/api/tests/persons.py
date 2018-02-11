@@ -1,5 +1,3 @@
-from unittest import skip
-
 from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.properties import CountryType

@@ -28,5 +28,6 @@ class WikipediaPage(models.Model):
     def url(self):
         return self.link.format(name=self.name, lang=self.lang)
 
+
 Movie.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia')))
 Person.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia')))
