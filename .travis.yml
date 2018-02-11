@@ -9,7 +9,7 @@ install:
 before_script:
   - flake8 .
 script:
-  - coverage run --source=cinemanio pipenv run "python manage.py test"
+  - coverage run --source=cinemanio pipenv run "python manage.py test --settings=cinemanio.settings_test"
 after_success:
   - coveralls
 notifications:
