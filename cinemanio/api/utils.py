@@ -47,9 +47,11 @@ class DjangoObjectTypeMixin:
         selections = info.operation.selection_set.selections
         found = False
         while True:
-            if found or selections[0].selection_set is None:
+            if selections[0].selection_set is None:
                 break
             selections = selections[0].selection_set.selections
+            if found:
+                break
             if selections[0].name.value in [cls._meta.model._meta.model_name, 'node']:
                 found = True
 
@@ -57,6 +59,7 @@ class DjangoObjectTypeMixin:
             value = to_snake_case(field.name.value)
             if value in fields:
                 queryset = queryset.select_related(value)
+
         return queryset
 
     @classmethod

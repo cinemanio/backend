@@ -10,7 +10,6 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
     class Meta:
         model = Movie
         filter_fields = ['year', 'genres', 'countries', 'languages']
-        # filter_order_by = ['name']
         interfaces = (relay.Node,)
 
 

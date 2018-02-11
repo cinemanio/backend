@@ -6,6 +6,21 @@ from factory.django import DjangoModelFactory
 from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
 
 
+class GenreFactory(DjangoModelFactory):
+    class Meta:
+        model = Genre
+
+
+class LanguageFactory(DjangoModelFactory):
+    class Meta:
+        model = Language
+
+
+class CountryFactory(DjangoModelFactory):
+    class Meta:
+        model = Country
+
+
 class MovieFactory(DjangoModelFactory):
     title = factory.Faker('sentence', nb_words=3)
     year = factory.LazyAttribute(lambda o: random.randrange(1900, 2020))
@@ -31,16 +46,14 @@ class MovieFactory(DjangoModelFactory):
 
 class PersonFactory(DjangoModelFactory):
     gender = factory.LazyAttribute(lambda o: random.choice([1, 0]))
-    first_name_en = ''
-    last_name_en = ''
+    country = factory.SubFactory(CountryFactory)
+    first_name = factory.Faker('sentence', nb_words=1)
+    last_name = factory.Faker('sentence', nb_words=1)
+    date_birth = factory.Faker('past_date', start_date="-60y", tzinfo=None)
+    date_death = factory.Faker('past_date', start_date="-60y", tzinfo=None)
 
     class Meta:
         model = Person
-
-
-class GenreFactory(DjangoModelFactory):
-    class Meta:
-        model = Genre
 
 
 class RoleFactory(DjangoModelFactory):
