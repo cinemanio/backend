@@ -78,7 +78,7 @@ class MovieQueryTestCase(BaseTestCase):
                   rating
                   votes
                 }
-                kinopoisk { 
+                kinopoisk {
                   id
                   rating
                   votes
@@ -106,10 +106,10 @@ class MovieQueryTestCase(BaseTestCase):
                 title
                 imdb {
                   id
-                  rating 
+                  rating
                   votes
                 }
-                kinopoisk { 
+                kinopoisk {
                   id
                   rating
                   votes
