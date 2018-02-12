@@ -13,10 +13,16 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
         interfaces = (relay.Node,)
 
     def resolve_imdb(self, *args, **kwargs):
-        return self.imdb
+        try:
+            return self.imdb
+        except AttributeError:
+            return None
 
     def resolve_kinopoisk(self, *args, **kwargs):
-        return self.kinopoisk
+        try:
+            return self.kinopoisk
+        except AttributeError:
+            return None
 
 
 class MovieQuery:
