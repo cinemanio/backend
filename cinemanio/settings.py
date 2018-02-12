@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -170,3 +171,17 @@ RAVEN_CONFIG = {
     'dsn': SENTRY_DSN,
     'release': '0.3.6',
 }
+
+GRAPHENE = {
+    'SCHEMA': 'cinemanio.schema.schema'
+}
+
+# TODO: choose right settings for CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST", default=['.cineman.io'])
+CORS_URLS_REGEX = r'^/graphql/.*$'
+CORS_ALLOW_METHODS = (
+    'GET',
+    'OPTIONS',
+    'POST',
+)

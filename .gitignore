@@ -1,7 +1,6 @@
 db.sqlite3
 .env*
 
-cinemanio/core/lookups.py
 cinemanio/migration/
 cinemanio/sites/movister/
 cinemanio/settings_migration.py

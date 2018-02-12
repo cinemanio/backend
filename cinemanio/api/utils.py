@@ -1,5 +1,6 @@
 import graphene
 from django.db.models.fields.related import ForeignKey
+from django.db.models.fields.reverse_related import OneToOneRel
 from graphene.utils.str_converters import to_snake_case
 from graphene_django.filter import DjangoFilterConnectionField as _DjangoFilterConnectionField
 
@@ -42,7 +43,7 @@ class DjangoObjectTypeMixin:
     @classmethod
     def get_queryset(cls, info):
         queryset = cls._meta.model.objects.all()
-        fields = cls.select_related_fields()
+        fields = cls.select_foreign_keys() + cls.select_o2o_related_objects()
 
         selections = info.operation.selection_set.selections
         found = False
@@ -63,5 +64,9 @@ class DjangoObjectTypeMixin:
         return queryset
 
     @classmethod
-    def select_related_fields(cls):
+    def select_foreign_keys(cls):
         return [field.name for field in cls._meta.model._meta.fields if isinstance(field, ForeignKey)]
+
+    @classmethod
+    def select_o2o_related_objects(cls):
+        return [rel.related_name for rel in cls._meta.model._meta.related_objects if isinstance(rel, OneToOneRel)]

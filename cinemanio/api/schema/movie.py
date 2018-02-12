@@ -12,6 +12,12 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
         filter_fields = ['year', 'genres', 'countries', 'languages']
         interfaces = (relay.Node,)
 
+    def resolve_imdb(self, *args, **kwargs):
+        return self.imdb
+
+    def resolve_kinopoisk(self, *args, **kwargs):
+        return self.kinopoisk
+
 
 class MovieQuery:
     movie = graphene.relay.Node.Field(MovieNode)

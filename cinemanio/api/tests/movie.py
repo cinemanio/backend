@@ -4,6 +4,8 @@ from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.sites.imdb.factories import ImdbMovieFactory
+from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory
 
 
 class MovieQueryTestCase(BaseTestCase):
@@ -64,3 +66,34 @@ class MovieQueryTestCase(BaseTestCase):
         self.assertEqual(result['movie']['remakeFor']['title'], m.remake_for.title)
         self.assertEqual(result['movie']['remakeFor']['year'], m.remake_for.year)
         self.assertEqual(result['movie']['remakeFor']['runtime'], m.remake_for.runtime)
+
+    def test_movie_with_related_sites(self):
+        m = ImdbMovieFactory(movie=KinopoiskMovieFactory().movie).movie
+        query = '''
+            {
+              movie(id: "%s") {
+                title
+                imdb {
+                  id
+                  ratin 
+                  votes
+                }
+                kinopoisk { 
+                  id
+                  rating
+                  votes
+                  info
+                }
+              }
+            }
+            ''' % to_global_id(MovieNode._meta.name, m.id)
+        with self.assertNumQueries(1):
+            result = execute(query)
+        self.assertEqual(result['movie']['title'], m.title)
+        self.assertEqual(result['movie']['imdb']['id'], m.imdb.id)
+        self.assertEqual(result['movie']['imdb']['rating'], m.imdb.rating)
+        self.assertEqual(result['movie']['imdb']['votes'], m.imdb.votes)
+        self.assertEqual(result['movie']['kinopoisk']['id'], m.kinopoisk.id)
+        self.assertEqual(result['movie']['kinopoisk']['rating'], m.kinopoisk.rating)
+        self.assertEqual(result['movie']['kinopoisk']['votes'], m.kinopoisk.votes)
+        self.assertEqual(result['movie']['kinopoisk']['info'], m.kinopoisk.info)
