@@ -18,7 +18,6 @@ class MoviesQueryTestCase(BaseTestCase):
         self.assertGreater(count, 0)
         self.assertEqual(len(result['movies']['edges']), count)
 
-    @skip('TODO: fix it')
     def test_movies_query(self):
         query = '''
             {
@@ -34,7 +33,7 @@ class MoviesQueryTestCase(BaseTestCase):
               }
             }
             '''
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(5):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, Movie.objects.count())
 

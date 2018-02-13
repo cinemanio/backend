@@ -25,6 +25,7 @@ class DjangoFilterConnectionField(_DjangoFilterConnectionField):
         else:
             queryset_merged = _DjangoFilterConnectionField.merge_querysets(default_queryset, queryset)
         queryset_merged.query.select_related = queryset.query.select_related
+        queryset_merged._prefetch_related_lookups = queryset._prefetch_related_lookups
         return queryset_merged
 
 
@@ -44,6 +45,7 @@ class DjangoObjectTypeMixin:
     def get_queryset(cls, info):
         queryset = cls._meta.model.objects.all()
         fields = cls.select_foreign_keys() + cls.select_o2o_related_objects()
+        fields_m2m = cls.select_m2m_fields()
 
         selections = info.operation.selection_set.selections
         found = False
@@ -60,12 +62,18 @@ class DjangoObjectTypeMixin:
             value = to_snake_case(field.name.value)
             if value in fields:
                 queryset = queryset.select_related(value)
+            if value in fields_m2m:
+                queryset = queryset.prefetch_related(value)
 
         return queryset
 
     @classmethod
     def select_foreign_keys(cls):
         return [field.name for field in cls._meta.model._meta.fields if isinstance(field, ForeignKey)]
+
+    @classmethod
+    def select_m2m_fields(cls):
+        return [field.name for field in cls._meta.model._meta.many_to_many]
 
     @classmethod
     def select_o2o_related_objects(cls):
