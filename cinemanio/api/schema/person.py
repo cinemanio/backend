@@ -7,7 +7,6 @@ from cinemanio.core.models import Person
 
 
 class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
-
     class Meta:
         model = Person
         filter_fields = {
@@ -15,6 +14,9 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
             'date_birth': ['year'],
         }
         interfaces = (relay.Node,)
+
+    def resolve_career(self, *args, **kwargs):
+        return self.career.select_related('movie', 'role')
 
 
 class PersonQuery:

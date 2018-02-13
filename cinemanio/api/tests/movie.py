@@ -2,7 +2,7 @@ from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.tests.helpers import execute
-from cinemanio.core.factories import MovieFactory
+from cinemanio.core.factories import MovieFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.imdb.factories import ImdbMovieFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory
@@ -72,24 +72,13 @@ class MovieQueryTestCase(BaseTestCase):
         query = '''
             {
               movie(id: "%s") {
-                title
-                imdb {
-                  id
-                  rating
-                  votes
-                }
-                kinopoisk {
-                  id
-                  rating
-                  votes
-                  info
-                }
+                imdb { id, rating, votes }
+                kinopoisk { id, rating, votes, info }
               }
             }
             ''' % to_global_id(MovieNode._meta.name, m.id)
         with self.assertNumQueries(1):
             result = execute(query)
-        self.assertEqual(result['movie']['title'], m.title)
         self.assertEqual(result['movie']['imdb']['id'], m.imdb.id)
         self.assertEqual(result['movie']['imdb']['rating'], m.imdb.rating)
         self.assertEqual(result['movie']['imdb']['votes'], m.imdb.votes)
@@ -103,23 +92,38 @@ class MovieQueryTestCase(BaseTestCase):
         query = '''
             {
               movie(id: "%s") {
-                title
-                imdb {
-                  id
-                  rating
-                  votes
-                }
-                kinopoisk {
-                  id
-                  rating
-                  votes
-                  info
-                }
+                imdb { id, rating, votes }
+                kinopoisk { id, rating, votes, info }
               }
             }
             ''' % to_global_id(MovieNode._meta.name, m.id)
         with self.assertNumQueries(1):
             result = execute(query)
-        self.assertEqual(result['movie']['title'], m.title)
         self.assertEqual(result['movie']['imdb'], None)
         self.assertEqual(result['movie']['kinopoisk'], None)
+
+    def test_movie_with_cast(self):
+        m = MovieFactory()
+        for i in range(100):
+            CastFactory(movie=m)
+        query = '''
+            {
+              movie(id: "%s") {
+                cast {
+                  name
+                  person { firstName, lastName }
+                  role { name }
+                }
+              }
+            }
+            ''' % to_global_id(MovieNode._meta.name, m.id)
+        with self.assertNumQueries(2):
+            result = execute(query)
+        self.assertEqual(len(result['movie']['cast']), 100)
+
+        for i in range(100):
+            result_cast = result['movie']['cast'][i]
+            cast = m.cast.all()[i]
+            self.assertEqual(result_cast['person']['firstName'], cast.person.first_name)
+            self.assertEqual(result_cast['person']['lastName'], cast.person.last_name)
+            self.assertEqual(result_cast['role']['name'], cast.role.name)

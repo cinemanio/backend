@@ -46,17 +46,7 @@ class DjangoObjectTypeMixin:
         queryset = cls._meta.model.objects.all()
         fields = cls.select_foreign_keys() + cls.select_o2o_related_objects()
         fields_m2m = cls.select_m2m_fields()
-
-        selections = info.operation.selection_set.selections
-        found = False
-        while True:
-            if selections[0].selection_set is None:
-                break
-            selections = selections[0].selection_set.selections
-            if found:
-                break
-            if selections[0].name.value in [cls._meta.model._meta.model_name, 'node']:
-                found = True
+        selections = cls.get_selections(info)
 
         for field in selections:
             value = to_snake_case(field.name.value)
@@ -66,6 +56,18 @@ class DjangoObjectTypeMixin:
                 queryset = queryset.prefetch_related(value)
 
         return queryset
+
+    @classmethod
+    def get_selections(cls, info):
+        selections = info.operation.selection_set.selections
+        found = False
+        while True:
+            if selections[0].selection_set is None or found:
+                break
+            if selections[0].name.value in [cls._meta.model._meta.model_name, 'node']:
+                found = True
+            selections = selections[0].selection_set.selections
+        return selections
 
     @classmethod
     def select_foreign_keys(cls):

@@ -12,6 +12,9 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
         filter_fields = ['year', 'genres', 'countries', 'languages']
         interfaces = (relay.Node,)
 
+    def resolve_cast(self, *args, **kwargs):
+        return self.cast.select_related('person', 'role')
+
     def resolve_imdb(self, *args, **kwargs):
         try:
             return self.imdb
