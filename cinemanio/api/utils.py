@@ -67,6 +67,8 @@ class DjangoObjectTypeMixin:
             if selections[0].name.value in [cls._meta.model._meta.model_name, 'node']:
                 found = True
             selections = selections[0].selection_set.selections
+            if found is True and selections[0].name.value == 'edges':
+                found = False
         return selections
 
     @classmethod

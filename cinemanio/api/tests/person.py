@@ -1,6 +1,7 @@
 from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.person import PersonNode
+from cinemanio.api.schema.role import RoleNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import PersonFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase
@@ -37,19 +38,47 @@ class PersonQueryTestCase(BaseTestCase):
             {
               person(id: "%s") {
                 career {
-                  name
-                  movie { title }
-                  role { name }
+                  edges {
+                    node {
+                      name
+                      movie { title }
+                      role { name }
+                    }
+                  }
                 }
               }
             }
             ''' % to_global_id(PersonNode._meta.name, p.id)
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(3):
             result = execute(query)
-        self.assertEqual(len(result['person']['career']), 100)
+        self.assertEqual(len(result['person']['career']['edges']), 100)
 
         for i in range(100):
-            result_career = result['person']['career'][i]
+            result_career = result['person']['career']['edges'][i]['node']
             career = p.career.all()[i]
             self.assertEqual(result_career['movie']['title'], career.movie.title)
             self.assertEqual(result_career['role']['name'], career.role.name)
+
+    def test_person_with_career_filtered(self):
+        p = PersonFactory()
+        for i in range(100):
+            cast = CastFactory(person=p)
+        query = '''
+            {
+              person(id: "%s") {
+                career(role: "%s") {
+                  edges {
+                    node {
+                      name
+                      movie { title }
+                      role { name }
+                    }
+                  }
+                }
+              }
+            }
+            ''' % (to_global_id(PersonNode._meta.name, p.id),
+                   to_global_id(RoleNode._meta.name, cast.role.id))
+        with self.assertNumQueries(3):
+            result = execute(query)
+        self.assertEqual(len(result['person']['career']['edges']), p.career.filter(role=cast.role).count())

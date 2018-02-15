@@ -3,29 +3,20 @@ from graphene import relay
 from graphene_django import DjangoObjectType
 
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField
+from cinemanio.api.schema.cast import CastNode
 from cinemanio.core.models import Movie
 
 
 class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
+    cast = DjangoFilterConnectionField(CastNode)
+
     class Meta:
         model = Movie
         filter_fields = ['year', 'genres', 'countries', 'languages']
         interfaces = (relay.Node,)
 
-    def resolve_cast(self, *args, **kwargs):
-        return self.cast.select_related('person', 'role')
-
-    def resolve_imdb(self, *args, **kwargs):
-        try:
-            return self.imdb
-        except AttributeError:
-            return None
-
-    def resolve_kinopoisk(self, *args, **kwargs):
-        try:
-            return self.kinopoisk
-        except AttributeError:
-            return None
+    def resolve_cast(self, info, *args, **kwargs):
+        return CastNode.get_queryset(info)
 
 
 class MovieQuery:

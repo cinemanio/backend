@@ -8,3 +8,4 @@ class CastNode(DjangoObjectTypeMixin, DjangoObjectType):
     class Meta:
         model = Cast
         filter_fields = ['role']
+        use_connection = True

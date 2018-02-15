@@ -1,6 +1,6 @@
 from graphql_relay.node.node import to_global_id
 
-from cinemanio.api.schema.properties import CountryType
+from cinemanio.api.schema.properties import CountryNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import PersonFactory
 from cinemanio.core.models import Person
@@ -78,7 +78,7 @@ class PersonsQueryTestCase(BaseTestCase):
                 }
               }
             }
-            ''' % to_global_id(CountryType._meta.name, country.id)
+            ''' % to_global_id(CountryNode._meta.name, country.id)
         with self.assertNumQueries(2):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, Person.objects.filter(country=country).count())

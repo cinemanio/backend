@@ -1,6 +1,7 @@
 from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.movie import MovieNode
+from cinemanio.api.schema.role import RoleNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase
@@ -110,20 +111,48 @@ class MovieQueryTestCase(BaseTestCase):
             {
               movie(id: "%s") {
                 cast {
-                  name
-                  person { firstName, lastName }
-                  role { name }
+                  edges {
+                    node {
+                      name
+                      person { firstName, lastName }
+                      role { name }
+                    }
+                  }
                 }
               }
             }
             ''' % to_global_id(MovieNode._meta.name, m.id)
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(3):
             result = execute(query)
-        self.assertEqual(len(result['movie']['cast']), 100)
+        self.assertEqual(len(result['movie']['cast']['edges']), 100)
 
         for i in range(100):
-            result_cast = result['movie']['cast'][i]
+            result_cast = result['movie']['cast']['edges'][i]['node']
             cast = m.cast.all()[i]
             self.assertEqual(result_cast['person']['firstName'], cast.person.first_name)
             self.assertEqual(result_cast['person']['lastName'], cast.person.last_name)
             self.assertEqual(result_cast['role']['name'], cast.role.name)
+
+    def test_movie_with_cast_filtered(self):
+        m = MovieFactory()
+        for i in range(100):
+            cast = CastFactory(movie=m)
+        query = '''
+            {
+              movie(id: "%s") {
+                cast(role: "%s") {
+                  edges {
+                    node {
+                      name
+                      person { firstName, lastName }
+                      role { name }
+                    }
+                  }
+                }
+              }
+            }
+            ''' % (to_global_id(MovieNode._meta.name, m.id),
+                   to_global_id(RoleNode._meta.name, cast.role.id))
+        with self.assertNumQueries(3):
+            result = execute(query)
+        self.assertEqual(len(result['movie']['cast']['edges']), m.cast.filter(role=cast.role).count())

@@ -3,10 +3,13 @@ from graphene import relay
 from graphene_django import DjangoObjectType
 
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField
+from cinemanio.api.schema.cast import CastNode
 from cinemanio.core.models import Person
 
 
 class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
+    career = DjangoFilterConnectionField(CastNode)
+
     class Meta:
         model = Person
         filter_fields = {
@@ -15,8 +18,8 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
         }
         interfaces = (relay.Node,)
 
-    def resolve_career(self, *args, **kwargs):
-        return self.career.select_related('movie', 'role')
+    def resolve_career(self, info, *args, **kwargs):
+        return CastNode.get_queryset(info)
 
 
 class PersonQuery:

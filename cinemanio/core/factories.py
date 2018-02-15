@@ -59,15 +59,10 @@ class PersonFactory(DjangoModelFactory):
         model = Person
 
 
-class RoleFactory(DjangoModelFactory):
-    class Meta:
-        model = Role
-
-
 class CastFactory(DjangoModelFactory):
     movie = factory.SubFactory(MovieFactory)
     person = factory.SubFactory(PersonFactory)
-    role = factory.SubFactory(RoleFactory)
+    role = factory.LazyAttribute(lambda o: Role.objects.order_by('?')[0])
 
     class Meta:
         model = Cast

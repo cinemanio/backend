@@ -1,8 +1,6 @@
-from unittest import skip
-
 from graphql_relay.node.node import to_global_id
 
-from cinemanio.api.schema.properties import GenreType
+from cinemanio.api.schema.properties import GenreNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.models import Movie
@@ -82,7 +80,7 @@ class MoviesQueryTestCase(BaseTestCase):
                 }
               }
             }
-            ''' % to_global_id(GenreType._meta.name, genre.id)
+            ''' % to_global_id(GenreNode._meta.name, genre.id)
         with self.assertNumQueries(2):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, Movie.objects.filter(genres__in=[genre]).count())
