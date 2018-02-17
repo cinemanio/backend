@@ -24,8 +24,8 @@ kinopoiskpy = "*"
 alphabet-detector = "*"
 parameterized = "*"
 graphene-django = "*"
-"psycopg2" = "*"
 imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
+"psycopg2-binary" = "*"
 
 
 [dev-packages]
