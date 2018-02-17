@@ -106,37 +106,8 @@ class MovieQueryTestCase(BaseTestCase):
     def test_movie_with_cast(self):
         m = MovieFactory()
         for i in range(100):
-            CastFactory(movie=m)
-        query = '''
-            {
-              movie(id: "%s") {
-                cast {
-                  edges {
-                    node {
-                      name
-                      person { firstName, lastName }
-                      role { name }
-                    }
-                  }
-                }
-              }
-            }
-            ''' % to_global_id(MovieNode._meta.name, m.id)
-        with self.assertNumQueries(3):
-            result = execute(query)
-        self.assertEqual(len(result['movie']['cast']['edges']), 100)
-
-        for i in range(100):
-            result_cast = result['movie']['cast']['edges'][i]['node']
-            cast = m.cast.all()[i]
-            self.assertEqual(result_cast['person']['firstName'], cast.person.first_name)
-            self.assertEqual(result_cast['person']['lastName'], cast.person.last_name)
-            self.assertEqual(result_cast['role']['name'], cast.role.name)
-
-    def test_movie_with_cast_filtered(self):
-        m = MovieFactory()
-        for i in range(100):
             cast = CastFactory(movie=m)
+        CastFactory(role=cast.role)
         query = '''
             {
               movie(id: "%s") {

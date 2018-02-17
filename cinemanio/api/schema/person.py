@@ -19,7 +19,7 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
         interfaces = (relay.Node,)
 
     def resolve_career(self, info, *args, **kwargs):
-        return CastNode.get_queryset(info)
+        return CastNode.get_queryset(info).filter(person=self)
 
 
 class PersonQuery:

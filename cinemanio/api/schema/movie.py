@@ -16,7 +16,7 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
         interfaces = (relay.Node,)
 
     def resolve_cast(self, info, *args, **kwargs):
-        return CastNode.get_queryset(info)
+        return CastNode.get_queryset(info).filter(movie=self)
 
 
 class MovieQuery:

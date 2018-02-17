@@ -33,36 +33,8 @@ class PersonQueryTestCase(BaseTestCase):
     def test_person_with_career(self):
         p = PersonFactory()
         for i in range(100):
-            CastFactory(person=p)
-        query = '''
-            {
-              person(id: "%s") {
-                career {
-                  edges {
-                    node {
-                      name
-                      movie { title }
-                      role { name }
-                    }
-                  }
-                }
-              }
-            }
-            ''' % to_global_id(PersonNode._meta.name, p.id)
-        with self.assertNumQueries(3):
-            result = execute(query)
-        self.assertEqual(len(result['person']['career']['edges']), 100)
-
-        for i in range(100):
-            result_career = result['person']['career']['edges'][i]['node']
-            career = p.career.all()[i]
-            self.assertEqual(result_career['movie']['title'], career.movie.title)
-            self.assertEqual(result_career['role']['name'], career.role.name)
-
-    def test_person_with_career_filtered(self):
-        p = PersonFactory()
-        for i in range(100):
             cast = CastFactory(person=p)
+        CastFactory(role=cast.role)
         query = '''
             {
               person(id: "%s") {
