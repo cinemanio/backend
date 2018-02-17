@@ -160,7 +160,7 @@ STATICFILES_DIRS = (
 
 # celery
 CELERY_HOST = '127.0.0.1'
-BROKER_URL = 'amqp://movister:bk8G@%s:5672/movister_host' % CELERY_HOST
+BROKER_URL = 'amqp://user:pass@%s:5672/name' % CELERY_HOST
 CELERY_SEND_TASK_ERROR_EMAILS = True
 CELERY_TASK_RESULT_EXPIRES = None
 CELERY_ACKS_LATE = True
