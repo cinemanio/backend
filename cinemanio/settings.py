@@ -25,7 +25,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY', default='u25$s4f_6r-#4p*be3xe6(c+8i82x)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default=['.cineman.io'], cast=Csv())
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='.cineman.io', cast=Csv())
 INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
@@ -94,7 +94,8 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=500, default=config('DJANGO_DATABASE_URL'))
+    'default': dj_database_url.config(conn_max_age=500, default=config(
+        'DJANGO_DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
 }
 
 
@@ -172,7 +173,7 @@ GRAPHENE = {
 
 # TODO: choose right settings for CORS
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = config('DJANGO_CORS_ORIGIN_WHITELIST', default=['.cineman.io'], cast=Csv())
+CORS_ORIGIN_WHITELIST = config('DJANGO_CORS_ORIGIN_WHITELIST', default='.cineman.io', cast=Csv())
 CORS_URLS_REGEX = r'^/graphql/.*$'
 CORS_ALLOW_METHODS = (
     'GET',
