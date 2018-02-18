@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 
-Django = "==2.0.1"
+django = "==2.0.1"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
@@ -23,16 +23,17 @@ kinopoiskpy = "*"
 alphabet-detector = "*"
 parameterized = "*"
 graphene-django = "*"
-IMDbPY = {git = "https://github.com/alberanid/imdbpy", editable = true}
+imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 "psycopg2-binary" = "*"
 dj-database-url = "*"
 python-decouple = "*"
+gunicorn = "*"
 
 
 [dev-packages]
 
 ipython = "*"
-factory_boy = "*"
+factory-boy = "*"
 ipdb = "*"
 
 
