@@ -1,7 +1,6 @@
 from unittest import skip
 
-from django.db import connection
-from django.test.utils import CaptureQueriesContext
+from django.test import modify_settings
 from django.urls.base import reverse
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
@@ -39,26 +38,23 @@ class AdminTest(AdminBaseTest):
         super().setUp()
         self._login('admin')
 
-    def getResponseWithQueries(self, name, args=None):
-        with CaptureQueriesContext(connection) as queries:
-            response = self.client.get(reverse(name, args=args))
-        return response, queries
-
+    @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
     def test_movies_page(self):
         for i in range(100):
             KinopoiskMovieFactory(movie=ImdbMovieFactory().movie)
 
-        response, queries = self.getResponseWithQueries('admin:core_movie_changelist')
+        with self.assertNumQueries(7):
+            response = self.client.get(reverse('admin:core_movie_changelist'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(queries), 7)
 
+    @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
     def test_persons_page(self):
         for i in range(100):
             KinopoiskPersonFactory(person=ImdbPersonFactory().person)
 
-        response, queries = self.getResponseWithQueries('admin:core_person_changelist')
+        with self.assertNumQueries(7):
+            response = self.client.get(reverse('admin:core_person_changelist'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(queries), 7)
 
     @skip('fix request for each person in role')
     def test_movie_page(self):
@@ -68,9 +64,9 @@ class AdminTest(AdminBaseTest):
         for i in range(100):
             CastFactory(movie=m)
 
-        response, queries = self.getResponseWithQueries('admin:core_movie_change', (m.id,))
+        with self.assertNumQueries(20):
+            response = self.client.get(reverse('admin:core_movie_change', args=(m.id,)))
         self.assertEqual(response.status_code, 200)
-        self.assertLess(len(queries), 20)
 
     @skip('fix request for each movie in role')
     def test_person_page(self):
@@ -80,6 +76,6 @@ class AdminTest(AdminBaseTest):
         for i in range(100):
             CastFactory(person=p)
 
-        response, queries = self.getResponseWithQueries('admin:core_person_change', (p.id,))
+        with self.assertNumQueries(20):
+            response = self.client.get(reverse('admin:core_person_change', args=(p.id,)))
         self.assertEqual(response.status_code, 200)
-        self.assertLess(len(queries), 20)
