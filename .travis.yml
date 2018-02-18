@@ -8,6 +8,7 @@ install:
   - pipenv install --dev
 before_script:
   - flake8 ./cinemanio
+  - manage.py collectstatic
 script:
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test
 after_success:
