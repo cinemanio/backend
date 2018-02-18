@@ -28,6 +28,7 @@ imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 dj-database-url = "*"
 python-decouple = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 
 [dev-packages]

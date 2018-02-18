@@ -149,6 +149,11 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = ()
 
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 # celery
 CELERY_HOST = '127.0.0.1'
 BROKER_URL = 'amqp://user:pass@%s:5672/name' % CELERY_HOST
@@ -169,7 +174,8 @@ RAVEN_CONFIG = {
 }
 
 GRAPHENE = {
-    'SCHEMA': 'cinemanio.schema.schema'
+    'SCHEMA': 'cinemanio.schema.schema',
+    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'] if DEBUG else [],
 }
 
 # TODO: choose right settings for CORS
