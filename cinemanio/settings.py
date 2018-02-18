@@ -9,12 +9,10 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
+import dj_database_url
 import os
-import environ
 from datetime import timedelta
-
-env = environ.Env()
-env.read_env('.env')
+from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,11 +21,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('DJANGO_SECRET_KEY', default='u25$0bg_6r-#4p*be3xed(c+8i2t)$+dm+^nig6)@yy_27yy(0')
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DJANGO_DEBUG", default=False)
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=['.cineman.io'])
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default=['.cineman.io'], cast=Csv())
 INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
@@ -96,14 +94,7 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': env.str('DJANGO_DATABASE_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': env.str('DJANGO_DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': env.str('DJANGO_DATABASE_USER', ''),
-        'PASSWORD': env.str('DJANGO_DATABASE_PASSWORD', ''),
-        'HOST': env.str('DJANGO_DATABASE_HOST', 'localhost'),
-        'CONN_MAX_AGE': env.int('DJANGO_DATABASE_CONN_MAX_AGE', 300),
-    }
+    'default': dj_database_url.config(conn_max_age=500, default=config('DJANGO_DATABASE_URL'))
 }
 
 
@@ -169,7 +160,7 @@ CELERYCAM_EXPIRE_SUCCESS = timedelta(days=5)
 CELERYCAM_EXPIRE_ERROR = timedelta(days=10)
 CELERYCAM_EXPIRE_PENDING = timedelta(days=10)
 
-SENTRY_DSN = env.str('SENTRY_DSN', None)
+SENTRY_DSN = config('SENTRY_DSN')
 RAVEN_CONFIG = {
     'dsn': SENTRY_DSN,
     'release': '0.3.6',
@@ -181,7 +172,7 @@ GRAPHENE = {
 
 # TODO: choose right settings for CORS
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST", default=['.cineman.io'])
+CORS_ORIGIN_WHITELIST = config('DJANGO_CORS_ORIGIN_WHITELIST', default=['.cineman.io'], cast=Csv())
 CORS_URLS_REGEX = r'^/graphql/.*$'
 CORS_ALLOW_METHODS = (
     'GET',
