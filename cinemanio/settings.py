@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'celerymon',
     'corsheaders',
     'graphene_django',
+    'silk',
 
     # cinemanio apps
     'cinemanio.core',
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'cinemanio.urls'

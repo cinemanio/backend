@@ -9,6 +9,7 @@ from graphene_django.views import GraphQLView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path('silk/', include('silk.urls', namespace='silk')),
 ]
 
 if settings.DEBUG:
