@@ -160,7 +160,7 @@ CELERYCAM_EXPIRE_SUCCESS = timedelta(days=5)
 CELERYCAM_EXPIRE_ERROR = timedelta(days=10)
 CELERYCAM_EXPIRE_PENDING = timedelta(days=10)
 
-SENTRY_DSN = config('SENTRY_DSN')
+SENTRY_DSN = config('SENTRY_DSN', default='')
 RAVEN_CONFIG = {
     'dsn': SENTRY_DSN,
     'release': '0.3.6',
