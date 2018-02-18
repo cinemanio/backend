@@ -18,6 +18,7 @@ class MovieQueryTestCase(BaseTestCase):
         query = '''
             {
               movie(id: "%s") {
+                id, title
                 genres { name }
                 countries { name }
                 languages { name }
@@ -73,6 +74,7 @@ class MovieQueryTestCase(BaseTestCase):
         query = '''
             {
               movie(id: "%s") {
+                id, title
                 imdb { id, rating, votes }
                 kinopoisk { id, rating, votes, info }
               }
@@ -93,6 +95,7 @@ class MovieQueryTestCase(BaseTestCase):
         query = '''
             {
               movie(id: "%s") {
+                id, title
                 imdb { id, rating, votes }
                 kinopoisk { id, rating, votes, info }
               }
@@ -111,6 +114,7 @@ class MovieQueryTestCase(BaseTestCase):
         query = '''
             {
               movie(id: "%s") {
+                id, title
                 cast(role: "%s") {
                   edges {
                     node {

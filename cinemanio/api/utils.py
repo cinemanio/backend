@@ -59,7 +59,7 @@ class DjangoObjectTypeMixin:
 
     @classmethod
     def get_selections(cls, info):
-        selections = info.operation.selection_set.selections
+        selections = info.field_asts[0].selection_set.selections
         found = False
         while True:
             if selections[0].selection_set is None or found:

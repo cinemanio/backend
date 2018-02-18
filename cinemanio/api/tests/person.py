@@ -38,6 +38,7 @@ class PersonQueryTestCase(BaseTestCase):
         query = '''
             {
               person(id: "%s") {
+                id, firstName, lastName
                 career(role: "%s") {
                   edges {
                     node {
