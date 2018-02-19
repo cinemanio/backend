@@ -12,7 +12,18 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
 
     class Meta:
         model = Movie
-        filter_fields = ['year', 'genres', 'countries', 'languages']
+        only_fields = (
+            'id', 'title', 'year', 'runtime', 'award',
+            'genres', 'countries', 'languages',
+            'sequel_for', 'prequel_for', 'remake_for',
+            'imdb', 'kinopoisk',
+        )
+        filter_fields = {
+            'year': ['exact'],
+            'genres': ['exact', 'in'],
+            'countries': ['exact', 'in'],
+            'languages': ['exact', 'in'],
+        }
         interfaces = (relay.Node,)
 
     def resolve_cast(self, info, *args, **kwargs):

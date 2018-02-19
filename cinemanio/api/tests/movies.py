@@ -35,7 +35,7 @@ class MoviesQueryTestCase(BaseTestCase):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, Movie.objects.count())
 
-    def test_movies_query_limit(self):
+    def test_movies_limit(self):
         query = '''
             {
               movies(first: 10) {
@@ -51,7 +51,7 @@ class MoviesQueryTestCase(BaseTestCase):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, 10)
 
-    def test_movies_query_filter_by_year(self):
+    def test_movies_filter_by_year(self):
         year = Movie.objects.all()[0].year
         query = '''
             {
@@ -68,7 +68,11 @@ class MoviesQueryTestCase(BaseTestCase):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, Movie.objects.filter(year=year).count())
 
-    def test_movies_query_filter_by_genre(self):
+    def test_movies_filter_by_genre(self):
+        # TODO: make a filtration by multiple values with AND logic
+        # m = Movie.objects.all()[0]
+        # genres = Genre.objects.all()[0:2]
+        # m.genres.set(genres)
         genre = Movie.objects.all()[0].genres.all()[0]
         query = '''
             {

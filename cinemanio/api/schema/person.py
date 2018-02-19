@@ -12,6 +12,11 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
 
     class Meta:
         model = Person
+        only_fields = (
+            'id', 'first_name', 'last_name',
+            'gender', 'date_birth', 'date_death', 'country',
+            'imdb', 'kinopoisk',
+        )
         filter_fields = {
             'country': ['exact'],
             'date_birth': ['year'],

@@ -5,6 +5,8 @@ from cinemanio.api.schema.role import RoleNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import PersonFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.sites.imdb.factories import ImdbPersonFactory
+from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory
 
 
 class PersonQueryTestCase(BaseTestCase):
@@ -29,6 +31,39 @@ class PersonQueryTestCase(BaseTestCase):
         self.assertEqual(result['person']['dateBirth'], p.date_birth.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['dateDeath'], p.date_death.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['country']['name'], p.country.name)
+
+    def test_person_with_related_sites(self):
+        p = ImdbPersonFactory(person=KinopoiskPersonFactory().person).person
+        query = '''
+            {
+              person(id: "%s") {
+                id, firstName, lastName
+                imdb { id }
+                kinopoisk { id, info }
+              }
+            }
+            ''' % to_global_id(PersonNode._meta.name, p.id)
+        with self.assertNumQueries(1):
+            result = execute(query)
+        self.assertEqual(result['person']['imdb']['id'], p.imdb.id)
+        self.assertEqual(result['person']['kinopoisk']['id'], p.kinopoisk.id)
+        self.assertEqual(result['person']['kinopoisk']['info'], p.kinopoisk.info)
+
+    def test_person_without_related_sites(self):
+        p = PersonFactory()
+        query = '''
+            {
+              person(id: "%s") {
+                id, firstName, lastName
+                imdb { id }
+                kinopoisk { id, info }
+              }
+            }
+            ''' % to_global_id(PersonNode._meta.name, p.id)
+        with self.assertNumQueries(1):
+            result = execute(query)
+        self.assertEqual(result['person']['imdb'], None)
+        self.assertEqual(result['person']['kinopoisk'], None)
 
     def test_person_with_career(self):
         p = PersonFactory()
