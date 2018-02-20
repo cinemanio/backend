@@ -13,7 +13,9 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
     class Meta:
         model = Movie
         only_fields = (
-            'id', 'title', 'year', 'runtime', 'award',
+            'id',
+            'title', 'title_en', 'title_ru',
+            'year', 'runtime', 'award',
             'genres', 'countries', 'languages',
             'sequel_for', 'prequel_for', 'remake_for',
             'imdb', 'kinopoisk',

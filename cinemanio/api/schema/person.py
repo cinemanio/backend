@@ -13,7 +13,10 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
     class Meta:
         model = Person
         only_fields = (
-            'id', 'first_name', 'last_name',
+            'id',
+            'first_name', 'last_name',
+            'first_name_en', 'last_name_en',
+            'first_name_ru', 'last_name_ru',
             'gender', 'date_birth', 'date_death', 'country',
             'imdb', 'kinopoisk',
         )
