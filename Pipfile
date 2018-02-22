@@ -16,20 +16,21 @@ django-filter = "*"
 django-cors-headers = "*"
 django-reversion = "*"
 django-celery = "*"
+django-silk = "*"
+django-cursor-pagination = "*"
 celery = "*"
 celerymon = "*"
 vcrpy-unittest = "*"
 kinopoiskpy = "*"
 alphabet-detector = "*"
 parameterized = "*"
-graphene-django = "*"
+graphene-django = {git = "https://github.com/graphql-python/graphene-django", editable = true}
 imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 "psycopg2-binary" = "*"
 dj-database-url = "*"
 python-decouple = "*"
 gunicorn = "*"
 whitenoise = "*"
-django-silk = "*"
 
 
 [dev-packages]

@@ -82,3 +82,13 @@ class DjangoObjectTypeMixin:
     @classmethod
     def select_o2o_related_objects(cls):
         return [rel.related_name for rel in cls._meta.model._meta.related_objects if isinstance(rel, OneToOneRel)]
+
+
+class CountableConnectionBase(graphene.relay.Connection):
+    class Meta:
+        abstract = True
+
+    total_count = graphene.Int()
+
+    def resolve_total_count(self, info, **kwargs):
+        return self.iterable.count()

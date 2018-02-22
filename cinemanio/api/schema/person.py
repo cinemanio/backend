@@ -2,7 +2,7 @@ import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 
-from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField
+from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.core.models import Person
 
@@ -25,6 +25,7 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
             'date_birth': ['year'],
         }
         interfaces = (relay.Node,)
+        connection_class = CountableConnectionBase
 
     def resolve_career(self, info, *args, **kwargs):
         return CastNode.get_queryset(info).filter(person=self)
