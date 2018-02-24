@@ -72,9 +72,9 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               }
             }
             ''' % (fieldname, item1.id, item2.id)
-                # TODO: switch to use global ids and decrease number of queries by 1
-                # (to_global_id(GenreNode._meta.name, item1.id),
-                #  to_global_id(GenreNode._meta.name, item2.id))
+        # TODO: switch to use global ids and decrease number of queries by 1
+        # (to_global_id(GenreNode._meta.name, item1.id),
+        #  to_global_id(GenreNode._meta.name, item2.id))
         with self.assertNumQueries(3):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, (Movie.objects
