@@ -15,8 +15,8 @@ class DjangoFilterConnectionField(_DjangoFilterConnectionField):
     Temporary fix for select_related issue
     """
 
-    def __init__(self, node):
-        super(DjangoFilterConnectionField, self).__init__(node, fields=node._meta.filter_fields)
+    def __init__(self, node, **kwargs):
+        super(DjangoFilterConnectionField, self).__init__(node, fields=node._meta.filter_fields, **kwargs)
 
     @staticmethod
     def merge_querysets(default_queryset, queryset):

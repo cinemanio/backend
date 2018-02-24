@@ -2,8 +2,9 @@ import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 
-from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.api.schema.cast import CastNode
+from cinemanio.api.filtersets import MovieFilterSet
+from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.core.models import Movie
 
 
@@ -20,12 +21,6 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
             'sequel_for', 'prequel_for', 'remake_for',
             'imdb', 'kinopoisk',
         )
-        filter_fields = {
-            'year': ['exact'],
-            'genres': ['exact', 'in'],
-            'countries': ['exact', 'in'],
-            'languages': ['exact', 'in'],
-        }
         interfaces = (relay.Node,)
         connection_class = CountableConnectionBase
 
@@ -35,7 +30,7 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
 
 class MovieQuery:
     movie = graphene.relay.Node.Field(MovieNode)
-    movies = DjangoFilterConnectionField(MovieNode)
+    movies = DjangoFilterConnectionField(MovieNode, filterset_class=MovieFilterSet)
 
     def resolve_movie(self, info, **kwargs):
         return MovieNode.get_queryset(info)
