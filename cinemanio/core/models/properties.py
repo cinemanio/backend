@@ -61,6 +61,7 @@ class Country(PropertyModel):
     """
     Country of movie or person
     """
+    code = models.CharField(_('Code'), max_length=2, default='')
 
     class Meta(PropertyModel.Meta):
         verbose_name = _('country')

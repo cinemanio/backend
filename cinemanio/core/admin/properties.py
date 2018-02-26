@@ -37,6 +37,8 @@ class CountryAdmin(PropAdminBase):
     """
     Country admin model
     """
+    list_display = ('id', 'code', 'name', 'name_ru', 'name_en', 'imdb_name', 'kinopoisk_name')
+    list_editable = ('name', 'name_ru', 'name_en', 'code')
 
 
 @register(Language)

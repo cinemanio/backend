@@ -3,7 +3,7 @@ from graphene_django import DjangoObjectType
 
 from cinemanio.core.models import Genre, Language, Country
 
-PROPERTY_FIELDS = ('id', 'name', 'name_en', 'name_ru')
+PROPERTY_FIELDS = ['id', 'name', 'name_en', 'name_ru']
 
 
 class GenreNode(DjangoObjectType):
@@ -21,7 +21,7 @@ class LanguageNode(DjangoObjectType):
 class CountryNode(DjangoObjectType):
     class Meta:
         model = Country
-        only_fields = PROPERTY_FIELDS
+        only_fields = PROPERTY_FIELDS + ['code']
 
 
 class PropertiesQuery:
