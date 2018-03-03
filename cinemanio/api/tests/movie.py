@@ -75,8 +75,8 @@ class MovieQueryTestCase(BaseTestCase):
             {
               movie(id: "%s") {
                 id, title
-                imdb { id, rating, votes }
-                kinopoisk { id, rating, votes, info }
+                imdb { id, rating, votes, url }
+                kinopoisk { id, rating, votes, info, url }
               }
             }
             ''' % to_global_id(MovieNode._meta.name, m.id)
@@ -85,10 +85,12 @@ class MovieQueryTestCase(BaseTestCase):
         self.assertEqual(result['movie']['imdb']['id'], m.imdb.id)
         self.assertEqual(result['movie']['imdb']['rating'], m.imdb.rating)
         self.assertEqual(result['movie']['imdb']['votes'], m.imdb.votes)
+        self.assertEqual(result['movie']['imdb']['url'], m.imdb.url)
         self.assertEqual(result['movie']['kinopoisk']['id'], m.kinopoisk.id)
         self.assertEqual(result['movie']['kinopoisk']['rating'], m.kinopoisk.rating)
         self.assertEqual(result['movie']['kinopoisk']['votes'], m.kinopoisk.votes)
         self.assertEqual(result['movie']['kinopoisk']['info'], m.kinopoisk.info)
+        self.assertEqual(result['movie']['kinopoisk']['url'], m.kinopoisk.url)
 
     def test_movie_without_related_sites(self):
         m = MovieFactory()

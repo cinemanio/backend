@@ -38,16 +38,18 @@ class PersonQueryTestCase(BaseTestCase):
             {
               person(id: "%s") {
                 id, firstName, lastName
-                imdb { id }
-                kinopoisk { id, info }
+                imdb { id, url }
+                kinopoisk { id, info, url }
               }
             }
             ''' % to_global_id(PersonNode._meta.name, p.id)
         with self.assertNumQueries(1):
             result = execute(query)
         self.assertEqual(result['person']['imdb']['id'], p.imdb.id)
+        self.assertEqual(result['person']['imdb']['url'], p.imdb.url)
         self.assertEqual(result['person']['kinopoisk']['id'], p.kinopoisk.id)
         self.assertEqual(result['person']['kinopoisk']['info'], p.kinopoisk.info)
+        self.assertEqual(result['person']['kinopoisk']['url'], p.kinopoisk.url)
 
     def test_person_without_related_sites(self):
         p = PersonFactory()
