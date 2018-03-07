@@ -1,5 +1,4 @@
-import graphene
-from graphene import relay
+from graphene import relay, String
 from graphene_django import DjangoObjectType
 
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
@@ -9,6 +8,9 @@ from cinemanio.core.models import Person
 
 class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
     career = DjangoFilterConnectionField(CastNode)
+    name = String()
+    name_en = String()
+    name_ru = String()
 
     class Meta:
         model = Person
@@ -32,7 +34,7 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
 
 
 class PersonQuery:
-    person = graphene.relay.Node.Field(PersonNode)
+    person = relay.Node.Field(PersonNode)
     persons = DjangoFilterConnectionField(PersonNode)
 
     def resolve_person(self, info, **kwargs):

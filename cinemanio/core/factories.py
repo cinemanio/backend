@@ -50,8 +50,16 @@ class MovieFactory(DjangoModelFactory):
 class PersonFactory(DjangoModelFactory):
     gender = factory.LazyAttribute(lambda o: random.choice([1, 0]))
     country = factory.SubFactory(CountryFactory)
+
     first_name = factory.Faker('sentence', nb_words=1)
     last_name = factory.Faker('sentence', nb_words=1)
+
+    first_name_en = factory.Faker('sentence', nb_words=1)
+    last_name_en = factory.Faker('sentence', nb_words=1)
+
+    first_name_ru = factory.Faker('sentence', nb_words=1)
+    last_name_ru = factory.Faker('sentence', nb_words=1)
+
     date_birth = factory.Faker('past_date', start_date="-60y", tzinfo=None)
     date_death = factory.Faker('past_date', start_date="-60y", tzinfo=None)
 

@@ -27,15 +27,19 @@ class Person(BaseModel):
         get_latest_by = 'id'
 
     @property
-    def full_name(self):
+    def name(self):
         return ' '.join([self.first_name, self.last_name]).strip()
 
     @property
-    def full_name_en(self):
+    def name_en(self):
         return ' '.join([self.first_name_en, self.last_name_en]).strip()
 
+    @property
+    def name_ru(self):
+        return ' '.join([self.first_name_ru, self.last_name_ru]).strip()
+
     def __repr__(self):
-        names = [self.full_name]
-        if get_language() != 'en' and self.full_name != self.full_name_en:
-            names += [self.full_name_en]
+        names = [self.name]
+        if get_language() != 'en' and self.name != self.name_en:
+            names += [self.name_en]
         return ', '.join(names)

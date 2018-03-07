@@ -16,8 +16,11 @@ class PersonQueryTestCase(BaseTestCase):
         query = '''
             {
               person(id: "%s") {
-                id, firstName, lastName, gender
-                dateBirth, dateDeath,
+                id, gender
+                name, firstName, lastName
+                nameEn, firstNameEn, lastNameEn
+                nameRu, firstNameRu, lastNameRu
+                dateBirth, dateDeath
                 country { name }
               }
             }
@@ -25,6 +28,9 @@ class PersonQueryTestCase(BaseTestCase):
         with self.assertNumQueries(1):
             result = execute(query)
         self.assertEqual(result['person']['id'], p_id)
+        self.assertEqual(result['person']['name'], p.name)
+        self.assertEqual(result['person']['nameEn'], p.name_en)
+        self.assertEqual(result['person']['nameRu'], p.name_ru)
         self.assertEqual(result['person']['firstName'], p.first_name)
         self.assertEqual(result['person']['lastName'], p.last_name)
         self.assertEqual(result['person']['gender'], 'A_%s' % p.gender)  # TODO: fix it

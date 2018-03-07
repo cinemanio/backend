@@ -25,7 +25,7 @@ class Cast(models.Model):
             role += ': ' + self.name
         return '{title} - {name} ({role})'.format(
             title=self.movie.title,
-            name=self.person.full_name,
+            name=self.person.name,
             role=role)
 
     def save(self, **kwargs):
