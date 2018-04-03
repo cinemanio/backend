@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         conn_max_age=500,
-        default=config('DJANGO_DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
+        default=config('DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
 }
 
 
