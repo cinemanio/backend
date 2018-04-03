@@ -66,6 +66,10 @@ class PersonFactory(DjangoModelFactory):
     class Meta:
         model = Person
 
+    @factory.post_generation
+    def roles(self, create, extracted, **kwargs):
+        create_m2m_objects(self, create, extracted, 'roles', Role)
+
 
 class CastFactory(DjangoModelFactory):
     movie = factory.SubFactory(MovieFactory)

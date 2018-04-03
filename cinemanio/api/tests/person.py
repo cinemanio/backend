@@ -4,12 +4,12 @@ from cinemanio.api.schema.person import PersonNode
 from cinemanio.api.schema.role import RoleNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import PersonFactory, CastFactory
-from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.sites.imdb.factories import ImdbPersonFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory
 
 
-class PersonQueryTestCase(BaseTestCase):
+class PersonQueryTestCase(ObjectQueryBaseTestCase):
     def test_person(self):
         p = PersonFactory()
         p_id = to_global_id(PersonNode._meta.name, p.id)
@@ -22,10 +22,11 @@ class PersonQueryTestCase(BaseTestCase):
                 nameRu, firstNameRu, lastNameRu
                 dateBirth, dateDeath
                 country { name }
+                roles { name }                
               }
             }
             ''' % p_id
-        with self.assertNumQueries(1):
+        with self.assertNumQueries(2):
             result = execute(query)
         self.assertEqual(result['person']['id'], p_id)
         self.assertEqual(result['person']['name'], p.name)
@@ -37,6 +38,8 @@ class PersonQueryTestCase(BaseTestCase):
         self.assertEqual(result['person']['dateBirth'], p.date_birth.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['dateDeath'], p.date_death.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['country']['name'], p.country.name)
+        self.assertGreater(len(result['person']['roles']), 0)
+        self.assertM2MRel(result['person']['roles'], p.roles)
 
     def test_person_with_related_sites(self):
         p = ImdbPersonFactory(person=KinopoiskPersonFactory().person).person

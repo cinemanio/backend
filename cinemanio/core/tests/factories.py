@@ -15,6 +15,7 @@ class FactoriesTest(BaseTestCase):
         p = PersonFactory()
         self.assertGreater(len(p.first_name), 0)
         self.assertGreater(len(p.last_name), 0)
+        self.assertGreater(p.roles.count(), 0)
         self.assertIsNotNone(p.country)
         self.assertIsNotNone(p.date_birth)
         self.assertIsNotNone(p.date_death)

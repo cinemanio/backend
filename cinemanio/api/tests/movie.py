@@ -4,15 +4,12 @@ from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.role import RoleNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory, CastFactory
-from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.sites.imdb.factories import ImdbMovieFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory
 
 
-class MovieQueryTestCase(BaseTestCase):
-    def assertM2MRel(self, result, queryset, fieldname='name'):
-        self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
-
+class MovieQueryTestCase(ObjectQueryBaseTestCase):
     def test_movie_with_m2m(self):
         m = MovieFactory()
         query = '''

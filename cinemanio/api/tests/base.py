@@ -59,3 +59,8 @@ class ListQueryBaseTestCase(BaseTestCase):
                 self.populated_cursors(cursors, result)
 
         self.assertEqual(len(cursors), self.count)
+
+
+class ObjectQueryBaseTestCase(BaseTestCase):
+    def assertM2MRel(self, result, queryset, fieldname='name'):
+        self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
