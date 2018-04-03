@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
@@ -17,6 +18,7 @@ class Person(BaseModel):
     date_birth = models.DateField(_('Date of birth'), blank=True, null=True)
     date_death = models.DateField(_('Date of death'), blank=True, null=True)
 
+    roles = models.ManyToManyField('Role', verbose_name=_('Roles'))
     country = models.ForeignKey('Country', verbose_name=_('Country of birth'), blank=True, null=True,
                                 on_delete=models.CASCADE)
     movies = models.ManyToManyField('Movie', verbose_name=_('Movies'), through='Cast')
@@ -43,3 +45,10 @@ class Person(BaseModel):
         if get_language() != 'en' and self.name != self.name_en:
             names += [self.name_en]
         return ', '.join(names)
+
+    def set_roles(self):
+        roles = self.career.values('role').annotate(count=Count('role')).order_by('role')
+        total = sum([role['count'] for role in roles])
+        for role in roles:
+            if role['count'] / total > 0.1:
+                self.roles.add(role['role'])

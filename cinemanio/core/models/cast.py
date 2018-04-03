@@ -15,7 +15,7 @@ class Cast(models.Model):
     class Meta:
         verbose_name = _('cast')
         verbose_name_plural = _('cast')
-        ordering = ('role', 'id')
+        ordering = ('role_id', 'id')
         unique_together = ('person', 'movie', 'role')
         get_latest_by = 'id'
 

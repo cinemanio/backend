@@ -61,3 +61,16 @@ class ModelsTest(BaseTestCase):
         self.assertEqual(repr(cast), 'Easy Rider - Jack Nicholson (actor: George Hanson)')
         translation.activate('ru')
         self.assertEqual(repr(cast), 'Беспечный Ездок - Джек Николсон (актер: Джордж Хэнсон)')
+
+    def test_person_roles(self):
+        person = PersonFactory()
+        CastFactory(person=person, role=Role.objects.get_scenarist())
+        for i in range(9):
+            CastFactory(person=person, role=Role.objects.get_actor())
+        person.set_roles()
+        self.assertQuerysetEqual(person.roles.all(), [Role.objects.get_actor().name])
+
+        # exceed threshold
+        CastFactory(person=person, role=Role.objects.get_scenarist())
+        person.set_roles()
+        self.assertQuerysetEqual(person.roles.all(), [Role.objects.get_actor().name, Role.objects.get_scenarist().name])
