@@ -22,7 +22,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
                 nameRu, firstNameRu, lastNameRu
                 dateBirth, dateDeath
                 country { name }
-                roles { name }                
+                roles { name }
               }
             }
             ''' % p_id
