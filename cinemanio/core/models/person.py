@@ -9,6 +9,8 @@ class Person(BaseModel):
     """
     Person model
     """
+    transliteratable_fields = ['first_name', 'last_name']
+
     first_name = models.CharField(_('First name'), max_length=50, db_index=True)
     last_name = models.CharField(_('Last name'), max_length=50, db_index=True)
 
