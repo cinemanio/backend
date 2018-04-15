@@ -1,7 +1,7 @@
 from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.person import PersonNode
-from cinemanio.api.schema.role import RoleNode
+from cinemanio.api.schema.properties import RoleNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import PersonFactory, CastFactory
 from cinemanio.api.tests.base import ObjectQueryBaseTestCase

@@ -1,8 +1,9 @@
 from graphene import relay, String
 from graphene_django import DjangoObjectType
 
-from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.api.schema.cast import CastNode
+from cinemanio.api.filtersets import PersonFilterSet
+from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.core.models import Person
 
 
@@ -23,10 +24,6 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
             'country', 'roles',
             'imdb', 'kinopoisk',
         )
-        filter_fields = {
-            'country': ['exact'],
-            'date_birth': ['year'],
-        }
         interfaces = (relay.Node,)
         connection_class = CountableConnectionBase
 
@@ -36,7 +33,7 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
 
 class PersonQuery:
     person = relay.Node.Field(PersonNode)
-    persons = DjangoFilterConnectionField(PersonNode)
+    persons = DjangoFilterConnectionField(PersonNode, filterset_class=PersonFilterSet)
 
     def resolve_person(self, info, **kwargs):
         return PersonNode.get_queryset(info)
