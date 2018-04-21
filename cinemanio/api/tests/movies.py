@@ -1,11 +1,11 @@
+from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
-# from graphql_relay.node.node import to_global_id
 
-# from cinemanio.api.schema.properties import GenreNode
+from cinemanio.api.tests.base import ListQueryBaseTestCase
+from cinemanio.api.schema.properties import GenreNode
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.models import Movie, Genre, Country, Language
-from cinemanio.api.tests.base import ListQueryBaseTestCase
 
 
 class MoviesQueryTestCase(ListQueryBaseTestCase):
@@ -71,10 +71,10 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-            ''' % (fieldname, item1.id, item2.id)
-        # TODO: switch to use global ids and decrease number of queries by 1
-        # (to_global_id(GenreNode._meta.name, item1.id),
-        #  to_global_id(GenreNode._meta.name, item2.id))
+            ''' % (fieldname,
+                   to_global_id(GenreNode._meta.name, item1.id),
+                   to_global_id(GenreNode._meta.name, item2.id))
+        # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, (Movie.objects
