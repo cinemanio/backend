@@ -40,13 +40,16 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                   node {
                     title, year, runtime
                     prequelFor { id }
-                    ...MovieInfoGenres
-                    ...MovieInfoCountries
-                    ...MovieInfoLanguages
+                    ...MovieShort
                   }
                 }
               }
             }
+            fragment MovieShort on MovieNode {
+              ...MovieInfoGenres
+              ...MovieInfoCountries
+              ...MovieInfoLanguages
+            }            
             fragment MovieInfoGenres on MovieNode {
               genres { name }
             }

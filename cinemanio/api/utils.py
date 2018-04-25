@@ -51,6 +51,7 @@ class DjangoObjectTypeMixin:
         fields_to_select = cls.convert_selections_to_fields(selections, info)
 
         for field_to_select in fields_to_select:
+            field_to_select = to_snake_case(field_to_select)
             if field_to_select in fields:
                 queryset = queryset.select_related(field_to_select)
             if field_to_select in fields_m2m:
@@ -59,15 +60,15 @@ class DjangoObjectTypeMixin:
         return queryset
 
     @classmethod
-    def convert_selections_to_fields(self, selections, info):
+    def convert_selections_to_fields(cls, selections, info):
         fields = []
         for selection in selections:
             if isinstance(selection, FragmentSpread):
-                for fragment_selection in info.fragments[selection.name.value].selection_set.selections:
-                    fields.append(fragment_selection.name.value)
+                fields += cls.convert_selections_to_fields(
+                    info.fragments[selection.name.value].selection_set.selections, info)
             else:
                 fields.append(selection.name.value)
-        return [to_snake_case(field) for field in fields]
+        return fields
 
     @classmethod
     def get_selections(cls, info):
