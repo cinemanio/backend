@@ -19,12 +19,42 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 edges {
                   node {
                     title, year, runtime
+                    prequelFor { id }
                     genres { name }
                     countries { name }
                     languages { name }
                   }
                 }
               }
+            }
+            '''
+        with self.assertNumQueries(5):
+            result = execute(query)
+        self.assertCountNonZeroAndEqual(result, self.count)
+
+    def test_movies_query_fragments(self):
+        query = '''
+            query {
+              movies {
+                edges {
+                  node {
+                    title, year, runtime
+                    prequelFor { id }
+                    ...MovieInfoGenres
+                    ...MovieInfoCountries
+                    ...MovieInfoLanguages
+                  }
+                }
+              }
+            }
+            fragment MovieInfoGenres on MovieNode {
+              genres { name }
+            }
+            fragment MovieInfoCountries on MovieNode {
+              countries { name }
+            }
+            fragment MovieInfoLanguages on MovieNode {
+              languages { name }
             }
             '''
         with self.assertNumQueries(5):
