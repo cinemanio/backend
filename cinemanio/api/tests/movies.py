@@ -49,7 +49,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               ...MovieInfoGenres
               ...MovieInfoCountries
               ...MovieInfoLanguages
-            }            
+            }
             fragment MovieInfoGenres on MovieNode {
               genres { name }
             }
