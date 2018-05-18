@@ -2,6 +2,7 @@ from django.db.models import Q
 from alphabet_detector import AlphabetDetector
 
 from cinemanio.core.models import Movie, Genre, Country, Role, Cast
+from cinemanio.images.models import Image, ImageWrongType
 
 from kinopoisk.movie import Movie as KinoMovie
 from kinopoisk.person import Person as KinoPerson
@@ -17,6 +18,16 @@ class SyncBase:
             self._remote_obj = self.model(id=self.id)
         return self._remote_obj
 
+    def sync_image(self, url, instance, **kwargs):
+        try:
+            downloaded = Image.objects.get_or_download_for_object(url, instance, **kwargs)[1]
+            if downloaded:
+                self.logger.info(f'Image "{url}" downloaded for {instance} successfully')
+            else:
+                self.logger.info(f'Found already downloaded image "{url}" for {instance}')
+        except ImageWrongType:
+            self.logger.error(f'Error saving image. Need jpeg, not "{url}"')
+
 
 class PersonSyncMixin(SyncBase):
     """
@@ -30,7 +41,12 @@ class PersonSyncMixin(SyncBase):
         self.info = self.remote_obj.information
 
     def sync_images(self):
-        pass
+        self.remote_obj.get_content('photos')
+
+        for url in self.remote_obj.photos:
+            self.sync_image(url, self.person, type=Image.PHOTO)
+
+        self.logger.info(f'{len(self.remote_obj.photos)} photos imported successfully for person {self.person}')
 
     def sync_trailers(self):
         pass
@@ -154,7 +170,12 @@ class MovieSyncMixin(SyncBase):
         return ids
 
     def sync_images(self):
-        pass
+        self.remote_obj.get_content('posters')
+
+        for url in self.remote_obj.posters:
+            self.sync_image(url, self.movie, type=Image.POSTER)
+
+        self.logger.info(f'{len(self.remote_obj.posters)} posters imported successfully for movie {self.movie}')
 
     def sync_trailers(self):
         pass

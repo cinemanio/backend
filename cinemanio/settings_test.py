@@ -12,3 +12,5 @@ DATABASES = {
         'NAME': join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'cinemanio.core',
     'cinemanio.users',
     'cinemanio.relations',
+    'cinemanio.images',
     'cinemanio.api',
     'cinemanio.sites',
     'cinemanio.sites.imdb',
@@ -156,6 +157,8 @@ STATICFILES_DIRS = ()
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # celery
 CELERY_HOST = '127.0.0.1'

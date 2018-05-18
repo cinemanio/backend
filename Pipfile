@@ -31,6 +31,9 @@ dj-database-url = "*"
 python-decouple = "*"
 gunicorn = "*"
 whitenoise = "*"
+pillow = "*"
+django-storages = "*"
+sorl-thumbnail = "*"
 
 
 [dev-packages]
