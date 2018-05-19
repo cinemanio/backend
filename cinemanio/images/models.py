@@ -115,16 +115,12 @@ class Image(models.Model):
     type = models.PositiveIntegerField(_('Type'), choices=TYPE_CHOICES, null=True, db_index=True)
     original = ImageField(_('Original'), upload_to='images')
 
-    source = models.CharField(_('Source'), max_length=100, default='')
-    source_type = models.CharField(_('Type of source'), choices=SOURCE_TYPE_CHOICES, max_length=20, null=True)
-    source_id = models.CharField(_('Source ID'), max_length=300, null=True)
+    source = models.CharField(_('Source'), max_length=100, default='', blank=True)
+    source_type = models.CharField(_('Type of source'), choices=SOURCE_TYPE_CHOICES, max_length=20, null=True,
+                                   blank=True)
+    source_id = models.CharField(_('Source ID'), max_length=300, null=True, blank=True)
 
     objects = ImageManager()
-
-    FULL_CARD_SIZE = (100, 140)
-    SHORT_CARD_SIZE = (42, 58)
-    DETAIL_SIZE = (180, 255)
-    ICON_SIZE = (30, 40)
 
     class Meta:
         verbose_name = _('image')
@@ -133,24 +129,13 @@ class Image(models.Model):
         unique_together = ('source_type', 'source_id')
         ordering = ('-id',)
 
-    @property
-    def full_card(self):
-        return self.get_thumbnail(*self.FULL_CARD_SIZE)
-
-    @property
-    def short_card(self):
-        return self.get_thumbnail(*self.SHORT_CARD_SIZE)
-
-    @property
-    def detail(self):
-        return self.get_thumbnail(*self.DETAIL_SIZE)
-
-    @property
-    def icon(self):
-        return self.get_thumbnail(*self.ICON_SIZE)
+    DETAIL_SIZE = (180, 255)
+    FULL_CARD_SIZE = (100, 140)
+    SHORT_CARD_SIZE = (42, 58)
+    ICON_SIZE = (30, 40)
 
     def get_thumbnail(self, width, height):
-        return get_thumbnail(self.original, f'{width}x{height}', crop='center', upscale=True).name
+        return get_thumbnail(self.original, f'{width}x{height}', crop='center', upscale=True)
 
 
 class ImageLink(models.Model):

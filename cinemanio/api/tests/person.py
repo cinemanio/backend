@@ -107,5 +107,8 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             result = execute(query)
         self.assertEqual(len(result['person']['career']['edges']), p.career.filter(role=cast.role).count())
 
-    def test_movie_with_images(self):
+    def test_person_with_images(self):
         self.assertImages(Image.PHOTO)
+
+    def test_person_photo(self):
+        self.assertRandomImage(Image.PHOTO, 'photo')

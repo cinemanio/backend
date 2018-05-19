@@ -17,7 +17,7 @@ class ImagesTestCase(VCRMixin, BaseTestCase):
         url = '//st.kp.yandex.net/im/poster/4/8/3/kinopoisk.ru-Les-amants-r_26_23233_3Bguliers-483294.jpg'
         movie = MovieFactory()
 
-        image1, downloaded = movie.images.get_or_download(url, type=Image.POSTER)
+        image1, downloaded = movie.images.get_or_download(url)
 
         self.assertEqual(downloaded, True)
         self.assertEqual(image1.image.source, 'st.kp.yandex.net')
@@ -40,5 +40,6 @@ class ImagesTestCase(VCRMixin, BaseTestCase):
         self.assertEqual(link.image.source, 'upload.wikimedia.org')
         self.assertEqual(link.image.source_type, 'wikicommons')
         self.assertEqual(link.image.source_id, 'Francis_Ford_Coppola_2007_crop.jpg')
+        self.assertEqual(link.image.type, Image.PHOTO)
         self.assertEqual(link.object, person)
         self.assertEqual(link, person.images.last())

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'silk',
     'sorl.thumbnail',
+    'storages',
 
     # cinemanio apps
     'cinemanio.core',
@@ -159,7 +160,13 @@ STATICFILES_DIRS = ()
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+# Amazon S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 
 # celery
 CELERY_HOST = '127.0.0.1'

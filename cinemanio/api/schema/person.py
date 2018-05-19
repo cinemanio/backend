@@ -1,4 +1,4 @@
-from graphene import relay, String
+from graphene import relay, String, Field
 from graphene_django import DjangoObjectType
 
 from cinemanio.api.schema.mixins import ImagesMixin
@@ -6,10 +6,12 @@ from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import PersonFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.core.models import Person
+from cinemanio.api.schema.image import ImageNode
 
 
 class PersonNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
     career = DjangoFilterConnectionField(CastNode)
+    photo = Field(ImageNode)
     name = String()
     name_en = String()
     name_ru = String()
@@ -30,6 +32,9 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
 
     def resolve_career(self, info, *args, **kwargs):
         return CastNode.get_queryset(info).filter(person=self)
+
+    def resolve_photo(self, info, *args, **kwargs):
+        return PersonNode.get_random_image(self, ImageNode._meta.model.PHOTO)
 
 
 class PersonQuery:

@@ -34,6 +34,7 @@ whitenoise = "*"
 pillow = "*"
 django-storages = "*"
 sorl-thumbnail = "*"
+"boto3" = "*"
 
 
 [dev-packages]

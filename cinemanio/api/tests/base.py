@@ -1,4 +1,5 @@
 from graphql_relay.node.node import to_global_id
+from sorl.thumbnail.models import KVStore
 
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.tests.base import BaseTestCase
@@ -75,7 +76,7 @@ class ObjectQueryBaseTestCase(BaseTestCase):
     def assertImages(self, image_type):
         m = self.factory()
         for i in range(100):
-            ImageLinkFactory(object=m, image__type=image_type, image__original='absolute_path')
+            ImageLinkFactory(object=m, image__type=image_type)
         query = '''
             {
               %s(id: "%s") {
@@ -97,10 +98,47 @@ class ObjectQueryBaseTestCase(BaseTestCase):
               }
             }
             ''' % (self.type, to_global_id(self.node._meta.name, m.id))
-        with self.assertNumQueries(3 + 4):
+        # TODO: reduce number of queries
+        with self.assertNumQueries(3 + (4 * 100)):
             result = execute(query)
         self.assertEqual(len(result[self.type]['images']['edges']), m.images.count())
         first = result[self.type]['images']['edges'][0]['node']['image']
         self.assertEqual(first['type'], f'A_{image_type}')  # TODO: fix that
-        self.assertEqual(first['original'], 'absolute_path')
+        self.assertTrue(len(first['original']) > 0)
         self.assertTrue(len(first['icon']) > 0)
+
+    def assertRandomImage(self, image_type, field):
+        m = self.factory()
+        query = '''
+            {
+              %s(id: "%s") {
+                id
+                %s {
+                  type
+                  original
+                  fullCard
+                  shortCard
+                  detail
+                  icon
+                }
+              }
+            }
+            ''' % (self.type, to_global_id(self.node._meta.name, m.id), field)
+
+        # no images
+        with self.assertNumQueries(3):
+            result_nothing = execute(query)
+        self.assertEqual(result_nothing[self.type][field], None)
+
+        # images
+        for i in range(100):
+            ImageLinkFactory(object=m, image__type=image_type)
+
+        with self.assertNumQueries(3 + 4):
+            result = execute(query)
+        self.assertEqual(result[self.type][field]['type'], f'A_{image_type}')  # TODO: fix that
+        self.assertTrue(len(result[self.type][field]['original']) > 0)
+
+        # try again and compare
+        result_another = execute(query)
+        self.assertNotEqual(result[self.type][field]['original'], result_another[self.type][field]['original'])

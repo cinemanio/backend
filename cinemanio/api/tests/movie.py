@@ -138,3 +138,6 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
 
     def test_movie_with_images(self):
         self.assertImages(Image.POSTER)
+
+    def test_movie_poster(self):
+        self.assertRandomImage(Image.POSTER, 'poster')

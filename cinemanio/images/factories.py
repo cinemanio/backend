@@ -5,6 +5,8 @@ from cinemanio.images.models import Image, ImageLink
 
 
 class ImageFactory(DjangoModelFactory):
+    original = factory.Faker('file_name', category=None, extension=None)
+
     class Meta:
         model = Image
 
