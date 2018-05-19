@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'graphene_django',
     'silk',
+    'sorl.thumbnail',
 
     # cinemanio apps
     'cinemanio.core',

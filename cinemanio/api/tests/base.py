@@ -1,5 +1,8 @@
+from graphql_relay.node.node import to_global_id
+
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.images.factories import ImageLinkFactory
 
 
 class ListQueryBaseTestCase(BaseTestCase):
@@ -19,7 +22,7 @@ class ListQueryBaseTestCase(BaseTestCase):
         for cursor in result[self.type]['edges']:
             cursors.add(cursor['cursor'])
 
-    def assert_pagination(self):
+    def assertPagination(self):
         query = '''
             {
               %s(first: 10, after: "%s") {
@@ -62,5 +65,42 @@ class ListQueryBaseTestCase(BaseTestCase):
 
 
 class ObjectQueryBaseTestCase(BaseTestCase):
+    factory = None
+    type = None
+    node = None
+
     def assertM2MRel(self, result, queryset, fieldname='name'):
         self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
+
+    def assertImages(self, image_type):
+        m = self.factory()
+        for i in range(100):
+            ImageLinkFactory(object=m, image__type=image_type, image__original='absolute_path')
+        query = '''
+            {
+              %s(id: "%s") {
+                id
+                images {
+                  edges {
+                    node {
+                      image {
+                        type
+                        original
+                        fullCard
+                        shortCard
+                        detail
+                        icon
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            ''' % (self.type, to_global_id(self.node._meta.name, m.id))
+        with self.assertNumQueries(3 + 4):
+            result = execute(query)
+        self.assertEqual(len(result[self.type]['images']['edges']), m.images.count())
+        first = result[self.type]['images']['edges'][0]['node']['image']
+        self.assertEqual(first['type'], f'A_{image_type}')  # TODO: fix that
+        self.assertEqual(first['original'], 'absolute_path')
+        self.assertTrue(len(first['icon']) > 0)

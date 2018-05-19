@@ -20,7 +20,7 @@ class SyncBase:
 
     def sync_image(self, url, instance, **kwargs):
         try:
-            downloaded = Image.objects.get_or_download_for_object(url, instance, **kwargs)[1]
+            downloaded = instance.images.get_or_download(url, **kwargs)[1]
             if downloaded:
                 self.logger.info(f'Image "{url}" downloaded for {instance} successfully')
             else:

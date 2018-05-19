@@ -1,13 +1,14 @@
 from graphene import relay, String
 from graphene_django import DjangoObjectType
 
+from cinemanio.api.schema.mixins import ImagesMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import PersonFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.core.models import Person
 
 
-class PersonNode(DjangoObjectTypeMixin, DjangoObjectType):
+class PersonNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
     career = DjangoFilterConnectionField(CastNode)
     name = String()
     name_en = String()

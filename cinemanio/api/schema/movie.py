@@ -2,13 +2,14 @@ import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 
+from cinemanio.api.schema.mixins import ImagesMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import MovieFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
 from cinemanio.core.models import Movie
 
 
-class MovieNode(DjangoObjectTypeMixin, DjangoObjectType):
+class MovieNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
     cast = DjangoFilterConnectionField(CastNode)
 
     class Meta:

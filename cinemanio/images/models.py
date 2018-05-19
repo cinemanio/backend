@@ -1,21 +1,50 @@
 import time
-from urllib.request import urlopen
 from urllib.parse import urlparse
+from urllib.request import urlopen
 
 import re
-from django.core.files.base import ContentFile
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail.fields import ImageField
+from sorl.thumbnail import get_thumbnail
 
 from cinemanio.core.models import Movie, Person
 
 
-class ImageWrongType(TypeError):
+class ImageWrongType(Exception):
     pass
+
+
+class ImageLinkManager(models.Manager):
+    def get_or_download(self, url, **kwargs):
+        """
+        Try to get already downloaded or download image using self.download() method
+        Return tuple with image_link instance and boolean flag equal True if image was downloaded
+        """
+        assert self.instance, "Manager method should be called: instance.images.get_or_download()"
+
+        image = Image.objects.get_image_from_url(url=url)
+        if image.id:
+            image_link = self.get_or_create(image=image, object_id=self.instance.id,
+                                            content_type=ContentType.objects.get_for_model(self.instance))[0]
+            return image_link, False
+        else:
+            image_link = self.download(url, **kwargs)
+            return image_link, True
+
+    def download(self, url, **kwargs):
+        """
+        Download image and link it to self.instance
+        """
+        assert self.instance, "Manager method should be called: instance.images.download()"
+
+        image = Image.objects.download(url, **kwargs)
+        image_link = self.model(image=image, object=self.instance)
+        image_link.save()
+        return image_link
 
 
 class ImageManager(models.Manager):
@@ -46,7 +75,6 @@ class ImageManager(models.Manager):
         if not image.id:
             image.__dict__.update(kwargs)
 
-            # download url and save to image
             if 'http' not in url:
                 url = 'http:' + url
             image.source = urlparse(url).netloc
@@ -60,60 +88,6 @@ class ImageManager(models.Manager):
             image.original.save(name, ContentFile(f.read()))
 
         return image
-
-    # def upload(self, uploaded_image, **kwargs):
-    #     """
-    #     Handle file uploaded from user's PC
-    #     """
-    #     image = self.model()
-    #     image.__dict__.update(kwargs)
-    #
-    #     image.original.name = image_original_upload_to(uploaded_image.name)
-    #     file = image.get_original_path()
-    #
-    #     fd = open(file, 'wb+')
-    #     for chunk in uploaded_image.chunks():
-    #         fd.write(chunk)
-    #     fd.close()
-    #
-    #     image.save()
-    #     return image
-
-    def get_or_download_for_object(self, url, object, **kwargs):
-        """
-        Try to get already downloaded or download image using self.download_for_object() method
-        Return tuple with image_link instance and boolean flag equal True if image was downloaded
-        """
-        image = self.get_image_from_url(url=url)
-        if image.id:
-            image_link = ImageLink.objects.get_or_create(image=image, object_id=object.id,
-                                                         content_type=ContentType.objects.get_for_model(object))[0]
-            return image_link, False
-        else:
-            image_link = self.download_for_object(url, object, **kwargs)
-            return image_link, True
-
-    def download_for_object(self, url, object, **kwargs):
-        """
-        Download image and link it to object by ImageLink
-        """
-        image = self.download(url, **kwargs)
-        image_link = ImageLink(image=image, object=object)
-        image_link.save()
-        return image_link
-
-    # def upload_for_object(self, uploaded_image, object, **kwargs):
-    #     """
-    #     Upload image like self.upload() and link it to object by creating ImageLink connection
-    #     """
-    #     image = self.upload(uploaded_image, **kwargs)
-    #     image_link = ImageLink(image=image, object=object)
-    #     image_link.save()
-    #     return image_link
-
-
-def image_original_upload_to(filename=None):
-    return 'images/%f.jpg' % time.time()
 
 
 class Image(models.Model):
@@ -138,7 +112,7 @@ class Image(models.Model):
     }
     SOURCE_TYPE_CHOICES = [(k, k) for k in SOURCE_REGEXP.keys()]
 
-    type = models.PositiveIntegerField(_('Type'), choices=TYPE_CHOICES, default=0, db_index=True)
+    type = models.PositiveIntegerField(_('Type'), choices=TYPE_CHOICES, null=True, db_index=True)
     original = ImageField(_('Original'), upload_to='images')
 
     source = models.CharField(_('Source'), max_length=100, default='')
@@ -147,9 +121,10 @@ class Image(models.Model):
 
     objects = ImageManager()
 
-    # card_dimensions = (100, 140)
-    # detail_dimensions = (180, 240)
-    # small_dimensions = (30, 40)
+    FULL_CARD_SIZE = (100, 140)
+    SHORT_CARD_SIZE = (42, 58)
+    DETAIL_SIZE = (180, 255)
+    ICON_SIZE = (30, 40)
 
     class Meta:
         verbose_name = _('image')
@@ -158,54 +133,24 @@ class Image(models.Model):
         unique_together = ('source_type', 'source_id')
         ordering = ('-id',)
 
-    # @property
-    # def card(self):
-    #     return self.get_thumbnail_url(self.card_dimensions)
-    #
-    # @property
-    # def detail(self):
-    #     return self.get_thumbnail_url(self.detail_dimensions)
-    #
-    # @property
-    # def small(self):
-    #     return self.get_thumbnail_url(self.small_dimensions)
-    #
-    # def get_thumbnail_url(self, dimensions):
-    #     try:
-    #         return settings.MEDIA_URL + get_thumbnail(self.original, 'x'.join(map(str, dimensions)),
-    #                                                   crop='center',
-    #                                                   upscale=True).name
-    #     except OverflowError:
-    #         return None
-    #
-    # def check_original(self):
-    #     # TODO: если заливается через админскую форму, то пути не существует и можно заливать gif и png
-    #     # нужно сделать проверку, чтобы только jpg
-    #     file = self.get_original_path()
-    #     if os.path.exists(file):
-    #         try:
-    #             im = PIL.Image.open(file)
-    #             assert im.format == 'JPEG'
-    #         except AssertionError:
-    #             os.remove(file)
-    #             raise ImageWrongType(_('Image file must be in jpeg format'))
-    #
-    # def get_original(self):
-    #     return getattr(settings, 'MEDIA_URL') + self.original.name
-    #
-    # def get_original_path(self):
-    #     return os.path.join(getattr(settings, 'MEDIA_ROOT'), self.original.name)
-    #
-    # def get_original_size(self):
-    #     return os.path.getsize(self.get_original_path())
-    #
-    # def save(self, **kwargs):
-    #     u"""
-    #     Перед первым сохранением проверяем изображение на требования
-    #     """
-    #     if not self.id:
-    #         self.check_original()
-    #     super(Image, self).save(**kwargs)
+    @property
+    def full_card(self):
+        return self.get_thumbnail(*self.FULL_CARD_SIZE)
+
+    @property
+    def short_card(self):
+        return self.get_thumbnail(*self.SHORT_CARD_SIZE)
+
+    @property
+    def detail(self):
+        return self.get_thumbnail(*self.DETAIL_SIZE)
+
+    @property
+    def icon(self):
+        return self.get_thumbnail(*self.ICON_SIZE)
+
+    def get_thumbnail(self, width, height):
+        return get_thumbnail(self.original, f'{width}x{height}', crop='center', upscale=True).name
 
 
 class ImageLink(models.Model):
@@ -218,6 +163,8 @@ class ImageLink(models.Model):
     object_id = models.PositiveIntegerField(db_index=True)
     object = GenericForeignKey()
 
+    objects = ImageLinkManager()
+
     class Meta:
         verbose_name = _('image link')
         verbose_name_plural = _('image links')
@@ -225,7 +172,7 @@ class ImageLink(models.Model):
         get_latest_by = 'id'
 
     def __repr__(self):
-        return self.object
+        return f'ImageLink: {self.object}'
 
 
 Movie.add_to_class('images', GenericRelation(ImageLink, verbose_name=_('Images')))
