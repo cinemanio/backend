@@ -73,18 +73,16 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
 
     def test_add_posters_to_movie(self):
         kp_movie = KinopoiskMovieFactory(id=161018)  # Les amants réguliers
-        movie = kp_movie.movie
         kp_movie.sync_images()
-        self.assertEqual(movie.images.count(), 2)
+        self.assertEqual(kp_movie.movie.images.count(), 2)
 
         # delete one and sync again
-        movie.images.last().image.delete()
-        self.assertEqual(movie.images.count(), 1)
+        kp_movie.movie.images.last().image.delete()
+        self.assertEqual(kp_movie.movie.images.count(), 1)
         kp_movie.sync_images()
-        self.assertEqual(movie.images.count(), 2)
+        self.assertEqual(kp_movie.movie.images.count(), 2)
 
     def test_add_photos_to_person(self):
         kp_person = KinopoiskPersonFactory(id=129095)
-        person= kp_person.person
         kp_person.sync_images()
-        self.assertEqual(person.images.count(), 1)
+        self.assertEqual(kp_person.person.images.count(), 1)
