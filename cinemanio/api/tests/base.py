@@ -1,4 +1,5 @@
-from collections import namedtuple
+from recordclass import recordclass
+from graphql_jwt.shortcuts import get_token
 
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.users.factories import UserFactory
@@ -8,11 +9,13 @@ from cinemanio.schema import schema
 class QueryBaseTestCase(BaseTestCase):
     user = None
     password = 'secret'
-    Context = namedtuple('Context', ['user'])
+    Context = recordclass('Request', ['user', 'META'])
 
-    @property
-    def context(self):
-        return self.Context(user=self.user)
+    def get_context(self, user=None):
+        if user is None:
+            return self.Context(user=None, META={})
+        token = get_token(user)
+        return self.Context(user=user, META={'HTTP_AUTHORIZATION': f'JWT {token}'})
 
     def create_user(self, **kwargs):
         self.user = UserFactory(username='user', **kwargs)
@@ -20,7 +23,7 @@ class QueryBaseTestCase(BaseTestCase):
         self.user.save()
 
     def execute(self, query, values=None, context=None):
-        result = schema.execute(query, variable_values=values, context_value=context or self.context)
+        result = schema.execute(query, variable_values=values, context_value=context or self.get_context(self.user))
         assert not result.errors, result.errors
         return result.data
 

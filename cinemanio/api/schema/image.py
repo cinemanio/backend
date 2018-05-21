@@ -16,19 +16,19 @@ class ImageNode(DjangoObjectTypeMixin, DjangoObjectType):
         only_fields = ('type', 'original')
         use_connection = True
 
-    def resolve_original(self, **_):
+    def resolve_original(self, _, **__):
         return self.original.url
 
-    def resolve_full_card(self, **_):
+    def resolve_full_card(self, _, **__):
         return self.get_thumbnail(*Image.FULL_CARD_SIZE).url
 
-    def resolve_short_card(self, **_):
+    def resolve_short_card(self, _, **__):
         return self.get_thumbnail(*Image.SHORT_CARD_SIZE).url
 
-    def resolve_detail(self, **_):
+    def resolve_detail(self, _, **__):
         return self.get_thumbnail(*Image.DETAIL_SIZE).url
 
-    def resolve_icon(self, **_):
+    def resolve_icon(self, _, **__):
         return self.get_thumbnail(*Image.ICON_SIZE).url
 
 

@@ -37,7 +37,7 @@ class PaginationQueryTestCase(ListQueryBaseTestCase):
         # TODO: remove one extra SELECT COUNT(*) AS "__count" FROM "core_movie"
         with self.assertNumQueries(3):
             result = self.execute(query, dict(after=''))
-        self.assertCountNonZeroAndEqual(result[query_name], 10)
+        self.assert_count_equal(result[query_name], 10)
         self.assertEqual(result[query_name]['totalCount'], 100)
 
         cursors = set()
@@ -52,7 +52,7 @@ class PaginationQueryTestCase(ListQueryBaseTestCase):
             else:
                 with self.assertNumQueries(3):
                     result = self.execute(query, values)
-                self.assertCountNonZeroAndEqual(result[query_name], 10)
+                self.assert_count_equal(result[query_name], 10)
                 self.populated_cursors(cursors, result[query_name])
 
         self.assertEqual(len(cursors), 100)

@@ -21,7 +21,7 @@ class RelationsMixin:
         except (AttributeError, IndexError):
             return empty
 
-    def resolve_relations_count(self, **_):
+    def resolve_relations_count(self, _, **__):
         try:
             return self.relations_count
         except ObjectDoesNotExist:

@@ -1,9 +1,12 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [packages]
+
 django = "==2.0.5"
 django-debug-toolbar = "*"
 django-extensions = "*"
@@ -35,12 +38,15 @@ sorl-thumbnail = "*"
 lxml = "==4.1.1"
 django-graphql-jwt = "*"
 
+
 [dev-packages]
+
 ipython = "*"
 ipdb = "*"
 vcrpy-unittest = "*"
 parameterized = "*"
 factory-boy = "*"
+recordclass = "*"
 coveralls = "*"
 prospector = "*"
 "flake8" = "*"
@@ -48,5 +54,7 @@ pylint-django = "*"
 pycodestyle = "==2.3.1"
 pydot = "*"
 
+
 [requires]
+
 python_version = "3.6.4"

@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class RelationsTestMixin:
-    def assert_relations(self, rel, codes):
+    def assert_relation(self, rel, codes):
         for code in rel.codes:
             value = getattr(rel, code)
             if code in codes:
@@ -21,42 +21,42 @@ class RelationsTestMixin:
 class RelationsFieldsTest(TestCase, RelationsTestMixin):
     def test_relation_change_method(self):
         rel = MovieRelationFactory()
-        self.assert_relations(rel, [])
+        self.assert_relation(rel, [])
         rel.change('like')
-        self.assert_relations(rel, ['seen', 'like'])
+        self.assert_relation(rel, ['seen', 'like'])
 
     def test_movie_relation_change_fav(self):
         rel = MovieRelationFactory(fav=True, like=True, seen=True)
-        self.assert_relations(rel, ['fav', 'seen', 'like'])
+        self.assert_relation(rel, ['fav', 'seen', 'like'])
         rel.change('fav')
-        self.assert_relations(rel, ['seen', 'like'])
+        self.assert_relation(rel, ['seen', 'like'])
 
     def test_movie_relation_fields(self):
         rel = MovieRelationFactory()
-        self.assert_relations(rel, [])
+        self.assert_relation(rel, [])
         rel.fav = True
-        self.assert_relations(rel, ['fav', 'seen', 'like'])
+        self.assert_relation(rel, ['fav', 'seen', 'like'])
         rel.fav = False
-        self.assert_relations(rel, ['seen', 'like'])
+        self.assert_relation(rel, ['seen', 'like'])
         rel.seen = False
-        self.assert_relations(rel, [])
+        self.assert_relation(rel, [])
         rel.fav = True
-        self.assert_relations(rel, ['seen', 'like', 'fav'])
+        self.assert_relation(rel, ['seen', 'like', 'fav'])
         rel.dislike = True
-        self.assert_relations(rel, ['seen', 'dislike'])
+        self.assert_relation(rel, ['seen', 'dislike'])
 
     def test_person_relation_fields(self):
         rel = PersonRelationFactory()
-        self.assert_relations(rel, [])
+        self.assert_relation(rel, [])
         rel.fav = True
-        self.assert_relations(rel, ['fav', 'like'])
+        self.assert_relation(rel, ['fav', 'like'])
         rel.dislike = True
-        self.assert_relations(rel, ['dislike'])
+        self.assert_relation(rel, ['dislike'])
         rel.like = True
-        self.assert_relations(rel, ['like'])
+        self.assert_relation(rel, ['like'])
         rel.fav = True
         rel.like = False
-        self.assert_relations(rel, [])
+        self.assert_relation(rel, [])
 
 
 class RelationsTest(TestCase):

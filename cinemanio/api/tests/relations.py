@@ -109,7 +109,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         rel = relation.objects.last()
         self.assertEqual(rel.object, instance)
         self.assertEqual(rel.user, self.user)
-        self.assertRelation(rel, codes)
+        self.assert_relation(rel, codes)
 
         for code in rel.codes:
             count = getattr(instance.relations_count, code)
@@ -150,7 +150,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         fav_codes = codes + ['fav']
         rel = self.create_relation(factory, **{code: True for code in fav_codes})
         self.assertEqual(relation.objects.count(), 1)
-        self.assertRelation(rel, fav_codes)
+        self.assert_relation(rel, fav_codes)
 
         with self.assertNumQueries(4 + queries_count):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
@@ -203,7 +203,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         with self.assertNumQueries(1):
             result = self.execute(self.object_relation_query % self.get_object_vars(rel),
                                   dict(id=to_global_id(node._meta.name, rel.object.id)),
-                                  self.Context(user=None))
+                                  self.get_context())
 
         self.assert_unauth_response_relation_and_counts(result[query_name]['relation'],
                                                         result[query_name]['relationsCount'], rel, codes)
@@ -255,7 +255,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         with self.assertNumQueries(2):
             result = self.execute(self.objects_relation_query % self.get_objects_vars(rel),
                                   None,
-                                  self.Context(user=None))
+                                  self.get_context())
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:
