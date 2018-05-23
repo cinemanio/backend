@@ -1,12 +1,13 @@
 from django.contrib import admin
 from django.contrib.admin import register, TabularInline
 
+from cinemanio.core.admin import get_registered_admin_class
 from cinemanio.core.models import Movie, Person
 from cinemanio.sites.imdb.models import ImdbMovie, ImdbPerson
 from cinemanio.sites.kinopoisk.models import KinopoiskMovie, KinopoiskPerson
 
-MovieAdmin = admin.site._registry[Movie].__class__
-PersonAdmin = admin.site._registry[Person].__class__
+MovieAdmin = get_registered_admin_class(Movie)
+PersonAdmin = get_registered_admin_class(Person)
 admin.site.unregister(Movie)
 admin.site.unregister(Person)
 

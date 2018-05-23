@@ -63,9 +63,9 @@ class AdminTest(AdminBaseTest):
             CastFactory(movie=m)
             ImageLinkFactory(object=m)
 
-        # TODO: fix request for each movie in role
-        # with self.assertNumQueries(20):
-        response = self.client.get(reverse('admin:core_movie_change', args=(m.id,)))
+        # TODO: prefetch thumbnails with one extra query
+        with self.assertNumQueries(17 + 100):
+            response = self.client.get(reverse('admin:core_movie_change', args=(m.id,)))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Imdb movies')
         self.assertContains(response, 'Kinopoisk movies')
@@ -77,11 +77,11 @@ class AdminTest(AdminBaseTest):
         ImdbPersonFactory(person=p)
         KinopoiskPersonFactory(person=p)
         for i in range(100):
-            # CastFactory(person=p)
+            CastFactory(person=p)
             ImageLinkFactory(object=p)
 
-        # TODO: fix request for each movie in role
-        with self.assertNumQueries(20):
+        # TODO: prefetch thumbnails with one extra query
+        with self.assertNumQueries(12 + 100):
             response = self.client.get(reverse('admin:core_person_change', args=(p.id,)))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Imdb persons')

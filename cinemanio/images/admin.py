@@ -3,12 +3,13 @@ from django.contrib.admin import register
 from django.contrib.contenttypes.admin import GenericTabularInline
 from reversion.admin import VersionAdmin
 
+from cinemanio.core.admin import get_registered_admin_class
 from cinemanio.core.models import Movie, Person
 from cinemanio.images.models import Image, ImageLink
 from cinemanio.images.forms import ImageInlineForm
 
-MovieAdmin = admin.site._registry[Movie].__class__
-PersonAdmin = admin.site._registry[Person].__class__
+MovieAdmin = get_registered_admin_class(Movie)
+PersonAdmin = get_registered_admin_class(Person)
 admin.site.unregister(Movie)
 admin.site.unregister(Person)
 
@@ -30,8 +31,6 @@ class ImageLinkAdmin(VersionAdmin):
 class ImagesInline(GenericTabularInline):
     classes = ('collapse', 'collapsed',)
     model = ImageLink
-    raw_id_fields = ('image',)
-    # readonly_fields = ('image',)
     form = ImageInlineForm
     extra = 0
 

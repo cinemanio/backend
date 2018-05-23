@@ -1,7 +1,8 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from cinemanio.images.widgets import AdminImagePreviewWidget, ForeignKeyRawIdWidget1
+from cinemanio.core.admin.widgets import FastForeignKeyRawIdWidget
+from cinemanio.images.widgets import AdminImagePreviewWidget
 from cinemanio.images.models import Image
 
 
@@ -13,7 +14,9 @@ class ImageInlineForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['image'].required = False
-        self.fields['image'].widget = ForeignKeyRawIdWidget1(self._meta.model._meta.get_field('image').related_model)
+        self.fields['image'].widget = FastForeignKeyRawIdWidget(self._meta.model._meta.get_field('image').remote_field,
+                                                                instance=self.instance, field='image')
+
         try:
             image = self.instance.image
         except Image.DoesNotExist:

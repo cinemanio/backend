@@ -1,3 +1,5 @@
+from django.contrib import admin
+
 from .movie import MovieAdmin
 from .person import PersonAdmin
 from .properties import GenreAdmin, LanguageAdmin, CountryAdmin
@@ -8,4 +10,9 @@ __all__ = [
     'GenreAdmin',
     'LanguageAdmin',
     'CountryAdmin',
+    'get_registered_admin_class',
 ]
+
+
+def get_registered_admin_class(model):
+    return admin.site._registry[model].__class__
