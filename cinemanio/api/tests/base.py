@@ -1,5 +1,4 @@
 from graphql_relay.node.node import to_global_id
-from sorl.thumbnail.models import KVStore
 
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.tests.base import BaseTestCase
