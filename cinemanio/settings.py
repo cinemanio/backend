@@ -54,12 +54,12 @@ INSTALLED_APPS = [
     'cinemanio.core',
     'cinemanio.users',
     'cinemanio.relations',
-    'cinemanio.images',
     'cinemanio.api',
     'cinemanio.sites',
     'cinemanio.sites.imdb',
     'cinemanio.sites.kinopoisk',
     'cinemanio.sites.wikipedia',
+    'cinemanio.images',
 ]
 
 MIDDLEWARE = [
