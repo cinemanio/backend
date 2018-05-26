@@ -74,7 +74,7 @@ class ObjectQueryBaseTestCase(BaseTestCase):
 
     def assertImages(self, image_type):
         m = self.factory()
-        for i in range(50):
+        for i in range(10):
             ImageLinkFactory(object=m, image__type=image_type)
         query = '''
             {
@@ -98,7 +98,7 @@ class ObjectQueryBaseTestCase(BaseTestCase):
             }
             ''' % (self.type, to_global_id(self.node._meta.name, m.id))
         # TODO: reduce number of queries
-        with self.assertNumQueries(3 + (4 * 50)):
+        with self.assertNumQueries(3 + (4 * 10)):
             result = execute(query)
         self.assertEqual(len(result[self.type]['images']['edges']), m.images.count())
         first = result[self.type]['images']['edges'][0]['node']['image']
