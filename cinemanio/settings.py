@@ -100,7 +100,8 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config(
-        conn_max_age=500,
+        # conn_max_age=600,
+        ssl_require=True,
         default=config('DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
 }
 
