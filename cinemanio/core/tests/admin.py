@@ -1,3 +1,4 @@
+from parameterized import parameterized
 from django.test import modify_settings
 from django.urls.base import reverse
 
@@ -55,36 +56,24 @@ class AdminTest(AdminBaseTest):
             response = self.client.get(reverse('admin:core_person_changelist'))
         self.assertEqual(response.status_code, 200)
 
-    def test_movie_page(self):
-        m = MovieFactory()
-        ImdbMovieFactory(movie=m)
-        KinopoiskMovieFactory(movie=m)
+    @parameterized.expand([
+        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 17),
+        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 12),
+    ])
+    def test_object_page(self, object_type, factory, imdb_factory, kinopoisk_factory, queries):
+        instance = factory()
+        imdb_factory(**{object_type: instance})
+        kinopoisk_factory(**{object_type: instance})
         for i in range(100):
-            CastFactory(movie=m)
-            ImageLinkFactory(object=m)
+            CastFactory(**{object_type: instance})
+        for i in range(10):
+            ImageLinkFactory(object=instance)
 
         # TODO: prefetch thumbnails with one extra query
-        with self.assertNumQueries(17 + 100):
-            response = self.client.get(reverse('admin:core_movie_change', args=(m.id,)))
+        with self.assertNumQueries(queries + 10):
+            response = self.client.get(reverse(f'admin:core_{object_type}_change', args=(instance.id,)))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Imdb movies')
-        self.assertContains(response, 'Kinopoisk movies')
-        self.assertContains(response, 'Cast')
-        self.assertContains(response, 'Image links')
-
-    def test_person_page(self):
-        p = PersonFactory()
-        ImdbPersonFactory(person=p)
-        KinopoiskPersonFactory(person=p)
-        for i in range(100):
-            CastFactory(person=p)
-            ImageLinkFactory(object=p)
-
-        # TODO: prefetch thumbnails with one extra query
-        with self.assertNumQueries(12 + 100):
-            response = self.client.get(reverse('admin:core_person_change', args=(p.id,)))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Imdb persons')
-        self.assertContains(response, 'Kinopoisk persons')
+        self.assertContains(response, f'Imdb {object_type}s')
+        self.assertContains(response, f'Kinopoisk {object_type}s')
         self.assertContains(response, 'Cast')
         self.assertContains(response, 'Image links')
