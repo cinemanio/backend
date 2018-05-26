@@ -35,6 +35,7 @@ pillow = "*"
 django-storages = "*"
 sorl-thumbnail = "*"
 "boto3" = "*"
+lxml = "==4.1.1"
 
 
 [dev-packages]
