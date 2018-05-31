@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'django_extensions',
+    'django_cleanup',
     'debug_toolbar',
     'reversion',
     'djcelery',

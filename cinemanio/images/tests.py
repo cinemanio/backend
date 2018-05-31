@@ -1,3 +1,5 @@
+from os.path import isfile
+
 from vcr_unittest import VCRMixin
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
@@ -43,3 +45,14 @@ class ImagesTestCase(VCRMixin, BaseTestCase):
         self.assertEqual(link.image.type, Image.PHOTO)
         self.assertEqual(link.object, person)
         self.assertEqual(link, person.images.last())
+
+    def test_delete_image_and_cleanup_file(self):
+        url = 'http://upload.wikimedia.org/wikipedia/commons/9/9e/Francis_Ford_Coppola_2007_crop.jpg'
+
+        image = Image.objects.download(url)
+        self.assertEqual(Image.objects.count(), 1)
+        self.assertTrue(isfile(image.original.url))
+
+        image.delete()
+        self.assertEqual(Image.objects.count(), 0)
+        self.assertFalse(isfile(image.original.url))

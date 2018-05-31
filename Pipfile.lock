@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6785efc272c037879e94738121ab867bef6bcac658cb36929a5f2334e51d3353"
+            "sha256": "40ec089c7c4947e261fc225fced2ccf72134e8bb37bcfddcda6b9286a63b8d5f"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -84,17 +84,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:6355384911b7d018d45756281fcf8b1f4d0e5204794fe61787b9e6cd14c74518",
-                "sha256:71833f2d42b2a1c3b2c5456d26ae5d95a458a36efc20eb3a0d7fff1a33e84744"
+                "sha256:19d479abad241512051b11f681b93f37b1e6b03d8f2907daae94b4ca8d0da738",
+                "sha256:38a811f3335b08690182fdbddb07f0cb5e8f0b5bccbcf9ef606ed2a2508a9fd7"
             ],
-            "version": "==1.7.28"
+            "version": "==1.7.30"
         },
         "botocore": {
             "hashes": [
-                "sha256:1227b6512a7e85247cabbc0ab8a7e28cdcf1a1a725a8f77facb729c354a27593",
-                "sha256:4c452c70e87ee727640e24e9c7b2de9bc91aca3d1f02d573514fa25e92dd4c83"
+                "sha256:8dac26094f3dbebd2849c0774f050daad3f1abf1b35fad7525916a36372fe009",
+                "sha256:1f6d0a135c9505e0840b675e6bd6b556c85df2e63212ac6850f77edf9f68311a"
             ],
-            "version": "==1.10.28"
+            "version": "==1.10.30"
         },
         "celery": {
             "hashes": [
@@ -150,6 +150,13 @@
                 "sha256:aaba492bf7777f231ec6b02c80aa3ea68758c39f4723864dd4164589b99ad703"
             ],
             "version": "==3.2.2"
+        },
+        "django-cleanup": {
+            "hashes": [
+                "sha256:36f04ec3901e6d9fd996b99b383c2367c0b880c77e6699142b51ca64cb659e54",
+                "sha256:0e91783200d75f21a64cb5f9d9dbc1bedd377a7d8de97a55ec8a0e2e28abaf5d"
+            ],
+            "version": "==2.1.0"
         },
         "django-cors-headers": {
             "hashes": [
@@ -583,9 +590,9 @@
         },
         "sqlalchemy": {
             "hashes": [
-                "sha256:d6cda03b0187d6ed796ff70e87c9a7dce2c2c9650a7bc3c022cd331416853c31"
+                "sha256:2d5f08f714a886a1382c18be501e614bce50d362384dc089474019ce0768151c"
             ],
-            "version": "==1.2.7"
+            "version": "==1.2.8"
         },
         "sqlparse": {
             "hashes": [
@@ -734,11 +741,11 @@
         },
         "pexpect": {
             "hashes": [
-                "sha256:9783f4644a3ef8528a6f20374eeb434431a650c797ca6d8df0d81e30fffdfa24",
-                "sha256:9f8eb3277716a01faafaba553d629d3d60a1a624c7cf45daa600d2148c30020c"
+                "sha256:3fbd41d4caf27fa4a377bfd16fef87271099463e6fa73e92a52f92dfee5d425b",
+                "sha256:2a8e88259839571d1251d278476f3eec5db26deb73a70be5ed5dc5435e418aba"
             ],
             "markers": "sys_platform != 'win32'",
-            "version": "==4.5.0"
+            "version": "==4.6.0"
         },
         "pickleshare": {
             "hashes": [

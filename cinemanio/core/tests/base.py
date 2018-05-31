@@ -1,10 +1,10 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.utils import translation
 
 from cinemanio.core.models import Role
 
 
-class BaseTestCase(TestCase):
+class BaseTestCase(TransactionTestCase):
     fixtures = [
         'core.role.json',
         'core.genre.json',

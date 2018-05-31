@@ -71,22 +71,12 @@ class ImageManager(models.Manager):
         Download image from URL save and return it
         """
         image = self.get_image_from_url(url)
-
         if not image.id:
             image.__dict__.update(kwargs)
-
             if 'http' not in url:
                 url = 'http:' + url
             image.source = urlparse(url).netloc
-
-            if image.source_type and image.source_id:
-                name = f'{image.source_type}_{image.source_id}'
-            else:
-                name = str(time.time())
-
-            f = urlopen(url)
-            image.original.save(name, ContentFile(f.read()))
-
+            image.download(url)
         return image
 
 
@@ -97,10 +87,10 @@ class Image(models.Model):
     POSTER = 1
     PHOTO = 2
 
-    TYPE_CHOICES = (
+    TYPE_CHOICES = [
         (POSTER, _('Poster')),
         (PHOTO, _('Photo')),
-    )
+    ]
 
     SOURCE_REGEXP = {
         # http://st3.kinopoisk.ru/im/poster/1/1/1/kinopoisk.ru-Title-495390.jpg
@@ -136,6 +126,14 @@ class Image(models.Model):
 
     def get_thumbnail(self, width, height):
         return get_thumbnail(self.original, f'{width}x{height}', crop='center', upscale=True)
+
+    def download(self, url):
+        """
+        Download image from url and save it into ImageField
+        """
+        name = f'{time.time()}.jpg'
+        f = urlopen(url)
+        self.original.save(name, ContentFile(f.read()))
 
 
 class ImageLink(models.Model):
