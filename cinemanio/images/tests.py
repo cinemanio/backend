@@ -48,7 +48,7 @@ class ImagesTestCase(VCRMixin, BaseTestCase):
         self.assertEqual(link, person.images.last())
 
 
-class ImagesTestCase(VCRMixin, TransactionTestCase):
+class ImagesFilesTestCase(VCRMixin, TransactionTestCase):
     def test_delete_image_and_cleanup_file(self):
         url = 'http://upload.wikimedia.org/wikipedia/commons/9/9e/Francis_Ford_Coppola_2007_crop.jpg'
 

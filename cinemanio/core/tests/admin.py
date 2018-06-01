@@ -1,5 +1,5 @@
 from parameterized import parameterized
-from django.test import modify_settings
+# from django.test import modify_settings
 from django.urls.base import reverse
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
