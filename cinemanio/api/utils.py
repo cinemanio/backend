@@ -6,9 +6,9 @@ from graphene.utils.str_converters import to_snake_case
 from graphene_django.filter import DjangoFilterConnectionField as _DjangoFilterConnectionField
 
 
-def getEnum(OldEnum):
-    props = {prop.name: prop.value for prop in OldEnum.values.values()}
-    return type(OldEnum.__name__, (graphene.Enum,), props)
+def getEnumLabels(Enum):
+    props = {v: k for k, v in Enum.choices()}
+    return type(Enum.__name__, (graphene.Enum,), props)
 
 
 class DjangoFilterConnectionField(_DjangoFilterConnectionField):

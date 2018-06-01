@@ -5,7 +5,8 @@ from cinemanio.api.schema.properties import RoleNode
 from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import PersonFactory, CastFactory
-from cinemanio.images.models import Image
+from cinemanio.core.models import Gender
+from cinemanio.images.models import ImageType
 from cinemanio.sites.imdb.factories import ImdbPersonFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory
 
@@ -16,7 +17,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
     type = 'person'
 
     def test_person(self):
-        p = PersonFactory()
+        p = PersonFactory(gender=Gender.MALE)
         p_id = to_global_id(PersonNode._meta.name, p.id)
         query = '''
             {
@@ -39,7 +40,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         self.assertEqual(result['person']['nameRu'], p.name_ru)
         self.assertEqual(result['person']['firstName'], p.first_name)
         self.assertEqual(result['person']['lastName'], p.last_name)
-        self.assertEqual(result['person']['gender'], 'A_%s' % p.gender)  # TODO: fix it
+        self.assertEqual(result['person']['gender'], Gender.MALE.name)
         self.assertEqual(result['person']['dateBirth'], p.date_birth.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['dateDeath'], p.date_death.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['country']['name'], p.country.name)
@@ -108,7 +109,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         self.assertEqual(len(result['person']['career']['edges']), p.career.filter(role=cast.role).count())
 
     def test_person_with_images(self):
-        self.assertImages(Image.PHOTO)
+        self.assertImages(ImageType.PHOTO)
 
     def test_person_photo(self):
-        self.assertRandomImage(Image.PHOTO, 'photo')
+        self.assertRandomImage(ImageType.PHOTO, 'photo')

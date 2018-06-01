@@ -1,8 +1,14 @@
+from enumfields import IntEnum, EnumIntegerField
 from django.db import models
 from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
+
+
+class Gender(IntEnum):
+    FEMALE = 0
+    MALE = 1
 
 
 class Person(BaseModel):
@@ -13,8 +19,7 @@ class Person(BaseModel):
     last_name = models.CharField(_('Last name'), max_length=50, db_index=True)
 
     biography = models.TextField(_('Biography'), blank=True, default='')
-    gender = models.IntegerField(_('Gender'), choices=((1, _('Male')), (0, _('Female'))), blank=True, null=True,
-                                 db_index=True)
+    gender = EnumIntegerField(Gender, verbose_name=_('Gender'), null=True, db_index=True)
     date_birth = models.DateField(_('Date of birth'), blank=True, null=True)
     date_death = models.DateField(_('Date of death'), blank=True, null=True)
 

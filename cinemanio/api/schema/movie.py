@@ -6,8 +6,9 @@ from cinemanio.api.schema.mixins import ImagesMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import MovieFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
-from cinemanio.core.models import Movie
 from cinemanio.api.schema.image import ImageNode
+from cinemanio.core.models import Movie
+from cinemanio.images.models import ImageType
 
 
 class MovieNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
@@ -31,7 +32,7 @@ class MovieNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
         return CastNode.get_queryset(info).filter(movie=self)
 
     def resolve_poster(self, info, *args, **kwargs):
-        return MovieNode.get_random_image(self, ImageNode._meta.model.POSTER)
+        return MovieNode.get_random_image(self, ImageType.POSTER)
 
 
 class MovieQuery:

@@ -4,7 +4,7 @@ from vcr_unittest import VCRMixin
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.core.tests.base import BaseTestCase
-from cinemanio.images.models import ImageLink, Image
+from cinemanio.images.models import ImageLink, Image, ImageType
 
 
 class ImagesTestCase(VCRMixin, BaseTestCase):
@@ -37,12 +37,12 @@ class ImagesTestCase(VCRMixin, BaseTestCase):
         url = 'http://upload.wikimedia.org/wikipedia/commons/9/9e/Francis_Ford_Coppola_2007_crop.jpg'
         person = PersonFactory()
 
-        link = person.images.download(url, type=Image.PHOTO)
+        link = person.images.download(url, type=ImageType.PHOTO)
 
         self.assertEqual(link.image.source, 'upload.wikimedia.org')
         self.assertEqual(link.image.source_type, 'wikicommons')
         self.assertEqual(link.image.source_id, 'Francis_Ford_Coppola_2007_crop.jpg')
-        self.assertEqual(link.image.type, Image.PHOTO)
+        self.assertEqual(link.image.type, ImageType.PHOTO)
         self.assertEqual(link.object, person)
         self.assertEqual(link, person.images.last())
 

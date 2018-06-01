@@ -2,6 +2,8 @@ from django.contrib.auth.models import UserManager, AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from cinemanio.core.models import Gender
+
 
 class User(AbstractUser):
     """
@@ -13,7 +15,7 @@ class User(AbstractUser):
     #                                 ' We accept jpeg, gif and png formats.'))
 
     date_birth = models.DateField(_('Date of birth'), blank=True, null=True)
-    gender = models.IntegerField(_('Gender'), choices=((1, _('Boy')), (0, _('Girl'))), blank=True, null=True,
+    gender = models.IntegerField(_('Gender'), choices=Gender.choices(), blank=True, null=True,
                                  db_index=True)
 
     icq = models.PositiveIntegerField(_('ICQ'), blank=True, null=True)

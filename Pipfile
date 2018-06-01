@@ -38,6 +38,7 @@ sorl-thumbnail = "*"
 lxml = "==4.1.1"
 pycodestyle = "==2.3.1"
 django-cleanup = "*"
+django-enumfields = "*"
 
 
 [dev-packages]

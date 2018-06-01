@@ -8,14 +8,25 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from sorl.thumbnail.fields import ImageField
+from enumfields import IntEnum, Enum, EnumIntegerField, EnumField
 from sorl.thumbnail import get_thumbnail
+from sorl.thumbnail.fields import ImageField
 
 from cinemanio.core.models import Movie, Person
 
 
 class ImageWrongType(Exception):
     pass
+
+
+class ImageType(IntEnum):
+    POSTER = 1
+    PHOTO = 2
+
+
+class ImageSourceType(Enum):
+    KINOPOISK = 'kinopoisk'
+    WIKICOMMONS = 'wikicommons'
 
 
 class ImageLinkManager(models.Manager):
@@ -84,30 +95,20 @@ class Image(models.Model):
     """
     Image model
     """
-    POSTER = 1
-    PHOTO = 2
-
-    TYPE_CHOICES = [
-        (POSTER, _('Poster')),
-        (PHOTO, _('Photo')),
-    ]
-
     SOURCE_REGEXP = {
         # http://st3.kinopoisk.ru/im/poster/1/1/1/kinopoisk.ru-Title-495390.jpg
         # //st.kp.yandex.net/im/poster/4/8/3/kinopoisk.ru-Les-amants-r_26_23233_3Bguliers-483294.jpg
-        'kinopoisk': r'kinopoisk.ru\-.+\-(\d+)\.jpg$',
+        ImageSourceType.KINOPOISK: r'kinopoisk.ru\-.+\-(\d+)\.jpg$',
         # http://upload.wikimedia.org/wikipedia/commons/1/14/Francis_Ford_Coppola%28CannesPhotoCall%29_crop.jpg
         # http://upload.wikimedia.org/wikipedia/commons/9/9e/Francis_Ford_Coppola_2007_crop.jpg
-        'wikicommons': r'^http://upload.wikimedia.org/wikipedia/commons/.+/([^/]+)$',
+        ImageSourceType.WIKICOMMONS: r'^http://upload.wikimedia.org/wikipedia/commons/.+/([^/]+)$',
     }
-    SOURCE_TYPE_CHOICES = [(k, k) for k in SOURCE_REGEXP.keys()]
 
-    type = models.PositiveIntegerField(_('Type'), choices=TYPE_CHOICES, null=True, db_index=True)
+    type = EnumIntegerField(ImageType, verbose_name=_('Type'), null=True, db_index=True)
     original = ImageField(_('Original'), upload_to='images')
 
     source = models.CharField(_('Source'), max_length=100, default='', blank=True)
-    source_type = models.CharField(_('Type of source'), choices=SOURCE_TYPE_CHOICES, max_length=20, null=True,
-                                   blank=True)
+    source_type = EnumField(ImageSourceType, verbose_name=_('Type of source'), max_length=20, null=True, blank=True)
     source_id = models.CharField(_('Source ID'), max_length=300, null=True, blank=True)
 
     objects = ImageManager()

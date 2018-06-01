@@ -3,7 +3,7 @@ import random
 import factory
 from factory.django import DjangoModelFactory
 
-from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
+from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast, Gender
 
 
 class GenreFactory(DjangoModelFactory):
@@ -48,7 +48,7 @@ class MovieFactory(DjangoModelFactory):
 
 
 class PersonFactory(DjangoModelFactory):
-    gender = factory.LazyAttribute(lambda o: random.choice([1, 0]))
+    gender = factory.LazyAttribute(lambda o: random.choice([Gender.MALE, Gender.FEMALE]))
     country = factory.SubFactory(CountryFactory)
 
     first_name = factory.Faker('sentence', nb_words=1)

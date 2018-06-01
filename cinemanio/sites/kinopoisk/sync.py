@@ -2,7 +2,7 @@ from django.db.models import Q
 from alphabet_detector import AlphabetDetector
 
 from cinemanio.core.models import Movie, Genre, Country, Role, Cast
-from cinemanio.images.models import Image, ImageWrongType
+from cinemanio.images.models import ImageWrongType, ImageType
 
 from kinopoisk.movie import Movie as KinoMovie
 from kinopoisk.person import Person as KinoPerson
@@ -44,7 +44,7 @@ class PersonSyncMixin(SyncBase):
         self.remote_obj.get_content('photos')
 
         for url in self.remote_obj.photos:
-            self.sync_image(url, self.person, type=Image.PHOTO)
+            self.sync_image(url, self.person, type=ImageType.PHOTO)
 
         self.logger.info(f'{len(self.remote_obj.photos)} photos imported successfully for person {self.person}')
 
@@ -173,7 +173,7 @@ class MovieSyncMixin(SyncBase):
         self.remote_obj.get_content('posters')
 
         for url in self.remote_obj.posters:
-            self.sync_image(url, self.movie, type=Image.POSTER)
+            self.sync_image(url, self.movie, type=ImageType.POSTER)
 
         self.logger.info(f'{len(self.remote_obj.posters)} posters imported successfully for movie {self.movie}')
 

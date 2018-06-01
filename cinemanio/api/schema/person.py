@@ -5,8 +5,9 @@ from cinemanio.api.schema.mixins import ImagesMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import PersonFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
-from cinemanio.core.models import Person
 from cinemanio.api.schema.image import ImageNode
+from cinemanio.core.models import Person
+from cinemanio.images.models import ImageType
 
 
 class PersonNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
@@ -34,7 +35,7 @@ class PersonNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
         return CastNode.get_queryset(info).filter(person=self)
 
     def resolve_photo(self, info, *args, **kwargs):
-        return PersonNode.get_random_image(self, ImageNode._meta.model.PHOTO)
+        return PersonNode.get_random_image(self, ImageType.PHOTO)
 
 
 class PersonQuery:

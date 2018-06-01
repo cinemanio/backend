@@ -102,7 +102,7 @@ class ObjectQueryBaseTestCase(BaseTestCase):
             result = execute(query)
         self.assertEqual(len(result[self.type]['images']['edges']), m.images.count())
         first = result[self.type]['images']['edges'][0]['node']['image']
-        self.assertEqual(first['type'], f'A_{image_type}')  # TODO: fix that
+        self.assertEqual(first['type'], image_type.name)
         self.assertTrue(len(first['original']) > 0)
         self.assertTrue(len(first['icon']) > 0)
 
@@ -135,7 +135,7 @@ class ObjectQueryBaseTestCase(BaseTestCase):
 
         with self.assertNumQueries(3 + 4):
             result = execute(query)
-        self.assertEqual(result[self.type][field]['type'], f'A_{image_type}')  # TODO: fix that
+        self.assertEqual(result[self.type][field]['type'], image_type.name)
         self.assertTrue(len(result[self.type][field]['original']) > 0)
 
         # try again and compare
