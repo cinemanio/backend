@@ -38,27 +38,22 @@ class AdminTest(AdminBaseTest):
         super().setUp()
         self._login('admin')
 
-    @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
-    def test_movies_page(self):
+    # @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
+    @parameterized.expand([
+        ('movie', ImdbMovieFactory, KinopoiskMovieFactory),
+        ('person', ImdbPersonFactory, KinopoiskPersonFactory),
+    ])
+    def test_objects_page(self, object_type, imdb_factory, kinopoisk_factory):
         for i in range(100):
-            KinopoiskMovieFactory(movie=ImdbMovieFactory().movie)
+            kinopoisk_factory(person=getattr(imdb_factory(), object_type))
 
-        with self.assertNumQueries(6):
-            response = self.client.get(reverse('admin:core_movie_changelist'))
-        self.assertEqual(response.status_code, 200)
-
-    @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
-    def test_persons_page(self):
-        for i in range(100):
-            KinopoiskPersonFactory(person=ImdbPersonFactory().person)
-
-        with self.assertNumQueries(6):
-            response = self.client.get(reverse('admin:core_person_changelist'))
+        with self.assertNumQueries(7):
+            response = self.client.get(reverse(f'admin:core_{object_type}_changelist'))
         self.assertEqual(response.status_code, 200)
 
     @parameterized.expand([
-        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 16),
-        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 11),
+        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 17),
+        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 12),
     ])
     def test_object_page(self, object_type, factory, imdb_factory, kinopoisk_factory, queries):
         instance = factory()

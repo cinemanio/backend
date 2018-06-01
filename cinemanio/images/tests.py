@@ -1,5 +1,6 @@
 from os.path import isfile
 
+from django.test import TransactionTestCase
 from vcr_unittest import VCRMixin
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
@@ -46,6 +47,8 @@ class ImagesTestCase(VCRMixin, BaseTestCase):
         self.assertEqual(link.object, person)
         self.assertEqual(link, person.images.last())
 
+
+class ImagesTestCase(VCRMixin, TransactionTestCase):
     def test_delete_image_and_cleanup_file(self):
         url = 'http://upload.wikimedia.org/wikipedia/commons/9/9e/Francis_Ford_Coppola_2007_crop.jpg'
 
