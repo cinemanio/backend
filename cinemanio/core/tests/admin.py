@@ -45,7 +45,7 @@ class AdminTest(AdminBaseTest):
     ])
     def test_objects_page(self, object_type, imdb_factory, kinopoisk_factory):
         for i in range(100):
-            kinopoisk_factory(person=getattr(imdb_factory(), object_type))
+            kinopoisk_factory(**{object_type: getattr(imdb_factory(), object_type)})
 
         with self.assertNumQueries(7):
             response = self.client.get(reverse(f'admin:core_{object_type}_changelist'))
