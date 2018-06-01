@@ -10,8 +10,8 @@ class ImageInlineForm(forms.ModelForm):
     original = forms.CharField(label=_('Preview'), required=False, widget=AdminImagePreviewWidget)
     type = forms.ChoiceField(label=_('Type'), required=True, choices=[('', _('Select'))] + list(ImageType.choices()))
     source = forms.CharField(label=_('Source'), required=False, max_length=100)
-    source_type = forms.ChoiceField(label=_('Source Type'), required=False, choices=[('', _('Select'))] +
-                                                                                    list(ImageSourceType.choices()))
+    source_type = forms.ChoiceField(label=_('Source Type'), required=False,
+                                    choices=[('', _('Select'))] + list(ImageSourceType.choices()))
     source_id = forms.CharField(label=_('Source Id'), required=False, max_length=100)
 
     def __init__(self, *args, **kwargs):
