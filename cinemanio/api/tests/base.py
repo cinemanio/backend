@@ -125,7 +125,7 @@ class ObjectQueryBaseTestCase(BaseTestCase):
             ''' % (self.type, to_global_id(self.node._meta.name, m.id), field)
 
         # no images
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(2):
             result_nothing = execute(query)
         self.assertEqual(result_nothing[self.type][field], None)
 

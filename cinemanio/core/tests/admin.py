@@ -43,7 +43,7 @@ class AdminTest(AdminBaseTest):
         for i in range(100):
             KinopoiskMovieFactory(movie=ImdbMovieFactory().movie)
 
-        with self.assertNumQueries(7):
+        with self.assertNumQueries(6):
             response = self.client.get(reverse('admin:core_movie_changelist'))
         self.assertEqual(response.status_code, 200)
 
@@ -52,13 +52,13 @@ class AdminTest(AdminBaseTest):
         for i in range(100):
             KinopoiskPersonFactory(person=ImdbPersonFactory().person)
 
-        with self.assertNumQueries(7):
+        with self.assertNumQueries(6):
             response = self.client.get(reverse('admin:core_person_changelist'))
         self.assertEqual(response.status_code, 200)
 
     @parameterized.expand([
-        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 17),
-        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 12),
+        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 16),
+        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 11),
     ])
     def test_object_page(self, object_type, factory, imdb_factory, kinopoisk_factory, queries):
         instance = factory()
