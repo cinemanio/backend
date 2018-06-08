@@ -8,7 +8,7 @@ from cinemanio.relations.signals import relation_changed
 User = get_user_model()
 
 
-class RelationsFieldsTest(TestCase):
+class RelationsTestMixin:
     def assertRelation(self, rel, codes):
         for code in rel.codes:
             value = getattr(rel, code)
@@ -17,10 +17,26 @@ class RelationsFieldsTest(TestCase):
             else:
                 self.assertFalse(value, msg=rel)
 
+
+class RelationsFieldsTest(TestCase, RelationsTestMixin):
+    def test_relation_change_method(self):
+        rel = MovieRelationFactory()
+        self.assertRelation(rel, [])
+        rel.change('like')
+        self.assertRelation(rel, ['seen', 'like'])
+
+    def test_movie_relation_change_fav(self):
+        rel = MovieRelationFactory(fav=True, like=True, seen=True)
+        self.assertRelation(rel, ['fav', 'seen', 'like'])
+        rel.change('fav')
+        self.assertRelation(rel, ['seen', 'like'])
+
     def test_movie_attitude_fields(self):
         rel = MovieRelationFactory()
         self.assertRelation(rel, [])
-        rel.like = True
+        rel.fav = True
+        self.assertRelation(rel, ['fav', 'seen', 'like'])
+        rel.fav = False
         self.assertRelation(rel, ['seen', 'like'])
         rel.seen = False
         self.assertRelation(rel, [])

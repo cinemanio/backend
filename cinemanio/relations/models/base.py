@@ -28,6 +28,10 @@ class RelationBase(models.Model):
         self.correct_fields(name, value)
         super().__setattr__(name, value)
 
+    def change(self, name):
+        """Change relation `name` to opposite"""
+        self.__setattr__(name, not getattr(self, name))
+
     def correct_fields(self, name, value):
         """Additional logic between attitude fields"""
         pass

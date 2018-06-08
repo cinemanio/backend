@@ -1,8 +1,12 @@
+from collections import namedtuple
 from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.images.factories import ImageLinkFactory
+from cinemanio.users.factories import UserFactory
+
+Context = namedtuple('Context', ['user'])
 
 
 class ListQueryBaseTestCase(BaseTestCase):
@@ -143,3 +147,17 @@ class ObjectQueryBaseTestCase(BaseTestCase):
         # try again and compare
         result_another = execute(query, values)
         self.assertNotEqual(result[self.type][field]['original'], result_another[self.type][field]['original'])
+
+
+class UserQueryBaseTestCase(BaseTestCase):
+    password = 'secret'
+    Context = namedtuple('Context', ['user'])
+
+    def create_user(self, **kwargs):
+        self.user = UserFactory(username='user', **kwargs)
+        self.user.set_password(self.password)
+        self.user.save()
+
+    @property
+    def context(self):
+        return Context(user=self.user)
