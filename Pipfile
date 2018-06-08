@@ -36,6 +36,7 @@ pillow = "*"
 sorl-thumbnail = "*"
 "boto3" = "*"
 lxml = "==4.1.1"
+django-graphql-jwt = "*"
 
 
 [dev-packages]

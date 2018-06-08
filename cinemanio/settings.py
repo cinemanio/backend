@@ -73,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'silk.middleware.SilkyMiddleware',
 ]
@@ -106,6 +107,10 @@ DATABASES = {
         default=config('DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
 }
 
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 AUTH_USER_MODEL = 'users.User'
 

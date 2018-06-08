@@ -20,8 +20,8 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         p = PersonFactory(gender=Gender.MALE)
         p_id = to_global_id(PersonNode._meta.name, p.id)
         query = '''
-            {
-              person(id: "%s") {
+            query Person($id: ID!) {
+              person(id: $id) {
                 id, gender
                 name, firstName, lastName
                 nameEn, firstNameEn, lastNameEn
@@ -31,9 +31,9 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
                 roles { name }
               }
             }
-            ''' % p_id
+        '''
         with self.assertNumQueries(2):
-            result = execute(query)
+            result = execute(query, dict(id=p_id))
         self.assertEqual(result['person']['id'], p_id)
         self.assertEqual(result['person']['name'], p.name)
         self.assertEqual(result['person']['nameEn'], p.name_en)
@@ -50,16 +50,16 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
     def test_person_with_related_sites(self):
         p = ImdbPersonFactory(person=KinopoiskPersonFactory().person).person
         query = '''
-            {
-              person(id: "%s") {
+            query Person($id: ID!) {
+              person(id: $id) {
                 id, firstName, lastName
                 imdb { id, url }
                 kinopoisk { id, info, url }
               }
             }
-            ''' % to_global_id(PersonNode._meta.name, p.id)
+        '''
         with self.assertNumQueries(1):
-            result = execute(query)
+            result = execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id)))
         self.assertEqual(result['person']['imdb']['id'], p.imdb.id)
         self.assertEqual(result['person']['imdb']['url'], p.imdb.url)
         self.assertEqual(result['person']['kinopoisk']['id'], p.kinopoisk.id)
@@ -69,16 +69,16 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
     def test_person_without_related_sites(self):
         p = PersonFactory()
         query = '''
-            {
-              person(id: "%s") {
+            query Person($id: ID!) {
+              person(id: $id) {
                 id, firstName, lastName
                 imdb { id }
                 kinopoisk { id, info }
               }
             }
-            ''' % to_global_id(PersonNode._meta.name, p.id)
+        '''
         with self.assertNumQueries(1):
-            result = execute(query)
+            result = execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id)))
         self.assertEqual(result['person']['imdb'], None)
         self.assertEqual(result['person']['kinopoisk'], None)
 
@@ -88,10 +88,10 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             cast = CastFactory(person=p)
         CastFactory(role=cast.role)
         query = '''
-            {
-              person(id: "%s") {
+            query Person($id: ID!, $role: ID!) {
+              person(id: $id) {
                 id, firstName, lastName
-                career(role: "%s") {
+                career(role: $role) {
                   edges {
                     node {
                       name
@@ -102,10 +102,10 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
                 }
               }
             }
-            ''' % (to_global_id(PersonNode._meta.name, p.id),
-                   to_global_id(RoleNode._meta.name, cast.role.id))
+        '''
         with self.assertNumQueries(3):
-            result = execute(query)
+            result = execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id),
+                                         role=to_global_id(RoleNode._meta.name, cast.role.id)))
         self.assertEqual(len(result['person']['career']['edges']), p.career.filter(role=cast.role).count())
 
     def test_person_with_images(self):

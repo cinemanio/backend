@@ -1,8 +1,8 @@
 from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
-from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.api.schema.properties import GenreNode
+from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.models import Movie, Genre, Country, Language
@@ -14,7 +14,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
 
     def test_movies_query(self):
         query = '''
-            {
+            query Movies {
               movies {
                 edges {
                   node {
@@ -27,14 +27,14 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-            '''
+        '''
         with self.assertNumQueries(5):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, self.count)
 
     def test_movies_query_fragments(self):
         query = '''
-            query {
+            query Movies {
               movies {
                 edges {
                   node {
@@ -59,7 +59,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             fragment MovieInfoLanguages on MovieNode {
               languages { name }
             }
-            '''
+        '''
         with self.assertNumQueries(5):
             result = execute(query)
         self.assertCountNonZeroAndEqual(result, self.count)
@@ -70,8 +70,8 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
     def test_movies_filter_by_year(self):
         year = Movie.objects.all()[0].year
         query = '''
-            {
-              movies(year: %d) {
+            query Movies($year: Float!) {
+              movies(year: $year) {
                 edges {
                   node {
                     title
@@ -79,9 +79,9 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-            ''' % year
+        '''
         with self.assertNumQueries(2):
-            result = execute(query)
+            result = execute(query, dict(year=year))
         self.assertCountNonZeroAndEqual(result, Movie.objects.filter(year=year).count())
 
     @parameterized.expand([
@@ -95,8 +95,8 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         for m in Movie.objects.all()[:10]:
             getattr(m, fieldname).set(items)
         query = '''
-            {
-              movies(%s: ["%s", "%s"]) {
+            query Movies($rels: [ID!]) {
+              movies(%s: $rels) {
                 edges {
                   node {
                     title
@@ -104,12 +104,11 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-            ''' % (fieldname,
-                   to_global_id(GenreNode._meta.name, item1.id),
-                   to_global_id(GenreNode._meta.name, item2.id))
+        ''' % fieldname
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = execute(query)
+            result = execute(query, dict(rels=(to_global_id(GenreNode._meta.name, item1.id),
+                                               to_global_id(GenreNode._meta.name, item2.id))))
         self.assertCountNonZeroAndEqual(result, (Movie.objects
                                                  .filter(**{fieldname: item1})
                                                  .filter(**{fieldname: item2}).count()))

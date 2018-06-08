@@ -24,8 +24,8 @@ class ListQueryBaseTestCase(BaseTestCase):
 
     def assertPagination(self):
         query = '''
-            {
-              %s(first: 10, after: "%s") {
+            query Objects($after: String!){
+              %s(first: 10, after: $after) {
                 totalCount
                 edges {
                   node {
@@ -39,10 +39,10 @@ class ListQueryBaseTestCase(BaseTestCase):
                 }
               }
             }
-            '''
+        '''
         # TODO: remove one extra SELECT COUNT(*) AS "__count" FROM "core_movie"
         with self.assertNumQueries(3):
-            result = execute(query % (self.type, ''))
+            result = execute(query % self.type, dict(after=''))
         self.assertCountNonZeroAndEqual(result, 10)
         self.assertEqual(result[self.type]['totalCount'], self.count)
 
@@ -50,14 +50,15 @@ class ListQueryBaseTestCase(BaseTestCase):
         self.populated_cursors(cursors, result)
 
         for i in range(10):
-            query_paginated = query % (self.type, result[self.type]['pageInfo']['endCursor'])
+            query_paginated = query % self.type
+            values = dict(after=result[self.type]['pageInfo']['endCursor'])
             if i == 9:
                 with self.assertNumQueries(2):
-                    result = execute(query_paginated)
+                    result = execute(query_paginated, values)
                 self.assertEqual(len(result[self.type]['edges']), 0)
             else:
                 with self.assertNumQueries(3):
-                    result = execute(query_paginated)
+                    result = execute(query_paginated, values)
                 self.assertCountNonZeroAndEqual(result, 10)
                 self.populated_cursors(cursors, result)
 
@@ -77,8 +78,8 @@ class ObjectQueryBaseTestCase(BaseTestCase):
         for i in range(10):
             ImageLinkFactory(object=m, image__type=image_type)
         query = '''
-            {
-              %s(id: "%s") {
+            query Object($id: ID!) {
+              %s(id: $id) {
                 id
                 images {
                   edges {
@@ -96,10 +97,10 @@ class ObjectQueryBaseTestCase(BaseTestCase):
                 }
               }
             }
-            ''' % (self.type, to_global_id(self.node._meta.name, m.id))
+        ''' % self.type
         # TODO: reduce number of queries
         with self.assertNumQueries(3 + (4 * 10)):
-            result = execute(query)
+            result = execute(query, dict(id=to_global_id(self.node._meta.name, m.id)))
         self.assertEqual(len(result[self.type]['images']['edges']), m.images.count())
         first = result[self.type]['images']['edges'][0]['node']['image']
         self.assertEqual(first['type'], image_type.name)
@@ -109,8 +110,8 @@ class ObjectQueryBaseTestCase(BaseTestCase):
     def assertRandomImage(self, image_type, field):
         m = self.factory()
         query = '''
-            {
-              %s(id: "%s") {
+            query Object($id: ID!) {
+              %s(id: $id) {
                 id
                 %s {
                   type
@@ -122,11 +123,12 @@ class ObjectQueryBaseTestCase(BaseTestCase):
                 }
               }
             }
-            ''' % (self.type, to_global_id(self.node._meta.name, m.id), field)
+        ''' % (self.type, field)
+        values = dict(id=to_global_id(self.node._meta.name, m.id))
 
         # no images
         with self.assertNumQueries(3):
-            result_nothing = execute(query)
+            result_nothing = execute(query, values)
         self.assertEqual(result_nothing[self.type][field], None)
 
         # images
@@ -134,10 +136,10 @@ class ObjectQueryBaseTestCase(BaseTestCase):
             ImageLinkFactory(object=m, image__type=image_type)
 
         with self.assertNumQueries(3 + 4):
-            result = execute(query)
+            result = execute(query, values)
         self.assertEqual(result[self.type][field]['type'], image_type.name)
         self.assertTrue(len(result[self.type][field]['original']) > 0)
 
         # try again and compare
-        result_another = execute(query)
+        result_another = execute(query, values)
         self.assertNotEqual(result[self.type][field]['original'], result_another[self.type][field]['original'])

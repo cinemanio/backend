@@ -15,12 +15,12 @@ class PropertiesQueryTestCase(BaseTestCase):
     ])
     def test_properies_query(self, model, fieldname):
         query = '''
-            {
+            query Properties {
               %s {
                 id, name
               }
             }
-            ''' % fieldname
+        ''' % fieldname
         with self.assertNumQueries(1):
             result = execute(query)
         self.assertEqual(len(result[fieldname]), model.objects.count())
