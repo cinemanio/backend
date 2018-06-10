@@ -61,8 +61,8 @@ class Relate(graphene.Mutation):
                 raise ValueError(f"Unrecognized node {id}")
             relation.change(type)
             relation.save()
+            relation_changed.send(sender=relation.__class__, instance=relation)
 
-        relation_changed.send(sender=relation.__class__, instance=relation)
         return Relate(
             count=relation.object.relations_count,
             relation=relation,
