@@ -124,16 +124,49 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         (MovieRelationFactory, MovieNode, ['fav', 'like', 'seen']),
         (PersonRelationFactory, PersonNode, ['fav', 'like']),
     ])
-    def test_object_with_relation(self, factory, node, codes):
+    def test_object_relation(self, factory, node, codes):
         rel = factory(user=self.user, **{code: True for code in codes})
         relation_changed.send(sender=rel.__class__, instance=rel)
         instance = rel.object
+        query_name = instance.__class__.__name__.lower()
 
         with self.assertNumQueries(2):
             result = execute(self.relation_query % self.get_relation_vars(instance, rel),
                              dict(id=to_global_id(node._meta.name, instance.id)),
                              self.context)
 
-        query_name = instance.__class__.__name__.lower()
         self.assertResponseRelationAndCounts(result[query_name]['relation'],
                                              result[query_name]['relationsCount'], rel, codes)
+
+    @parameterized.expand([
+        (MovieFactory, MovieNode, MovieRelation),
+        (PersonFactory, PersonNode, PersonRelation),
+    ])
+    def test_object_no_relation(self, factory, node, relation):
+        instance = factory()
+        query_name = instance.__class__.__name__.lower()
+
+        with self.assertNumQueries(2):
+            result = execute(self.relation_query % self.get_relation_vars(instance, relation()),
+                             dict(id=to_global_id(node._meta.name, instance.id)),
+                             self.context)
+
+        self.assertResponseRelationAndCounts(result[query_name]['relation'],
+                                             result[query_name]['relationsCount'], relation(), [])
+
+    @parameterized.expand([
+        (MovieRelationFactory, MovieNode),
+        (PersonRelationFactory, PersonNode),
+    ])
+    def test_object_relation_unauth(self, factory, node):
+        rel = factory(user=self.user)
+        relation_changed.send(sender=rel.__class__, instance=rel)
+        instance = rel.object
+        query_name = instance.__class__.__name__.lower()
+
+        with self.assertNumQueries(1):
+            result = execute(self.relation_query % self.get_relation_vars(instance, rel),
+                             dict(id=to_global_id(node._meta.name, instance.id)),
+                             self.Context(user=None))
+
+        self.assertEqual(result[query_name]['relation'], None)

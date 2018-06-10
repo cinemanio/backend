@@ -160,4 +160,4 @@ class UserQueryBaseTestCase(BaseTestCase):
 
     @property
     def context(self):
-        return Context(user=self.user)
+        return self.Context(user=self.user)
