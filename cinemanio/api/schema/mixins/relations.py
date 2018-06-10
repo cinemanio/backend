@@ -22,4 +22,3 @@ class RelationsMixin:
             return self.relations_count
         except ObjectDoesNotExist:
             return self._meta.get_field('relations_count').related_model()
-
