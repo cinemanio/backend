@@ -10,12 +10,12 @@ class RelationsMixin:
     def resolve_relation(self, info, *args, **kwargs):
         user = info.context.user
         if not user or not user.is_authenticated:
-            return None
+            return self.relations.field.model()
 
         try:
             return self.relations.get(user=user)
         except ObjectDoesNotExist:
-            return self.relations.field.model(object=self, user=user)
+            return self.relations.field.model()
 
     def resolve_relations_count(self, info, *args, **kwargs):
         try:

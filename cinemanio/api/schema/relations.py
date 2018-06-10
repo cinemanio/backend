@@ -6,25 +6,31 @@ from django.db.transaction import atomic
 from cinemanio.relations.models import MovieRelation, PersonRelation, MovieRelationCount, PersonRelationCount
 from cinemanio.relations.signals import relation_changed
 
+EXCLUDE_FIELDS = ('object', 'user')
+
 
 class MovieRelationNode(DjangoObjectType):
     class Meta:
         model = MovieRelation
+        exclude_fields = EXCLUDE_FIELDS
 
 
 class PersonRelationNode(DjangoObjectType):
     class Meta:
         model = PersonRelation
+        exclude_fields = EXCLUDE_FIELDS
 
 
 class MovieRelationCountNode(DjangoObjectType):
     class Meta:
         model = MovieRelationCount
+        exclude_fields = EXCLUDE_FIELDS
 
 
 class PersonRelationCountNode(DjangoObjectType):
     class Meta:
         model = PersonRelationCount
+        exclude_fields = EXCLUDE_FIELDS
 
 
 class RelationNode(graphene.Union):

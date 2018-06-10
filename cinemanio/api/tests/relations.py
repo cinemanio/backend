@@ -169,4 +169,5 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
                              dict(id=to_global_id(node._meta.name, instance.id)),
                              self.Context(user=None))
 
-        self.assertEqual(result[query_name]['relation'], None)
+        self.assertResponseRelationAndCounts(result[query_name]['relation'],
+                                             result[query_name]['relationsCount'], rel, [])
