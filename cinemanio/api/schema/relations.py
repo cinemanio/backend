@@ -1,7 +1,40 @@
 import graphene
 from graphql_relay.node.node import from_global_id
+from graphene_django import DjangoObjectType
+from django.db.transaction import atomic
 
-from cinemanio.core.models import Movie, Person
+from cinemanio.relations.models import MovieRelation, PersonRelation, MovieRelationCount, PersonRelationCount
+from cinemanio.relations.signals import relation_changed
+
+
+class MovieRelationNode(DjangoObjectType):
+    class Meta:
+        model = MovieRelation
+
+
+class PersonRelationNode(DjangoObjectType):
+    class Meta:
+        model = PersonRelation
+
+
+class MovieRelationCountNode(DjangoObjectType):
+    class Meta:
+        model = MovieRelationCount
+
+
+class PersonRelationCountNode(DjangoObjectType):
+    class Meta:
+        model = PersonRelationCount
+
+
+class RelationNode(graphene.Union):
+    class Meta:
+        types = (MovieRelationNode, PersonRelationNode)
+
+
+class RelationCountNode(graphene.Union):
+    class Meta:
+        types = (MovieRelationCountNode, PersonRelationCountNode)
 
 
 class Relate(graphene.Mutation):
@@ -9,32 +42,30 @@ class Relate(graphene.Mutation):
         id = graphene.ID()
         type = graphene.String()
 
-    ok = graphene.Boolean()
-
-    # person = graphene.Field(lambda: Person)
+    count = graphene.Field(RelationCountNode)
+    relation = graphene.Field(RelationNode)
 
     models_map = {
-        'MovieNode': Movie,
-        'PersonNode': Person,
+        'MovieNode': MovieRelation,
+        'PersonNode': PersonRelation,
     }
 
     def mutate(self, info, id, type):
         user = info.context.user
-        _type, instance_id = from_global_id(id)
-        try:
-            instance = Relate.models_map[_type].objects.get(id=instance_id)
-        except KeyError:
-            raise ValueError(f"Unrecognized node {id}")
+        node_name, instance_id = from_global_id(id)
 
-        relation = instance.relations.get_or_create(user=user)[0]
-        relation.change(type)
-        relation.save()
+        with atomic():
+            try:
+                relation = Relate.models_map[node_name].objects.get_or_create(object_id=instance_id, user=user)[0]
+            except KeyError:
+                raise ValueError(f"Unrecognized node {id}")
+            relation.change(type)
+            relation.save()
 
-        # person = Person(name=name)
-        ok = True
+        relation_changed.send(sender=relation.__class__, instance=relation)
         return Relate(
-            # person=person,
-            ok=ok
+            count=relation.object.relations_count,
+            relation=relation,
         )
 
 
