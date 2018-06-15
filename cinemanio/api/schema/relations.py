@@ -46,7 +46,7 @@ class RelationCountNode(graphene.Union):
 class Relate(graphene.Mutation):
     class Arguments:
         id = graphene.ID()
-        type = graphene.String()
+        code = graphene.String()
 
     count = graphene.Field(RelationCountNode)
     relation = graphene.Field(RelationNode)
@@ -56,7 +56,7 @@ class Relate(graphene.Mutation):
         'PersonNode': PersonRelation,
     }
 
-    def mutate(self, info, id, type):
+    def mutate(self, info, id, code):
         user = info.context.user
         node_name, instance_id = from_global_id(id)
 
@@ -65,7 +65,7 @@ class Relate(graphene.Mutation):
                 relation = Relate.models_map[node_name].objects.get_or_create(object_id=instance_id, user=user)[0]
             except KeyError:
                 raise ValueError(f"Unrecognized node {id}")
-            relation.change(type)
+            relation.change(code)
             relation.save()
             relation_changed.send(sender=relation.__class__, instance=relation)
 

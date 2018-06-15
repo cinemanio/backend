@@ -14,8 +14,8 @@ from cinemanio.relations.signals import relation_changed
 
 class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
     relate_mutation = '''
-        mutation Relate($id: ID!, $type: String!) {
-          relate(id: $id, type: $type) {
+        mutation Relate($id: ID!, $code: String!) {
+          relate(id: $id, code: $code) {
             relation {
               ...RelationFields
             }
@@ -92,7 +92,7 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
 
         with self.assertNumQueries(7 + queries_count):
             result = execute(self.relate_mutation % self.get_relate_vars(instance, relation()),
-                             dict(id=to_global_id(node._meta.name, instance.id), type='fav'),
+                             dict(id=to_global_id(node._meta.name, instance.id), code='fav'),
                              self.context)
 
         self.assertResponseRelationAndCounts(result['relate']['relation'],
@@ -112,7 +112,7 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
 
         with self.assertNumQueries(4 + queries_count):
             result = execute(self.relate_mutation % self.get_relate_vars(instance, rel),
-                             dict(id=to_global_id(node._meta.name, instance.id), type='fav'),
+                             dict(id=to_global_id(node._meta.name, instance.id), code='fav'),
                              self.context)
 
         self.assertResponseRelationAndCounts(result['relate']['relation'],
