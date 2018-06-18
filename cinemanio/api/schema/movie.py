@@ -12,7 +12,7 @@ from cinemanio.core.models import Movie
 from cinemanio.images.models import ImageType
 
 
-class MovieNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin, RelationsMixin):
+class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
     cast = DjangoFilterConnectionField(CastNode)
     poster = Field(ImageNode)
 

@@ -11,7 +11,7 @@ from cinemanio.core.models import Person
 from cinemanio.images.models import ImageType
 
 
-class PersonNode(DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin, RelationsMixin):
+class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
     career = DjangoFilterConnectionField(CastNode)
     photo = Field(ImageNode)
     name = String()
