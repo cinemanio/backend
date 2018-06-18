@@ -3,7 +3,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import Prefetch
 
 from cinemanio.api.schema.relations import RelationNode, RelationCountNode
-from cinemanio.relations.models import PersonRelation
 
 
 class RelationsMixin:
