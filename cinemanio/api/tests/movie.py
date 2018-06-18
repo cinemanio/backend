@@ -5,16 +5,11 @@ from cinemanio.api.schema.properties import RoleNode
 from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory, CastFactory
-from cinemanio.images.models import ImageType
 from cinemanio.sites.imdb.factories import ImdbMovieFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory
 
 
 class MovieQueryTestCase(ObjectQueryBaseTestCase):
-    factory = MovieFactory
-    node = MovieNode
-    type = 'movie'
-
     def test_movie_with_m2m(self):
         m = MovieFactory()
         query = '''
@@ -133,9 +128,3 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             result = execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id),
                                          role=to_global_id(RoleNode._meta.name, cast.role.id)))
         self.assertEqual(len(result['movie']['cast']['edges']), m.cast.filter(role=cast.role).count())
-
-    def test_movie_with_images(self):
-        self.assertImages(ImageType.POSTER)
-
-    def test_movie_poster(self):
-        self.assertRandomImage(ImageType.POSTER, 'poster')

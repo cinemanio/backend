@@ -9,8 +9,11 @@ from cinemanio.core.models import Movie, Genre, Country, Language
 
 
 class MoviesQueryTestCase(ListQueryBaseTestCase):
-    factory = MovieFactory
-    type = 'movies'
+    count = 100
+
+    def setUp(self):
+        for i in range(self.count):
+            MovieFactory()
 
     def test_movies_query(self):
         query = '''
@@ -30,7 +33,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(5):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, self.count)
+        self.assertCountNonZeroAndEqual(result['movies'], self.count)
 
     def test_movies_query_fragments(self):
         query = '''
@@ -62,10 +65,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(5):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, self.count)
-
-    def test_movies_pagination(self):
-        self.assertPagination()
+        self.assertCountNonZeroAndEqual(result['movies'], self.count)
 
     def test_movies_filter_by_year(self):
         year = Movie.objects.all()[0].year
@@ -82,7 +82,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(2):
             result = execute(query, dict(year=year))
-        self.assertCountNonZeroAndEqual(result, Movie.objects.filter(year=year).count())
+        self.assertCountNonZeroAndEqual(result['movies'], Movie.objects.filter(year=year).count())
 
     @parameterized.expand([
         (Genre, 'genres'),
@@ -109,6 +109,6 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         with self.assertNumQueries(3):
             result = execute(query, dict(rels=(to_global_id(GenreNode._meta.name, item1.id),
                                                to_global_id(GenreNode._meta.name, item2.id))))
-        self.assertCountNonZeroAndEqual(result, (Movie.objects
-                                                 .filter(**{fieldname: item1})
-                                                 .filter(**{fieldname: item2}).count()))
+        self.assertCountNonZeroAndEqual(result['movies'], (Movie.objects
+                                                           .filter(**{fieldname: item1})
+                                                           .filter(**{fieldname: item2}).count()))

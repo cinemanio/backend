@@ -11,8 +11,11 @@ from cinemanio.core.models import Person, Role
 
 
 class PersonsQueryTestCase(ListQueryBaseTestCase):
-    factory = PersonFactory
-    type = 'persons'
+    count = 100
+
+    def setUp(self):
+        for i in range(self.count):
+            PersonFactory()
 
     def test_persons_query(self):
         query = '''
@@ -29,10 +32,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(2):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, self.count)
-
-    def test_persons_pagination(self):
-        self.assertPagination()
+        self.assertCountNonZeroAndEqual(result['persons'], self.count)
 
     @skip('add this filter to filterset')
     def test_persons_query_filter_by_birth_year(self):
@@ -50,7 +50,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(2):
             result = execute(query, dict(year=year))
-        self.assertCountNonZeroAndEqual(result, Person.objects.filter(date_birth__year=year).count())
+        self.assertCountNonZeroAndEqual(result['persons'], Person.objects.filter(date_birth__year=year).count())
 
     def test_persons_query_filter_by_country(self):
         country = Person.objects.all()[0].country
@@ -67,7 +67,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(2):
             result = execute(query, dict(country=to_global_id(CountryNode._meta.name, country.id)))
-        self.assertCountNonZeroAndEqual(result, Person.objects.filter(country=country).count())
+        self.assertCountNonZeroAndEqual(result['persons'], Person.objects.filter(country=country).count())
 
     @parameterized.expand([(Role, 'roles')])
     def test_movies_filter_by_m2m(self, model, fieldname):
@@ -90,6 +90,6 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         with self.assertNumQueries(3):
             result = execute(query, dict(rels=[to_global_id(RoleNode._meta.name, item1.id),
                                                to_global_id(RoleNode._meta.name, item2.id)]))
-        self.assertCountNonZeroAndEqual(result, (Person.objects
-                                                 .filter(**{fieldname: item1})
-                                                 .filter(**{fieldname: item2}).count()))
+        self.assertCountNonZeroAndEqual(result['persons'], (Person.objects
+                                                            .filter(**{fieldname: item1})
+                                                            .filter(**{fieldname: item2}).count()))

@@ -12,10 +12,6 @@ from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory
 
 
 class PersonQueryTestCase(ObjectQueryBaseTestCase):
-    factory = PersonFactory
-    node = PersonNode
-    type = 'person'
-
     def test_person(self):
         p = PersonFactory(gender=Gender.MALE)
         p_id = to_global_id(PersonNode._meta.name, p.id)
@@ -107,9 +103,3 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             result = execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id),
                                          role=to_global_id(RoleNode._meta.name, cast.role.id)))
         self.assertEqual(len(result['person']['career']['edges']), p.career.filter(role=cast.role).count())
-
-    def test_person_with_images(self):
-        self.assertImages(ImageType.PHOTO)
-
-    def test_person_photo(self):
-        self.assertRandomImage(ImageType.PHOTO, 'photo')

@@ -12,7 +12,7 @@ from cinemanio.relations.tests import RelationsTestMixin
 from cinemanio.relations.signals import relation_changed
 
 
-class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
+class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
     relate_mutation = '''
         mutation Relate($id: ID!, $code: String!) {
           relate(id: $id, code: $code) {
@@ -32,7 +32,7 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         }
     '''
 
-    relation_query = '''
+    object_relation_query = '''
         query %s($id: ID!) {
           %s(id: $id) {
             relation {
@@ -40,6 +40,29 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
             }
             relationsCount {
               ...RelationCountFields
+            }
+          }
+        }
+        fragment RelationFields on %s {
+          %s
+        }
+        fragment RelationCountFields on %s {
+          %s
+        }
+    '''
+
+    objects_relation_query = '''
+        query %s {
+          %s {
+            edges {
+              node {
+                relation {
+                  ...RelationFields
+                }
+                relationsCount {
+                  ...RelationCountFields
+                }
+              }
             }
           }
         }
@@ -59,12 +82,24 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         return (f'{model_name}RelationNode', ', '.join(rel.codes),
                 f'{model_name}RelationCountNode', ', '.join(rel.codes))
 
-    def get_relation_vars(self, instance, rel):
+    def get_object_vars(self, instance, rel):
         model_name = instance.__class__.__name__
         return (model_name,
                 model_name.lower(),
                 f'{model_name}RelationNode', ', '.join(rel.codes),
                 f'{model_name}RelationCountNode', ', '.join(rel.codes))
+
+    def get_objects_vars(self, instance, rel):
+        model_name = instance.__class__.__name__
+        return (model_name + 's',
+                model_name.lower() + 's',
+                f'{model_name}RelationNode', ', '.join(rel.codes),
+                f'{model_name}RelationCountNode', ', '.join(rel.codes))
+
+    def create_relation(self, factory, **kwargs):
+        rel = factory(user=self.user, **kwargs)
+        relation_changed.send(sender=rel.__class__, instance=rel)
+        return rel
 
     def assertRelationAndCounts(self, relation, instance, codes):
         self.assertEqual(relation.objects.count(), 1)
@@ -100,39 +135,36 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         self.assertRelationAndCounts(relation, instance, codes)
 
     @parameterized.expand([
-        (MovieRelationFactory, MovieNode, MovieRelation, ['like', 'seen'], 24),
-        (PersonRelationFactory, PersonNode, PersonRelation, ['like'], 20),
+        (MovieRelationFactory, MovieNode, MovieRelation, ['like', 'seen'], 19),
+        (PersonRelationFactory, PersonNode, PersonRelation, ['like'], 15),
     ])
     def test_change_relation(self, factory, node, relation, codes, queries_count):
         fav_codes = codes + ['fav']
-        rel = factory(user=self.user, **{code: True for code in fav_codes})
-        instance = rel.object
+        rel = self.create_relation(factory, **{code: True for code in fav_codes})
         self.assertEqual(relation.objects.count(), 1)
         self.assertRelation(rel, fav_codes)
 
         with self.assertNumQueries(4 + queries_count):
-            result = execute(self.relate_mutation % self.get_relate_vars(instance, rel),
-                             dict(id=to_global_id(node._meta.name, instance.id), code='fav'),
+            result = execute(self.relate_mutation % self.get_relate_vars(rel.object, rel),
+                             dict(id=to_global_id(node._meta.name, rel.object.id), code='fav'),
                              self.context)
 
         self.assertResponseRelationAndCounts(result['relate']['relation'],
                                              result['relate']['count'], rel, codes)
 
-        self.assertRelationAndCounts(relation, instance, codes)
+        self.assertRelationAndCounts(relation, rel.object, codes)
 
     @parameterized.expand([
         (MovieRelationFactory, MovieNode, ['fav', 'like', 'seen']),
         (PersonRelationFactory, PersonNode, ['fav', 'like']),
     ])
     def test_object_relation(self, factory, node, codes):
-        rel = factory(user=self.user, **{code: True for code in codes})
-        relation_changed.send(sender=rel.__class__, instance=rel)
-        instance = rel.object
-        query_name = instance.__class__.__name__.lower()
+        rel = self.create_relation(factory, **{code: True for code in codes})
+        query_name = rel.object.__class__.__name__.lower()
 
         with self.assertNumQueries(2):
-            result = execute(self.relation_query % self.get_relation_vars(instance, rel),
-                             dict(id=to_global_id(node._meta.name, instance.id)),
+            result = execute(self.object_relation_query % self.get_object_vars(rel.object, rel),
+                             dict(id=to_global_id(node._meta.name, rel.object.id)),
                              self.context)
 
         self.assertResponseRelationAndCounts(result[query_name]['relation'],
@@ -147,7 +179,7 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         query_name = instance.__class__.__name__.lower()
 
         with self.assertNumQueries(2):
-            result = execute(self.relation_query % self.get_relation_vars(instance, relation()),
+            result = execute(self.object_relation_query % self.get_object_vars(instance, relation()),
                              dict(id=to_global_id(node._meta.name, instance.id)),
                              self.context)
 
@@ -159,15 +191,72 @@ class RelationsTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         (PersonRelationFactory, PersonNode),
     ])
     def test_object_relation_unauth(self, factory, node):
-        rel = factory(user=self.user)
-        relation_changed.send(sender=rel.__class__, instance=rel)
-        instance = rel.object
-        query_name = instance.__class__.__name__.lower()
+        rel = self.create_relation(factory)
+        query_name = rel.object.__class__.__name__.lower()
 
         with self.assertNumQueries(1):
-            result = execute(self.relation_query % self.get_relation_vars(instance, rel),
-                             dict(id=to_global_id(node._meta.name, instance.id)),
+            result = execute(self.object_relation_query % self.get_object_vars(rel.object, rel),
+                             dict(id=to_global_id(node._meta.name, rel.object.id)),
                              self.Context(user=None))
 
         self.assertResponseRelationAndCounts(result[query_name]['relation'],
                                              result[query_name]['relationsCount'], rel, [])
+
+    @parameterized.expand([
+        (MovieRelationFactory, MovieNode, ['fav', 'like', 'seen']),
+        (PersonRelationFactory, PersonNode, ['fav', 'like']),
+    ])
+    def test_objects_relation(self, factory, node, codes):
+        for i in range(10):
+            rel = self.create_relation(factory, **{code: True for code in codes})
+            query_name = rel.object.__class__.__name__.lower() + 's'
+
+        # TODO: reduce number of queries
+        with self.assertNumQueries(12):
+            result = execute(self.objects_relation_query % self.get_objects_vars(rel.object, rel),
+                             None,
+                             self.context)
+
+        self.assertEqual(len(result[query_name]['edges']), 10)
+        for obj in result[query_name]['edges']:
+            self.assertResponseRelationAndCounts(obj['node']['relation'],
+                                                 obj['node']['relationsCount'], rel, codes)
+
+    @parameterized.expand([
+        (MovieFactory, MovieRelation),
+        (PersonFactory, PersonRelation),
+    ])
+    def test_objects_no_relation(self, factory, relation):
+        for i in range(10):
+            instance = factory()
+            query_name = instance.__class__.__name__.lower() + 's'
+
+        # TODO: reduce number of queries
+        with self.assertNumQueries(12):
+            result = execute(self.objects_relation_query % self.get_objects_vars(instance, relation()),
+                             None,
+                             self.context)
+
+        self.assertEqual(len(result[query_name]['edges']), 10)
+        for obj in result[query_name]['edges']:
+            self.assertResponseRelationAndCounts(obj['node']['relation'],
+                                                 obj['node']['relationsCount'], relation(), [])
+
+    @parameterized.expand([
+        (MovieRelationFactory,),
+        (PersonRelationFactory,),
+    ])
+    def test_objects_relation_unauth(self, factory):
+        for i in range(10):
+            rel = self.create_relation(factory)
+            query_name = rel.object.__class__.__name__.lower() + 's'
+
+        with self.assertNumQueries(2):
+            result = execute(self.objects_relation_query % self.get_objects_vars(rel.object, rel),
+                             None,
+                             self.Context(user=None))
+
+        self.assertEqual(len(result[query_name]['edges']), 10)
+        for obj in result[query_name]['edges']:
+            self.assertResponseRelationAndCounts(obj['node']['relation'],
+                                                 obj['node']['relationsCount'], rel, [])
