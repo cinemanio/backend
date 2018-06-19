@@ -111,3 +111,20 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         self.assertCountNonZeroAndEqual(result['movies'], (Movie.objects
                                                            .filter(**{fieldname: item1})
                                                            .filter(**{fieldname: item2}).count()))
+
+    def test_movies_order(self):
+        query = '''
+            query Movies($order: String!) {
+              movies(orderBy: $order) {
+                edges {
+                  node {
+                    year
+                  }
+                }
+              }
+            }
+        '''
+        self.assertResponseOrder(query, 'movies', order_by='year', queries_count=2,
+                                 earliest=Movie.objects.earliest('year').year,
+                                 latest=Movie.objects.latest('year').year,
+                                 get_value=lambda n: n['year'])
