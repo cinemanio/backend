@@ -33,7 +33,7 @@ class RelationBase(models.Model):
         self.__setattr__(name, not getattr(self, name))
 
     def correct_fields(self, name, value):
-        """Additional logic between attitude fields"""
+        """Additional logic between relation fields"""
         pass
 
     @property

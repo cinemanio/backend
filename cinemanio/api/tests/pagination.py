@@ -1,7 +1,6 @@
 from parameterized import parameterized
 
 from cinemanio.api.tests.base import ListQueryBaseTestCase
-from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory, PersonFactory
 
 
@@ -37,7 +36,7 @@ class PaginationQueryTestCase(ListQueryBaseTestCase):
         ''' % query_name
         # TODO: remove one extra SELECT COUNT(*) AS "__count" FROM "core_movie"
         with self.assertNumQueries(3):
-            result = execute(query, dict(after=''))
+            result = self.execute(query, dict(after=''))
         self.assertCountNonZeroAndEqual(result[query_name], 10)
         self.assertEqual(result[query_name]['totalCount'], 100)
 
@@ -48,11 +47,11 @@ class PaginationQueryTestCase(ListQueryBaseTestCase):
             values = dict(after=result[query_name]['pageInfo']['endCursor'])
             if i == 9:
                 with self.assertNumQueries(2):
-                    result = execute(query, values)
+                    result = self.execute(query, values)
                 self.assertEqual(len(result[query_name]['edges']), 0)
             else:
                 with self.assertNumQueries(3):
-                    result = execute(query, values)
+                    result = self.execute(query, values)
                 self.assertCountNonZeroAndEqual(result[query_name], 10)
                 self.populated_cursors(cursors, result[query_name])
 

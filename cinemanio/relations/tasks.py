@@ -20,11 +20,11 @@ class RecountFamiliarObjects(Task):
 class DeleteEmptyRelations(Task):
     def run(self, sender, instance_id, **kwargs):
         instance = sender.objects.get(id=instance_id)
-        attitude = False
+        relation = False
         for code in instance.codes:
-            attitude |= getattr(instance, code)
+            relation |= getattr(instance, code)
 
-        if not attitude:
+        if not relation:
             instance.delete()
 
 

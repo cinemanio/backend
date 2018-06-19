@@ -3,15 +3,13 @@ from parameterized import parameterized
 
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.person import PersonNode
-from cinemanio.api.tests.base import BaseTestCase
-from cinemanio.api.tests.helpers import execute
+from cinemanio.api.tests.base import QueryBaseTestCase
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.images.factories import ImageLinkFactory
 from cinemanio.images.models import ImageType
 
 
-class ImagesQueryTestCase(BaseTestCase):
-
+class ImagesQueryTestCase(QueryBaseTestCase):
     @parameterized.expand([
         (MovieFactory, MovieNode, ImageType.POSTER),
         (PersonFactory, PersonNode, ImageType.PHOTO),
@@ -44,7 +42,7 @@ class ImagesQueryTestCase(BaseTestCase):
         ''' % query_name
         # TODO: reduce number of queries
         with self.assertNumQueries(3 + (4 * 10)):
-            result = execute(query, dict(id=to_global_id(node._meta.name, instance.id)))
+            result = self.execute(query, dict(id=to_global_id(node._meta.name, instance.id)))
         self.assertEqual(len(result[query_name]['images']['edges']), instance.images.count())
         first = result[query_name]['images']['edges'][0]['node']['image']
         self.assertEqual(first['type'], image_type.name)
@@ -77,7 +75,7 @@ class ImagesQueryTestCase(BaseTestCase):
 
         # no images
         with self.assertNumQueries(3):
-            result_nothing = execute(query, values)
+            result_nothing = self.execute(query, values)
         self.assertEqual(result_nothing[query_name][field], None)
 
         # images
@@ -85,10 +83,10 @@ class ImagesQueryTestCase(BaseTestCase):
             ImageLinkFactory(object=instance, image__type=image_type)
 
         with self.assertNumQueries(3 + 4):
-            result = execute(query, values)
+            result = self.execute(query, values)
         self.assertEqual(result[query_name][field]['type'], image_type.name)
         self.assertTrue(len(result[query_name][field]['original']) > 0)
 
         # try again and compare
-        result_another = execute(query, values)
+        result_another = self.execute(query, values)
         self.assertNotEqual(result[query_name][field]['original'], result_another[query_name][field]['original'])

@@ -31,7 +31,7 @@ class RelationsFieldsTest(TestCase, RelationsTestMixin):
         rel.change('fav')
         self.assertRelation(rel, ['seen', 'like'])
 
-    def test_movie_attitude_fields(self):
+    def test_movie_relation_fields(self):
         rel = MovieRelationFactory()
         self.assertRelation(rel, [])
         rel.fav = True
@@ -43,9 +43,9 @@ class RelationsFieldsTest(TestCase, RelationsTestMixin):
         rel.fav = True
         self.assertRelation(rel, ['seen', 'like', 'fav'])
         rel.dislike = True
-        self.assertRelation(rel, ['seen', 'dislike', 'ignore'])
+        self.assertRelation(rel, ['seen', 'dislike'])
 
-    def test_person_attitude_fields(self):
+    def test_person_relation_fields(self):
         rel = PersonRelationFactory()
         self.assertRelation(rel, [])
         rel.fav = True

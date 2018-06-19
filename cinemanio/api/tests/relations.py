@@ -3,16 +3,15 @@ from parameterized import parameterized
 
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.person import PersonNode
-from cinemanio.api.tests.base import UserQueryBaseTestCase
-from cinemanio.api.tests.helpers import execute
+from cinemanio.api.tests.base import QueryBaseTestCase
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.relations.factories import MovieRelationFactory, PersonRelationFactory
 from cinemanio.relations.models import MovieRelation, PersonRelation
-from cinemanio.relations.tests import RelationsTestMixin
 from cinemanio.relations.signals import relation_changed
+from cinemanio.relations.tests import RelationsTestMixin
 
 
-class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
+class RelationsQueryTestCase(QueryBaseTestCase, RelationsTestMixin):
     relate_mutation = '''
         mutation Relate($id: ID!, $code: String!) {
           relate(id: $id, code: $code) {
@@ -132,9 +131,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         self.assertEqual(relation.objects.count(), 0)
 
         with self.assertNumQueries(7 + queries_count):
-            result = execute(self.relate_mutation % self.get_relate_vars(rel),
-                             dict(id=to_global_id(node._meta.name, instance.id), code='fav'),
-                             self.context)
+            result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
+                                  dict(id=to_global_id(node._meta.name, instance.id), code='fav'),
+                                  self.context)
 
         self.assertResponseRelationAndCounts(result['relate']['relation'],
                                              result['relate']['count'], relation(), codes)
@@ -151,9 +150,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         self.assertRelation(rel, fav_codes)
 
         with self.assertNumQueries(4 + queries_count):
-            result = execute(self.relate_mutation % self.get_relate_vars(rel),
-                             dict(id=to_global_id(node._meta.name, rel.object.id), code='fav'),
-                             self.context)
+            result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
+                                  dict(id=to_global_id(node._meta.name, rel.object.id), code='fav'),
+                                  self.context)
 
         self.assertResponseRelationAndCounts(result['relate']['relation'],
                                              result['relate']['count'], rel, codes)
@@ -169,9 +168,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         query_name = rel.object.__class__.__name__.lower()
 
         with self.assertNumQueries(2):
-            result = execute(self.object_relation_query % self.get_object_vars(rel),
-                             dict(id=to_global_id(node._meta.name, rel.object.id)),
-                             self.context)
+            result = self.execute(self.object_relation_query % self.get_object_vars(rel),
+                                  dict(id=to_global_id(node._meta.name, rel.object.id)),
+                                  self.context)
 
         self.assertResponseRelationAndCounts(result[query_name]['relation'],
                                              result[query_name]['relationsCount'], rel, codes)
@@ -186,9 +185,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         query_name = instance.__class__.__name__.lower()
 
         with self.assertNumQueries(2):
-            result = execute(self.object_relation_query % self.get_object_vars(rel),
-                             dict(id=to_global_id(node._meta.name, instance.id)),
-                             self.context)
+            result = self.execute(self.object_relation_query % self.get_object_vars(rel),
+                                  dict(id=to_global_id(node._meta.name, instance.id)),
+                                  self.context)
 
         self.assertResponseRelationAndCounts(result[query_name]['relation'],
                                              result[query_name]['relationsCount'], relation(), [])
@@ -202,9 +201,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         query_name = rel.object.__class__.__name__.lower()
 
         with self.assertNumQueries(1):
-            result = execute(self.object_relation_query % self.get_object_vars(rel),
-                             dict(id=to_global_id(node._meta.name, rel.object.id)),
-                             self.Context(user=None))
+            result = self.execute(self.object_relation_query % self.get_object_vars(rel),
+                                  dict(id=to_global_id(node._meta.name, rel.object.id)),
+                                  self.Context(user=None))
 
         self.assertUnauthResponseRelationAndCounts(result[query_name]['relation'],
                                                    result[query_name]['relationsCount'], rel, codes)
@@ -219,9 +218,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
             query_name = rel.object.__class__.__name__.lower() + 's'
 
         with self.assertNumQueries(3):
-            result = execute(self.objects_relation_query % self.get_objects_vars(rel),
-                             None,
-                             self.context)
+            result = self.execute(self.objects_relation_query % self.get_objects_vars(rel),
+                                  None,
+                                  self.context)
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:
@@ -239,9 +238,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
         rel = relation(object=instance)
 
         with self.assertNumQueries(3):
-            result = execute(self.objects_relation_query % self.get_objects_vars(rel),
-                             None,
-                             self.context)
+            result = self.execute(self.objects_relation_query % self.get_objects_vars(rel),
+                                  None,
+                                  self.context)
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:
@@ -258,9 +257,9 @@ class RelationsQueryTestCase(UserQueryBaseTestCase, RelationsTestMixin):
             query_name = rel.object.__class__.__name__.lower() + 's'
 
         with self.assertNumQueries(2):
-            result = execute(self.objects_relation_query % self.get_objects_vars(rel),
-                             None,
-                             self.Context(user=None))
+            result = self.execute(self.objects_relation_query % self.get_objects_vars(rel),
+                                  None,
+                                  self.Context(user=None))
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:

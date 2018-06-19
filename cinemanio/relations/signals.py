@@ -14,7 +14,7 @@ def delete_empty_relations(sender, instance, **kwargs):
     """
     Delete record if all relations are False
     """
-    DeleteEmptyRelations.delay(sender, instance.id)
+    DeleteEmptyRelations().run(sender, instance.id)
 
 
 @receiver(relation_changed, sender=MovieRelation)
@@ -23,7 +23,7 @@ def recount_familiar_objects(sender, instance, **kwargs):
     """
     Recount familiar movies | persons for user
     """
-    RecountFamiliarObjects.delay(sender, instance.user.id)
+    RecountFamiliarObjects().run(sender, instance.user.id)
 
 
 @receiver(relation_changed, sender=MovieRelation)
@@ -32,4 +32,4 @@ def recount_relations(sender, instance, **kwargs):
     """
     Recount relations for movie | person
     """
-    RecountObjectRelations.delay(sender, instance)
+    RecountObjectRelations().run(sender, instance)
