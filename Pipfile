@@ -38,6 +38,8 @@ whitenoise = "*"
 ipython = "*"
 factory-boy = "*"
 ipdb = "*"
+prospector = {extras = ["with-pyroma"]}
+pylint-django = "*"
 
 
 [requires]

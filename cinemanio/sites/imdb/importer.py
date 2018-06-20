@@ -22,8 +22,8 @@ class ImdbImporterBase:
 
     logger = None
 
-    def __init__(self, object, imdb_id, logger=None):
-        self.object = object
+    def __init__(self, instane, imdb_id, logger=None):
+        self.object = instane
         self.imdb = IMDb()
         self.logger = logger or logging
         self.imdb_id = int(imdb_id)
@@ -37,7 +37,7 @@ class ImdbImporterBase:
             self._imdb_object = self.get_imdb_object(self.imdb_id)
         return self._imdb_object
 
-    def get_imdb_object(self, id):
+    def get_imdb_object(self, imdb_id):
         raise NotImplementedError()
 
     def get_name_parts(self, name):
@@ -72,8 +72,8 @@ class ImdbPersonImporter(ImdbImporterBase):
     """
     model = Person
 
-    def get_imdb_object(self, id):
-        return self.imdb.get_person(id)
+    def get_imdb_object(self, imdb_id):
+        return self.imdb.get_person(imdb_id)
 
     def apply_remote_data(self, data, roles):
         """
@@ -133,7 +133,7 @@ class ImdbPersonImporter(ImdbImporterBase):
 
     def _get_country(self):
         birth_notes = self.imdb_object.data.get('birth notes')
-        for country in Country.objects.select_related('imdb'):
+        for country in Country.objects.select_related('imdb').all():
             if country.imdb.name and birth_notes.find(country.imdb.name) != -1:
                 return country.id
         return None
@@ -207,8 +207,8 @@ class ImdbMovieImporter(ImdbImporterBase):
     """
     model = Movie
 
-    def get_imdb_object(self, id):
-        return self.imdb.get_movie(id)
+    def get_imdb_object(self, imdb_id):
+        return self.imdb.get_movie(imdb_id)
 
     def apply_remote_data(self, data, roles):
         """
