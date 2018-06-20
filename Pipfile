@@ -35,6 +35,8 @@ factory-boy = "*"
 ipdb = "*"
 prospector = {extras = ["with-pyroma"]}
 pylint-django = "*"
+"flake8" = "*"
+coveralls = "*"
 
 [requires]
 python_version = "3.6.4"
