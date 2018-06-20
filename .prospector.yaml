@@ -17,6 +17,8 @@ pep8:
 pylint:
   disable:
     - arguments-differ
+    - too-many-branches
+    - cyclic-import  # possibly because https://github.com/PyCQA/pylint/issues/850
 
 uses:
   - django
