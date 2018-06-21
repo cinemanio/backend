@@ -37,6 +37,7 @@ coveralls = "*"
 prospector = "*"
 pylint-django = "*"
 "flake8" = "*"
+pydot = "*"
 
 [requires]
 python_version = "3.6.4"
