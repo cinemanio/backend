@@ -17,10 +17,8 @@ django-silk = "*"
 django-cursor-pagination = "*"
 celery = "*"
 celerymon = "*"
-vcrpy-unittest = "*"
 kinopoiskpy = "*"
 alphabet-detector = "*"
-parameterized = "*"
 graphene-django = {git = "https://github.com/graphql-python/graphene-django", editable = true}
 imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 "psycopg2-binary" = "*"
@@ -31,12 +29,14 @@ whitenoise = "*"
 
 [dev-packages]
 ipython = "*"
-factory-boy = "*"
 ipdb = "*"
-prospector = {extras = ["with-pyroma"]}
+vcrpy-unittest = "*"
+factory-boy = "*"
+parameterized = "*"
+coveralls = "*"
+prospector = "*"
 pylint-django = "*"
 "flake8" = "*"
-coveralls = "*"
 
 [requires]
 python_version = "3.6.4"

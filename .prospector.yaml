@@ -33,4 +33,4 @@ mccabe:
   run: true
 
 pyroma:
-  run: true
+  run: false
