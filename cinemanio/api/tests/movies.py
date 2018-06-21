@@ -1,8 +1,8 @@
 from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
-from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.api.schema.properties import GenreNode
+from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.models import Movie, Genre, Country, Language
@@ -30,7 +30,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             '''
         with self.assertNumQueries(5):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, self.count)
+        self.assert_count_equal(result, self.count)
 
     def test_movies_query_fragments(self):
         query = '''
@@ -62,7 +62,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             '''
         with self.assertNumQueries(5):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, self.count)
+        self.assert_count_equal(result, self.count)
 
     def test_movies_pagination(self):
         self.assert_pagination()
@@ -82,7 +82,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             ''' % year
         with self.assertNumQueries(2):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, Movie.objects.filter(year=year).count())
+        self.assert_count_equal(result, Movie.objects.filter(year=year).count())
 
     @parameterized.expand([
         (Genre, 'genres'),
@@ -110,6 +110,6 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, (Movie.objects
-                                                 .filter(**{fieldname: item1})
-                                                 .filter(**{fieldname: item2}).count()))
+        self.assert_count_equal(result, (Movie.objects
+                                         .filter(**{fieldname: item1})
+                                         .filter(**{fieldname: item2}).count()))

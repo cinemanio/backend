@@ -27,9 +27,9 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
         self.assertGreater(len(result['movie']['genres']), 0)
         self.assertGreater(len(result['movie']['languages']), 0)
         self.assertGreater(len(result['movie']['countries']), 0)
-        self.assertM2MRel(result['movie']['genres'], m.genres)
-        self.assertM2MRel(result['movie']['languages'], m.languages)
-        self.assertM2MRel(result['movie']['countries'], m.countries)
+        self.assert_m2m_rel(result['movie']['genres'], m.genres)
+        self.assert_m2m_rel(result['movie']['languages'], m.languages)
+        self.assert_m2m_rel(result['movie']['countries'], m.countries)
 
     def test_movie_with_related_movie(self):
         m = MovieFactory(prequel_for=MovieFactory(), sequel_for=MovieFactory(), remake_for=MovieFactory())

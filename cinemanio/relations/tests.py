@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class RelationsFieldsTest(TestCase):
-    def assertRelation(self, rel, codes):
+    def assert_relations(self, rel, codes):
         for code in rel.codes:
             value = getattr(rel, code)
             if code in codes:
@@ -19,28 +19,28 @@ class RelationsFieldsTest(TestCase):
 
     def test_movie_attitude_fields(self):
         rel = MovieRelationFactory()
-        self.assertRelation(rel, [])
+        self.assert_relations(rel, [])
         rel.like = True
-        self.assertRelation(rel, ['seen', 'like'])
+        self.assert_relations(rel, ['seen', 'like'])
         rel.seen = False
-        self.assertRelation(rel, [])
+        self.assert_relations(rel, [])
         rel.fav = True
-        self.assertRelation(rel, ['seen', 'like', 'fav'])
+        self.assert_relations(rel, ['seen', 'like', 'fav'])
         rel.dislike = True
-        self.assertRelation(rel, ['seen', 'dislike', 'ignore'])
+        self.assert_relations(rel, ['seen', 'dislike', 'ignore'])
 
     def test_person_attitude_fields(self):
         rel = PersonRelationFactory()
-        self.assertRelation(rel, [])
+        self.assert_relations(rel, [])
         rel.fav = True
-        self.assertRelation(rel, ['fav', 'like'])
+        self.assert_relations(rel, ['fav', 'like'])
         rel.dislike = True
-        self.assertRelation(rel, ['dislike'])
+        self.assert_relations(rel, ['dislike'])
         rel.like = True
-        self.assertRelation(rel, ['like'])
+        self.assert_relations(rel, ['like'])
         rel.fav = True
         rel.like = False
-        self.assertRelation(rel, [])
+        self.assert_relations(rel, [])
 
 
 class RelationsTest(TestCase):

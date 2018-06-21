@@ -39,7 +39,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         self.assertEqual(result['person']['dateDeath'], p.date_death.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['country']['name'], p.country.name)
         self.assertGreater(len(result['person']['roles']), 0)
-        self.assertM2MRel(result['person']['roles'], p.roles)
+        self.assert_m2m_rel(result['person']['roles'], p.roles)
 
     def test_person_with_related_sites(self):
         p = ImdbPersonFactory(person=KinopoiskPersonFactory().person).person

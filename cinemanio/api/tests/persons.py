@@ -29,7 +29,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
             '''
         with self.assertNumQueries(2):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, self.count)
+        self.assert_count_equal(result, self.count)
 
     def test_persons_pagination(self):
         self.assert_pagination()
@@ -50,7 +50,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
             ''' % year
         with self.assertNumQueries(2):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, Person.objects.filter(date_birth__year=year).count())
+        self.assert_count_equal(result, Person.objects.filter(date_birth__year=year).count())
 
     def test_persons_query_filter_by_country(self):
         country = Person.objects.all()[0].country
@@ -67,7 +67,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
             ''' % to_global_id(CountryNode._meta.name, country.id)
         with self.assertNumQueries(2):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, Person.objects.filter(country=country).count())
+        self.assert_count_equal(result, Person.objects.filter(country=country).count())
 
     @parameterized.expand([(Role, 'roles')])
     def test_movies_filter_by_m2m(self, model, fieldname):
@@ -91,6 +91,6 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
             result = execute(query)
-        self.assertCountNonZeroAndEqual(result, (Person.objects
-                                                 .filter(**{fieldname: item1})
-                                                 .filter(**{fieldname: item2}).count()))
+        self.assert_count_equal(result, (Person.objects
+                                         .filter(**{fieldname: item1})
+                                         .filter(**{fieldname: item2}).count()))

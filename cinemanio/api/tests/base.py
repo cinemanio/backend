@@ -11,7 +11,7 @@ class ListQueryBaseTestCase(BaseTestCase):
         for i in range(self.count):
             self.factory()
 
-    def assertCountNonZeroAndEqual(self, result, count):
+    def assert_count_equal(self, result, count):
         self.assertGreater(count, 0)
         self.assertEqual(len(result[self.type]['edges']), count)
 
@@ -40,7 +40,7 @@ class ListQueryBaseTestCase(BaseTestCase):
         # TODO: remove one extra SELECT COUNT(*) AS "__count" FROM "core_movie"
         with self.assertNumQueries(3):
             result = execute(query % (self.type, ''))
-        self.assertCountNonZeroAndEqual(result, 10)
+        self.assert_count_equal(result, 10)
         self.assertEqual(result[self.type]['totalCount'], self.count)
 
         cursors = set()
@@ -55,12 +55,12 @@ class ListQueryBaseTestCase(BaseTestCase):
             else:
                 with self.assertNumQueries(3):
                     result = execute(query_paginated)
-                self.assertCountNonZeroAndEqual(result, 10)
+                self.assert_count_equal(result, 10)
                 self.populated_cursors(cursors, result)
 
         self.assertEqual(len(cursors), self.count)
 
 
 class ObjectQueryBaseTestCase(BaseTestCase):
-    def assertM2MRel(self, result, queryset, fieldname='name'):
+    def assert_m2m_rel(self, result, queryset, fieldname='name'):
         self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
