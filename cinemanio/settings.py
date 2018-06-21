@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'django_extensions',
+    'django_cleanup',
     'debug_toolbar',
     'reversion',
     'djcelery',
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'graphene_django',
     'silk',
+    'sorl.thumbnail',
+    'storages',
 
     # cinemanio apps
     'cinemanio.core',
@@ -57,6 +60,7 @@ INSTALLED_APPS = [
     'cinemanio.sites.imdb',
     'cinemanio.sites.kinopoisk',
     'cinemanio.sites.wikipedia',
+    'cinemanio.images',
 ]
 
 MIDDLEWARE = [
@@ -95,10 +99,10 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': dj_database_url.config(
-        conn_max_age=500,
+        # conn_max_age=600,
+        ssl_require=True,
         default=config('DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
 }
 
@@ -156,6 +160,14 @@ STATICFILES_DIRS = ()
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# Amazon S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='cinemanio')
 
 # celery
 CELERY_HOST = '127.0.0.1'

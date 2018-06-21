@@ -1,5 +1,8 @@
+from graphql_relay.node.node import to_global_id
+
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.images.factories import ImageLinkFactory
 
 
 class ListQueryBaseTestCase(BaseTestCase):
@@ -19,7 +22,7 @@ class ListQueryBaseTestCase(BaseTestCase):
         for cursor in result[self.type]['edges']:
             cursors.add(cursor['cursor'])
 
-    def assert_pagination(self):
+    def assertPagination(self):
         query = '''
             {
               %s(first: 10, after: "%s") {
@@ -62,5 +65,79 @@ class ListQueryBaseTestCase(BaseTestCase):
 
 
 class ObjectQueryBaseTestCase(BaseTestCase):
+    factory = None
+    type = None
+    node = None
+
     def assert_m2m_rel(self, result, queryset, fieldname='name'):
         self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
+
+    def assert_images(self, image_type):
+        m = self.factory()
+        for i in range(10):
+            ImageLinkFactory(object=m, image__type=image_type)
+        query = '''
+            {
+              %s(id: "%s") {
+                id
+                images {
+                  edges {
+                    node {
+                      image {
+                        type
+                        original
+                        fullCard
+                        shortCard
+                        detail
+                        icon
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            ''' % (self.type, to_global_id(self.node._meta.name, m.id))
+        # TODO: reduce number of queries
+        with self.assertNumQueries(3 + (4 * 10)):
+            result = execute(query)
+        self.assertEqual(len(result[self.type]['images']['edges']), m.images.count())
+        first = result[self.type]['images']['edges'][0]['node']['image']
+        self.assertEqual(first['type'], image_type.name)
+        self.assertTrue(len(first['original']) > 0)
+        self.assertTrue(len(first['icon']) > 0)
+
+    def assert_random_image(self, image_type, field):
+        m = self.factory()
+        query = '''
+            {
+              %s(id: "%s") {
+                id
+                %s {
+                  type
+                  original
+                  fullCard
+                  shortCard
+                  detail
+                  icon
+                }
+              }
+            }
+            ''' % (self.type, to_global_id(self.node._meta.name, m.id), field)
+
+        # no images
+        with self.assertNumQueries(3):
+            result_nothing = execute(query)
+        self.assertEqual(result_nothing[self.type][field], None)
+
+        # images
+        for i in range(100):
+            ImageLinkFactory(object=m, image__type=image_type)
+
+        with self.assertNumQueries(3 + 4):
+            result = execute(query)
+        self.assertEqual(result[self.type][field]['type'], image_type.name)
+        self.assertTrue(len(result[self.type][field]['original']) > 0)
+
+        # try again and compare
+        result_another = execute(query)
+        self.assertNotEqual(result[self.type][field]['original'], result_another[self.type][field]['original'])

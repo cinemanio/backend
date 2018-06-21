@@ -2,14 +2,19 @@ from graphql_relay.node.node import to_global_id
 
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.properties import RoleNode
+from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.api.tests.helpers import execute
 from cinemanio.core.factories import MovieFactory, CastFactory
-from cinemanio.api.tests.base import ObjectQueryBaseTestCase
+from cinemanio.images.models import ImageType
 from cinemanio.sites.imdb.factories import ImdbMovieFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory
 
 
 class MovieQueryTestCase(ObjectQueryBaseTestCase):
+    factory = MovieFactory
+    node = MovieNode
+    type = 'movie'
+
     def test_movie_with_m2m(self):
         m = MovieFactory()
         query = '''
@@ -130,3 +135,9 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
         with self.assertNumQueries(3):
             result = execute(query)
         self.assertEqual(len(result['movie']['cast']['edges']), m.cast.filter(role=cast.role).count())
+
+    def test_movie_with_images(self):
+        self.assert_images(ImageType.POSTER)
+
+    def test_movie_poster(self):
+        self.assert_random_image(ImageType.POSTER, 'poster')

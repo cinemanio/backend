@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import translation
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
-from cinemanio.core.models import Movie, Person, Cast, Role
+from cinemanio.core.models import Movie, Person, Cast, Role, Gender
 from cinemanio.core.tests.base import BaseTestCase
 
 
@@ -74,3 +74,10 @@ class ModelsTest(BaseTestCase):
         CastFactory(person=person, role=Role.objects.get_scenarist())
         person.set_roles()
         self.assertQuerysetEqual(person.roles.all(), [Role.objects.get_actor().name, Role.objects.get_scenarist().name])
+
+    def test_person_gender(self):
+        for i in range(100):
+            PersonFactory()
+        self.assertEqual(Person.objects.filter(gender=None).count(), 0)
+        self.assertGreater(Person.objects.filter(gender=Gender.MALE).count(), 0)
+        self.assertGreater(Person.objects.filter(gender=Gender.FEMALE).count(), 0)
