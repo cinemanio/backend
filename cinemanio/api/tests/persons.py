@@ -32,7 +32,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         self.assert_count_equal(result, self.count)
 
     def test_persons_pagination(self):
-        self.assertPagination()
+        self.assert_pagination()
 
     @skip('add this filter to filterset')
     def test_persons_query_filter_by_birth_year(self):

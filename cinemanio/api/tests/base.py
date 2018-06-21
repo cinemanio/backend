@@ -22,7 +22,7 @@ class ListQueryBaseTestCase(BaseTestCase):
         for cursor in result[self.type]['edges']:
             cursors.add(cursor['cursor'])
 
-    def assertPagination(self):
+    def assert_pagination(self):
         query = '''
             {
               %s(first: 10, after: "%s") {

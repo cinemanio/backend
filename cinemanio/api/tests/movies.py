@@ -65,7 +65,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         self.assert_count_equal(result, self.count)
 
     def test_movies_pagination(self):
-        self.assertPagination()
+        self.assert_pagination()
 
     def test_movies_filter_by_year(self):
         year = Movie.objects.all()[0].year
