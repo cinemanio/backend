@@ -32,7 +32,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(5):
             result = self.execute(query)
-        self.assertCountNonZeroAndEqual(result['movies'], self.count)
+        self.assert_count_equal(result, self.count)
 
     def test_movies_query_fragments(self):
         query = '''
@@ -64,7 +64,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(5):
             result = self.execute(query)
-        self.assertCountNonZeroAndEqual(result['movies'], self.count)
+        self.assert_count_equal(result, self.count)
 
     def test_movies_filter_by_year(self):
         year = Movie.objects.all()[0].year
@@ -81,7 +81,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         '''
         with self.assertNumQueries(2):
             result = self.execute(query, dict(year=year))
-        self.assertCountNonZeroAndEqual(result['movies'], Movie.objects.filter(year=year).count())
+        self.assert_count_equal(result, Movie.objects.filter(year=year).count())
 
     @parameterized.expand([
         (Genre, 'genres'),
@@ -108,9 +108,9 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         with self.assertNumQueries(3):
             result = self.execute(query, dict(rels=(to_global_id(GenreNode._meta.name, item1.id),
                                                     to_global_id(GenreNode._meta.name, item2.id))))
-        self.assertCountNonZeroAndEqual(result['movies'], (Movie.objects
-                                                           .filter(**{fieldname: item1})
-                                                           .filter(**{fieldname: item2}).count()))
+        self.assert_count_equal(result, (Movie.objects
+                                         .filter(**{fieldname: item1})
+                                         .filter(**{fieldname: item2}).count()))
 
     def test_movies_order(self):
         query = '''

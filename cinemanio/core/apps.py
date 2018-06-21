@@ -1,5 +1,5 @@
-from django.apps import AppConfig
+from django.apps import AppConfig as AppConfigBase
 
 
-class AppConfig(AppConfig):
+class AppConfig(AppConfigBase):
     name = 'cinemanio.core'

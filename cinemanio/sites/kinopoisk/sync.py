@@ -10,7 +10,10 @@ from kinopoisk.person import Person as KinoPerson
 
 class SyncBase:
     _remote_obj = None
-    model = None
+
+    @property
+    def model(self):
+        raise NotImplementedError()
 
     @property
     def remote_obj(self):

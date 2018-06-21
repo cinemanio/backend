@@ -2,12 +2,11 @@ language: python
 python:
   - "3.6"
 install:
-  - pip install flake8
   - pip install pipenv
-  - pip install coveralls
   - pipenv install --dev
 before_script:
   - flake8 ./cinemanio
+  - prospector -0 .
   - python manage.py collectstatic
 script:
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test

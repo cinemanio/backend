@@ -6,11 +6,6 @@ from graphene.utils.str_converters import to_snake_case
 from graphene_django.filter import DjangoFilterConnectionField as _DjangoFilterConnectionField
 
 
-def getEnumLabels(Enum):
-    props = {v: k for k, v in Enum.choices()}
-    return type(Enum.__name__, (graphene.Enum,), props)
-
-
 class DjangoFilterConnectionField(_DjangoFilterConnectionField):
     """
     Temporary fix for select_related issue
@@ -19,13 +14,14 @@ class DjangoFilterConnectionField(_DjangoFilterConnectionField):
     def __init__(self, node, **kwargs):
         super(DjangoFilterConnectionField, self).__init__(node, fields=node._meta.filter_fields, **kwargs)
 
-    @staticmethod
-    def merge_querysets(default_queryset, queryset):
+    @classmethod
+    def merge_querysets(cls, default_queryset, queryset):
         if default_queryset.query.distinct != queryset.query.distinct:
             queryset_merged = default_queryset
         else:
             queryset_merged = _DjangoFilterConnectionField.merge_querysets(default_queryset, queryset)
         queryset_merged.query.select_related = queryset.query.select_related
+        # pylint: disable=protected-access
         queryset_merged._prefetch_related_lookups = queryset._prefetch_related_lookups
         return queryset_merged
 
@@ -36,9 +32,9 @@ class DjangoObjectTypeMixin:
     """
 
     @classmethod
-    def get_node(cls, info, id):
+    def get_node(cls, info, pk):
         try:
-            return cls.get_queryset(info).get(pk=id)
+            return cls.get_queryset(info).get(pk=pk)
         except cls._meta.model.DoesNotExist:
             return None
 
@@ -116,5 +112,5 @@ class CountableConnectionBase(graphene.relay.Connection):
 
     total_count = graphene.Int()
 
-    def resolve_total_count(self, info, **kwargs):
+    def resolve_total_count(self, _):
         return self.iterable.count()

@@ -28,8 +28,8 @@ class Cast(models.Model):
             name=self.person.name,
             role=role)
 
-    def save(self, **kwargs):
+    def save(self, *args, **kwargs):
         from cinemanio.core.models import Role
         if self.role.id not in [Role.ACTOR_ID, Role.ACTOR_VOICE_ID]:
             self.name = ''
-        super().save(**kwargs)
+        super().save(*args, **kwargs)

@@ -49,10 +49,6 @@ class Role(PropertyModel):
         verbose_name = _('role')
         verbose_name_plural = _('roles')
 
-    def get_name(self, gender=1):
-        # TODO: conversion Actor -> Actress depends on gender
-        return self.name
-
     def is_actor(self):
         return self.id == self.ACTOR_ID
 

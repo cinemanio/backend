@@ -26,7 +26,7 @@ class QueryBaseTestCase(BaseTestCase):
 
 
 class ListQueryBaseTestCase(QueryBaseTestCase):
-    def assertCountNonZeroAndEqual(self, result, count):
+    def assert_count_equal(self, result, count):
         self.assertGreater(count, 0)
         self.assertEqual(len(result['edges']), count)
 
@@ -49,5 +49,5 @@ class ListQueryBaseTestCase(QueryBaseTestCase):
 
 
 class ObjectQueryBaseTestCase(QueryBaseTestCase):
-    def assertM2MRel(self, result, queryset, fieldname='name'):
+    def assert_m2m_rel(self, result, queryset, fieldname='name'):
         self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))

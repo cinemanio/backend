@@ -50,14 +50,14 @@ class PropertiesQuery:
     languages = graphene.List(LanguageNode)
     countries = graphene.List(CountryNode)
 
-    def resolve_roles(self, *args, **kwargs):
+    def resolve_roles(self, _):
         return Role.objects.all()
 
-    def resolve_genres(self, *args, **kwargs):
+    def resolve_genres(self, _):
         return Genre.objects.all()
 
-    def resolve_languages(self, *args, **kwargs):
+    def resolve_languages(self, _):
         return Language.objects.all()
 
-    def resolve_countries(self, *args, **kwargs):
+    def resolve_countries(self, _):
         return Country.objects.all()

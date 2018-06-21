@@ -29,7 +29,7 @@ class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesM
         interfaces = (relay.Node,)
         connection_class = CountableConnectionBase
 
-    def resolve_cast(self, info, *args, **kwargs):
+    def resolve_cast(self, info, **_):
         return CastNode.get_queryset(info).filter(movie=self)
 
     def resolve_poster(self, info, *args, **kwargs):
@@ -40,8 +40,8 @@ class MovieQuery:
     movie = graphene.relay.Node.Field(MovieNode)
     movies = DjangoFilterConnectionField(MovieNode, filterset_class=MovieFilterSet)
 
-    def resolve_movie(self, info, **kwargs):
+    def resolve_movie(self, info):
         return MovieNode.get_queryset(info)
 
-    def resolve_movies(self, info, **kwargs):
+    def resolve_movies(self, info, **_):
         return MovieNode.get_queryset(info)

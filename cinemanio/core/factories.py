@@ -35,15 +35,15 @@ class MovieFactory(DjangoModelFactory):
         model = Movie
 
     @factory.post_generation
-    def genres(self, create, extracted, **kwargs):
+    def genres(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'genres', Genre)
 
     @factory.post_generation
-    def languages(self, create, extracted, **kwargs):
+    def languages(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'languages', Language)
 
     @factory.post_generation
-    def countries(self, create, extracted, **kwargs):
+    def countries(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'countries', Country)
 
 
@@ -67,14 +67,14 @@ class PersonFactory(DjangoModelFactory):
         model = Person
 
     @factory.post_generation
-    def roles(self, create, extracted, **kwargs):
+    def roles(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'roles', Role)
 
 
 class CastFactory(DjangoModelFactory):
     movie = factory.SubFactory(MovieFactory)
     person = factory.SubFactory(PersonFactory)
-    role = factory.LazyAttribute(lambda o: Role.objects.order_by('?')[0])
+    role = factory.LazyAttribute(lambda o: Role.objects.order_by('?').first())
 
     class Meta:
         model = Cast

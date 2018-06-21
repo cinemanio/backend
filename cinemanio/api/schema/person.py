@@ -32,7 +32,7 @@ class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, Images
         interfaces = (relay.Node,)
         connection_class = CountableConnectionBase
 
-    def resolve_career(self, info, *args, **kwargs):
+    def resolve_career(self, info, **_):
         return CastNode.get_queryset(info).filter(person=self)
 
     def resolve_photo(self, info, *args, **kwargs):
@@ -43,8 +43,8 @@ class PersonQuery:
     person = relay.Node.Field(PersonNode)
     persons = DjangoFilterConnectionField(PersonNode, filterset_class=PersonFilterSet)
 
-    def resolve_person(self, info, **kwargs):
+    def resolve_person(self, info):
         return PersonNode.get_queryset(info)
 
-    def resolve_persons(self, info, **kwargs):
+    def resolve_persons(self, info, **_):
         return PersonNode.get_queryset(info)

@@ -47,12 +47,8 @@ class User(AbstractUser):
     def googleprofile_url(self):
         return self.googleprofile_link % self.googleprofile if self.googleprofile else ''
 
-    def __unicode__(self):
+    def __repr__(self):
         return self.username
-
-    def save(self, **kwargs):
-        self.lj = self.lj or None
-        super().save(**kwargs)
 
     @property
     def name(self):
