@@ -29,7 +29,7 @@ class AuthTestCase(QueryBaseTestCase):
         }
     '''
 
-    def assertPayload(self, payload):
+    def assert_payload(self, payload):
         self.assertEqual(payload['username'], self.user.username)
         self.assertGreater(payload['exp'] - time.time(), 300 - 2)
         self.assertLess(payload['orig_iat'] - time.time(), 0)
@@ -50,7 +50,7 @@ class AuthTestCase(QueryBaseTestCase):
         token = get_token(self.user)
         with self.assertNumQueries(0):
             result = self.execute(self.verify_token_mutation, dict(token=token))
-        self.assertPayload(result['verifyToken']['payload'])
+        self.assert_payload(result['verifyToken']['payload'])
 
     def test_verify_bad_token(self):
         with self.assertRaises(AssertionError):
@@ -62,4 +62,4 @@ class AuthTestCase(QueryBaseTestCase):
         with self.assertNumQueries(1):
             result = self.execute(self.refresh_token_mutation, dict(token=token))
         self.assertTrue(len(result['refreshToken']['token']), 159)
-        self.assertPayload(result['refreshToken']['payload'])
+        self.assert_payload(result['refreshToken']['payload'])

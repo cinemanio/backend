@@ -56,7 +56,7 @@ class Relate(graphene.Mutation):
         'PersonNode': PersonRelation,
     }
 
-    def mutate(self, info, id, code):
+    def mutate(self, info, id, code):  # pylint: disable=redefined-builtin
         user = info.context.user
         node_name, instance_id = from_global_id(id)
 

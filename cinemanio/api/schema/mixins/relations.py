@@ -9,7 +9,7 @@ class RelationsMixin:
     relation = graphene.Field(RelationNode)
     relations_count = graphene.Field(RelationCountNode)
 
-    def resolve_relation(self, info, *args, **kwargs):
+    def resolve_relation(self, info, **_):
         user = info.context.user
         empty = self.relations.field.model()
 
@@ -21,7 +21,7 @@ class RelationsMixin:
         except (AttributeError, IndexError):
             return empty
 
-    def resolve_relations_count(self, info, *args, **kwargs):
+    def resolve_relations_count(self, **_):
         try:
             return self.relations_count
         except ObjectDoesNotExist:

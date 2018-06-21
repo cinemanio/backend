@@ -38,13 +38,17 @@ class ImageLinkManager(models.Manager):
         assert self.instance, "Manager method should be called: instance.images.get_or_download()"
 
         image = Image.objects.get_image_from_url(url=url)
+
         if image.id:
+            # pylint: disable=unsubscriptable-object
             image_link = self.get_or_create(image=image, object_id=self.instance.id,
                                             content_type=ContentType.objects.get_for_model(self.instance))[0]
-            return image_link, False
+            downloaded = False
         else:
             image_link = self.download(url, **kwargs)
-            return image_link, True
+            downloaded = True
+
+        return image_link, downloaded
 
     def download(self, url, **kwargs):
         """
@@ -66,14 +70,14 @@ class ImageManager(models.Manager):
         image = self.model()
 
         if url:
-            for type, regexp in self.model.SOURCE_REGEXP.items():
-                id = re.compile(regexp).findall(url)
-                if id:
+            for source_type, regexp in self.model.SOURCE_REGEXP.items():
+                source_id = re.compile(regexp).findall(url)
+                if source_id:
                     try:
-                        return self.get(source_type=type, source_id=id[0])
+                        return self.get(source_type=source_type, source_id=source_id[0])
                     except self.model.DoesNotExist:
-                        image.source_id = id[0]
-                        image.source_type = type
+                        image.source_id = source_id[0]
+                        image.source_type = source_type
 
         return image
 

@@ -30,7 +30,7 @@ class ListQueryBaseTestCase(QueryBaseTestCase):
         self.assertGreater(count, 0)
         self.assertEqual(len(result['edges']), count)
 
-    def assertResponseOrder(self, query, query_name, order_by, queries_count, earliest, latest, get_value):
+    def assert_response_order(self, query, query_name, order_by, queries_count, earliest, latest, get_value):
         self.assertNotEqual(earliest, latest)
 
         with self.assertNumQueries(queries_count):

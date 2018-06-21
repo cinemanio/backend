@@ -1,5 +1,5 @@
 class RelationsMixin:
-    def filter_relation(self, qs, name, value):
+    def filter_relation(self, qs, _, value):
         return qs.filter(relations__user=self.request.user, **{f'relations__{value}': True})
 
 

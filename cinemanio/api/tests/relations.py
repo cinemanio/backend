@@ -104,7 +104,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         relation_changed.send(sender=rel.__class__, instance=rel)
         return rel
 
-    def assertRelationAndCounts(self, relation, instance, codes):
+    def assert_relation_and_counts(self, relation, instance, codes):
         self.assertEqual(relation.objects.count(), 1)
         rel = relation.objects.last()
         self.assertEqual(rel.object, instance)
@@ -115,12 +115,12 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             count = getattr(instance.relations_count, code)
             self.assertEqual(count, 1 if code in codes else 0)
 
-    def assertResponseRelationAndCounts(self, relation, relation_count, rel, codes):
+    def assert_response_relation_and_counts(self, relation, relation_count, rel, codes):
         for code in rel.codes:
             self.assertEqual(relation[code], code in codes)
             self.assertEqual(relation_count[code], 1 if code in codes else 0)
 
-    def assertUnauthResponseRelationAndCounts(self, relation, relation_count, rel, codes):
+    def assert_unauth_response_relation_and_counts(self, relation, relation_count, rel, codes):
         for code in rel.codes:
             self.assertEqual(relation[code], False)
             self.assertEqual(relation_count[code], 1 if code in codes else 0)
@@ -138,9 +138,9 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
                                   dict(id=to_global_id(node._meta.name, instance.id), code='fav'))
 
-        self.assertResponseRelationAndCounts(result['relate']['relation'],
-                                             result['relate']['count'], relation(), codes)
-        self.assertRelationAndCounts(relation, instance, codes)
+        self.assert_response_relation_and_counts(result['relate']['relation'],
+                                                 result['relate']['count'], relation(), codes)
+        self.assert_relation_and_counts(relation, instance, codes)
 
     @parameterized.expand([
         (MovieRelationFactory, MovieNode, MovieRelation, ['like', 'seen'], 19),
@@ -156,10 +156,10 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
                                   dict(id=to_global_id(node._meta.name, rel.object.id), code='fav'))
 
-        self.assertResponseRelationAndCounts(result['relate']['relation'],
-                                             result['relate']['count'], rel, codes)
+        self.assert_response_relation_and_counts(result['relate']['relation'],
+                                                 result['relate']['count'], rel, codes)
 
-        self.assertRelationAndCounts(relation, rel.object, codes)
+        self.assert_relation_and_counts(relation, rel.object, codes)
 
     @parameterized.expand([
         (MovieRelationFactory, MovieNode, ['fav', 'like', 'seen']),
@@ -173,8 +173,8 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             result = self.execute(self.object_relation_query % self.get_object_vars(rel),
                                   dict(id=to_global_id(node._meta.name, rel.object.id)))
 
-        self.assertResponseRelationAndCounts(result[query_name]['relation'],
-                                             result[query_name]['relationsCount'], rel, codes)
+        self.assert_response_relation_and_counts(result[query_name]['relation'],
+                                                 result[query_name]['relationsCount'], rel, codes)
 
     @parameterized.expand([
         (MovieFactory, MovieNode, MovieRelation),
@@ -189,8 +189,8 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             result = self.execute(self.object_relation_query % self.get_object_vars(rel),
                                   dict(id=to_global_id(node._meta.name, instance.id)))
 
-        self.assertResponseRelationAndCounts(result[query_name]['relation'],
-                                             result[query_name]['relationsCount'], relation(), [])
+        self.assert_response_relation_and_counts(result[query_name]['relation'],
+                                                 result[query_name]['relationsCount'], relation(), [])
 
     @parameterized.expand([
         (MovieRelationFactory, MovieNode, ['fav', 'like', 'seen']),
@@ -205,8 +205,8 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
                                   dict(id=to_global_id(node._meta.name, rel.object.id)),
                                   self.Context(user=None))
 
-        self.assertUnauthResponseRelationAndCounts(result[query_name]['relation'],
-                                                   result[query_name]['relationsCount'], rel, codes)
+        self.assert_unauth_response_relation_and_counts(result[query_name]['relation'],
+                                                        result[query_name]['relationsCount'], rel, codes)
 
     @parameterized.expand([
         (MovieRelationFactory, MovieNode, ['fav', 'like', 'seen']),
@@ -222,8 +222,8 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:
-            self.assertResponseRelationAndCounts(obj['node']['relation'],
-                                                 obj['node']['relationsCount'], rel, codes)
+            self.assert_response_relation_and_counts(obj['node']['relation'],
+                                                     obj['node']['relationsCount'], rel, codes)
 
     @parameterized.expand([
         (MovieFactory, MovieRelation),
@@ -240,8 +240,8 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:
-            self.assertResponseRelationAndCounts(obj['node']['relation'],
-                                                 obj['node']['relationsCount'], rel, [])
+            self.assert_response_relation_and_counts(obj['node']['relation'],
+                                                     obj['node']['relationsCount'], rel, [])
 
     @parameterized.expand([
         (MovieRelationFactory, ['fav', 'like', 'seen']),
@@ -259,8 +259,8 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
 
         self.assertEqual(len(result[query_name]['edges']), 100)
         for obj in result[query_name]['edges']:
-            self.assertUnauthResponseRelationAndCounts(obj['node']['relation'],
-                                                       obj['node']['relationsCount'], rel, codes)
+            self.assert_unauth_response_relation_and_counts(obj['node']['relation'],
+                                                            obj['node']['relationsCount'], rel, codes)
 
     @parameterized.expand([
         (MovieRelationFactory,),
@@ -314,7 +314,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             }
         ''' % (query_name, query_name, f'{model_name}RelationCountNode')
 
-        self.assertResponseOrder(query, query_name, order_by='relations_count__fav', queries_count=2,
-                                 earliest=model.objects.earliest('relations_count__fav').relations_count.fav,
-                                 latest=model.objects.latest('relations_count__fav').relations_count.fav,
-                                 get_value=lambda n: n['relationsCount']['fav'])
+        self.assert_response_order(query, query_name, order_by='relations_count__fav', queries_count=2,
+                                   earliest=model.objects.earliest('relations_count__fav').relations_count.fav,
+                                   latest=model.objects.latest('relations_count__fav').relations_count.fav,
+                                   get_value=lambda n: n['relationsCount']['fav'])

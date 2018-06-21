@@ -7,7 +7,7 @@ from cinemanio.api.utils import DjangoFilterConnectionField
 class ImagesMixin:
     images = DjangoFilterConnectionField(ImageLinkNode)
 
-    def resolve_images(self, info, *args, **kwargs):
+    def resolve_images(self, info, **_):
         return ImageLinkNode.get_queryset(info).filter(object_id=self.pk,
                                                        content_type=ContentType.objects.get_for_model(self))
 

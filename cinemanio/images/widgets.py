@@ -9,7 +9,7 @@ class AdminImagePreviewWidget(Widget):
     """
     A FileField Widget for only previewing image
     """
-    def render(self, name, value, *args, **kwargs):
+    def render(self, name, value, **_):
         output = []
         if value:
             try:  # is image

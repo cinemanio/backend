@@ -15,4 +15,4 @@ __all__ = [
 
 
 def get_registered_admin_class(model):
-    return admin.site._registry[model].__class__
+    return admin.site._registry[model].__class__  # pylint: disable=protected-access

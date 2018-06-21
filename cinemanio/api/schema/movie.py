@@ -32,7 +32,7 @@ class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesM
     def resolve_cast(self, info, **_):
         return CastNode.get_queryset(info).filter(movie=self)
 
-    def resolve_poster(self, info, *args, **kwargs):
+    def resolve_poster(self, **_):
         return MovieNode.get_random_image(self, ImageType.POSTER)
 
 

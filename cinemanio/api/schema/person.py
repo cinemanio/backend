@@ -35,7 +35,7 @@ class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, Images
     def resolve_career(self, info, **_):
         return CastNode.get_queryset(info).filter(person=self)
 
-    def resolve_photo(self, info, *args, **kwargs):
+    def resolve_photo(self, **_):
         return PersonNode.get_random_image(self, ImageType.PHOTO)
 
 
