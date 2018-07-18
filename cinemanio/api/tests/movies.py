@@ -1,7 +1,7 @@
 from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
-from cinemanio.api.schema.properties import GenreNode
+from cinemanio.api.schema.properties import GenreNode, CountryNode, LanguageNode
 from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.core.factories import MovieFactory
 from cinemanio.core.models import Movie, Genre, Country, Language
@@ -84,11 +84,11 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         self.assert_count_equal(result['movies'], Movie.objects.filter(year=year).count())
 
     @parameterized.expand([
-        (Genre, 'genres'),
-        (Country, 'countries'),
-        (Language, 'languages'),
+        (Genre, GenreNode, 'genres'),
+        (Country, CountryNode, 'countries'),
+        (Language, LanguageNode, 'languages'),
     ])
-    def test_movies_filter_by_m2m(self, model, fieldname):
+    def test_movies_filter_by_m2m(self, model, node, fieldname):
         items = model.objects.all()[:2]
         item1, item2 = items
         for m in Movie.objects.all()[:10]:
@@ -106,11 +106,27 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         ''' % fieldname
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(rels=(to_global_id(GenreNode._meta.name, item1.id),
-                                                    to_global_id(GenreNode._meta.name, item2.id))))
+            result = self.execute(query, dict(rels=(to_global_id(node._meta.name, item1.id),
+                                                    to_global_id(node._meta.name, item2.id))))
         self.assert_count_equal(result['movies'], (Movie.objects
                                                    .filter(**{fieldname: item1})
                                                    .filter(**{fieldname: item2}).count()))
+
+    def test_movies_filter_by_wrong_m2m(self):
+        query = '''
+            query Movies($rels: [ID!]) {
+              movies(countries: $rels) {
+                edges {
+                  node {
+                    title
+                  }
+                }
+              }
+            }
+        '''
+        with self.assertRaises(AssertionError):
+            self.execute(query, dict(rels=(to_global_id(GenreNode._meta.name, 1),
+                                           to_global_id(CountryNode._meta.name, 1))))
 
     def test_movies_order(self):
         query = '''
