@@ -18,7 +18,8 @@ jobs:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
-            sudo pip install pipenv prospector
+            sudo pip install pipenv
+            sudo pip install prospector astroid==1.6.5
             sudo pipenv install --dev
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
