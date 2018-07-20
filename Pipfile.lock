@@ -298,8 +298,7 @@
         },
         "imdbpy": {
             "editable": true,
-            "git": "https://github.com/alberanid/imdbpy",
-            "ref": "ffceeef52ff4fc028f1363b114fa80cef030214f"
+            "git": "https://github.com/alberanid/imdbpy"
         },
         "iso8601": {
             "hashes": [

@@ -2,8 +2,6 @@ from graphql_relay.node.node import from_global_id
 from django_filters import FilterSet
 from django_filters.filters import ModelMultipleChoiceFilter, ModelMultipleChoiceField
 
-from cinemanio.api import schema
-
 
 class BaseFilterSet(FilterSet):
     def filter_m2m(self, qs, name, value):
@@ -17,6 +15,7 @@ class ModelGlobalIdMultipleChoiceField(ModelMultipleChoiceField):
     Multiple choice field with support of relay global_id
     """
     def _check_values(self, value):
+        from cinemanio.api import schema
         local_ids = []
         for global_id in value:
             node, local_id = from_global_id(global_id)
