@@ -19,7 +19,6 @@ jobs:
       - run:
           command: |
             sudo pip install pipenv
-            sudo pip install prospector pylint-django astroid==1.6.5
             sudo pipenv install --dev
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
@@ -27,8 +26,8 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python3.6/site-packages"
-      - run: flake8 ./cinemanio
-      - run: prospector -0 .
+      - run: pipenv run "flake8 ./cinemanio"
+      - run: pipenv run "prospector -0 ."
       - run: pipenv run "python manage.py collectstatic"
       - run: pipenv run "python manage.py test --settings=cinemanio.settings_test"
       - store_test_results:
