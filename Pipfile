@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==2.0.5"
+django = "~=2.0.5"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
@@ -18,8 +18,8 @@ django-cursor-pagination = "*"
 django-storages = "*"
 django-cleanup = "*"
 django-enumfields = "*"
-celery = "*"
-celerymon = "*"
+celery = "~=3.1.26.post2"
+celerymon = "~=1.0.3"
 kinopoiskpy = "*"
 alphabet-detector = "*"
 graphene-django = {git = "https://github.com/graphql-python/graphene-django", editable = true}
@@ -28,7 +28,7 @@ imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 dj-database-url = "*"
 python-decouple = "*"
 gunicorn = "*"
-whitenoise = "*"
+whitenoise = "~=3.3.1"
 pillow = "*"
 sorl-thumbnail = "*"
 "boto3" = "*"
