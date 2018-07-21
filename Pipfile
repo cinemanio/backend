@@ -9,7 +9,7 @@ django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
 django-modeltranslation = {git = "https://github.com/deschler/django-modeltranslation", editable = true}
-django-filter = "*"
+django-filter = "~=1.1.0"
 django-cors-headers = "*"
 django-reversion = "*"
 django-celery = "*"

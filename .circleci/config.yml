@@ -27,7 +27,7 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python3.6/site-packages"
       - run: flake8 ./cinemanio
-      - run: pipenv run "prospector -0 ."
+      - run: pipenv run "prospector ."
       - run: pipenv run "python manage.py collectstatic"
       - run: pipenv run "python manage.py test --settings=cinemanio.settings_test"
       - store_test_results:
