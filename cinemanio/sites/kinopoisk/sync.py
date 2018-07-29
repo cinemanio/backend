@@ -191,7 +191,7 @@ class MovieSyncMixin(SyncBase):
         3. Trying find person by name among all persons
         If found update kinopoisk_id of person, create/update role and role's name_en
         """
-        self.remote_obj.get_content('cast')
+        # self.remote_obj.get_content('cast')
 #         role_list = (
 #             (DIRECTOR_ID, 'director'),
 #             (ACTOR_ID, 'cast'),
