@@ -2,9 +2,9 @@ from os.path import join
 
 from cinemanio.settings import *  # noqa
 
-CELERY_ALWAYS_EAGER = True
+CELERY_TASK_ALWAYS_EAGER = True
 
-TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
+# TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
 
 DATABASES = {
     'default': {

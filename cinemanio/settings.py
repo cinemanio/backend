@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     # third party apps
     'django_extensions',
     'django_cleanup',
+    'django_celery_results',
+    'django_celery_beat',
     'debug_toolbar',
     'reversion',
-    'djcelery',
     'celerymon',
     'corsheaders',
     'graphene_django',
@@ -174,15 +175,17 @@ AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='cinemanio')
 
+# redis
+REDIS_URL = config('REDIS_URL', default='')
+
 # celery
-CELERY_HOST = '127.0.0.1'
-BROKER_URL = 'amqp://user:pass@%s:5672/name' % CELERY_HOST
+CELERY_BROKER_URL = REDIS_URL
 CELERY_SEND_TASK_ERROR_EMAILS = True
 CELERY_TASK_RESULT_EXPIRES = None
 CELERY_ACKS_LATE = True
 CELERYD_CONCURRENCY = 3
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERYCAM_EXPIRE_SUCCESS = timedelta(days=5)
 CELERYCAM_EXPIRE_ERROR = timedelta(days=10)
 CELERYCAM_EXPIRE_PENDING = timedelta(days=10)
