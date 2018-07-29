@@ -12,8 +12,6 @@ jobs:
 #          POSTGRES_DB: circle_test
     steps:
       - checkout
-#      - run: sudo chown -R circleci:circleci /usr/local/bin
-#      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
       - restore_cache:
           keys:
             - cache-{{ checksum "Pipfile.lock" }}
@@ -28,8 +26,12 @@ jobs:
             - ~/.cache
 #      - run: flake8 ./cinemanio
 #      - run: pipenv run "prospector ."
-      - run: pipenv run python manage.py collectstatic --noinput
-      - run: pipenv run python manage.py test --settings=cinemanio.settings_test
+      - run:
+          name: Collect static
+          command: pipenv run python manage.py collectstatic --noinput
+      - run:
+          name: Run tests
+          command: pipenv run python manage.py test --settings=cinemanio.settings_test
       - store_test_results:
           path: test-results
       - store_artifacts:

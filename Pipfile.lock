@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ac3e260f4f342a7105048c5f2eca8f89e0631f49826c0b5b5d6f4a29a6e3e393"
+            "sha256": "189c8d932ed4ad471748ca5a1dac8d8f89dbf0fa1cea9ea7f8d7338b9ae8a0da"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -292,6 +292,14 @@
             "index": "pypi",
             "version": "==19.9.0"
         },
+        "honcho": {
+            "hashes": [
+                "sha256:af5806bf13e3b20acdcb9ff8c0beb91eee6fe07393c3448dfad89667e6ac7576",
+                "sha256:c189402ad2e337777283c6a12d0f4f61dc6dd20c254c9a3a4af5087fc66cea6e"
+            ],
+            "index": "pypi",
+            "version": "==1.0.1"
+        },
         "idna": {
             "hashes": [
                 "sha256:156a6814fb5ac1fc6850fb002e0852d56c0c8d2531923a51032d1b70760e186e",
@@ -302,7 +310,7 @@
         "imdbpy": {
             "editable": true,
             "git": "https://github.com/alberanid/imdbpy",
-            "ref": "9aa1a37453ad2ee8cc1be42353a100ada249c784"
+            "ref": "88181aed916f2bbf72525df30ed4f31ace28d89d"
         },
         "iso8601": {
             "hashes": [
