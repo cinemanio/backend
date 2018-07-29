@@ -5,10 +5,10 @@ install:
   - pip install pipenv
   - pipenv install --dev
 before_script:
-  - flake8 ./cinemanio
   - python manage.py collectstatic
 script:
-  - prospector -0 .
+  - flake8 ./cinemanio
+#  - prospector .
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test
 after_success:
   - coveralls
