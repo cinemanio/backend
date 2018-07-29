@@ -36,6 +36,7 @@ sorl-thumbnail = "*"
 lxml = "==4.1.1"
 redis = "*"
 django-celery-beat = "*"
+pycodestyle = "==2.3.1"
 
 [dev-packages]
 ipython = "*"
