@@ -4,8 +4,6 @@ from cinemanio.settings import *  # noqa
 
 CELERY_TASK_ALWAYS_EAGER = True
 
-# TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
