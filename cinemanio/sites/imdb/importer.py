@@ -343,6 +343,9 @@ class ImdbMovieImporter(ImdbImporterBase):
         for role_id, imdb_key in role_list:
             role = Role.objects.get(id=role_id)
             for imdb_person in self.imdb_object.data.get(imdb_key, []):
+                # skip person without name
+                if 'name' not in imdb_person.data:
+                    continue
                 imdb_id = self.imdb.get_imdbID(imdb_person)
                 last, first = self.get_name_parts(imdb_person.data['name'])
                 cast = person = None
