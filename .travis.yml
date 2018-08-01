@@ -8,7 +8,7 @@ before_script:
   - python manage.py collectstatic
 script:
   - flake8 ./cinemanio
-#  - prospector .
+  - prospector .
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test
 after_success:
   - coveralls
