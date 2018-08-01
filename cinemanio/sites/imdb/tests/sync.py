@@ -37,7 +37,7 @@ class ImdbSyncTest(BaseTestCase):
         self.assertEqual(movie2.imdb.id, 108399)
         self.assertEqual(career.count(), 4)
         self.assertTrue(career.get(movie=movie1, role=self.director))
-        self.assertTrue(career.get(movie=movie1, role=self.author))
+        self.assertTrue(career.get(movie=movie1, role=self.scenarist))
         self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, 'Billy')
         self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
 

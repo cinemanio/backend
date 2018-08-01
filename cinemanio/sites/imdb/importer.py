@@ -188,7 +188,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                 movie = cast.movie
                 created = False
             except Cast.DoesNotExist:
-                # get movie by name among all movies
+                # get movie by name and year among all movies
                 movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
                 cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
 
@@ -379,6 +379,7 @@ class ImdbMovieImporter(ImdbImporterBase):
                 created = False
             except Cast.DoesNotExist:
                 # get person by name among all persons
+                # TODO: remove this DANGEROUS behaviour or add some other checks
                 person = Person.objects.get(first_name_en=first, last_name_en=last, imdb__id=None)
                 cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
 
