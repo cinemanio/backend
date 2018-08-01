@@ -168,41 +168,41 @@ class ImdbPersonImporter(ImdbImporterBase):
                         continue
 
     def _create_cast(self, role, imdb_movie):
-            imdb_id = self.imdb.get_imdbID(imdb_movie)
-            title = imdb_movie.data['title']
-            year = imdb_movie.data.get('year')
-            cast = movie = None
+        imdb_id = self.imdb.get_imdbID(imdb_movie)
+        title = imdb_movie.data['title']
+        year = imdb_movie.data.get('year')
+        cast = movie = None
 
-            # if writer has note story or novel, then it must be a
-            if role.is_scenarist() and re.search(r'story|novel', imdb_movie.notes):
-                role = Role.objects.get_author()
+        # if writer has note story or novel, then it must be a
+        if role.is_scenarist() and re.search(r'story|novel', imdb_movie.notes):
+            role = Role.objects.get_author()
 
+        try:
+            # get movie by imdb_id
+            movie = Movie.objects.get(imdb__id=imdb_id)
+            cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
+        except Movie.DoesNotExist:
             try:
-                # get movie by imdb_id
-                movie = Movie.objects.get(imdb__id=imdb_id)
+                # get movie by name among person's movies
+                cast = self.object.career.get(movie__title_en=title, role=role)
+                movie = cast.movie
+                created = False
+            except Cast.DoesNotExist:
+                # get movie by name among all movies
+                movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
                 cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
-            except Movie.DoesNotExist:
-                try:
-                    # get movie by name among person's movies
-                    cast = self.object.career.get(movie__title_en=title, role=role)
-                    movie = cast.movie
-                    created = False
-                except Cast.DoesNotExist:
-                    # get movie by name among all movies
-                    movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
-                    cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
 
-            if movie and created:
-                self.logger.info(
-                    'Create cast for person %s in movie %s with role %s' % (self.object, movie, role))
+        if movie and created:
+            self.logger.info(
+                'Create cast for person %s in movie %s with role %s' % (self.object, movie, role))
 
-            if movie:
-                ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
+        if movie:
+            ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
 
-            # save name of role for actors
-            if role.is_actor() and imdb_movie.notes and cast and not cast.name_en:
-                cast.name_en = imdb_movie.notes
-                cast.save(update_fields=['name_en'])
+        # save name of role for actors
+        if role.is_actor() and imdb_movie.notes and cast and not cast.name_en:
+            cast.name_en = imdb_movie.notes
+            cast.save(update_fields=['name_en'])
 
 
 class ImdbMovieImporter(ImdbImporterBase):
