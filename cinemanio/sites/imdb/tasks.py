@@ -1,20 +1,35 @@
 from cinemanio.celery import app
 from cinemanio.core.models import Movie, Person
+from cinemanio.sites.imdb.models import ImdbMovie, ImdbPerson
 
 
 @app.task
-def sync_movie(movie_id):
+def sync_movie(movie_id, roles=True):
     """
-    Sync movie with imdb
+    Sync and save movie with imdb
     """
     movie = Movie.objects.get(pk=movie_id)
-    movie.imdb.sync(roles=True)
+    try:
+        movie.imdb
+    except ImdbMovie.DoesNotExist:
+        ImdbMovie.objects.create_for(movie)
+    finally:
+        movie.imdb.sync(roles=roles)
+        movie.imdb.save()
+        movie.save()
 
 
 @app.task
-def sync_person(person_id):
+def sync_person(person_id, roles=True):
     """
-    Sync person with imdb
+    Sync and save person with imdb
     """
     person = Person.objects.get(pk=person_id)
-    person.imdb.sync(roles=True)
+    try:
+        person.imdb
+    except ImdbPerson.DoesNotExist:
+        ImdbPerson.objects.create_for(person)
+    finally:
+        person.imdb.sync(roles=roles)
+        person.imdb.save()
+        person.save()
