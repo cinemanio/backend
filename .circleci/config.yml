@@ -25,7 +25,9 @@ jobs:
             - ~/.local
             - ~/.cache
 #      - run: flake8 ./cinemanio
-      - run: pipenv run "prospector ."
+      - run:
+          name: Run prospector
+          command: pipenv run prospector .
       - run:
           name: Collect static
           command: pipenv run python manage.py collectstatic --noinput
