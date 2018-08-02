@@ -128,11 +128,11 @@ class ImdbPersonImporter(ImdbImporterBase):
         date = self.imdb_object.data.get(field)
         try:
             return parser.parse(date).date()
-        except ValueError:
+        except (ValueError, TypeError):
             return None
 
     def _get_country(self):
-        birth_notes = self.imdb_object.data.get('birth notes')
+        birth_notes = self.imdb_object.data.get('birth notes', '')
         for country in Country.objects.select_related('imdb').all():
             if country.imdb.name and birth_notes.find(country.imdb.name) != -1:
                 return country.id

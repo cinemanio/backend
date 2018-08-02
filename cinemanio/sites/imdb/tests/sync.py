@@ -1,11 +1,13 @@
 import datetime
-from unittest import skip
+from unittest import skip, mock
+
+from imdb.parser.http import IMDbHTTPAccessSystem
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.models import Genre
-from cinemanio.sites.imdb.tests.base import ImdbSyncBaseTest
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tasks import sync_movie, sync_person
+from cinemanio.sites.imdb.tests.base import ImdbSyncBaseTest
 
 
 class ImdbSyncTest(ImdbSyncBaseTest):
@@ -35,6 +37,22 @@ class ImdbSyncTest(ImdbSyncBaseTest):
         person = PersonFactory(first_name_en='Dennis', last_name_en='Hopper', country=None)
         sync_person(person.id)
         self.assert_dennis_hopper(person.imdb)
+
+    @mock.patch.object(IMDbHTTPAccessSystem, 'search_person')
+    def test_search_and_sync_right_person_by_movie(self, search_person):
+        person1 = PersonFactory(first_name_en='Allison', last_name_en='Williams', country=None)
+        person2 = PersonFactory(first_name_en='Allison', last_name_en='Williams', country=None)
+        person3 = PersonFactory(first_name_en='Allison', last_name_en='Williams', country=None)
+        ImdbMovieFactory(id=1672719, movie=CastFactory(person=person1).movie)
+        ImdbMovieFactory(id=2702724, movie=CastFactory(person=person2).movie)
+        ImdbMovieFactory(id=1985034, movie=CastFactory(person=person3).movie)
+        sync_person(person1.id)
+        sync_person(person2.id)
+        sync_person(person3.id)
+        self.assertEqual(person1.imdb.id, 930009)
+        self.assertEqual(person2.imdb.id, 8050010)
+        self.assertEqual(person3.imdb.id, 4613572)
+        self.assertFalse(search_person.called)
 
     def test_get_movie_runtime_different_format(self):
         # runtime in format "xxxxx:17"

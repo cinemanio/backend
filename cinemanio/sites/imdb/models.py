@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
 from imdb import IMDb
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country
@@ -23,11 +22,44 @@ class ImdbMovieManager(models.Manager):
 
 
 class ImdbPersonManager(models.Manager):
+    movie_persons_categories = [
+        'cast',
+        'art department',
+        # 'assistant directors',
+        # 'camera department',
+        # 'casting department',
+        'cinematographers',
+        'director',
+        'directors',
+        'editors',
+        # 'make up department',
+        'music department',
+        'producers',
+        # 'production managers',
+        'sound department',
+        # 'thanks',
+        # 'visual effects',
+        'writer',
+        'writers',
+    ]
+
     def create_for(self, person):
         if not person.first_name or not person.last_name:
             raise ValueError("To be able search person in IMDb it should has first name and last name")
 
-        for result in IMDb().search_person(person.name):
+        imdb = IMDb()
+
+        # search by person's imdb movie
+        if person.career.exclude(movie__imdb=None).exists():
+            movie_imdb_id = person.career.exclude(movie__imdb=None)[0].movie.imdb.id
+            movie_imdb = imdb.get_movie(movie_imdb_id)
+            for category in self.movie_persons_categories:
+                for result in movie_imdb.get(category, []):
+                    if result.data['name'] == f'{person.last_name}, {person.first_name}':
+                        return self.create(id=result.personID, person=person)
+
+        # search by person's name
+        for result in imdb.search_person(person.name):
             # TODO: make more complicated check if it's right person
             return self.create(id=result.personID, person=person)
 
