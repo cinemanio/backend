@@ -28,3 +28,4 @@ def sync(instance):
 
     for page in instance.wikipedia.all():
         page.sync()
+        page.save()

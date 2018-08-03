@@ -1,11 +1,11 @@
 import wikipedia
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from cinemanio.core.models import Movie, Person
+from cinemanio.sites.exceptions import PossibleDuplicate
 
 
 class WikipediaPageManager(models.Manager):
@@ -34,13 +34,22 @@ class WikipediaPageManager(models.Manager):
         wikipedia.set_lang(lang)
         results = wikipedia.search(term, results=1)
         if len(results):
-            page = self.create(content_object=instance, lang=lang, name=results[0])
+            page = self.safe_create(content_object=instance, lang=lang, name=results[0])
             page.sync()
             page.save()
             return page
 
         raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
                          f"on language {lang} using search term '{term}'")
+
+    def safe_create(self, name, lang, content_object):
+        try:
+            object_exist = self.get(lang=lang, name=name)
+            raise PossibleDuplicate(
+                f"Can not assign wikipedia page title={name} lang={lang} to {content_object._meta.model_name} ID={content_object.id}, "
+                f"because it's already assigned to ID={object_exist.content_object.id}")
+        except self.model.DoesNotExist:
+            return self.create(lang=lang, name=name, content_object=content_object)
 
 
 class WikipediaPage(models.Model):
