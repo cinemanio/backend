@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from imdb import IMDb
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country
+from cinemanio.sites.exceptions import PossibleDuplicate
 
 
 class UrlMixin:
@@ -16,11 +17,33 @@ class ImdbMovieManager(models.Manager):
         if not movie.title or not movie.year:
             raise ValueError("To be able search IMDb movie it should has at lease title and year")
 
-        for result in IMDb().search_movie(movie.title):
+        imdb = IMDb()
+
+        # search by movie's imdb person
+        if movie.cast.exclude(person__imdb=None).exists():
+            person_imdb_id = movie.cast.exclude(person__imdb=None)[0].person.imdb.id
+            person_imdb = imdb.get_person(person_imdb_id)
+            for category in person_imdb['filmography']:
+                for _, results in category.items():
+                    for result in results:
+                        if result.data['title'] == movie.title and result.data['year'] == movie.year:
+                            return self.safe_create(id=result.movieID, movie=movie)
+
+        # search by movie's title
+        for result in imdb.search_movie(movie.title):
             if result.data['year'] == movie.year:
-                return self.create(id=result.movieID, movie=movie)
+                return self.safe_create(id=result.movieID, movie=movie)
 
         raise ValueError(f"No IMDb movies found for {movie}")
+
+    def safe_create(self, id, movie):
+        try:
+            movie_exist = self.get(id=id)
+            raise PossibleDuplicate(
+                f"Can not assign IMDb ID={id} to movie ID={movie.id}, "
+                f"because it's already assigned to movie ID={movie_exist.movie.id}")
+        except self.model.DoesNotExist:
+            return self.create(id=id, movie=movie)
 
 
 class ImdbPersonManager(models.Manager):
@@ -38,7 +61,7 @@ class ImdbPersonManager(models.Manager):
         'music department',
         'producers',
         # 'production managers',
-        'sound department',
+        # 'sound department',
         # 'thanks',
         # 'visual effects',
         'writer',
@@ -58,14 +81,23 @@ class ImdbPersonManager(models.Manager):
             for category in self.movie_persons_categories:
                 for result in movie_imdb.get(category, []):
                     if result.data['name'] == f'{person.last_name}, {person.first_name}':
-                        return self.create(id=result.personID, person=person)
+                        return self.safe_create(id=result.personID, person=person)
 
         # search by person's name
         for result in imdb.search_person(person.name):
             # TODO: make more complicated check if it's right person
-            return self.create(id=result.personID, person=person)
+            return self.safe_create(id=result.personID, person=person)
 
         raise ValueError(f"No IMDb persons found for {person}")
+
+    def safe_create(self, id, person):
+        try:
+            person_exist = self.get(id=id)
+            raise PossibleDuplicate(
+                f"Can not assign IMDb ID={id} to person ID={person.id}, "
+                f"because it's already assigned to person ID={person_exist.person.id}")
+        except self.model.DoesNotExist:
+            return self.create(id=id, person=person)
 
 
 class ImdbMovie(models.Model, UrlMixin):

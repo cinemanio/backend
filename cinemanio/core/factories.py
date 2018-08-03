@@ -49,7 +49,6 @@ class MovieFactory(DjangoModelFactory):
 
 class PersonFactory(DjangoModelFactory):
     gender = factory.LazyAttribute(lambda o: random.choice([Gender.MALE, Gender.FEMALE]))
-    country = factory.SubFactory(CountryFactory)
 
     first_name = factory.Faker('sentence', nb_words=1)
     last_name = factory.Faker('sentence', nb_words=1)
@@ -69,6 +68,11 @@ class PersonFactory(DjangoModelFactory):
     @factory.post_generation
     def roles(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'roles', Role)
+
+    @factory.post_generation
+    def country(self, create, extracted):
+        if create:
+            self.country = extracted if (extracted is not None) else Country.objects.order_by('?').first()
 
 
 class CastFactory(DjangoModelFactory):
