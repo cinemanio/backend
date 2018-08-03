@@ -72,7 +72,7 @@ class PersonFactory(DjangoModelFactory):
     @factory.post_generation
     def country(self, create, extracted):
         if create:
-            self.country = extracted if (extracted is not None) else Country.objects.order_by('?').first()
+            setattr(self, 'country', extracted if (extracted is not None) else Country.objects.order_by('?').first())
 
 
 class CastFactory(DjangoModelFactory):

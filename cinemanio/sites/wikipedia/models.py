@@ -33,8 +33,8 @@ class WikipediaPageManager(models.Manager):
 
         wikipedia.set_lang(lang)
         results = wikipedia.search(term, results=1)
-        if len(results):
-            page = self.safe_create(content_object=instance, lang=lang, name=results[0])
+        if results:
+            page = self.safe_create(results[0], lang, instance)
             page.sync()
             page.save()
             return page
@@ -42,14 +42,15 @@ class WikipediaPageManager(models.Manager):
         raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
                          f"on language {lang} using search term '{term}'")
 
-    def safe_create(self, name, lang, content_object):
+    def safe_create(self, name, lang, instance):
+        instance_type = instance._meta.model_name
         try:
             object_exist = self.get(lang=lang, name=name)
             raise PossibleDuplicate(
-                f"Can not assign wikipedia page title={name} lang={lang} to {content_object._meta.model_name} ID={content_object.id}, "
-                f"because it's already assigned to ID={object_exist.content_object.id}")
+                f"Can not assign Wikipedia page title={name} lang={lang} to {instance_type} ID={instance.id}, "
+                f"because it's already assigned to {instance_type} ID={object_exist.content_object.id}")
         except self.model.DoesNotExist:
-            return self.create(lang=lang, name=name, content_object=content_object)
+            return self.create(lang=lang, name=name, content_object=instance)
 
 
 class WikipediaPage(models.Model):
