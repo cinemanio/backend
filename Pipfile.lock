@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8b3981133050c8335ca5b57b6769bc2e7a9bd51017baf5fd12eaddfa1c0e73e7"
+            "sha256": "ebbdaab05fbc8ac46c7ca44a022cf8c209ba1987a7bdac969ac3d57461f3cc67"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -59,18 +59,18 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:c848ae99e09f2899c5f81b8fdad90b2ef1fb7a760b13f2b1e51a345f4fd11d2b",
-                "sha256:e225d9fa3f313049547bf510a54d5f0af82f70d53fe0c0f891a0a9f8d4474681"
+                "sha256:cbc557a9439a49cb0a04cc7f9aad2b52153962b764f2572c26fb20c44aefcd2f",
+                "sha256:eb18e53f56fea887a8e751ade04ff05b873b4cfe674d3ed6105d4ae7e3f9ae95"
             ],
             "index": "pypi",
-            "version": "==1.7.67"
+            "version": "==1.7.69"
         },
         "botocore": {
             "hashes": [
-                "sha256:e578f2618d0076950bcbd6ac938471310b08c292277b49092b938c59788012a6",
-                "sha256:e9eea23c566c30c69879941c4183294b7d45d8d8ff7946669364d8bb48ed0c90"
+                "sha256:a1ccd741316082d0281b954aaee5e6378006211c9364b657e4521320086aeaaa",
+                "sha256:e3cda1a1103bdc0d41e77c925d09f380721d59556fb2306d088d4080cfee0b2d"
             ],
-            "version": "==1.10.67"
+            "version": "==1.10.69"
         },
         "celery": {
             "hashes": [
@@ -269,7 +269,7 @@
         "graphene-django": {
             "editable": true,
             "git": "https://github.com/graphql-python/graphene-django",
-            "ref": "52d14f3b8ace2a3de0e3d07a597539390277ed2b"
+            "ref": "9351626ad88e6f0dd0cd41842d46fb3ef1c03683"
         },
         "graphql-core": {
             "hashes": [
@@ -634,6 +634,13 @@
             ],
             "index": "pypi",
             "version": "==3.3.1"
+        },
+        "wikipedia": {
+            "hashes": [
+                "sha256:db0fad1829fdd441b1852306e9856398204dc0786d2996dd2e0c8bb8e26133b2"
+            ],
+            "index": "pypi",
+            "version": "==1.4.0"
         }
     },
     "develop": {
@@ -846,18 +853,18 @@
         },
         "multidict": {
             "hashes": [
-                "sha256:05dc74a8949ab5e5345a923cec1d8570aa0ba672bf46b3e02823ee490421d53e",
-                "sha256:436ff91d0e3279ac9a4338fa53072dea31bcee607d95ff8ec7368d23e7e1aa6f",
-                "sha256:5d0d9fa96e0b073a3f9faf2b6ff6975a044bc3b63c72fcd4078c36a6685cea2e",
-                "sha256:72b5fae1cca7b08673b104cf98f0d77d10bd3c748057ae165ce7ec72466daf62",
-                "sha256:77bcba9067a160bef30c4ca5fa742726ea978d919412ef88879ae88e5c090eeb",
-                "sha256:7defe2220fe207d43c4e575f4fadb476c6f5e3d7ff97e6fdaf0ccf83b964b10f",
-                "sha256:8dbd6f0ef150738c864d2054548be533b11a223b46f8c46484f0abcdefb84bf2",
-                "sha256:bd53ed9ca92fc404e318553aab02d25167340d1a434aa6008a9d12a6f84133ea",
-                "sha256:ff246b492c4a1f2c509a87e24b494c03ed6a2bf9cadfc6f7953642dc67b5f3b7"
+                "sha256:0ad38e07bbaae45d22cdd3bd5c2c984e1e890d09131cca1e825d7c6ad9f38f77",
+                "sha256:3da368e113a5e76de59f5a1a8812a88c86514423c8229bd3899311c5bf291d6d",
+                "sha256:4a63605dcce0d31e248d60cac1c429d7e4d8b37151dd39bf5c3da6c0cc528694",
+                "sha256:4c2bc6ac7457f1712d945df9a8b98349c1e1b8c549d29b34bb12f27fd9e3ff27",
+                "sha256:56b698cd587058cbabe4101230bfb429a09e2dce510daba383a07e2cb05c98a7",
+                "sha256:68b6f1bd1375ab86a3ef712f016bb88e64fb1d0b5a0c3a1a51996aac8855f85b",
+                "sha256:6ad71b08cf612e83c6fcc72c7447483b0c6a1146e8b5736690cba23a44d15fda",
+                "sha256:74973489ec736a0b81cd77ea9cb08a2b8289a10e565d7992f2ea806d5d4c7624",
+                "sha256:b9a82409be5949d4a0c7a6a4d75db181c177c4ddaaae1dc66e3984997764c71a"
             ],
             "markers": "python_version >= '3.4.1'",
-            "version": "==4.4.0a0"
+            "version": "==4.4.0a3"
         },
         "parameterized": {
             "hashes": [
