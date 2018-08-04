@@ -1,11 +1,10 @@
-from django.db.models import Q
 from alphabet_detector import AlphabetDetector
+from django.db.models import Q
+from kinopoisk.movie import Movie as KinoMovie
+from kinopoisk.person import Person as KinoPerson
 
 from cinemanio.core.models import Movie, Genre, Country, Role, Cast
 from cinemanio.images.models import ImageWrongType, ImageType
-
-from kinopoisk.movie import Movie as KinoMovie
-from kinopoisk.person import Person as KinoPerson
 
 
 class SyncBase:
@@ -192,6 +191,7 @@ class MovieSyncMixin(SyncBase):
         If found update kinopoisk_id of person, create/update role and role's name_en
         """
         # self.remote_obj.get_content('cast')
+
 #         role_list = (
 #             (DIRECTOR_ID, 'director'),
 #             (ACTOR_ID, 'cast'),

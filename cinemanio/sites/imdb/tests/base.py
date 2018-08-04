@@ -15,6 +15,7 @@ class ImdbSyncBaseTest(BaseTestCase):
         movie.refresh_from_db()
         imdb_movie.refresh_from_db()
 
+        self.assertTrue(imdb_movie.synced_at)
         self.assertEqual(imdb_movie.id, 133093)
         self.assertEqual(imdb_movie.rating, 8.7)
 
@@ -44,6 +45,7 @@ class ImdbSyncBaseTest(BaseTestCase):
         person.refresh_from_db()
         imdb_person.refresh_from_db()
 
+        self.assertTrue(imdb_person.synced_at)
         self.assertEqual(imdb_person.id, 454)
 
         self.assertEqual(person.first_name, 'Dennis')
