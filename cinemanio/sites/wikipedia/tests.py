@@ -2,13 +2,14 @@ from django.test import TestCase
 from parameterized import parameterized
 from vcr_unittest import VCRMixin
 
+from cinemanio.core.tests.base import VCRAddNewMixin
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.sites.exceptions import PossibleDuplicate
 from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.wikipedia.tasks import sync_movie, sync_person
 
 
-class WikipediaTest(VCRMixin, TestCase):
+class WikipediaTest(VCRMixin, VCRAddNewMixin, TestCase):
     @parameterized.expand([
         (MovieFactory, 'The Matrix', 'en', 'http://en.wikipedia.org/wiki/The_Matrix'),
         (PersonFactory, 'Dennis Hopper', 'en', 'http://en.wikipedia.org/wiki/Dennis_Hopper'),
@@ -30,18 +31,20 @@ class WikipediaTest(VCRMixin, TestCase):
         self.assertEqual(instance.wikipedia.count(), 0)
 
     @parameterized.expand([
-        (MovieFactory, 'The Matrix', 'en', 133093, None),
-        (PersonFactory, 'Dennis Hopper', 'en', 454, None),
-        (MovieFactory, 'Матрица_(фильм)', 'ru', 133093, None),
+        (MovieFactory, 'The Matrix', 'en', 133093),
+        (PersonFactory, 'Dennis Hopper', 'en', 454),
+        (MovieFactory, 'Матрица_(фильм)', 'ru', 133093),
         (PersonFactory, 'Хоппер, Деннис', 'ru', 454, 9843),
+        (MovieFactory, 'Дворецкий Боб', 'ru'),  # https://github.com/goldsmith/Wikipedia/issues/78
     ])
-    def test_sync_page_with_imdb_id(self, factory, name, lang, imdb_id, kinopoisk_id):
+    def test_sync_page_with_imdb_id(self, factory, name, lang, imdb_id=None, kinopoisk_id=None):
         instance = factory()
         page = WikipediaPage.objects.create(content_object=instance, name=name, lang=lang)
         page.sync()
-        self.assertGreater(len(page.content), 10000)
-        self.assertEqual(instance.imdb.id, imdb_id)
-        self.assertIsNone(instance.imdb.synced_at)
+        self.assertGreater(len(page.content), 1000)
+        if imdb_id:
+            self.assertEqual(instance.imdb.id, imdb_id)
+            self.assertIsNone(instance.imdb.synced_at)
         if kinopoisk_id:
             self.assertEqual(instance.kinopoisk.id, kinopoisk_id)
             self.assertIsNone(instance.kinopoisk.synced_at)

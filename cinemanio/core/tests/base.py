@@ -35,3 +35,9 @@ class BaseTestCase(TestCase):
     @property
     def scenarist(self):
         return Role.objects.get_scenarist()
+
+
+class VCRAddNewMixin:
+    def _get_vcr_kwargs(self, **kwargs):
+        kwargs['record_mode'] = 'new_episodes'
+        return kwargs
