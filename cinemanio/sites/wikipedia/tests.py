@@ -30,8 +30,10 @@ class WikipediaTest(VCRMixin, TestCase):
         page.sync()
         self.assertGreater(len(page.content), 10000)
         self.assertEqual(instance.imdb.id, imdb_id)
+        self.assertIsNone(instance.imdb.synced_at)
         if kinopoisk_id:
             self.assertEqual(instance.kinopoisk.id, kinopoisk_id)
+            self.assertIsNone(instance.kinopoisk.synced_at)
 
     @parameterized.expand([
         (MovieFactory, sync_movie,
@@ -48,6 +50,8 @@ class WikipediaTest(VCRMixin, TestCase):
         ru = instance.wikipedia.get(lang='ru')
         self.assertEqual(en.name, en_name)
         self.assertEqual(ru.name, ru_name)
+        self.assertTrue(en.synced_at)
+        self.assertTrue(ru.synced_at)
         self.assertGreater(len(en.content), 2500)
         self.assertGreater(len(ru.content), 2500)
 

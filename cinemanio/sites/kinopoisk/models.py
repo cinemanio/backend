@@ -4,13 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 
 from cinemanio.core.models import Movie, Person, Country, Genre
 from cinemanio.sites.kinopoisk.sync import PersonSyncMixin, MovieSyncMixin
+from cinemanio.sites.models import SitesBaseModel
 
 logger = logging.getLogger(__name__)
 
 
-class KinopoiskBase(models.Model):
+class KinopoiskBase(SitesBaseModel):
     info = models.TextField(_('Kinopoisk information'), blank=True, default='')
-    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     class Meta:
         abstract = True
@@ -37,6 +37,13 @@ class KinopoiskMovie(KinopoiskBase, UrlMixin, MovieSyncMixin):
 
     link = 'http://www.kinopoisk.ru/film/{id}/'
 
+    def sync(self):
+        self.sync_details()
+        self.sync_cast()
+        self.sync_images()
+        self.sync_trailers()
+        super().sync()
+
 
 class KinopoiskPerson(KinopoiskBase, UrlMixin, PersonSyncMixin):
     """
@@ -46,6 +53,13 @@ class KinopoiskPerson(KinopoiskBase, UrlMixin, PersonSyncMixin):
     person = models.OneToOneField(Person, related_name='kinopoisk', on_delete=models.CASCADE)
 
     link = 'http://www.kinopoisk.ru/name/{id}/'
+
+    def sync(self):
+        self.sync_details()
+        self.sync_career()
+        self.sync_images()
+        self.sync_trailers()
+        super().sync()
 
 
 class KinopoiskPropBase(models.Model):

@@ -4,6 +4,7 @@ from imdb import IMDb
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country
 from cinemanio.sites.exceptions import PossibleDuplicate, NothingFound
+from cinemanio.sites.models import SitesBaseModel
 
 
 class UrlMixin:
@@ -121,7 +122,7 @@ class ImdbPersonManager(ImdbBaseManager):
         raise NothingFound
 
 
-class ImdbMovie(models.Model, UrlMixin):
+class ImdbMovie(SitesBaseModel, UrlMixin):
     """
     Imdb movie model
     """
@@ -129,7 +130,6 @@ class ImdbMovie(models.Model, UrlMixin):
     rating = models.FloatField(_('IMDb rating'), null=True, db_index=True, blank=True)
     votes = models.PositiveIntegerField(_('IMDb votes number'), null=True, blank=True)
     movie = models.OneToOneField(Movie, related_name='imdb', on_delete=models.CASCADE)
-    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     link = 'http://www.imdb.com/title/tt{id}/'
 
@@ -138,15 +138,15 @@ class ImdbMovie(models.Model, UrlMixin):
     def sync(self, roles=False):
         from cinemanio.sites.imdb.importer import ImdbMovieImporter
         ImdbMovieImporter(self.movie, self.id).get_applied_data(roles=roles)
+        super().sync()
 
 
-class ImdbPerson(models.Model, UrlMixin):
+class ImdbPerson(SitesBaseModel, UrlMixin):
     """
     Imdb person model
     """
     id = models.PositiveIntegerField(_('IMDb ID'), primary_key=True)
     person = models.OneToOneField(Person, related_name='imdb', on_delete=models.CASCADE)
-    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     link = 'http://www.imdb.com/name/nm{id}/'
 
@@ -155,6 +155,7 @@ class ImdbPerson(models.Model, UrlMixin):
     def sync(self, roles=False):
         from cinemanio.sites.imdb.importer import ImdbPersonImporter
         ImdbPersonImporter(self.person, self.id).get_applied_data(roles=roles)
+        super().sync()
 
 
 class ImdbPropBase(models.Model):
