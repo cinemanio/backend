@@ -19,6 +19,17 @@ class WikipediaTest(VCRMixin, TestCase):
         self.assertEqual(instance.wikipedia.first().url, url)
 
     @parameterized.expand([
+        (MovieFactory, 'Junk', 'en'), # disambiguation
+        (MovieFactory, 'blablabla', 'en'),  # bad page
+    ])
+    def test_sync_bad_page(self, factory, name, lang):
+        instance = factory()
+        page = WikipediaPage.objects.create(content_object=instance, name=name, lang=lang)
+        page.sync()
+        self.assertIsNone(page.id)
+        self.assertEqual(instance.wikipedia.count(), 0)
+
+    @parameterized.expand([
         (MovieFactory, 'The Matrix', 'en', 133093, None),
         (PersonFactory, 'Dennis Hopper', 'en', 454, None),
         (MovieFactory, 'Матрица_(фильм)', 'ru', 133093, None),

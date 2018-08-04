@@ -1,4 +1,5 @@
 import wikipedia
+from wikipedia.exceptions import DisambiguationError, PageError
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -81,13 +82,15 @@ class WikipediaPage(SitesBaseModel):
 
     def sync(self):
         wikipedia.set_lang(self.lang)
-        page = wikipedia.page(self.name)
-        self.content = page.content
-        wikipedia_page_synced.send(sender=WikipediaPage,
-                                   content_type_id=self.content_type_id,
-                                   object_id=self.object_id,
-                                   page=page)
-        super().sync()
+        try:
+            page = wikipedia.page(self.name)
+        except (DisambiguationError, PageError):
+            self.delete()
+        else:
+            self.content = page.content
+            wikipedia_page_synced.send(sender=WikipediaPage, page=page,
+                                       content_type_id=self.content_type_id, object_id=self.object_id)
+            super().sync()
 
 
 Movie.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia')))
