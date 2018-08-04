@@ -20,7 +20,7 @@ class WikipediaTest(VCRMixin, VCRAddNewMixin, TestCase):
         self.assertEqual(instance.wikipedia.first().url, url)
 
     @parameterized.expand([
-        (MovieFactory, 'Junk', 'en'), # disambiguation
+        (MovieFactory, 'Junk', 'en'),  # disambiguation
         (MovieFactory, 'blablabla', 'en'),  # bad page
     ])
     def test_sync_bad_page(self, factory, name, lang):
