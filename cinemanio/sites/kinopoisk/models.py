@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class KinopoiskBase(models.Model):
     info = models.TextField(_('Kinopoisk information'), blank=True, default='')
+    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     class Meta:
         abstract = True

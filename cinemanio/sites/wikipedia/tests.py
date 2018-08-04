@@ -1,68 +1,66 @@
 from django.test import TestCase
+from parameterized import parameterized
 from vcr_unittest import VCRMixin
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
+from cinemanio.sites.exceptions import PossibleDuplicate
 from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.wikipedia.tasks import sync_movie, sync_person
-from cinemanio.sites.exceptions import PossibleDuplicate
 
 
 class WikipediaTest(VCRMixin, TestCase):
-    def movie_matrix(self):
-        return MovieFactory(year=1999, title_en='The Matrix', title_ru='Матрица')
+    @parameterized.expand([
+        (MovieFactory, 'The Matrix', 'en', 'http://en.wikipedia.org/wiki/The_Matrix'),
+        (PersonFactory, 'Dennis Hopper', 'en', 'http://en.wikipedia.org/wiki/Dennis_Hopper'),
+    ])
+    def test_page_url(self, factory, name, lang, url):
+        instance = factory()
+        WikipediaPage.objects.create(name=name, lang=lang, content_object=instance)
+        self.assertEqual(instance.wikipedia.first().url, url)
 
-    def person_dennis_hopper(self):
-        return PersonFactory(first_name_en='Dennis', last_name_en='Hopper',
-                             first_name_ru='Деннис', last_name_ru='Хоппер')
-
-    def test_movie_url(self):
-        movie = MovieFactory()
-        WikipediaPage.objects.create(name='Matrix', lang='en', content_object=movie)
-        self.assertEqual(movie.wikipedia.first().url, 'http://en.wikipedia.org/wiki/Matrix')
-
-    def test_person_url(self):
-        person = PersonFactory()
-        WikipediaPage.objects.create(name='Matrix', lang='en', content_object=person)
-        self.assertEqual(person.wikipedia.first().url, 'http://en.wikipedia.org/wiki/Matrix')
-
-    def test_sync_movie_page(self):
-        movie = MovieFactory()
-        page = WikipediaPage.objects.create(content_object=movie, name='Easy_Rider', lang='en')
+    @parameterized.expand([
+        (MovieFactory, 'The Matrix', 'en', 133093, None),
+        (PersonFactory, 'Dennis Hopper', 'en', 454, None),
+        (MovieFactory, 'Матрица_(фильм)', 'ru', 133093, None),
+        (PersonFactory, 'Хоппер, Деннис', 'ru', 454, 9843),
+    ])
+    def test_sync_page_with_imdb_id(self, factory, name, lang, imdb_id, kinopoisk_id):
+        instance = factory()
+        page = WikipediaPage.objects.create(content_object=instance, name=name, lang=lang)
         page.sync()
-        self.assertGreater(len(page.content), 20000)
+        self.assertGreater(len(page.content), 10000)
+        self.assertEqual(instance.imdb.id, imdb_id)
+        if kinopoisk_id:
+            self.assertEqual(instance.kinopoisk.id, kinopoisk_id)
 
-    def test_search_and_sync_movie_matrix(self):
-        movie = self.movie_matrix()
-        sync_movie(movie.id)
-        en = movie.wikipedia.get(lang='en')
-        ru = movie.wikipedia.get(lang='ru')
-        self.assertEqual(en.name, 'The Matrix')
-        self.assertEqual(ru.name, 'Матрица (фильм)')
-        self.assertGreater(len(en.content), 50000)
+    @parameterized.expand([
+        (MovieFactory, sync_movie,
+         dict(year=1999, title_en='The Matrix', title_ru='Матрица'),
+         'The Matrix', 'Матрица (фильм)'),
+        (PersonFactory, sync_person,
+         dict(first_name_en='Dennis', last_name_en='Hopper', first_name_ru='Деннис', last_name_ru='Хоппер'),
+         'Dennis Hopper', 'Хоппер, Деннис'),
+    ])
+    def test_search_and_sync_page(self, factory, sync_method, kwargs, en_name, ru_name):
+        instance = factory(**kwargs)
+        sync_method(instance.id)
+        en = instance.wikipedia.get(lang='en')
+        ru = instance.wikipedia.get(lang='ru')
+        self.assertEqual(en.name, en_name)
+        self.assertEqual(ru.name, ru_name)
+        self.assertGreater(len(en.content), 2500)
         self.assertGreater(len(ru.content), 2500)
 
-    def test_search_and_sync_person_dennis_hopper(self):
-        person = self.person_dennis_hopper()
-        sync_person(person.id)
-        en = person.wikipedia.get(lang='en')
-        ru = person.wikipedia.get(lang='ru')
-        self.assertEqual(en.name, 'Dennis Hopper')
-        self.assertEqual(ru.name, 'Хоппер, Деннис')
-        self.assertGreater(len(en.content), 25000)
-        self.assertGreater(len(ru.content), 10000)
-
-    def test_sync_movie_duplicates(self):
-        movie1 = self.movie_matrix()
-        movie2 = self.movie_matrix()
-        sync_movie(movie1.id)
-        self.assertGreater(movie1.wikipedia.count(), 0)
+    @parameterized.expand([
+        (MovieFactory, sync_movie,
+         dict(year=1999, title_en='The Matrix', title_ru='Матрица')),
+        (PersonFactory, sync_person,
+         dict(first_name_en='Dennis', last_name_en='Hopper', first_name_ru='Деннис', last_name_ru='Хоппер')),
+    ])
+    def test_sync_page_duplicates(self, factory, sync_method, kwargs):
+        instance1 = factory(**kwargs)
+        instance2 = factory(**kwargs)
+        sync_method(instance1.id)
+        self.assertGreater(instance1.wikipedia.count(), 0)
         with self.assertRaises(PossibleDuplicate):
-            sync_movie(movie2.id)
-
-    def test_sync_person_duplicates(self):
-        person1 = self.person_dennis_hopper()
-        person2 = self.person_dennis_hopper()
-        sync_person(person1.id)
-        self.assertGreater(person1.wikipedia.count(), 0)
-        with self.assertRaises(PossibleDuplicate):
-            sync_person(person2.id)
+            sync_method(instance2.id)

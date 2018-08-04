@@ -129,6 +129,7 @@ class ImdbMovie(models.Model, UrlMixin):
     rating = models.FloatField(_('IMDb rating'), null=True, db_index=True, blank=True)
     votes = models.PositiveIntegerField(_('IMDb votes number'), null=True, blank=True)
     movie = models.OneToOneField(Movie, related_name='imdb', on_delete=models.CASCADE)
+    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     link = 'http://www.imdb.com/title/tt{id}/'
 
@@ -145,6 +146,7 @@ class ImdbPerson(models.Model, UrlMixin):
     """
     id = models.PositiveIntegerField(_('IMDb ID'), primary_key=True)
     person = models.OneToOneField(Person, related_name='imdb', on_delete=models.CASCADE)
+    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     link = 'http://www.imdb.com/name/nm{id}/'
 

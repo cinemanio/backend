@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from cinemanio.core.models import Movie, Person
 from cinemanio.sites.exceptions import PossibleDuplicate
+from cinemanio.sites.wikipedia.signals import wikipedia_page_synced
 
 
 class WikipediaPageManager(models.Manager):
@@ -60,6 +61,7 @@ class WikipediaPage(models.Model):
     name = models.CharField(_('Page ID'), max_length=100, unique=True)
     lang = models.CharField(_('Language'), max_length=5, db_index=True)
     content = models.TextField(_('Content'), blank='', default='')
+    synced_at = models.DateTimeField(_('Synced at'), auto_now=True, db_index=True)
 
     # relation to Movie or Person
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -75,12 +77,16 @@ class WikipediaPage(models.Model):
 
     @property
     def url(self):
-        return self.link.format(name=self.name, lang=self.lang)
+        return self.link.format(name=self.name.replace(' ', '_'), lang=self.lang)
 
     def sync(self):
         wikipedia.set_lang(self.lang)
         page = wikipedia.page(self.name)
         self.content = page.content
+        wikipedia_page_synced.send(sender=WikipediaPage,
+                                   content_type_id=self.content_type_id,
+                                   object_id=self.object_id,
+                                   page=page)
 
 
 Movie.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia')))
