@@ -25,6 +25,11 @@ class WikipediaPageManager(models.Manager):
         'ru': '{last_name}, {first_name}',
     }
 
+    stop_words = [
+        '(disambiguation)',
+        '(значения)',
+    ]
+
     def create_for(self, instance, lang='en'):
         if lang not in self.movie_term_map or lang not in self.person_term_map:
             raise ValueError(f"Value of lang attribute is unknown: {lang}")
@@ -65,19 +70,22 @@ class WikipediaPageManager(models.Manager):
         if not results:
             return False
 
-        if 'disambiguation' in results[0]:
-            return False
+        result = results[0]
+
+        for stop_word in self.stop_words:
+            if stop_word in result:
+                return False
 
         # remove year from the movie search term
-        m1 = re.findall(r'^(.+) \(', results[0])
+        m1 = re.findall(r'^(.+) \(', result)
         m2 = re.findall(r'^(.+) \(', term)
         if SequenceMatcher(None,
-                           m1[0] if m1 else results[0],
+                           m1[0] if m1 else result,
                            m2[0] if m2 else term).ratio() < 0.7:
             return False
 
         # year comparison
-        m1 = re.findall(r'\d{4}', results[0])
+        m1 = re.findall(r'\d{4}', result)
         m2 = re.findall(r'\d{4}', term)
         if m1 and m2 and abs(int(m1[0]) - int(m2[0])) > 1:
             return False
