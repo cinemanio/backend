@@ -1,4 +1,5 @@
 import datetime
+from parameterized import parameterized
 from unittest import skip, mock
 
 from imdb.parser.http import IMDbHTTPAccessSystem
@@ -8,7 +9,7 @@ from cinemanio.core.models import Genre
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tasks import sync_movie, sync_person
 from cinemanio.sites.imdb.tests.base import ImdbSyncBaseTest
-from cinemanio.sites.exceptions import PossibleDuplicate
+from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
 
 
 class ImdbSyncTest(ImdbSyncBaseTest):
@@ -67,21 +68,26 @@ class ImdbSyncTest(ImdbSyncBaseTest):
         self.assertEqual(movie2.imdb.id, 3505782)
         self.assertFalse(search_movie.called)
 
-    def test_sync_movie_duplicates(self):
-        movie1 = MovieFactory(year=2014, title='The Prince')
-        movie2 = MovieFactory(year=2014, title='The Prince')
-        sync_movie(movie1.id)
-        self.assertTrue(movie1.imdb.id)
+    @parameterized.expand([
+        (MovieFactory, sync_movie, dict(year=2014, title='The Prince')),
+        (PersonFactory, sync_person, dict(first_name_en='Allison', last_name_en='Williams')),
+    ])
+    def test_sync_object_duplicates(self, factory, sync_method, kwargs):
+        instance1 = factory(**kwargs)
+        instance2 = factory(**kwargs)
+        sync_method(instance1.id)
+        self.assertTrue(instance1.imdb.id)
         with self.assertRaises(PossibleDuplicate):
-            sync_movie(movie2.id)
+            sync_method(instance2.id)
 
-    def test_sync_person_duplicates(self):
-        person1 = PersonFactory(first_name_en='Allison', last_name_en='Williams')
-        person2 = PersonFactory(first_name_en='Allison', last_name_en='Williams')
-        sync_person(person1.id)
-        self.assertTrue(person1.imdb.id)
-        with self.assertRaises(PossibleDuplicate):
-            sync_person(person2.id)
+    @parameterized.expand([
+        ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title='The Prince')),
+        ('person', ImdbPersonFactory, dict(person__first_name_en='Allison', person__last_name_en='Williams')),
+    ])
+    def test_sync_object_wrong_value(self, model_name, factory, kwargs):
+        instance = factory(id=1, **kwargs)
+        with self.assertRaises(WrongValue):
+            instance.__class__.objects.create_for(getattr(instance, model_name))
 
     def test_get_movie_runtime_different_format(self):
         # runtime in format "xxxxx:17"

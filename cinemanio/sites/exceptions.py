@@ -1,12 +1,19 @@
 class PossibleDuplicate(Exception):
     """
-    This exception is raised, when possible duplicate found
+    Raised, when possible duplicate found
     """
     pass
 
 
 class NothingFound(Exception):
     """
-    This exception is raised, when no any search results found
+    Raised, when no any search results found
+    """
+    pass
+
+
+class WrongValue(Exception):
+    """
+    Raised, when trying to assign wrong value
     """
     pass

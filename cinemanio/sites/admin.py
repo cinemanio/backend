@@ -51,7 +51,7 @@ class SitesAdminMixin:
     def wikipedia(self, obj, lang):
         try:
             wikipedia = getattr(obj, f'wikipedia_{lang}')[0]
-            return mark_safe(f'<a href="{wikipedia.url}" target="_blank">{wikipedia.name}</a>')
+            return mark_safe(f'<a href="{wikipedia.url}" target="_blank">{wikipedia.title}</a>')
         except IndexError:
             return ''
 

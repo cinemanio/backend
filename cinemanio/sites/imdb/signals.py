@@ -16,4 +16,4 @@ def search_link_signal(content_type_id, object_id, page, **_):
     except KeyError:
         return
     else:
-        search_link.delay(content_type_id, object_id, links)
+        search_link.delay(content_type_id, object_id, links, page.html())

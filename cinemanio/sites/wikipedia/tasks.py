@@ -1,5 +1,7 @@
 import logging
 
+from django.contrib.contenttypes.models import ContentType
+
 from cinemanio.celery import app
 from cinemanio.core.models import Movie, Person
 from cinemanio.sites.exceptions import PossibleDuplicate
@@ -40,3 +42,24 @@ def sync(instance):
     for page in instance.wikipedia.all():
         page.sync()
         page.save()
+
+
+@app.task
+def search_roles_links(content_type_id, object_id, lang, links):
+    """
+    Search wikipedia link in links, attach one if found and delay sync task
+    """
+    instance = ContentType.objects.get(id=content_type_id).get_object_for_this_type(id=object_id)
+    if isinstance(instance, Movie):
+        linked_instances = instance.persons.all()
+    elif isinstance(instance, Person):
+        linked_instances = instance.movies.all()
+    else:
+        raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
+
+    for linked_instance in linked_instances:
+        for link in links:
+            term = WikipediaPage.objects.get_search_term(linked_instance, lang)
+            if WikipediaPage.objects.validate_search_result(link, term):
+                WikipediaPage.objects.safe_create(link, lang, linked_instance)
+                break

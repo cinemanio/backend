@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from imdb import IMDb
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country
-from cinemanio.sites.exceptions import PossibleDuplicate, NothingFound
+from cinemanio.sites.exceptions import PossibleDuplicate, NothingFound, WrongValue
 from cinemanio.sites.models import SitesBaseModel
 
 
@@ -44,12 +44,21 @@ class ImdbBaseManager(models.Manager):
         instance_type = instance._meta.model_name
         try:
             instance_exist = self.get(id=imdb_id)
-            instance_exist_id = getattr(instance_exist, instance_type).id
+            instance_exist_id = getattr(instance_exist, f'{instance_type}_id')
+            if instance.id == instance_exist_id:
+                return instance_exist
             raise PossibleDuplicate(
                 f"Can not assign IMDb ID={imdb_id} to {instance_type} ID={instance.id}, "
                 f"because it's already assigned to {instance_type} ID={instance_exist_id}")
         except self.model.DoesNotExist:
-            return self.create(id=imdb_id, **{instance_type: instance})
+            try:
+                instance_exist = self.get(**{instance_type: instance})
+                if imdb_id != instance_exist.id:
+                    raise WrongValue(
+                        f"Can not assign IMDb ID={imdb_id} to {instance_type} ID={instance.id}, "
+                        f"because another IMDb ID={instance_exist.id} already assigned there")
+            except self.model.DoesNotExist:
+                return self.create(id=imdb_id, **{instance_type: instance})
 
 
 class ImdbMovieManager(ImdbBaseManager):

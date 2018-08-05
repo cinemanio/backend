@@ -1,29 +1,39 @@
-from django.test import TestCase
 from parameterized import parameterized
 
-from cinemanio.core.tests.base import VCRMixin
-from cinemanio.core.factories import MovieFactory, PersonFactory
+from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
+from cinemanio.core.tests.base import BaseTestCase, VCRMixin
 from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.wikipedia.tasks import sync_movie, sync_person
 
 
-class WikipediaTest(VCRMixin, TestCase):
+class WikipediaTest(VCRMixin, BaseTestCase):
+    def assert_wikipedia(self, instance, en_title, ru_title, synced=True):
+        en = instance.wikipedia.get(lang='en')
+        ru = instance.wikipedia.get(lang='ru')
+        self.assertEqual(en.title, en_title)
+        self.assertEqual(ru.title, ru_title)
+        if synced:
+            self.assertTrue(en.synced_at)
+            self.assertTrue(ru.synced_at)
+            self.assertGreater(len(en.content), 2500)
+            self.assertGreater(len(ru.content), 2500)
+
     @parameterized.expand([
         (MovieFactory, 'The Matrix', 'en', 'http://en.wikipedia.org/wiki/The_Matrix'),
         (PersonFactory, 'Dennis Hopper', 'en', 'http://en.wikipedia.org/wiki/Dennis_Hopper'),
     ])
-    def test_page_url(self, factory, name, lang, url):
+    def test_page_url(self, factory, title, lang, url):
         instance = factory()
-        WikipediaPage.objects.create(name=name, lang=lang, content_object=instance)
+        WikipediaPage.objects.create(title=title, lang=lang, content_object=instance)
         self.assertEqual(instance.wikipedia.first().url, url)
 
     @parameterized.expand([
         (MovieFactory, 'Junk', 'en'),  # disambiguation
         (MovieFactory, 'blablabla', 'en'),  # bad page
     ])
-    def test_sync_bad_page(self, factory, name, lang):
+    def test_sync_bad_page(self, factory, title, lang):
         instance = factory()
-        page = WikipediaPage.objects.create(content_object=instance, name=name, lang=lang)
+        page = WikipediaPage.objects.create(content_object=instance, title=title, lang=lang)
         page.sync()
         self.assertIsNone(page.id)
         self.assertEqual(instance.wikipedia.count(), 0)
@@ -34,10 +44,11 @@ class WikipediaTest(VCRMixin, TestCase):
         (MovieFactory, 'Матрица_(фильм)', 'ru', 133093),
         (PersonFactory, 'Хоппер, Деннис', 'ru', 454, 9843),
         (MovieFactory, 'Дворецкий Боб', 'ru'),  # https://github.com/goldsmith/Wikipedia/issues/78
+        (MovieFactory, 'Невозвращенец (фильм)', 'ru', 169081)
     ])
-    def test_sync_page_with_imdb_id(self, factory, name, lang, imdb_id=None, kinopoisk_id=None):
+    def test_sync_page_with_imdb_id(self, factory, title, lang, imdb_id=None, kinopoisk_id=None):
         instance = factory()
-        page = WikipediaPage.objects.create(content_object=instance, name=name, lang=lang)
+        page = WikipediaPage.objects.create(content_object=instance, title=title, lang=lang)
         page.sync()
         self.assertGreater(len(page.content), 1000)
         if imdb_id:
@@ -50,25 +61,42 @@ class WikipediaTest(VCRMixin, TestCase):
     @parameterized.expand([
         (MovieFactory, sync_movie,
          dict(year=1999, title_en='The Matrix', title_ru='Матрица'),
-         'The Matrix', 'Матрица (фильм)'),
+         'The Matrix', 'Матрица (фильм)',
+         ((dict(person__first_name_en='Keanu', person__last_name_en='Reeves',
+                person__first_name_ru='Киану', person__last_name_ru='Ривз'), 'Keanu Reeves', 'Ривз, Киану'),
+          (dict(person__first_name_en='Carrie-Anne', person__last_name_en='Moss',
+                person__first_name_ru='Керри-Энн', person__last_name_ru='Мосс'), 'Carrie-Anne Moss', 'Мосс, Керри-Энн'),)
+         ),
         (PersonFactory, sync_person,
          dict(first_name_en='Dennis', last_name_en='Hopper', first_name_ru='Деннис', last_name_ru='Хоппер'),
-         'Dennis Hopper', 'Хоппер, Деннис'),
+         'Dennis Hopper', 'Хоппер, Деннис',
+         ((dict(movie__year=1969, movie__title_en='Easy Rider', movie__title_ru='Беспечный ездок'),
+           'Easy Rider', 'Беспечный ездок'),
+          (dict(movie__year=1956, movie__title_en='Giant', movie__title_ru='Гигант'),
+           'Giant (1956 film)', 'Гигант (фильм)'),)
+         ),
+        # TODO: the right movie is the second search result, not first
         # (MovieFactory, sync_movie,
         #  dict(year=1998, title_en='The Dentist 2', title_ru='Дантист 2'),
         #  'The Dentist 2', 'Дантист 2'),
     ])
-    def test_search_and_sync_page(self, factory, sync_method, kwargs, en_name, ru_name):
+    def test_search_and_sync_object_with_roles(self, factory, sync_method, kwargs, en_title, ru_title, roles=()):
         instance = factory(**kwargs)
+
+        # create instances linked to the main
+        linked_instances = []
+        for role in roles:
+            role[0].update({instance._meta.model_name: instance})
+            cast = CastFactory(**role[0], role=self.actor)
+            field = list(role[0])[0].split('__')[0]
+            linked_instances.append(getattr(cast, field))
+
         sync_method(instance.id)
-        en = instance.wikipedia.get(lang='en')
-        ru = instance.wikipedia.get(lang='ru')
-        self.assertEqual(en.name, en_name)
-        self.assertEqual(ru.name, ru_name)
-        self.assertTrue(en.synced_at)
-        self.assertTrue(ru.synced_at)
-        self.assertGreater(len(en.content), 2500)
-        self.assertGreater(len(ru.content), 2500)
+        self.assert_wikipedia(instance, en_title, ru_title)
+
+        # check instances linked to the main
+        for i, role in enumerate(roles):
+            self.assert_wikipedia(linked_instances[i], role[1], role[2], synced=False)
 
     @parameterized.expand([
         (MovieFactory, sync_movie,

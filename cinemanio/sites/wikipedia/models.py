@@ -11,7 +11,6 @@ from wikipedia.exceptions import DisambiguationError, PageError
 from cinemanio.core.models import Movie, Person
 from cinemanio.sites.exceptions import PossibleDuplicate
 from cinemanio.sites.models import SitesBaseModel
-from cinemanio.sites.wikipedia.signals import wikipedia_page_synced
 
 
 class WikipediaPageManager(models.Manager):
@@ -30,10 +29,7 @@ class WikipediaPageManager(models.Manager):
         '(значения)',
     ]
 
-    def create_for(self, instance, lang='en'):
-        if lang not in self.movie_term_map or lang not in self.person_term_map:
-            raise ValueError(f"Value of lang attribute is unknown: {lang}")
-
+    def get_search_term(self, instance, lang):
         if isinstance(instance, Movie):
             title = getattr(instance, f'title_{lang}')
             if not title:
@@ -47,31 +43,29 @@ class WikipediaPageManager(models.Manager):
             term = self.person_term_map[lang].format(first_name=first_name, last_name=last_name)
         else:
             raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
+        return term
 
+    def create_for(self, instance, lang='en'):
+        if lang not in self.movie_term_map or lang not in self.person_term_map:
+            raise ValueError(f"Value of lang attribute is unknown: {lang}")
+
+        term = self.get_search_term(instance, lang)
         wikipedia.set_lang(lang)
         results = wikipedia.search(term, results=1)
-        if self.validate_search_results(results, term):
-            page = self.safe_create(results[0], lang, instance)
-            page.sync()
-            page.save()
-            return page
+        if results and self.validate_search_result(results[0], term):
+            return self.safe_create(results[0], lang, instance)
 
         raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
                          f"on language {lang} using search term '{term}'")
 
-    def validate_search_results(self, results, term) -> bool:
+    def validate_search_result(self, result, term) -> bool:
         """
         Validate search results:
-        - check length
+        - checl stop words
         - calculate similarity of search result and search term (quick solution from here
         https://stackoverflow.com/questions/17388213/find-the-similarity-metric-between-two-strings)
         - compare years of movie and search result using delta
         """
-        if not results:
-            return False
-
-        result = results[0]
-
         for stop_word in self.stop_words:
             if stop_word in result:
                 return False
@@ -92,53 +86,58 @@ class WikipediaPageManager(models.Manager):
 
         return True
 
-    def safe_create(self, name, lang, instance):
+    def safe_create(self, title, lang, instance):
         instance_type = instance._meta.model_name
         try:
-            object_exist = self.get(lang=lang, name=name)
+            object_exist = self.get(lang=lang, title=title)
+            if object_exist.content_object == instance:
+                return object_exist
             raise PossibleDuplicate(
-                f"Can not assign Wikipedia page title='{name}' lang={lang} to {instance_type} ID={instance.id}, "
+                f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id}, "
                 f"because it's already assigned to {instance_type} ID={object_exist.content_object.id}")
         except self.model.DoesNotExist:
-            return self.create(lang=lang, name=name, content_object=instance)
+            return self.create(lang=lang, title=title, content_object=instance)
 
 
 class WikipediaPage(SitesBaseModel):
     """
     Wikipedia model
     """
-    name = models.CharField(_('Page ID'), max_length=100, unique=True)
     lang = models.CharField(_('Language'), max_length=5, db_index=True)
+    title = models.CharField(_('Title'), max_length=100, unique=True)
     content = models.TextField(_('Content'), blank='', default='')
+    page_id = models.PositiveIntegerField(_('Page ID'), null=True)
 
     # relation to Movie or Person
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
-    link = 'http://{lang}.wikipedia.org/wiki/{name}'
+    link = 'http://{lang}.wikipedia.org/wiki/{title}'
 
     objects = WikipediaPageManager()
 
     class Meta:
         unique_together = (
-            ('lang', 'name'),
+            ('lang', 'title'),
             ('content_type', 'object_id', 'lang'),
         )
 
     @property
     def url(self):
-        return self.link.format(name=self.name.replace(' ', '_'), lang=self.lang)
+        return self.link.format(title=self.title.replace(' ', '_'), lang=self.lang)
 
     def sync(self):
+        from cinemanio.sites.wikipedia.signals import wikipedia_page_synced
         wikipedia.set_lang(self.lang)
         try:
-            page = wikipedia.page(self.name)
+            page = wikipedia.page(self.title, auto_suggest=False)
         except (DisambiguationError, PageError):
             self.delete()
         else:
             self.content = page.content
-            wikipedia_page_synced.send(sender=WikipediaPage, page=page,
+            self.page_id = page.pageid
+            wikipedia_page_synced.send(sender=WikipediaPage, page=page, lang=self.lang,
                                        content_type_id=self.content_type_id, object_id=self.object_id)
             super().sync()
 
