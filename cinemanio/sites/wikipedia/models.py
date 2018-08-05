@@ -62,7 +62,7 @@ class WikipediaPageManager(models.Manager):
         https://stackoverflow.com/questions/17388213/find-the-similarity-metric-between-two-strings)
         - compare years of movie and search result using delta
         """
-        if len(results) == 0:
+        if not results:
             return False
 
         if 'disambiguation' in results[0]:
