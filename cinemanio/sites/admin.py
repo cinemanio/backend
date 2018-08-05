@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import register, TabularInline
 from django.db.models import Prefetch
+from django.utils.safestring import mark_safe
 
 from cinemanio.core.admin import get_registered_admin_class
 from cinemanio.core.models import Movie, Person
@@ -36,10 +37,10 @@ class KinopoiskPersonInline(InlineBase):
 
 class SitesAdminMixin:
     def imdb_id(self, obj):
-        return obj.imdb.id
+        return mark_safe(f'<a href="{obj.imdb.url}" target="_blank">{obj.imdb.id}</a>')
 
     def kinopoisk_id(self, obj):
-        return obj.kinopoisk.id
+        return mark_safe(f'<a href="{obj.kinopoisk.url}" target="_blank">{obj.kinopoisk.id}</a>')
 
     def wikipedia_en(self, obj):
         return self.wikipedia(obj, 'en')
@@ -49,7 +50,8 @@ class SitesAdminMixin:
 
     def wikipedia(self, obj, lang):
         try:
-            return getattr(obj, f'wikipedia_{lang}')[0].name
+            wikipedia = getattr(obj, f'wikipedia_{lang}')[0]
+            return mark_safe(f'<a href="{wikipedia.url}" target="_blank">{wikipedia.name}</a>')
         except IndexError:
             return ''
 

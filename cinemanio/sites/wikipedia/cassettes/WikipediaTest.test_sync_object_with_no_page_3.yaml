@@ -1,0 +1,725 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%A2%D1%8B+-+%D1%8D%D1%82%D0%BE+%D1%8F+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:34 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%A2%D1%8B+-+%D1%8D%D1%82%D0%BE+%D1%8F+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['295320763']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%A2%D1%8B+-+%D1%8D%D1%82%D0%BE+%D1%8F+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA02OQW+DMAyF/wryaZvYlAItU/7HTusOaTBgCRwWjKaV5r83SS+9fJaf33vyDn/G
+        M/Gwgt5hNsRpvoGGL/Zo3cB0xa5YjDczCnpdTDSTfEAIJVyM2NG6eZniKUagBOtYiDdMLat3fb+i
+        gD48H+D9doOY/t3Q/2cfGm9H4t6lTZyYaSSJD1XHtq2j82EA/b0DR1mVICRTqjpvqjlgYm0zj5ld
+        8ZJm0+TtM/OSlYfLlkWl1Ok1PryYAakDfWrqtlLhJ4Q7gWgxRRMBAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=1309810 t=1533417094608090]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['212']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:35 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1347.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1067 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['196147366, 364878899']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&srinfo=suggestion&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:35 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&srinfo=suggestion&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['287184186']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&srinfo=suggestion&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA02OzQ7CIBCEX4XsSQ0a+uNPeA9P6oHSbUtSaKU0RlveXcCLl2+zOzObWeAlrFGm
+        nYAvoIUyce6Aw9VYlENr1AdrMgorNDq0nPRKK3cA7ylUwslODnrsgxQiQEEOxikzY/wy2aFpJnTA
+        s38B9usKIf2c0b6TD4WVHfDbAibUYBSccn103mdWZhhZyMRjYk02cZZl2i6JVbr8XJKSnLHTNvQZ
+        RYuqBn4qi3PO/MP7LzsNmqnyAAAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=144932 t=1533417096073008]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['192']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1285.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1068 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['538479201, 363801957']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['294065112']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA72RYUvDMBCG/8oIVCbUNW2zri0MYZv/wE8ijCyNbTBLanbRyfC/e8nYFxn4QbCU
+        93rPXfLmmhPZcRCDsPtRS5CkJSQlb166T9KeyMh7eQgfFSsXBb0g1ZH2TFJisI4BFOiw+tlTlsug
+        pYg6j9pNpiEyFrM66i6Sc5dIJwWl1S2aC2tAGtjbTmrc8EO9KpBHwEqw1tz0HiNWnP/BBthrgcuu
+        1TrlEGtwyMF6MUicgRQ0r+8ovuVjUbZs0TL6hA2aH8DJ9zBmU1Ja502FUJoeBiRNXabkxWvtXTjg
+        ADAe2ixzfhbOOqIVn1nXZyHLkg1Nmoegq3XUedTNdpps8qRmMaujriI5d63T7eV/4H7wm1OmTCeP
+        s3EY7+NFLP9oe8MFKGuWwTtcCTfWKMH/ZeIvfL4Bfqk0BJYCAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=61347 t=1533417096340909]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['323']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1289.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1065 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['399936674, 364553437']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['297238546']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        //4LshjBxr9IAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=39211 t=1533417096528821]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1284.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1053 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['161125250, 360144925']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['261532858']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0VP227CMAz9FeSnMSVrKGkG/RXgISTWiEjSAq4KqvLvS4KmvZxjH1+OvcBZk7mY
+        IYweCaEHYHCb8P6CfoFR/+CjBEpuv1vxJzkL/VthEHM9EznyZfo4CbnBgltTsatoVx+FpazZruK5
+        Ku8uw1atEGqdzfFJ3sVrXntY4DOvvBCNfdPM8/yVzwyoJ+MiBl2yJg6ED26Rj/fBNkop7jUP2qN1
+        htwQWdfuNpKXNt5KtZeQTiklBt4FR/W3f8NOiJR+AWpvegMSAQAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=44195 t=1533417096720453]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['210']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1345.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1067 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['207229871, 363348953']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&srinfo=suggestion&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:36 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&srinfo=suggestion&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['283525453']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&srinfo=suggestion&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA02OzQ7CIBCEX4XsSQ0a+uNPeA9P6oHSbUtSaKU0RlveXcCLl2+zOzObWeAlrFGm
+        nYAvoIUyce6Aw9VYlENr1AdrMgorNDq0nPRKK3cA7ylUwslODnrsgxQiQEEOxikzY/wy2aFpJnTA
+        s38B9usKIf2c0b6TD4WVHfDbAibUYBSccn103mdWZhhZyMRjYk02cZZl2i6JVbr8XJKSnLHTNvQZ
+        RYuqBn4qi3PO/MP7LzsNmqnyAAAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=134873 t=1533417096925937]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['192']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1312.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1054 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['941962220, 365890194']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['277122935']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA72RYUvDMBCG/8oIVCbUNW2zri0MYZv/wE8ijCyNbTBLanbRyfC/e8nYFxn4QbCU
+        93rPXfLmmhPZcRCDsPtRS5CkJSQlb166T9KeyMh7eQgfFSsXBb0g1ZH2TFJisI4BFOiw+tlTlsug
+        pYg6j9pNpiEyFrM66i6Sc5dIJwWl1S2aC2tAGtjbTmrc8EO9KpBHwEqw1tz0HiNWnP/BBthrgcuu
+        1TrlEGtwyMF6MUicgRQ0r+8ovuVjUbZs0TL6hA2aH8DJ9zBmU1Ja502FUJoeBiRNXabkxWvtXTjg
+        ADAe2ixzfhbOOqIVn1nXZyHLkg1Nmoegq3XUedTNdpps8qRmMaujriI5d63T7eV/4H7wm1OmTCeP
+        s3EY7+NFLP9oe8MFKGuWwTtcCTfWKMH/ZeIvfL4Bfqk0BJYCAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=45592 t=1533417097209297]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['323']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1347.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1067 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['207587869, 362564296']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['287782894']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        //4LshjBxr9IAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=45692 t=1533417097410140]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1281.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1068 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['536550560, 363215429']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=04-Aug-2018;Path=/;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=04-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Wed,
+          05 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1067 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: [69.243.118.50]
+      X-Varnish: ['295739246']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=04-Aug-2018; WMF-Last-Access-Global=04-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%9E%D0%BC%D0%B5%D0%BD+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0VP227CMAz9FeSnMSVrKGkG/RXgISTWiEjSAq4KqvLvS4KmvZxjH1+OvcBZk7mY
+        IYweCaEHYHCb8P6CfoFR/+CjBEpuv1vxJzkL/VthEHM9EznyZfo4CbnBgltTsatoVx+FpazZruK5
+        Ku8uw1atEGqdzfFJ3sVrXntY4DOvvBCNfdPM8/yVzwyoJ+MiBl2yJg6ED26Rj/fBNkop7jUP2qN1
+        htwQWdfuNpKXNt5KtZeQTiklBt4FR/W3f8NOiJR+AWpvegMSAQAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=38324 t=1533417097635827]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['210']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Sat, 04 Aug 2018 21:11:37 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1280.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=04-Aug-2018;WMF-Last-Access-Global=04-Aug-2018;https=1]
+      X-Cache: ['cp1068 pass, cp1066 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:d88f:80a3:2aa:521b']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['536550567, 362129184']
+    status: {code: 200, message: OK}
+version: 1

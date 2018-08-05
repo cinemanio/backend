@@ -1,6 +1,11 @@
+import logging
+
 from cinemanio.celery import app
 from cinemanio.core.models import Movie, Person
+from cinemanio.sites.exceptions import PossibleDuplicate
 from cinemanio.sites.wikipedia.models import WikipediaPage
+
+logger = logging.getLogger(__name__)
 
 
 @app.task
@@ -24,7 +29,13 @@ def sync_person(person_id):
 def sync(instance):
     if instance.wikipedia.count() == 0:
         for lang in ['en', 'ru']:
-            WikipediaPage.objects.create_for(instance, lang=lang)
+            try:
+                WikipediaPage.objects.create_for(instance, lang=lang)
+            except ValueError:
+                continue
+            except PossibleDuplicate as e:
+                logger.warning(e)
+                continue
 
     for page in instance.wikipedia.all():
         page.sync()

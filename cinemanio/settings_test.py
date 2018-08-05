@@ -12,3 +12,9 @@ DATABASES = {
 }
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {},
+}

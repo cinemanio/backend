@@ -1,3 +1,5 @@
+from vcr_unittest import VCRMixin as VCRMixinBase
+
 from django.test import TestCase
 from django.utils import translation
 
@@ -37,7 +39,7 @@ class BaseTestCase(TestCase):
         return Role.objects.get_scenarist()
 
 
-class VCRAddNewMixin:
+class VCRMixin(VCRMixinBase):
     def _get_vcr_kwargs(self, **kwargs):
         kwargs['record_mode'] = 'new_episodes'
         return kwargs

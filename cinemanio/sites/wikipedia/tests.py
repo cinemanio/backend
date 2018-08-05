@@ -1,15 +1,13 @@
 from django.test import TestCase
 from parameterized import parameterized
-from vcr_unittest import VCRMixin
 
-from cinemanio.core.tests.base import VCRAddNewMixin
+from cinemanio.core.tests.base import VCRMixin
 from cinemanio.core.factories import MovieFactory, PersonFactory
-from cinemanio.sites.exceptions import PossibleDuplicate
 from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.wikipedia.tasks import sync_movie, sync_person
 
 
-class WikipediaTest(VCRMixin, VCRAddNewMixin, TestCase):
+class WikipediaTest(VCRMixin, TestCase):
     @parameterized.expand([
         (MovieFactory, 'The Matrix', 'en', 'http://en.wikipedia.org/wiki/The_Matrix'),
         (PersonFactory, 'Dennis Hopper', 'en', 'http://en.wikipedia.org/wiki/Dennis_Hopper'),
@@ -56,6 +54,9 @@ class WikipediaTest(VCRMixin, VCRAddNewMixin, TestCase):
         (PersonFactory, sync_person,
          dict(first_name_en='Dennis', last_name_en='Hopper', first_name_ru='Деннис', last_name_ru='Хоппер'),
          'Dennis Hopper', 'Хоппер, Деннис'),
+        # (MovieFactory, sync_movie,
+        #  dict(year=1998, title_en='The Dentist 2', title_ru='Дантист 2'),
+        #  'The Dentist 2', 'Дантист 2'),
     ])
     def test_search_and_sync_page(self, factory, sync_method, kwargs, en_name, ru_name):
         instance = factory(**kwargs)
@@ -80,5 +81,19 @@ class WikipediaTest(VCRMixin, VCRAddNewMixin, TestCase):
         instance2 = factory(**kwargs)
         sync_method(instance1.id)
         self.assertGreater(instance1.wikipedia.count(), 0)
-        with self.assertRaises(PossibleDuplicate):
-            sync_method(instance2.id)
+        sync_method(instance2.id)
+        self.assertEqual(instance2.wikipedia.count(), 0)
+
+    @parameterized.expand([
+        (MovieFactory, sync_movie, dict(year=2005, title_en='', title_ru='')),
+        (MovieFactory, sync_movie, dict(year=1984, title_en='Report from the Abyss', title_ru='Репортаж из бездны')),
+        (MovieFactory, sync_movie, dict(year=2007, title_en='', title_ru='Нелюбимые')),
+        (MovieFactory, sync_movie, dict(year=2006, title_en='', title_ru='Ты - это я')),
+        (MovieFactory, sync_movie, dict(year=1998, title_en='I Just Want to Kiss You')),
+        (MovieFactory, sync_movie, dict(year=2008, title_en='Senior Skip Day')),
+        (MovieFactory, sync_movie, dict(year=1990, title_en='The Killer\'s Edge')),
+    ])
+    def test_sync_object_with_no_page(self, factory, sync_method, kwargs):
+        instance = factory(**kwargs)
+        sync_method(instance.id)
+        self.assertEqual(instance.wikipedia.count(), 0)
