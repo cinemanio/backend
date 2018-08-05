@@ -47,13 +47,13 @@ class AdminTest(AdminBaseTest):
         for i in range(100):
             kinopoisk_factory(**{object_type: getattr(imdb_factory(), object_type)})
 
-        with self.assertNumQueries(7):
+        with self.assertNumQueries(9):
             response = self.client.get(reverse(f'admin:core_{object_type}_changelist'))
         self.assertEqual(response.status_code, 200)
 
     @parameterized.expand([
-        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 17),
-        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 12),
+        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 19),
+        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 14),
     ])
     def test_object_page(self, object_type, factory, imdb_factory, kinopoisk_factory, queries):
         instance = factory()
