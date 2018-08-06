@@ -29,7 +29,10 @@ class WikipediaPageManager(models.Manager):
         '(значения)',
     ]
 
-    def get_search_term(self, instance, lang):
+    def get_search_term(self, instance, lang) -> str:
+        """
+        Get search term for Wikipedia search API
+        """
         if isinstance(instance, Movie):
             title = getattr(instance, f'title_{lang}')
             if not title:
@@ -45,7 +48,22 @@ class WikipediaPageManager(models.Manager):
             raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
         return term
 
+    def create_from_list_for(self, instance, lang, links):
+        """
+        Create WikipediaPage object for instance using list of links from existing Wikipedia page
+        """
+        term = self.get_search_term(instance, lang)
+        for link in links:
+            if self.validate_search_result(link, term):
+                return self.safe_create(link, lang, instance)
+
+        raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
+                         f"on language {lang} in the list of links")
+
     def create_for(self, instance, lang='en'):
+        """
+        Create WikipediaPage object for instance using Wikipedia search API
+        """
         if lang not in self.movie_term_map or lang not in self.person_term_map:
             raise ValueError(f"Value of lang attribute is unknown: {lang}")
 
@@ -58,11 +76,12 @@ class WikipediaPageManager(models.Manager):
         raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
                          f"on language {lang} using search term '{term}'")
 
-    def validate_search_result(self, result, term) -> bool:
+    def validate_search_result(self, result, term, remove_years=True) -> bool:
         """
         Validate search results:
-        - checl stop words
-        - calculate similarity of search result and search term (quick solution from here
+        - check stop words
+        - calculate similarity of search result and search term, removing movie years (depends on remove_years attr)
+        (quick solution from here
         https://stackoverflow.com/questions/17388213/find-the-similarity-metric-between-two-strings)
         - compare years of movie and search result using delta
         """
@@ -71,8 +90,10 @@ class WikipediaPageManager(models.Manager):
                 return False
 
         # remove year from the movie search term
-        m1 = re.findall(r'^(.+) \(', result)
-        m2 = re.findall(r'^(.+) \(', term)
+        m1 = m2 = None
+        if remove_years:
+            m1 = re.findall(r'^(.+) \(', result)
+            m2 = re.findall(r'^(.+) \(', term)
         if SequenceMatcher(None,
                            m1[0] if m1 else result,
                            m2[0] if m2 else term).ratio() < 0.7:
@@ -87,6 +108,10 @@ class WikipediaPageManager(models.Manager):
         return True
 
     def safe_create(self, title, lang, instance):
+        """
+        Create WikipediaPage object safely, preventing IntegrityError.
+        Raise PossibleDublicate and WrongValue exceptions in corresponding cases.
+        """
         instance_type = instance._meta.model_name
         try:
             object_exist = self.get(lang=lang, title=title)
@@ -97,7 +122,7 @@ class WikipediaPageManager(models.Manager):
                 f"because it's already assigned to {instance_type} ID={object_exist.content_object.id}")
         except self.model.DoesNotExist:
             try:
-                instance_exist = self.get(lang=lang, content_object=instance)
+                instance_exist = self.get(lang=lang, **{instance_type: instance})
                 if title != instance_exist.title:
                     raise WrongValue(
                         f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id},"
@@ -135,13 +160,21 @@ class WikipediaPage(SitesBaseModel):
         return self.link.format(title=self.title.replace(' ', '_'), lang=self.lang)
 
     def sync(self):
+        """
+        Sync instance using Wikipedia API. Update content, page_id fields
+        """
         from cinemanio.sites.wikipedia.signals import wikipedia_page_synced
         wikipedia.set_lang(self.lang)
         try:
             page = wikipedia.page(self.title, auto_suggest=False)
-        except (DisambiguationError, PageError):
-            # TODO: handle in right way
+        except PageError:
             self.delete()
+        except DisambiguationError as e:
+            term = WikipediaPage.objects.get_search_term(self.content_object, self.lang)
+            for link in e.options:
+                if WikipediaPage.objects.validate_search_result(link, term, remove_years=False):
+                    self.title = link
+                    self.sync()
         else:
             self.content = page.content
             self.page_id = page.pageid
@@ -150,5 +183,7 @@ class WikipediaPage(SitesBaseModel):
             super().sync()
 
 
-Movie.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia')))
-Person.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia')))
+Movie.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia'),
+                                                related_query_name='movie'))
+Person.add_to_class('wikipedia', GenericRelation(WikipediaPage, verbose_name=_('Wikipedia'),
+                                                 related_query_name='person'))

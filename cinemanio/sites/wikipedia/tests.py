@@ -3,6 +3,7 @@ from parameterized import parameterized
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase, VCRMixin
 from cinemanio.sites.wikipedia.models import WikipediaPage
+from cinemanio.sites.exceptions import WrongValue, PossibleDuplicate
 from cinemanio.sites.wikipedia.tasks import sync_movie, sync_person
 
 
@@ -28,8 +29,7 @@ class WikipediaTest(VCRMixin, BaseTestCase):
         self.assertEqual(instance.wikipedia.first().url, url)
 
     @parameterized.expand([
-        (MovieFactory, 'Junk', 'en'),  # disambiguation
-        (MovieFactory, 'blablabla', 'en'),  # bad page
+        (MovieFactory, 'xcmvhker', 'en'),
     ])
     def test_sync_bad_page(self, factory, title, lang):
         instance = factory()
@@ -37,6 +37,17 @@ class WikipediaTest(VCRMixin, BaseTestCase):
         page.sync()
         self.assertIsNone(page.id)
         self.assertEqual(instance.wikipedia.count(), 0)
+
+    @parameterized.expand([
+        (MovieFactory, 'Junk', 'Junk (film)', 'en', dict(title_en='Junk')),
+        (MovieFactory, 'Процесс', 'Процесс (фильм, 1962)', 'ru', dict(year=1962, title_ru='Процесс')),
+    ])
+    def test_sync_disambiguation_page(self, factory, disamb_title, title, lang, kwargs):
+        instance = factory(**kwargs)
+        page = WikipediaPage.objects.create(content_object=instance, title=disamb_title, lang=lang)
+        page.sync()
+        self.assertTrue(page.synced_at)
+        self.assertEqual(page.title, title)
 
     @parameterized.expand([
         (MovieFactory, 'The Matrix', 'en', 133093),
@@ -99,28 +110,28 @@ class WikipediaTest(VCRMixin, BaseTestCase):
             self.assert_wikipedia(linked_instances[i], role[1], role[2], synced=False)
 
     @parameterized.expand([
-        (MovieFactory, sync_movie,
-         dict(year=1999, title_en='The Matrix', title_ru='Матрица')),
-        (PersonFactory, sync_person,
-         dict(first_name_en='Dennis', last_name_en='Hopper', first_name_ru='Деннис', last_name_ru='Хоппер')),
+        (MovieFactory, 'en', dict(year=1999, title_en='The Matrix', title_ru='Матрица')),
+        (PersonFactory, 'en', dict(first_name_en='Dennis', last_name_en='Hopper',
+                                   first_name_ru='Деннис', last_name_ru='Хоппер')),
     ])
-    def test_sync_page_duplicates(self, factory, sync_method, kwargs):
+    def test_sync_page_duplicates(self, factory, lang, kwargs):
         instance1 = factory(**kwargs)
         instance2 = factory(**kwargs)
-        sync_method(instance1.id)
-        self.assertGreater(instance1.wikipedia.count(), 0)
-        sync_method(instance2.id)
-        self.assertEqual(instance2.wikipedia.count(), 0)
+        WikipediaPage.objects.create_for(instance1, lang)
+        self.assertEqual(instance1.wikipedia.count(), 1)
+        with self.assertRaises(PossibleDuplicate):
+            WikipediaPage.objects.create_for(instance2, lang)
 
-    # TODO: write test for WrongValue
-    # @parameterized.expand([
-    #     ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title='The Prince')),
-    #     ('person', ImdbPersonFactory, dict(person__first_name_en='Allison', person__last_name_en='Williams')),
-    # ])
-    # def test_sync_page_wrong_value(self, model_name, factory, kwargs):
-    #     instance = factory(id=1, **kwargs)
-    #     with self.assertRaises(WrongValue):
-    #         instance.__class__.objects.create_for(getattr(instance, model_name))
+    @parameterized.expand([
+        (MovieFactory, 'en', dict(year=1999, title_en='The Matrix', title_ru='Матрица')),
+        (PersonFactory, 'en', dict(first_name_en='Dennis', last_name_en='Hopper',
+                                   first_name_ru='Деннис', last_name_ru='Хоппер')),
+    ])
+    def test_sync_page_wrong_value(self, factory, lang, kwargs):
+        instance = factory(**kwargs)
+        WikipediaPage.objects.create(lang=lang, title='anything', content_object=instance)
+        with self.assertRaises(WrongValue):
+            WikipediaPage.objects.create_for(instance, lang)
 
     @parameterized.expand([
         (MovieFactory, sync_movie, dict(year=2005, title_en='', title_ru='')),

@@ -58,8 +58,7 @@ def search_roles_links(content_type_id, object_id, lang, links):
         raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
 
     for linked_instance in linked_instances:
-        for link in links:
-            term = WikipediaPage.objects.get_search_term(linked_instance, lang)
-            if WikipediaPage.objects.validate_search_result(link, term):
-                WikipediaPage.objects.safe_create(link, lang, linked_instance)
-                break
+        try:
+            WikipediaPage.objects.create_from_list_for(linked_instance, lang, links)
+        except ValueError:
+            continue

@@ -13,16 +13,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:43 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:16 GMT']
       Location: ['https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=The+Matrix&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['410564804']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['29693510']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -30,7 +30,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=The+Matrix&format=json&action=query
@@ -45,29 +45,29 @@ interactions:
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=37456 t=1533493964039990]
+      Backend-Timing: [D=36014 t=1533579916385390]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Length: ['266']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:16 GMT']
       P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
           for more info."']
-      Server: [mw1230.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Server: [mw1287.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1052 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1052 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['625203591, 1024409286']
+      X-Varnish: ['258743363, 20206996']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -83,16 +83,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:16 GMT']
       Location: ['https://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=The+Matrix&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['421537866']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['29954030']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -100,7 +100,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=The+Matrix&format=json&action=query
@@ -465,28 +465,28 @@ interactions:
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=31108 t=1533493964211553]
+      Backend-Timing: [D=47681 t=1533579916674356]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:16 GMT']
       P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
           for more info."']
-      Server: [mw1228.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Server: [mw1231.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1054 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1065 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['452405498, 1025937863']
+      X-Varnish: ['836655402, 27739383']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -502,16 +502,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:16 GMT']
       Location: ['https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=The+Matrix&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['435627420']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['22669419']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -519,7 +519,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=The+Matrix&format=json&action=query
@@ -619,28 +619,28 @@ interactions:
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=43967 t=1533493964451242]
+      Backend-Timing: [D=40566 t=1533579916931688]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:16 GMT']
       P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
           for more info."']
-      Server: [mw1279.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Server: [mw1285.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1053 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1054 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['755823148, 1013167768']
+      X-Varnish: ['22975704, 20604905']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -656,16 +656,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:17 GMT']
       Location: ['https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=The+Matrix&plcontinue=30007%7C0%7CWill_Smith&continue=%7C%7C&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['436290635']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['31097586']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -673,7 +673,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=The+Matrix&plcontinue=30007%7C0%7CWill_Smith&continue=%7C%7C&format=json&action=query
@@ -688,29 +688,29 @@ interactions:
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=38688 t=1533493964629964]
+      Backend-Timing: [D=33514 t=1533579917158539]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Length: ['264']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:17 GMT']
       P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
           for more info."']
-      Server: [mw1343.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Server: [mw1312.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1052 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1087 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['632470787, 1014508887']
+      X-Varnish: ['25784235, 26437421']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -726,16 +726,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:17 GMT']
       Location: ['https://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=The+Matrix&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['436376225']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['27228882']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -743,7 +743,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=The+Matrix&format=json&action=query
@@ -821,28 +821,28 @@ interactions:
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=33636 t=1533493964800912]
+      Backend-Timing: [D=29381 t=1533579917377593]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:17 GMT']
       P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
           for more info."']
-      Server: [mw1278.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Server: [mw1346.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1067 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1065 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['754941504, 1026002697']
+      X-Varnish: ['852689560, 23131714']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -858,16 +858,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:44 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:17 GMT']
       Location: ['https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=The+Matrix&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['428548697']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['29629526']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -875,7 +875,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=The+Matrix&format=json&action=query
@@ -2112,27 +2112,27 @@ interactions:
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=1793512 t=1533493964988402]
+      Backend-Timing: [D=1650738 t=1533579917593625]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:46 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:19 GMT']
       P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
           for more info."']
-      Server: [mw1230.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Server: [mw1279.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1055 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1053 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['457330314, 1022244346']
+      X-Varnish: ['383865926, 30967785']
     status: {code: 200, message: OK}
 version: 1

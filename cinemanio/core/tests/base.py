@@ -40,6 +40,4 @@ class BaseTestCase(TestCase):
 
 
 class VCRMixin(VCRMixinBase):
-    def _get_vcr_kwargs(self, **kwargs):
-        kwargs['record_mode'] = 'new_episodes'
-        return kwargs
+    pass

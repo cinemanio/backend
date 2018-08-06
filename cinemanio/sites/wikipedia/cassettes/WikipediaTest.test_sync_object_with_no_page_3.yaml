@@ -13,16 +13,16 @@ interactions:
     headers:
       Connection: [keep-alive]
       Content-Length: ['0']
-      Date: ['Sun, 05 Aug 2018 18:32:30 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:12 GMT']
       Location: ['https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%A2%D1%8B+-+%D1%8D%D1%82%D0%BE+%D1%8F+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query']
       Server: [Varnish]
-      Set-Cookie: ['WMF-Last-Access=05-Aug-2018;Path=/;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=05-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu,
-          06 Sep 2018 12:00:00 GMT']
-      X-Cache: [cp1067 int]
+      Set-Cookie: ['WMF-Last-Access=06-Aug-2018;Path=/;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT', 'WMF-Last-Access-Global=06-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Fri,
+          07 Sep 2018 12:00:00 GMT']
+      X-Cache: [cp1087 int]
       X-Cache-Status: [int-front]
-      X-Client-IP: [69.243.118.50]
-      X-Varnish: ['421258582']
+      X-Client-IP: [130.14.11.112]
+      X-Varnish: ['25727327']
     status: {code: 301, message: TLS Redirect}
 - request:
     body: null
@@ -30,42 +30,42 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [WMF-Last-Access=05-Aug-2018; WMF-Last-Access-Global=05-Aug-2018]
+      Cookie: [WMF-Last-Access=06-Aug-2018; WMF-Last-Access-Global=06-Aug-2018]
       User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
     method: GET
     uri: https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%A2%D1%8B+-+%D1%8D%D1%82%D0%BE+%D1%8F+%28%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%2C+2006%29&format=json&action=query
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA02OzW6DMBCEXwXtqa1o5AD5kd8jp7YHxyywEqyJWVS1xO8e27nk8q12dma0G/wa
-        z8T9AnqDyRCn+QEaLuzRup7pH9tiNt5MKOh1MdJEsoMQSrgasYN10zzGU4xACdaxEK+YWhbvum5B
-        Ab1/PcDn/Q4xfVvR/2UfGm8H4s6lTZyYcSCJD1WH07mOzqcB9NcGHGVVgpCMqep7Vc0eE2ubechs
-        i7c0myZv58xrVp4uWxaVUsf3+PBseqQW9LGpT5UKPyE8AMydCyITAQAA
+        H4sIAAAAAAAAA02OQW+DMAyF/wryqZvolFJauvyPnbod0mDAEjgsGE0dzX9fkl52+Sw/v/fkDX6M
+        Z+J+Ab3BZIjTfAUNH+zRup7pF9tiNt5MKOh1MdJE8gYhlHAzYgfrpnmMpxiBEqxjIV4xtSzedd2C
+        Avrw/wD7xwNi+ntFf88+NN4OxJ1Lmzgx40ASH6pOTfMenU8D6OsGHGVVgpCMqepzVfUBE48285TZ
+        Frs06zpvl8xbVp4uWxaVUueX+PBseqQW9Lk+NpUKXyH8AZNp5P8TAQAA
     headers:
       Accept-Ranges: [bytes]
       Age: ['0']
-      Backend-Timing: [D=218198 t=1533493950816915]
+      Backend-Timing: [D=317289 t=1533579912735641]
       Cache-control: ['private, must-revalidate, max-age=0']
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=api-result.json]
       Content-Encoding: [gzip]
       Content-Length: ['213']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Sun, 05 Aug 2018 18:32:31 GMT']
+      Date: ['Mon, 06 Aug 2018 18:25:13 GMT']
       P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
           for more info."']
       Server: [mw1312.eqiad.wmnet]
-      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Set-Cookie: ['GeoIP=US:VA:Arlington:38.86:-77.05:v4; Path=/; secure; Domain=.wikipedia.org']
       Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
       Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
       Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
-      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=05-Aug-2018;WMF-Last-Access-Global=05-Aug-2018;https=1]
-      X-Cache: ['cp1067 pass, cp1068 pass']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=06-Aug-2018;WMF-Last-Access-Global=06-Aug-2018;https=1]
+      X-Cache: ['cp1089 pass, cp1087 pass']
       X-Cache-Status: [pass]
-      X-Client-IP: ['2601:152:4103:d9b0:b9e4:89f9:12b6:38a']
+      X-Client-IP: [130.14.11.112]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [DENY]
       X-Powered-By: [HHVM/3.18.6-dev]
-      X-Varnish: ['759769597, 996273996']
+      X-Varnish: ['65679367, 28561135']
     status: {code: 200, message: OK}
 version: 1
