@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from wikipedia.exceptions import DisambiguationError, PageError
 
 from cinemanio.core.models import Movie, Person
-from cinemanio.sites.exceptions import PossibleDuplicate
+from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
 from cinemanio.sites.models import SitesBaseModel
 
 
@@ -96,7 +96,14 @@ class WikipediaPageManager(models.Manager):
                 f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id}, "
                 f"because it's already assigned to {instance_type} ID={object_exist.content_object.id}")
         except self.model.DoesNotExist:
-            return self.create(lang=lang, title=title, content_object=instance)
+            try:
+                instance_exist = self.get(lang=lang, content_object=instance)
+                if title != instance_exist.title:
+                    raise WrongValue(
+                        f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id},"
+                        f" because another Wikipedia page title='{instance_exist.title}' already assigned there")
+            except self.model.DoesNotExist:
+                return self.create(lang=lang, title=title, content_object=instance)
 
 
 class WikipediaPage(SitesBaseModel):
@@ -133,6 +140,7 @@ class WikipediaPage(SitesBaseModel):
         try:
             page = wikipedia.page(self.title, auto_suggest=False)
         except (DisambiguationError, PageError):
+            # TODO: handle in right way
             self.delete()
         else:
             self.content = page.content

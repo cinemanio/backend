@@ -112,6 +112,16 @@ class WikipediaTest(VCRMixin, BaseTestCase):
         sync_method(instance2.id)
         self.assertEqual(instance2.wikipedia.count(), 0)
 
+    # TODO: write test for WrongValue
+    # @parameterized.expand([
+    #     ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title='The Prince')),
+    #     ('person', ImdbPersonFactory, dict(person__first_name_en='Allison', person__last_name_en='Williams')),
+    # ])
+    # def test_sync_page_wrong_value(self, model_name, factory, kwargs):
+    #     instance = factory(id=1, **kwargs)
+    #     with self.assertRaises(WrongValue):
+    #         instance.__class__.objects.create_for(getattr(instance, model_name))
+
     @parameterized.expand([
         (MovieFactory, sync_movie, dict(year=2005, title_en='', title_ru='')),
         (MovieFactory, sync_movie, dict(year=1984, title_en='Report from the Abyss', title_ru='Репортаж из бездны')),
