@@ -20,6 +20,7 @@ pylint:
   disable:
     - arguments-differ
     - too-many-branches
+    - too-many-arguments
     - cyclic-import  # possibly because https://github.com/PyCQA/pylint/issues/850
 
 uses:
