@@ -1,10 +1,14 @@
+import warnings
+
 from parameterized import parameterized
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.tests.base import BaseTestCase, VCRMixin
-from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.exceptions import WrongValue, PossibleDuplicate
+from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.wikipedia.tasks import sync_movie, sync_person
+
+warnings.simplefilter("ignore")
 
 
 class WikipediaTest(VCRMixin, BaseTestCase):
@@ -17,7 +21,7 @@ class WikipediaTest(VCRMixin, BaseTestCase):
             self.assertTrue(en.synced_at)
             self.assertTrue(ru.synced_at)
             self.assertGreater(len(en.content), 2500)
-            self.assertGreater(len(ru.content), 2500)
+            self.assertGreater(len(ru.content), 1000)
 
     @parameterized.expand([
         (MovieFactory, 'The Matrix', 'en', 'http://en.wikipedia.org/wiki/The_Matrix'),
@@ -41,6 +45,8 @@ class WikipediaTest(VCRMixin, BaseTestCase):
     @parameterized.expand([
         (MovieFactory, 'Junk', 'Junk (film)', 'en', dict(title_en='Junk')),
         (MovieFactory, 'Процесс', 'Процесс (фильм, 1962)', 'ru', dict(year=1962, title_ru='Процесс')),
+        # wrong values in e.options
+        # (MovieFactory, 'Ариэль (фильм)', 'Ариэль (фильм, 1988)', 'ru', dict(year=1988, title_ru='Ариэль')),
     ])
     def test_sync_disambiguation_page(self, factory, disamb_title, title, lang, kwargs):
         instance = factory(**kwargs)
@@ -79,25 +85,35 @@ class WikipediaTest(VCRMixin, BaseTestCase):
                 person__first_name_ru='Керри-Энн', person__last_name_ru='Мосс'), 'Carrie-Anne Moss', 'Мосс, Керри-Энн'),)
          ),
         (PersonFactory, sync_person,
-         dict(first_name_en='Dennis', last_name_en='Hopper', first_name_ru='Деннис', last_name_ru='Хоппер'),
-         'Dennis Hopper', 'Хоппер, Деннис',
-         ((dict(movie__year=1969, movie__title_en='Easy Rider', movie__title_ru='Беспечный ездок'),
-           'Easy Rider', 'Беспечный ездок'),
-          (dict(movie__year=1956, movie__title_en='Giant', movie__title_ru='Гигант'),
-           'Giant (1956 film)', 'Гигант (фильм)'),)
+         dict(first_name_en='Dennis', last_name_en='Hopper',
+              first_name_ru='Деннис', last_name_ru='Хоппер'), 'Dennis Hopper', 'Хоппер, Деннис',
+         ((dict(movie__title_en='Easy Rider', movie__year=1969,
+                movie__title_ru='Беспечный ездок'), 'Easy Rider', 'Беспечный ездок'),
+          (dict(movie__title_en='Giant', movie__year=1956,
+                movie__title_ru='Гигант'), 'Giant (1956 film)', 'Гигант (фильм)'),)
          ),
         (PersonFactory, sync_person,
-         dict(first_name_en='Brian', last_name_en='Yuzna', first_name_ru='Брайан', last_name_ru='Юзна'),
-         'Brian Yuzna', 'Юзна, Брайан',
-         ((dict(movie__year=1996, movie__title_en='The Dentist', movie__title_ru='Дантист'),
-           'The Dentist', 'Дантист (фильм)'),
-          (dict(movie__year=1998, movie__title_en='The Dentist 2', movie__title_ru='Дантист 2'),
-           'The Dentist 2', 'Дантист 2'),)
+         dict(first_name_en='Brian', last_name_en='Yuzna',
+              first_name_ru='Брайан', last_name_ru='Юзна'), 'Brian Yuzna', 'Юзна, Брайан',
+         ((dict(movie__title_en='The Dentist', movie__year=1996,
+                movie__title_ru='Дантист'), 'The Dentist', 'Дантист (фильм)'),
+          (dict(movie__title_en='The Dentist 2', movie__year=1998,
+                movie__title_ru='Дантист 2'), 'The Dentist 2', 'Дантист 2'),),
          ),
-        # TODO: the right movie is the second search result, not first
-        # (MovieFactory, sync_movie,
-        #  dict(year=1998, title_en='The Dentist 2', title_ru='Дантист 2'),
-        #  'The Dentist 2', 'Дантист 2'),
+        # mess with part numbers, years and (series) pages
+        (PersonFactory, sync_person,
+         dict(first_name_en='Wes Craven', last_name_en='Craven',
+              first_name_ru='Уэс', last_name_ru='Крэйвен'), 'Wes Craven', 'Крэйвен, Уэс',
+         ((dict(movie__title_en='Scream', movie__year=1996,
+                movie__title_ru='Крик'), 'Scream (1996 film)', 'Крик (фильм, 1996)'),
+          (dict(movie__title_en='Scream 2', movie__year=1997,
+                movie__title_ru='Крик 2'), 'Scream 2', 'Крик 2'),
+          (dict(movie__title_en='Scream 3', movie__year=2000,
+                movie__title_ru='Крик 3'), 'Scream 3', 'Крик 3'),),
+         ),
+        # when term with year the right movie is the second search results, not first
+        (MovieFactory, sync_movie,
+         dict(year=1998, title_en='The Dentist 2', title_ru='Дантист 2'), 'The Dentist 2', 'Дантист 2'),
     ])
     def test_search_and_sync_object_with_roles(self, factory, sync_method, kwargs, en_title, ru_title, roles=()):
         instance = factory(**kwargs)

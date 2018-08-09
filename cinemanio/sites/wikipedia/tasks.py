@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from cinemanio.celery import app
 from cinemanio.core.models import Movie, Person
-from cinemanio.sites.exceptions import PossibleDuplicate
+from cinemanio.sites.exceptions import PossibleDuplicate, NothingFound
 from cinemanio.sites.wikipedia.models import WikipediaPage
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ def sync(instance):
         for lang in ['en', 'ru']:
             try:
                 WikipediaPage.objects.create_for(instance, lang=lang)
-            except ValueError:
+            except (NothingFound, ValueError):
                 continue
             except PossibleDuplicate as e:
                 logger.warning(e)

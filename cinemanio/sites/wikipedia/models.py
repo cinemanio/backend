@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from wikipedia.exceptions import DisambiguationError, PageError
 
 from cinemanio.core.models import Movie, Person
-from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
+from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue, NothingFound
 from cinemanio.sites.models import SitesBaseModel
 
 
@@ -29,7 +29,7 @@ class WikipediaPageManager(models.Manager):
         '(значения)',
     ]
 
-    def get_search_term(self, instance, lang) -> str:
+    def get_term_for(self, instance, lang) -> str:
         """
         Get search term for Wikipedia search API
         """
@@ -48,69 +48,83 @@ class WikipediaPageManager(models.Manager):
             raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
         return term
 
-    def create_from_list_for(self, instance, lang, links):
+    def create_from_list_for(self, instance, lang, titles, term=None) -> 'WikipediaPage':
         """
-        Create WikipediaPage object for instance using list of links from existing Wikipedia page
+        Create WikipediaPage object for instance using list of links (from existing Wikipedia page or search results)
+        With years validation comparison first time (more strict) if nothing is found try another time without years
         """
-        term = self.get_search_term(instance, lang)
-        for link in links:
-            if self.validate_search_result(link, term):
-                try:
-                    return self.safe_create(link, lang, instance)
-                except PossibleDuplicate:
-                    continue
+        if term is None:
+            term = self.get_term_for(instance, lang)
+        try:
+            return self._create_from_list_for(instance, lang, titles, term, remove_years=False)
+        except NothingFound:
+            return self._create_from_list_for(instance, lang, titles, term, remove_years=True)
 
-        raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
-                         f"on language {lang} in the list of links")
+    def _create_from_list_for(self, instance, lang, titles, term, remove_years) -> 'WikipediaPage':
+        """
+        Create WikipediaPage object for instance with validation of every link. If no link matches raise NothingFound
+        """
+        for title in titles:
+            if self.validate_title(title, term, remove_years=remove_years):
+                return self.safe_create(title, lang, instance)
 
-    def create_for(self, instance, lang='en'):
+        raise NothingFound(f"No Wikipedia page found for {instance._meta.model_name} ID={instance.pk} "
+                           f"on language {lang}")
+
+    def create_for(self, instance, lang='en') -> 'WikipediaPage':
         """
         Create WikipediaPage object for instance using Wikipedia search API
         """
         if lang not in self.movie_term_map or lang not in self.person_term_map:
-            raise ValueError(f"Value of lang attribute is unknown: {lang}")
+            raise ValueError(f"Unknown value of lang attribute: {lang}")
 
-        term = self.get_search_term(instance, lang)
+        term = self.get_term_for(instance, lang)
         wikipedia.set_lang(lang)
-        results = wikipedia.search(term, results=1)
-        if results and self.validate_search_result(results[0], term):
-            return self.safe_create(results[0], lang, instance)
+        results = wikipedia.search(term, results=10)
+        return self.create_from_list_for(instance, lang, results, term)
 
-        raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
-                         f"on language {lang} using search term '{term}'")
-
-    def validate_search_result(self, result, term, remove_years=True) -> bool:
+    def validate_title(self, title, term, remove_years=True) -> bool:
         """
-        Validate search results:
+        Validate title:
         - check stop words
-        - calculate similarity of search result and search term, removing movie years (depends on remove_years attr)
+        - if movie part number is specified in term, ensure it's also in title
+        - calculate similarity of title and search term, removing movie years (depends on remove_years attr)
         (quick solution from here
         https://stackoverflow.com/questions/17388213/find-the-similarity-metric-between-two-strings)
         - compare years of movie and search result using delta
         """
         for stop_word in self.stop_words:
-            if stop_word in result:
+            if stop_word in title:
                 return False
 
-        # remove year from the movie search term
+        # movie part number
+        m1 = re.findall(r'( \d+) \(', term)
+        if m1:
+            remove_years = True
+            if m1[0] not in title:
+                return False
+
+        # remove years
         m1 = m2 = None
         if remove_years:
-            m1 = re.findall(r'^(.+) \(', result)
+            m1 = re.findall(r'^(.+) \(', title)
             m2 = re.findall(r'^(.+) \(', term)
+
+        # similarity check
         if SequenceMatcher(None,
-                           m1[0] if m1 else result,
+                           m1[0] if m1 else title,
                            m2[0] if m2 else term).ratio() < 0.7:
             return False
 
-        # year comparison
-        m1 = re.findall(r'\d{4}', result)
+        # years comparison
+        m1 = re.findall(r'\d{4}', title)
         m2 = re.findall(r'\d{4}', term)
         if m1 and m2 and abs(int(m1[0]) - int(m2[0])) > 1:
             return False
 
         return True
 
-    def safe_create(self, title, lang, instance):
+    def safe_create(self, title, lang, instance) -> 'WikipediaPage':
         """
         Create WikipediaPage object safely, preventing IntegrityError.
         Raise PossibleDublicate and WrongValue exceptions in corresponding cases.
@@ -159,10 +173,10 @@ class WikipediaPage(SitesBaseModel):
         )
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self.link.format(title=self.title.replace(' ', '_'), lang=self.lang)
 
-    def sync(self):
+    def sync(self) -> None:
         """
         Sync instance using Wikipedia API. Update content, page_id fields
         """
@@ -173,10 +187,10 @@ class WikipediaPage(SitesBaseModel):
         except PageError:
             self.delete()
         except DisambiguationError as e:
-            term = WikipediaPage.objects.get_search_term(self.content_object, self.lang)
-            for link in e.options:
-                if WikipediaPage.objects.validate_search_result(link, term, remove_years=False):
-                    self.title = link
+            term = WikipediaPage.objects.get_term_for(self.content_object, self.lang)
+            for title in e.options:
+                if WikipediaPage.objects.validate_title(title, term, remove_years=False):
+                    self.title = title
                     self.sync()
         else:
             self.content = page.content
