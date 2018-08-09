@@ -86,6 +86,14 @@ class WikipediaTest(VCRMixin, BaseTestCase):
           (dict(movie__year=1956, movie__title_en='Giant', movie__title_ru='Гигант'),
            'Giant (1956 film)', 'Гигант (фильм)'),)
          ),
+        (PersonFactory, sync_person,
+         dict(first_name_en='Brian', last_name_en='Yuzna', first_name_ru='Брайан', last_name_ru='Юзна'),
+         'Brian Yuzna', 'Юзна, Брайан',
+         ((dict(movie__year=1996, movie__title_en='The Dentist', movie__title_ru='Дантист'),
+           'The Dentist', 'Дантист (фильм)'),
+          (dict(movie__year=1998, movie__title_en='The Dentist 2', movie__title_ru='Дантист 2'),
+           'The Dentist 2', 'Дантист 2'),)
+         ),
         # TODO: the right movie is the second search result, not first
         # (MovieFactory, sync_movie,
         #  dict(year=1998, title_en='The Dentist 2', title_ru='Дантист 2'),

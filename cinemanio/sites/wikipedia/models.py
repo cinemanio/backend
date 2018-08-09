@@ -55,7 +55,10 @@ class WikipediaPageManager(models.Manager):
         term = self.get_search_term(instance, lang)
         for link in links:
             if self.validate_search_result(link, term):
-                return self.safe_create(link, lang, instance)
+                try:
+                    return self.safe_create(link, lang, instance)
+                except PossibleDuplicate:
+                    continue
 
         raise ValueError(f"No Wikipedia pages found for {instance._meta.model_name} ID={instance.pk} "
                          f"on language {lang} in the list of links")

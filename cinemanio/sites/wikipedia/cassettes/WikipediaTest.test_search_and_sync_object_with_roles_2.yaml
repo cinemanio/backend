@@ -1,0 +1,1270 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=Brian+Yuzna&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:07 GMT']
+      Location: ['https://en.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=Brian+Yuzna&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['973637967']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=Brian+Yuzna&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA02OvQ6CQAzHX4V0NGjAgciNvoODMQ71KNAEeniUGIF7dw9dnJr29//oAi/0wtKM
+        YBbokWWbOzBwEU/WNcIzVcmAHntS8ibpuGc9QAgpPFBta10/dBFFC6RgnSjLRFvK6F1dj6Rg8n8A
+        +3WF6H5O5N9fHaG3LUvttk2dYteyxofyvIi6HwZzW0DiMUtBWbst6OwZJblOs2CsHrAhrsAcT0VW
+        FmW4h/ABPTcj4N4AAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=98146 t=1533781387724865]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['185']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:07 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1276.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1085 pass, cp2001 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['709383515, 791537687, 970557758']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:07 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['917677442']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?list=search&srprop=&srlimit=1&limit=1&srsearch=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA02OTQ6CQAyFr0K6NGhACercw5W6GIcCTaCDQ4lRmLs7gxs3X39eX/NmeGnHxM0I
+        aoZeE8e6AQUXdmhsw/TBKhm00z0KOpV01JPswPsUHlpMa2w/dEEKFkjBWBbiCeOX0dm6HlFA5f8C
+        bJcFgvs5oXuvd6idaYlrGyexoruWJAQ6lOHsp4K6zsBhl6UgJF38c5uyYo+Rh+PKamWWJrHmeWSR
+        /XYrz399FcIOukGqQJX7Y5mf/N37LyqVsbQPAQAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=115080 t=1533781388207995]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['201']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:08 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1346.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1087 pass, cp2010 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['132866458, 2242051, 976456161']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:08 GMT']
+      Location: ['https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Brian+Yuzna&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['968690018']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5VQXUvEMBD8K7IPPtW21zv7ETgEf4Mv+iIxXdtguom5jZ4e/nc3hwcighgCSWZ2
+        JrN7gAfNZjZ+CQ4ZQQEU8JwwvoE6QNAT7vKl6dt6aIcTZkdQX1ABJBV1AWzZZf11tJrObtM7abEy
+        nhiJFz+iE/LVPlnGPQuTfZymKckpDNIPbObFGZH9xo02Cuw4Cs4+mRklEDT1qr+oZa9v6l5tOnW5
+        vpMCp3cc8SVn7jfd0LTtsBIUaeIZVNf3XQGPybkUc8KZOexUVSGVOWyQv3Tp41TlV3Vs7v7UnHD8
+        l6qyNOK+DHO4Ok5o+83iXBu2nrbZJ89Kkydr9L+TfMj6BOoHWEfJAQAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=33976 t=1533781388695614]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['270']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:08 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1225.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1077 pass, cp2001 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['196363204, 791169114, 984680776']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:08 GMT']
+      Location: ['https://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=Brian+Yuzna&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['974130998']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        hj//BZJhkJ1OEQAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=44199 t=1533781389096041]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:09 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1228.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1089 pass, cp2001 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['151324415, 787144094, 985206864']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:09 GMT']
+      Location: ['https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=Brian+Yuzna&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['976717070']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5VXUW/bRgz+K4Rf2gFu4KRrFvvNsePUWGIYcbBg3fZAS7RE+HTnUSdnauD/Pp6c
+        dNl2UtCXQNH30UfyyI/UU2+NPskTV+wMeeqNer1+78+KpO6Nnno7zKgMD2cX54Ph+fDlHae90fOr
+        fs8qY9DvefYm2F8Ko4Vfq68W9acM263ivz39l3Y6HJ7DBK2lEmZsCphR6XmPpnfo/498Nhicw2w+
+        G8ODE5PCpNqpkY2TzwewosTZtAS3gZUz7KuUgNUpQoEvJC5mNi52Oa/ZVSW836hDP0RJgkluOe2g
+        XKIkZJxGHwPJEvocVp6NgQf0JGWcV2sAcEcfxpYL9E6iLF4bdp4ShAUmrGca0Eivyh3+Xg0Gm1Ps
+        sMoDhS70rsGib4wpWM8EbUJRQ2HFNadvuDVBj0ZrYJxgSkUdLCZsqYh6M8mFS+92OcE12mgygvEG
+        CzZ1FDW8J9Csb0nelTD+8CUc+NmJtHgnNdtMwyT1yHZc5BQz143LVqtXy0XL8wzaedoPCDeYujgq
+        lGgi1fUkR466PHXG6DGnw4ufOo6pJMkhZQq1kHso2J+cnMSYV3uSVJ2PYTO0HrURE5hhcKuOk6rS
+        j+DG7Zty8Hp3UywspVFyaDptviOr5dQgABlZoTYU/4oioVa5hFvVJGojbMmWntiG4pAiHpC4Ap57
+        rv3CP58sT5qgE8GNf1eOYKGPzrqCVW7iFvDaJEpxluo+zGGVS2W3TZp+5rSMc0NRNyUQg+e303X0
+        vU1pR/rH+nZby54bGRjBik2gLjjLfR+mhKmpj//Bj3FbT5molqUwrnzuhH0dNJ3ayPIiOKqDaLUU
+        U63ZgmAeXOQNU7QLbngtKEc5cTaT0Hr64MUZWFTFusXKZd/GUQS+RZvFAfLSiOjHnU6Q6HXcsnYs
+        GVhiw6RhjPS6RDpqa8EJCmYVxkHNfYEacWikO0r78JCzJ9DkwaWpoolequrEJXeZs+HdTlU1GtZS
+        nLZi3eHsUvcD7+BOY4rBb4yHV7DGUlYSBLAq41RfiX3RmBveB+UOBQkfv48+n8+jBq7AMiheHPT+
+        kbSMpSMVq8V4En2fMOkY7R5FXY02gn9a8jttP43gXuO/d7UK4zbeFiunDvquS1653KnvVUnwPjHV
+        Ok7ypJPbqmLZTPX1uJ11x+wrFA/XTtJ4YPe4rXS46PihZoEL8yPOk69oj6Fe7XRgjdO9ZqSSeFUH
+        2jTIS+nfgOGsjXBd1ft4OgM6t4lQqstVrbKmcyej42K7yt1jm82iss368Kl9rt9zsu1aSX9h0ZQa
+        +Lewvi3EDyjGJdtmrRi2H/+A9RqVdqtLhSpGlEK5FGHniIJOtqENH1nXXtSf0VksOmPeKgO106uY
+        oJbfKiGLwu5bEv44HA7h00JXnObr5Pkj49NgcDj8DVRYtKLRDAAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=28722 t=1533781389517138]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['1065']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:09 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1283.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1081 pass, cp2004 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['587014514, 761602932, 960177027']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:09 GMT']
+      Location: ['https://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=Brian+Yuzna&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['961316338']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA51V227cNhD9lUIPfQiWInVdaYEg2KQJ4Ie6ruMEToqgoERKGlgiVZLatWLsv3eo
+        tRPH3j6ki4XEy5nhmZkz1F1QcVd3tR7GXjoZbIJgFfwzSTMHm7tg5K20fhAXOSvz8mENRLC5X1oF
+        ChFsFThwvbd/bYCrXz5NXxVHV/LW9aBuEPLXXfACtzvnxg2lvOZCDoCPvgYlBx7W3FGpqJJ7S+RO
+        Kmcfj8nRYMa3gx04kJZGeRaRkZueDwghQpLKn01mfzbhPbHSEKVxkzsyyKEykgjSaaWNB/fkgQTO
+        enKkQZAG73lwWP1IVykuoLWuAxtWvW7tqF2IWaMxizLKYvr4aCOd0XaUnqoMOzf0T/0tp+hWh5WS
+        IYYyda4CRfnkOm3AzZXReyvDuoVXPmCtXgqwY8/nX79B/gbx8vo6ist1kkX/4X+SeEATNoZyc7Oh
+        URylBa2rKClLHKb1UzOBZj9nASLsdR22eveNvC+NwpLgU8eMpaxYl0n6zNAqCLVplwFl978MkUWR
+        PUNbXQOWxdSdzyhw14U7MC0o4KEU05FsWUZ5Tvf5V5uYW/vUxX6/D/kIg5f0UrlBOu4DpmdKyFt6
+        8fsbsr0gW/L2/Iq82ZIP77fkYnuFq68vz7bn5NOHz+db3L58e3X5x/sLQrlk9Xqd8KiKk3Qdr8tU
+        FmVa5kUusqapklMEUDpazASL2U7WgWoXJl7nNCpYetLGC7PhA/Tzkq9O8t1MBhAKnLReznImQGxn
+        JnVDXCfJDQhL4sx1BGWL+TKWm5medK0HqG3cQD8sRN5xZEWX3k1Ce0q43koYyUWNLWd4/51/kqb5
+        mjZgrCNjp522x27A1h3GDirQk8WO5MTW2owoafsTvnNWxBRQ0zP2OK8x7oYrx+2M8RuD/cz33IiT
+        Ho9AB3WDnaTNvHg9BWy1kZ2elABVLyDwuoif96/1nUJUFYJqNG2VoFGSraOURdfPcDvgzVI2P6DR
+        OsX/E3l72F5W4YO6PRrneLOwLIrjjMUsSwr6/8tm781gENUxp9idVA2sRP8spyfBe0AZ+etgoYMT
+        +mcZJXGRnkZr0wu8dI4dLbB+x3ug1ph8UPbj2fbd2W+P4v9yOBxWQQ8DuOUD8/07kTF2OPwLUUqJ
+        CZcGAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=36300 t=1533781389943842]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['860']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:09 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1288.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1079 pass, cp2010 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['160695191, 3732818, 977274771']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:10 GMT']
+      Location: ['https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=Brian+Yuzna&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['974625928']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=Brian+Yuzna&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        a5f/iwAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=368484 t=1533781390376047]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:10 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1346.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1089 pass, cp2007 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['148493835, 186486482, 984254587']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:10 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['983370188']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA72R3UrEMBCFX0UC9apuk2z3p4FFlPoGXokgMY1tMJvU7ERXFt/dmS7CIoIXgqF8
+        MznT5MyQA3vUYAYTt6O3YJlirGQv2aZ3pg5s1L3dUbKUq6VYf0muY+qolCxgnZcMHHg6fZ95LS1x
+        vprYTeTlGUUhiDU/ahObk7xDbxMD2ADb2FmP9725Zwd2D1ghZ69DnzFiJeVv2gBbb/DYT7XOJZQ9
+        JNQhZjNYHIFJLtYXHL/lrWjUola8vsMfvN5Bsq80ZSPrhZQS5/Q29DAwJWTN5yV7yt7nRB0OAONO
+        VVXKM2p2RC89i6mvaFcVLS+ubojXq4ntRF4+UGxE0YpizY/axOYkb7EZvA5+M6pc6Ox+Ng7j5fQO
+        m7+5nmsDLoYNWdOL6BCDM/o/5v3A9QkxhGgOkwIAAA==
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=34426 t=1533781391120229]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:11 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1277.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1077 pass, cp2004 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['214270408, 762055603, 944409367']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:11 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['936953471']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=67222 t=1533781391514243]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:11 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1340.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1077 pass, cp2013 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['207992124, 1051072318, 960896342']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:11 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['970623376']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        vqf/xMdCPD//C62Pn4uxLwAA
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=39613 t=1533781392028485]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:12 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1279.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1077 pass, cp2010 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['189429176, 16819876, 967149138']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:12 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['928418689']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41U62rbMBR+lWFYf3SJLr7UcSCUjbEXGIOObQRZku1DbMmT5KRZybtPUtquNMmo
+        MUe3833nJp2HpGaOd1wPYy+dTJZJMkt+T9Lsk+VDMrJW2jC5ScsbunjaApEsjzuzRPlzMkscuD6g
+        f04kT2WQWRmliJLM3oWR0iBzctyLsnoxF962vHc9qI1n/fGQXHtGjHeyRszwDrYSadOGNb7GnXPj
+        0h/udqhhyjHrgDeMO232yIeDk8PsfwQpoZSUlKRpTorq7WyPipw51utWo1pJJC2eOleDwmxynTbg
+        9rXROysRb+HWs4BWKwF27Nn+6lllDWJ1d0fTqswKeoF/kt5AgxqDmdksMU1pvsC8pllV+WnOX8PE
+        XNUIVKNxqwSmWVHSnNC7EzXPjmqoe9CukxupkOoxCOwXFo9pXhQFXdCb1zAQqNcctXr7HCh4gNIp
+        ITlZlFWWn0CsgvlkeqR5z6MVv4HJ41d4xGJRnKC2wJpYqTDBtMz9f6oVisX6ftBbkLFIzDiwDo+U
+        ll7/grrm4EvmMzpKY7VSEjfAO/m0WrdSrfnTakWzvCpR54b+LJ1xkneab5AINP2Anb+/GJSTxju1
+        w3u8n/4otvYJooHlHEk9jxFY1BqPFPIejd14y/Xq6IS9Oo6rTwaY+vA98J2j4bYRiP/BbjsZLnHm
+        i39OTYr5TmuBlHS4Dozr6OEl5970GKKij57dx+Ojv8zGxLK1T5ECzvCCXDICg6gjUrFBYjWQqqAp
+        uTmnqrl/xnbqQxEHhsDhz9rOY2repyQmx4/fvn48sWWXlxoB8dbSgqSkyBYvG4H3CLhNQ2TRuy9s
+        8rcr2siQPbkT9hG2AaVHDXaDzHSMiBZlis/qxsoPvvGa8DYEGBmy7AGkTA6/DofDLOlhABeb8L/W
+        WBByOPwFoHV5PLsFAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=33240 t=1533781392450838]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Length: ['698']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:12 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1341.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1085 pass, cp2001 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['726400886, 800260237, 968363579']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: http://ru.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Date: ['Thu, 09 Aug 2018 02:23:12 GMT']
+      Location: ['https://ru.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query']
+      Server: [Varnish]
+      Set-Cookie: ['WMF-Last-Access=09-Aug-2018;Path=/;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT', 'WMF-Last-Access-Global=09-Aug-2018;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+          10 Sep 2018 00:00:00 GMT']
+      X-Cache: [cp2007 int]
+      X-Cache-Status: [int-front]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Varnish: ['955263134']
+    status: {code: 301, message: TLS Redirect}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [WMF-Last-Access=09-Aug-2018; WMF-Last-Access-Global=09-Aug-2018]
+      User-Agent: ['wikipedia (https://github.com/goldsmith/Wikipedia/)']
+    method: GET
+    uri: https://ru.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=%D0%AE%D0%B7%D0%BD%D0%B0%2C+%D0%91%D1%80%D0%B0%D0%B9%D0%B0%D0%BD&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Accept-Ranges: [bytes]
+      Age: ['0']
+      Backend-Timing: [D=437612 t=1533781392864087]
+      Cache-control: ['private, must-revalidate, max-age=0']
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=api-result.json]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 09 Aug 2018 02:23:13 GMT']
+      P3P: ['CP="This is not a P3P policy! See https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:CentralAutoLogin/P3P
+          for more info."']
+      Server: [mw1228.eqiad.wmnet]
+      Set-Cookie: ['GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org']
+      Strict-Transport-Security: [max-age=106384710; includeSubDomains; preload]
+      Vary: ['Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization']
+      Via: ['1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1), 1.1 varnish (Varnish/5.1)']
+      X-Analytics: [ns=-1;special=Badtitle;WMF-Last-Access=09-Aug-2018;WMF-Last-Access-Global=09-Aug-2018;https=1]
+      X-Cache: ['cp1089 pass, cp2019 pass, cp2007 pass']
+      X-Cache-Status: [pass]
+      X-Client-IP: ['2601:152:4103:d9b0:395b:e88f:a797:6dd6']
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [DENY]
+      X-Powered-By: [HHVM/3.18.6-dev]
+      X-Varnish: ['147893179, 288325084, 973971600']
+    status: {code: 200, message: OK}
+version: 1

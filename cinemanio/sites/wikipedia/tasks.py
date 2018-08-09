@@ -53,7 +53,7 @@ def search_roles_links(content_type_id, object_id, lang, links):
     if isinstance(instance, Movie):
         linked_instances = instance.persons.all()
     elif isinstance(instance, Person):
-        linked_instances = instance.movies.all()
+        linked_instances = instance.movies.order_by('id')
     else:
         raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
 
