@@ -1,8 +1,7 @@
 from graphene import relay, String, Field
 from graphene_django import DjangoObjectType
 
-from cinemanio.api.schema.mixins import ImagesMixin
-from cinemanio.api.schema.mixins import RelationsMixin
+from cinemanio.api.schema.mixins import ImagesMixin, RelationsMixin, WikipediaMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import PersonFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
@@ -11,7 +10,7 @@ from cinemanio.core.models import Person
 from cinemanio.images.models import ImageType
 
 
-class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
+class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin, WikipediaMixin):
     career = DjangoFilterConnectionField(CastNode)
     photo = Field(ImageNode)
     name = String()

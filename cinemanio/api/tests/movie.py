@@ -108,7 +108,7 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             cast = CastFactory(movie=m)
         CastFactory(role=cast.role)
         query = '''
-            query Person($id: ID!, $role: ID!) {
+            query Movie($id: ID!, $role: ID!) {
               movie(id: $id) {
                 id, title
                 cast(role: $role) {

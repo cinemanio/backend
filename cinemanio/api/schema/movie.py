@@ -2,8 +2,7 @@ import graphene
 from graphene import relay, Field
 from graphene_django import DjangoObjectType
 
-from cinemanio.api.schema.mixins import ImagesMixin
-from cinemanio.api.schema.mixins import RelationsMixin
+from cinemanio.api.schema.mixins import ImagesMixin, RelationsMixin, WikipediaMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import MovieFilterSet
 from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
@@ -12,7 +11,7 @@ from cinemanio.core.models import Movie
 from cinemanio.images.models import ImageType
 
 
-class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin):
+class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesMixin, WikipediaMixin):
     cast = DjangoFilterConnectionField(CastNode)
     poster = Field(ImageNode)
 

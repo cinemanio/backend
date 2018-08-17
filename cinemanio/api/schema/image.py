@@ -35,6 +35,6 @@ class ImageNode(DjangoObjectTypeMixin, DjangoObjectType):
 class ImageLinkNode(DjangoObjectTypeMixin, DjangoObjectType):
     class Meta:
         model = ImageLink
-        filter_fields = ['image']
+        filter_fields = ('image',)
         only_fields = ('image',)
         use_connection = True
