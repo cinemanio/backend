@@ -13,4 +13,3 @@ class WikipediaPageNode(DjangoObjectTypeMixin, DjangoObjectType):
         filter_fields = ('lang',)
         only_fields = ('lang', 'title', 'content')
         use_connection = True
-
