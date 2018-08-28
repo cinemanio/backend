@@ -17,7 +17,7 @@ django-cursor-pagination = "*"
 django-storages = "*"
 django-cleanup = "*"
 django-enumfields = "*"
-django-graphql-jwt = "*"
+django-graphql-jwt = {git = "https://github.com/flavors/django-graphql-jwt", editable = true}
 django-celery-results = "*"
 django-celery-beat = "*"
 celery = "~=4.2.1"
