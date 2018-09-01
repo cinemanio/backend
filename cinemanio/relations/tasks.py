@@ -1,13 +1,16 @@
+from django.contrib.contenttypes.models import ContentType
+
 from cinemanio.celery import app
 from cinemanio.relations.models import MovieRelation, PersonRelation, UserRelationCount
 from cinemanio.users.models import User
 
 
 @app.task
-def recount_familiar_objects(model, user_id):
+def recount_familiar_objects(content_type_id, user_id):
     """
     Recount familiar movies | persons for user
     """
+    model = ContentType.objects.get_for_id(content_type_id).model_class()
     user = User.objects.get(pk=user_id)
 
     count = UserRelationCount.objects.get_or_create(object=user)[0]
@@ -20,10 +23,11 @@ def recount_familiar_objects(model, user_id):
 
 
 @app.task
-def delete_empty_relations(model, instance_id):
+def delete_empty_relations(content_type_id, instance_id):
     """
     Delete record if all relations are False
     """
+    model = ContentType.objects.get_for_id(content_type_id).model_class()
     instance = model.objects.get(pk=instance_id)
     relation = False
     for code in instance.codes:
@@ -34,10 +38,12 @@ def delete_empty_relations(model, instance_id):
 
 
 @app.task
-def recount_object_relations(model, instance):
+def recount_object_relations(content_type_id, instance_id):
     """
     Recount relations for movie | person
     """
+    model = ContentType.objects.get_for_id(content_type_id).model_class()
+    instance = model.objects.get(pk=instance_id)
     relations_counts = {}
     for code in instance.codes:
         relations_counts[code] = model.objects.filter(object_id=instance.object.id, **{code: True}).count()
