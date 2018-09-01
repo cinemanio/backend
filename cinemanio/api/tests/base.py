@@ -9,23 +9,32 @@ from cinemanio.schema import schema
 class QueryBaseTestCase(BaseTestCase):
     user = None
     password = 'secret'
-    Context = recordclass('Request', ['user', 'META'])
+    Context = recordclass('Request', ['user', 'Meta', 'META'])
 
     def get_context(self, user=None):
         if user is None:
-            return self.Context(user=None, META={})
+            return self.Context(user=None, Meta={}, META={})
         token = get_token(user)
-        return self.Context(user=user, META={'HTTP_AUTHORIZATION': f'JWT {token}'})
+        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
+        return self.Context(user=user, Meta=headers, META=headers)
 
     def create_user(self, **kwargs):
         self.user = UserFactory(username='user', **kwargs)
         self.user.set_password(self.password)
         self.user.save()
 
+    def _execute(self, query, values=None, context=None):
+        return schema.execute(query, variable_values=values, context_value=context or self.get_context(self.user))
+
     def execute(self, query, values=None, context=None):
-        result = schema.execute(query, variable_values=values, context_value=context or self.get_context(self.user))
+        result = self._execute(query, values, context)
         assert not result.errors, result.errors
         return result.data
+
+    def execute_with_errors(self, query, values=None, context=None):
+        result = self._execute(query, values, context)
+        assert result.errors, result.data
+        return result
 
 
 class ListQueryBaseTestCase(QueryBaseTestCase):

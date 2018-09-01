@@ -34,16 +34,32 @@ class AuthTestCase(QueryBaseTestCase):
         self.assertGreater(payload['exp'] - time.time(), 300 - 2)
         self.assertLess(payload['orig_iat'] - time.time(), 0)
 
+    def assert_empty_response_with_error(self, result, key, error):
+        self.assertEqual(result.data[key], None)
+        self.assertEqual(str(result.errors[0].original_error), error)
+
     def test_get_token_for_active_user(self):
         self.create_user(is_active=True)
         with self.assertNumQueries(1):
             result = self.execute(self.token_auth_mutation, dict(username=self.user.username, password=self.password))
         self.assertTrue(len(result['tokenAuth']['token']), 159)
+        self.assertEqual(result['tokenAuth']['token'], get_token(self.user))
 
     def test_get_token_for_inactive_user(self):
         self.create_user(is_active=False)
-        with self.assertRaises(AssertionError):
-            self.execute(self.token_auth_mutation, dict(username=self.user.username, password=self.password))
+        result = self.execute_with_errors(self.token_auth_mutation, dict(username=self.user.username,
+                                                                         password=self.password))
+        self.assert_empty_response_with_error(result, 'tokenAuth', 'Please, enter valid credentials')
+
+    def test_get_token_wrong_username(self):
+        self.create_user(is_active=True)
+        result = self.execute_with_errors(self.token_auth_mutation, dict(username=self.user.username, password=''))
+        self.assert_empty_response_with_error(result, 'tokenAuth', 'Please, enter valid credentials')
+
+    def test_get_token_wrong_password(self):
+        self.create_user(is_active=True)
+        result = self.execute_with_errors(self.token_auth_mutation, dict(username='', password=self.password))
+        self.assert_empty_response_with_error(result, 'tokenAuth', 'Please, enter valid credentials')
 
     def test_verify_token(self):
         self.create_user()
@@ -53,13 +69,18 @@ class AuthTestCase(QueryBaseTestCase):
         self.assert_payload(result['verifyToken']['payload'])
 
     def test_verify_bad_token(self):
-        with self.assertRaises(AssertionError):
-            self.execute(self.verify_token_mutation, dict(token='bad_token'))
+        result = self.execute_with_errors(self.verify_token_mutation, dict(token='bad_token'))
+        self.assert_empty_response_with_error(result, 'verifyToken', 'Error decoding signature')
 
-    def refresh_token(self):
+    def test_refresh_token(self):
         self.create_user()
         token = get_token(self.user)
         with self.assertNumQueries(1):
             result = self.execute(self.refresh_token_mutation, dict(token=token))
         self.assertTrue(len(result['refreshToken']['token']), 159)
+        self.assertEqual(result['refreshToken']['token'], get_token(self.user))
         self.assert_payload(result['refreshToken']['payload'])
+
+    def test_refresh_bad_token(self):
+        result = self.execute_with_errors(self.refresh_token_mutation, dict(token='bad_token'))
+        self.assert_empty_response_with_error(result, 'refreshToken', 'Error decoding signature')
