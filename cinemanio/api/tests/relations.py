@@ -134,7 +134,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         rel = relation(object=instance)
         self.assertEqual(relation.objects.count(), 0)
 
-        with self.assertNumQueries(7 + queries_count):
+        with self.assertNumQueries(9 + queries_count):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
                                   dict(id=to_global_id(node._meta.name, instance.id), code='fav'))
 
@@ -152,7 +152,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         self.assertEqual(relation.objects.count(), 1)
         self.assert_relation(rel, fav_codes)
 
-        with self.assertNumQueries(4 + queries_count):
+        with self.assertNumQueries(6 + queries_count):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
                                   dict(id=to_global_id(node._meta.name, rel.object.id), code='fav'))
 

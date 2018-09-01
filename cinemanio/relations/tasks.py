@@ -43,7 +43,10 @@ def recount_object_relations(content_type_id, instance_id):
     Recount relations for movie | person
     """
     model = ContentType.objects.get_for_id(content_type_id).model_class()
-    instance = model.objects.get(pk=instance_id)
+    try:
+        instance = model.objects.get(pk=instance_id)
+    except model.DoesNotExist:
+        return
     relations_counts = {}
     for code in instance.codes:
         relations_counts[code] = model.objects.filter(object_id=instance.object.id, **{code: True}).count()
