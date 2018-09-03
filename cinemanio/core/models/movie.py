@@ -5,9 +5,6 @@ from django.utils.translation import ugettext_lazy as _, get_language
 
 from cinemanio.core.models.base import BaseModel
 
-# from cinemanio.core.models import Role
-# from cinemanio.core.fields import ForeignCountField
-
 AWARD_CHOICES = (
     (1773, 'Берлинский кинофестиваль'),
     (8298, 'Венецианский кинофестиваль'),
@@ -37,6 +34,7 @@ class Movie(BaseModel):
     Movie model
     """
     YEARS_RANGE = (1894, timezone.now().year + 10)
+    transliteratable_fields = ['title']
 
     title = models.CharField(_('Title'), max_length=200, default='')
 
