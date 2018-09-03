@@ -33,8 +33,8 @@ class MovieRelation(RelationBase):
                 self.dislike = False
             if name == 'dislike':
                 self.seen = True
-                self.ignore = True
                 self.like = False
+                self.fav = False
             if name == 'fav':
                 self.like = True
                 self.seen = True

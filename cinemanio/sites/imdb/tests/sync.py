@@ -1,60 +1,93 @@
 import datetime
-from unittest import skip
+from parameterized import parameterized
+from unittest import skip, mock
+
+from imdb.parser.http import IMDbHTTPAccessSystem
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.models import Genre
-from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
+from cinemanio.sites.imdb.tasks import sync_movie, sync_person
+from cinemanio.sites.imdb.tests.base import ImdbSyncBaseTest
+from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
 
-USA_ID = 69
 
-
-class ImdbSyncTest(BaseTestCase):
-    fixtures = BaseTestCase.fixtures + [
+class ImdbSyncTest(ImdbSyncBaseTest):
+    fixtures = ImdbSyncBaseTest.fixtures + [
         'imdb.imdbgenre.json',
         'imdb.imdbcountry.json',
         'imdb.imdblanguage.json',
     ]
 
-    def imdb_dennis_hopper(self):
-        return ImdbPersonFactory(id=454, person__country=None, person__first_name_en='', person__last_name_en='')
-
-    def assert_matrix_cast(self, imdb_movie, person1, person2, person3):
-        cast = imdb_movie.movie.cast
-        self.assertEqual(person1.imdb.id, 905152)
-        self.assertEqual(person2.imdb.id, 206)
-        self.assertEqual(person3.imdb.id, 50390)
-        self.assertEqual(cast.count(), 5)
-        self.assertTrue(cast.get(person=person1, role=self.director))
-        self.assertTrue(cast.get(person=person1, role=self.scenarist))
-        self.assertTrue(cast.get(person=person1, role=self.producer))
-        self.assertEqual(cast.get(person=person2, role=self.actor).name_en, 'Neo')
-        self.assertEqual(cast.get(person=person3, role=self.actor).name_en, 'Businessman')
-
-    def assert_dennis_hopper_career(self, imdb_person, movie1, movie2):
-        career = imdb_person.person.career
-        self.assertEqual(movie1.imdb.id, 64276)
-        self.assertEqual(movie2.imdb.id, 108399)
-        self.assertEqual(career.count(), 4)
-        self.assertTrue(career.get(movie=movie1, role=self.director))
-        self.assertTrue(career.get(movie=movie1, role=self.author))
-        self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, 'Billy')
-        self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
-
-    def test_get_movie_matrix(self):
+    def test_sync_movie_matrix(self):
         imdb_movie = ImdbMovieFactory(id=133093, movie__year=None, movie__title='',
                                       movie__genres=[], movie__languages=[], movie__countries=[])
-        imdb_movie.sync()
+        sync_movie(imdb_movie.movie.id, roles=False)
+        self.assert_matrix(imdb_movie)
 
-        self.assertEqual(imdb_movie.movie.title, 'The Matrix')
-        # self.assertEqual(imdb_movie.movie.title_ru, 'Матрица')
-        self.assertEqual(imdb_movie.movie.year, 1999)
-        self.assertEqual(imdb_movie.movie.runtime, 136)
-        self.assertEqual(imdb_movie.movie.imdb.rating, 8.7)
-        self.assertQuerysetEqual(imdb_movie.movie.genres.all(), ['Action', 'Sci-Fi'])
-        self.assertQuerysetEqual(imdb_movie.movie.languages.all(), ['English'])
-        self.assertQuerysetEqual(imdb_movie.movie.countries.all(), ['USA'])
-        # self.assertEqual(imdb_movie.movie.russia_start, datetime.date(1999, 10, 14))
+    def test_search_and_sync_movie_matrix(self):
+        movie = MovieFactory(year=1999, title='The Matrix', genres=[], languages=[], countries=[])
+        sync_movie(movie.id)
+        self.assert_matrix(movie.imdb)
+
+    def test_sync_person_dennis_hopper(self):
+        imdb_person = self.imdb_dennis_hopper()
+        sync_person(imdb_person.person.id, roles=False)
+        self.assert_dennis_hopper(imdb_person)
+
+    def test_search_and_sync_person_dennis_hopper(self):
+        person = PersonFactory(first_name_en='Dennis', last_name_en='Hopper')
+        sync_person(person.id)
+        self.assert_dennis_hopper(person.imdb)
+
+    @mock.patch.object(IMDbHTTPAccessSystem, 'search_person')
+    def test_search_and_sync_right_person_by_movie(self, search_person):
+        person1 = PersonFactory(first_name_en='Allison', last_name_en='Williams')
+        person2 = PersonFactory(first_name_en='Allison', last_name_en='Williams')
+        person3 = PersonFactory(first_name_en='Allison', last_name_en='Williams')
+        ImdbMovieFactory(id=1672719, movie=CastFactory(person=person1).movie)
+        ImdbMovieFactory(id=2702724, movie=CastFactory(person=person2).movie)
+        ImdbMovieFactory(id=1985034, movie=CastFactory(person=person3).movie)
+        sync_person(person1.id)
+        sync_person(person2.id)
+        sync_person(person3.id)
+        self.assertEqual(person1.imdb.id, 930009)
+        self.assertEqual(person2.imdb.id, 8050010)
+        self.assertEqual(person3.imdb.id, 4613572)
+        self.assertFalse(search_person.called)
+
+    @mock.patch.object(IMDbHTTPAccessSystem, 'search_movie')
+    def test_search_and_sync_right_movie_by_person(self, search_movie):
+        movie1 = MovieFactory(year=2014, title='The Prince')
+        movie2 = MovieFactory(year=2014, title='The Prince')
+        ImdbPersonFactory(id=2357819, person=CastFactory(movie=movie1).person)
+        ImdbPersonFactory(id=3167230, person=CastFactory(movie=movie2).person)
+        sync_movie(movie1.id)
+        sync_movie(movie2.id)
+        self.assertEqual(movie1.imdb.id, 1085492)
+        self.assertEqual(movie2.imdb.id, 3505782)
+        self.assertFalse(search_movie.called)
+
+    @parameterized.expand([
+        (MovieFactory, sync_movie, dict(year=2014, title='The Prince')),
+        (PersonFactory, sync_person, dict(first_name_en='Allison', last_name_en='Williams')),
+    ])
+    def test_sync_object_duplicates(self, factory, sync_method, kwargs):
+        instance1 = factory(**kwargs)
+        instance2 = factory(**kwargs)
+        sync_method(instance1.id)
+        self.assertTrue(instance1.imdb.id)
+        with self.assertRaises(PossibleDuplicate):
+            sync_method(instance2.id)
+
+    @parameterized.expand([
+        ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title='The Prince')),
+        ('person', ImdbPersonFactory, dict(person__first_name_en='Allison', person__last_name_en='Williams')),
+    ])
+    def test_sync_object_wrong_value(self, model_name, factory, kwargs):
+        instance = factory(id=1, **kwargs)
+        with self.assertRaises(WrongValue):
+            instance.__class__.objects.create_for(getattr(instance, model_name))
 
     def test_get_movie_runtime_different_format(self):
         # runtime in format "xxxxx:17"
@@ -89,7 +122,7 @@ class ImdbSyncTest(BaseTestCase):
         self.assertEqual(imdb_person.person.last_name_en, 'Hopper')
         self.assertEqual(imdb_person.person.date_birth, datetime.date(1936, 5, 17))
         self.assertEqual(imdb_person.person.date_death, datetime.date(2010, 5, 29))
-        self.assertEqual(imdb_person.person.country.id, USA_ID)
+        self.assertEqual(imdb_person.person.country.id, self.USA_ID)
 
     def test_add_roles_to_movie_by_imdb_id(self):
         imdb_person1 = ImdbPersonFactory(id=905152)  # Lilly Wachowski: director, scenarist, producer
@@ -147,7 +180,6 @@ class ImdbSyncTest(BaseTestCase):
         imdb_person.sync(roles=True)
         self.assert_dennis_hopper_career(imdb_person, cast1.movie, cast2.movie)
 
-    @skip('notes are empty -> unable to distinguish author from scenarist')
     def test_add_authors_to_movie(self):
         imdb_person = ImdbPersonFactory(id=234502)  # writer, Dostoevskiy
         imdb_movie = ImdbMovieFactory(id=475730)
@@ -160,10 +192,3 @@ class ImdbSyncTest(BaseTestCase):
         imdb_movie.sync()
         self.assertEqual(imdb_movie.movie.title, 'Wo hu cang long')
         self.assertEqual(imdb_movie.movie.title_en, 'Crouching Tiger, Hidden Dragon')
-
-    @skip('unfinished')
-    def test_2_persons_with_the_same_names(self):
-        # imdb_person1 = ImdbPersonFactory(id=4129745)  # Allison Williams ID 4129745
-        # imdb_person2 = ImdbPersonFactory(id=8656102)  # wrong Allison Williams ID 8656102
-        imdb_movie = ImdbMovieFactory(id=5052448)  # Get out, 2017
-        imdb_movie.sync(roles=True)

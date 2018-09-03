@@ -70,3 +70,19 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         self.assertTrue(career.get(movie=movie1, role=self.scenarist))
         self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, 'Billy')
         self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
+
+    def test_add_posters_to_movie(self):
+        kp_movie = KinopoiskMovieFactory(id=161018)  # Les amants réguliers
+        kp_movie.sync_images()
+        self.assertEqual(kp_movie.movie.images.count(), 2)
+
+        # delete one and sync again
+        kp_movie.movie.images.last().image.delete()
+        self.assertEqual(kp_movie.movie.images.count(), 1)
+        kp_movie.sync_images()
+        self.assertEqual(kp_movie.movie.images.count(), 2)
+
+    def test_add_photos_to_person(self):
+        kp_person = KinopoiskPersonFactory(id=129095)
+        kp_person.sync_images()
+        self.assertEqual(kp_person.person.images.count(), 1)

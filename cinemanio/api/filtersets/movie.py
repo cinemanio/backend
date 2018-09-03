@@ -1,19 +1,21 @@
-# from graphql_relay.node.node import from_global_id
-from django_filters import FilterSet, ModelMultipleChoiceFilter
+from django_filters import ChoiceFilter, OrderingFilter
+
 from cinemanio.core.models import Movie, Genre, Language, Country
+from cinemanio.relations.models import MovieRelation
+
+from .base import BaseFilterSet, ModelGlobalIdMultipleChoiceFilter
+from .relations import RelationsMixin, get_relations_ordering_fields
+
+codes = MovieRelation().codes
 
 
-class MovieFilterSet(FilterSet):
-    genres = ModelMultipleChoiceFilter(queryset=Genre.objects.all(), method='filter_m2m')
-    languages = ModelMultipleChoiceFilter(queryset=Language.objects.all(), method='filter_m2m')
-    countries = ModelMultipleChoiceFilter(queryset=Country.objects.all(), method='filter_m2m')
-
-    def filter_m2m(self, qs, name, value):
-        # TODO: switch to use global ids
-        for instance in value:
-            qs = qs.filter(**{name: instance.id})
-        return qs
+class MovieFilterSet(BaseFilterSet, RelationsMixin):
+    genres = ModelGlobalIdMultipleChoiceFilter(queryset=Genre.objects.all(), method='filter_m2m')
+    languages = ModelGlobalIdMultipleChoiceFilter(queryset=Language.objects.all(), method='filter_m2m')
+    countries = ModelGlobalIdMultipleChoiceFilter(queryset=Country.objects.all(), method='filter_m2m')
+    relation = ChoiceFilter(choices=[[code] * 2 for code in codes], method='filter_relation')
+    order_by = OrderingFilter(fields=[('year', 'year')] + get_relations_ordering_fields(codes))
 
     class Meta:
         model = Movie
-        fields = ['year', 'genres', 'languages', 'countries']
+        fields = ['year', 'genres', 'languages', 'countries', 'relation']

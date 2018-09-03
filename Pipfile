@@ -1,45 +1,62 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-django = "==2.0.1"
+django = "~=2.0.5"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
 django-modeltranslation = {git = "https://github.com/deschler/django-modeltranslation", editable = true}
-django-filter = "*"
+django-filter = "~=1.1.0"
 django-cors-headers = "*"
 django-reversion = "*"
-django-celery = "*"
 django-silk = "*"
 django-cursor-pagination = "*"
-celery = "*"
+django-storages = "*"
+django-cleanup = "*"
+django-enumfields = "*"
+django-graphql-jwt = {git = "https://github.com/flavors/django-graphql-jwt", editable = true}
+django-celery-results = "*"
+django-celery-beat = "*"
+celery = "~=4.2.1"
 celerymon = "*"
-vcrpy-unittest = "*"
 kinopoiskpy = "*"
 alphabet-detector = "*"
-parameterized = "*"
 graphene-django = {git = "https://github.com/graphql-python/graphene-django", editable = true}
 imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
 "psycopg2-binary" = "*"
 dj-database-url = "*"
 python-decouple = "*"
 gunicorn = "*"
-whitenoise = "*"
-
+whitenoise = "~=3.3.1"
+pillow = "*"
+sorl-thumbnail = "*"
+"boto3" = "*"
+lxml = "==4.1.1"
+redis = "*"
+pycodestyle = "==2.3.1"
+honcho = "*"
+wikipedia = "*"
 
 [dev-packages]
-
 ipython = "*"
-factory-boy = "*"
 ipdb = "*"
-
+vcrpy-unittest = "*"
+parameterized = "*"
+factory-boy = "*"
+recordclass = "*"
+coveralls = "*"
+"flake8" = "*"
+pylint-django = "*"
+pycodestyle = "==2.3.1"
+pydot = "*"
+pyyaml = "*"
+prospector = "*"
 
 [requires]
-
 python_version = "3.6.4"
+
+[pipenv]
+allow_prereleases = true

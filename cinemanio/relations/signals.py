@@ -1,8 +1,8 @@
-from django.dispatch import Signal
-from django.dispatch import receiver
+from django.dispatch import Signal, receiver
+from django.contrib.contenttypes.models import ContentType
 
 from cinemanio.relations.models import MovieRelation, PersonRelation, UserRelation
-from cinemanio.relations.tasks import RecountFamiliarObjects, DeleteEmptyRelations, RecountObjectRelations
+from cinemanio.relations.tasks import recount_familiar_objects, delete_empty_relations, recount_object_relations
 
 relation_changed = Signal(providing_args=['instance', 'code', 'request'])
 
@@ -10,26 +10,29 @@ relation_changed = Signal(providing_args=['instance', 'code', 'request'])
 @receiver(relation_changed, sender=MovieRelation)
 @receiver(relation_changed, sender=PersonRelation)
 @receiver(relation_changed, sender=UserRelation)
-def delete_empty_relations(sender, instance, **kwargs):
+def delete_empty_relations_signal(sender, instance, **_):
     """
-    Delete record if all relations are False
+    Delay removing empty relation (all False)
     """
-    DeleteEmptyRelations.delay(sender, instance.id)
+    content_type = ContentType.objects.get_for_model(sender)
+    delete_empty_relations.delay(content_type.id, instance.id)
 
 
 @receiver(relation_changed, sender=MovieRelation)
 @receiver(relation_changed, sender=PersonRelation)
-def recount_familiar_objects(sender, instance, **kwargs):
+def recount_familiar_objects_signal(sender, instance, **_):
     """
-    Recount familiar movies | persons for user
+    Delay recount of user familiar objects
     """
-    RecountFamiliarObjects.delay(sender, instance.user.id)
+    content_type = ContentType.objects.get_for_model(sender)
+    recount_familiar_objects.delay(content_type.id, instance.user.id)
 
 
 @receiver(relation_changed, sender=MovieRelation)
 @receiver(relation_changed, sender=PersonRelation)
-def recount_relations(sender, instance, **kwargs):
+def recount_relations_signal(sender, instance, **_):
     """
-    Recount relations for movie | person
+    Run recount_object_relations synchronously to provide immediate counts in response
     """
-    RecountObjectRelations.delay(sender, instance)
+    content_type = ContentType.objects.get_for_model(sender)
+    recount_object_relations(content_type.id, instance.id)

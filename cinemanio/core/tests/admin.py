@@ -1,11 +1,11 @@
-from unittest import skip
-
-from django.test import modify_settings
+from parameterized import parameterized
+# from django.test import modify_settings
 from django.urls.base import reverse
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory, KinopoiskPersonFactory
+from cinemanio.images.factories import ImageLinkFactory
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.users.factories import UserFactory, User
 
@@ -38,44 +38,37 @@ class AdminTest(AdminBaseTest):
         super().setUp()
         self._login('admin')
 
-    @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
-    def test_movies_page(self):
+    # @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
+    @parameterized.expand([
+        ('movie', ImdbMovieFactory, KinopoiskMovieFactory),
+        ('person', ImdbPersonFactory, KinopoiskPersonFactory),
+    ])
+    def test_objects_page(self, object_type, imdb_factory, kinopoisk_factory):
         for i in range(100):
-            KinopoiskMovieFactory(movie=ImdbMovieFactory().movie)
+            kinopoisk_factory(**{object_type: getattr(imdb_factory(), object_type)})
 
-        with self.assertNumQueries(7):
-            response = self.client.get(reverse('admin:core_movie_changelist'))
+        with self.assertNumQueries(9):
+            response = self.client.get(reverse(f'admin:core_{object_type}_changelist'))
         self.assertEqual(response.status_code, 200)
 
-    @modify_settings(MIDDLEWARE={'remove': 'silk.middleware.SilkyMiddleware'})
-    def test_persons_page(self):
+    @parameterized.expand([
+        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 19),
+        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 14),
+    ])
+    def test_object_page(self, object_type, factory, imdb_factory, kinopoisk_factory, queries):
+        instance = factory()
+        imdb_factory(**{object_type: instance})
+        kinopoisk_factory(**{object_type: instance})
         for i in range(100):
-            KinopoiskPersonFactory(person=ImdbPersonFactory().person)
+            CastFactory(**{object_type: instance})
+        for i in range(10):
+            ImageLinkFactory(object=instance)
 
-        with self.assertNumQueries(7):
-            response = self.client.get(reverse('admin:core_person_changelist'))
+        # TODO: prefetch thumbnails with one extra query
+        with self.assertNumQueries(queries + 10):
+            response = self.client.get(reverse(f'admin:core_{object_type}_change', args=(instance.id,)))
         self.assertEqual(response.status_code, 200)
-
-    @skip('fix request for each person in role')
-    def test_movie_page(self):
-        m = MovieFactory()
-        ImdbMovieFactory(movie=m)
-        KinopoiskMovieFactory(movie=m)
-        for i in range(100):
-            CastFactory(movie=m)
-
-        with self.assertNumQueries(20):
-            response = self.client.get(reverse('admin:core_movie_change', args=(m.id,)))
-        self.assertEqual(response.status_code, 200)
-
-    @skip('fix request for each movie in role')
-    def test_person_page(self):
-        p = PersonFactory()
-        ImdbPersonFactory(person=p)
-        KinopoiskPersonFactory(person=p)
-        for i in range(100):
-            CastFactory(person=p)
-
-        with self.assertNumQueries(20):
-            response = self.client.get(reverse('admin:core_person_change', args=(p.id,)))
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'Imdb {object_type}s')
+        self.assertContains(response, f'Kinopoisk {object_type}s')
+        self.assertContains(response, 'Cast')
+        self.assertContains(response, 'Image links')

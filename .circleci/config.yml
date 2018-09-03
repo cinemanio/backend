@@ -12,23 +12,28 @@ jobs:
 #          POSTGRES_DB: circle_test
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
       - restore_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          keys:
+            - cache-{{ checksum "Pipfile.lock" }}
+            - cache-
       - run:
-          command: |
-            sudo pip install pipenv
-            pipenv install --dev
+          name: Install dependencies
+          command: pipenv sync --dev
       - save_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: cache-{{ checksum "Pipfile.lock" }}
           paths:
-            - ".venv"
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.6/site-packages"
-      - run: flake8 ./cinemanio
-      - run: pipenv run "python manage.py collectstatic"
-      - run: pipenv run "python manage.py test --settings=cinemanio.settings_test"
+            - ~/.local
+            - ~/.cache
+#      - run: flake8 ./cinemanio
+      - run:
+          name: Run prospector
+          command: pipenv run prospector .
+      - run:
+          name: Collect static
+          command: pipenv run python manage.py collectstatic --noinput
+      - run:
+          name: Run tests
+          command: pipenv run python manage.py test --settings=cinemanio.settings_test
       - store_test_results:
           path: test-results
       - store_artifacts:

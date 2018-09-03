@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import translation
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
-from cinemanio.core.models import Movie, Person, Cast, Role
+from cinemanio.core.models import Movie, Person, Cast, Role, Gender
 from cinemanio.core.tests.base import BaseTestCase
 
 
@@ -87,3 +87,10 @@ class ModelsTest(BaseTestCase):
         person.set_transliteratable_fields()
         self.assertEqual(person.name, person.name_en)
         self.assertEqual(person.name, 'Andrej Mjagkov')
+
+    def test_person_gender(self):
+        for i in range(100):
+            PersonFactory()
+        self.assertEqual(Person.objects.filter(gender=None).count(), 0)
+        self.assertGreater(Person.objects.filter(gender=Gender.MALE).count(), 0)
+        self.assertGreater(Person.objects.filter(gender=Gender.FEMALE).count(), 0)

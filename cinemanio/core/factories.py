@@ -3,7 +3,7 @@ import random
 import factory
 from factory.django import DjangoModelFactory
 
-from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
+from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast, Gender
 
 
 class GenreFactory(DjangoModelFactory):
@@ -35,21 +35,20 @@ class MovieFactory(DjangoModelFactory):
         model = Movie
 
     @factory.post_generation
-    def genres(self, create, extracted, **kwargs):
+    def genres(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'genres', Genre)
 
     @factory.post_generation
-    def languages(self, create, extracted, **kwargs):
+    def languages(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'languages', Language)
 
     @factory.post_generation
-    def countries(self, create, extracted, **kwargs):
+    def countries(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'countries', Country)
 
 
 class PersonFactory(DjangoModelFactory):
-    gender = factory.LazyAttribute(lambda o: random.choice([1, 0]))
-    country = factory.SubFactory(CountryFactory)
+    gender = factory.LazyAttribute(lambda o: random.choice([Gender.MALE, Gender.FEMALE]))
 
     first_name = factory.Faker('sentence', nb_words=1)
     last_name = factory.Faker('sentence', nb_words=1)
@@ -67,14 +66,19 @@ class PersonFactory(DjangoModelFactory):
         model = Person
 
     @factory.post_generation
-    def roles(self, create, extracted, **kwargs):
+    def roles(self, create, extracted):
         create_m2m_objects(self, create, extracted, 'roles', Role)
+
+    @factory.post_generation
+    def country(self, create, extracted):
+        if create:
+            setattr(self, 'country', extracted if (extracted is not None) else Country.objects.order_by('?').first())
 
 
 class CastFactory(DjangoModelFactory):
     movie = factory.SubFactory(MovieFactory)
     person = factory.SubFactory(PersonFactory)
-    role = factory.LazyAttribute(lambda o: Role.objects.order_by('?')[0])
+    role = factory.LazyAttribute(lambda o: Role.objects.order_by('?').first())
 
     class Meta:
         model = Cast

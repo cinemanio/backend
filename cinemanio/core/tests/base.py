@@ -1,3 +1,5 @@
+from vcr_unittest import VCRMixin as VCRMixinBase
+
 from django.test import TestCase
 from django.utils import translation
 
@@ -35,3 +37,7 @@ class BaseTestCase(TestCase):
     @property
     def scenarist(self):
         return Role.objects.get_scenarist()
+
+
+class VCRMixin(VCRMixinBase):
+    pass

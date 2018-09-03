@@ -40,13 +40,17 @@ INSTALLED_APPS = [
 
     # third party apps
     'django_extensions',
+    'django_cleanup',
+    'django_celery_results',
+    'django_celery_beat',
     'debug_toolbar',
     'reversion',
-    'djcelery',
     'celerymon',
     'corsheaders',
     'graphene_django',
     'silk',
+    'sorl.thumbnail',
+    'storages',
 
     # cinemanio apps
     'cinemanio.core',
@@ -57,6 +61,7 @@ INSTALLED_APPS = [
     'cinemanio.sites.imdb',
     'cinemanio.sites.kinopoisk',
     'cinemanio.sites.wikipedia',
+    'cinemanio.images',
 ]
 
 MIDDLEWARE = [
@@ -69,8 +74,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'silk.middleware.SilkyMiddleware',
+    # 'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'cinemanio.urls'
@@ -95,13 +101,17 @@ WSGI_APPLICATION = 'cinemanio.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': dj_database_url.config(
-        conn_max_age=500,
+        # conn_max_age=600,
+        ssl_require=True,
         default=config('DATABASE_URL', default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))))
 }
 
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -157,15 +167,25 @@ STATICFILES_DIRS = ()
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+# Amazon S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='cinemanio')
+
+# redis
+REDIS_URL = config('REDIS_URL', default='')
+
 # celery
-CELERY_HOST = '127.0.0.1'
-BROKER_URL = 'amqp://user:pass@%s:5672/name' % CELERY_HOST
+CELERY_BROKER_URL = REDIS_URL
 CELERY_SEND_TASK_ERROR_EMAILS = True
 CELERY_TASK_RESULT_EXPIRES = None
 CELERY_ACKS_LATE = True
 CELERYD_CONCURRENCY = 3
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERYCAM_EXPIRE_SUCCESS = timedelta(days=5)
 CELERYCAM_EXPIRE_ERROR = timedelta(days=10)
 CELERYCAM_EXPIRE_PENDING = timedelta(days=10)
@@ -190,3 +210,20 @@ CORS_ALLOW_METHODS = (
     'OPTIONS',
     'POST',
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'cinemanio': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
