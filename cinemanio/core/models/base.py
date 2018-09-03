@@ -22,11 +22,17 @@ class BaseModel(models.Model):
     def transliteratable_fields(self):
         raise NotImplementedError()
 
-    def set_transliteratable_fields(self, *args, **kwargs):
+    def set_transliteratable_fields(self):
+        """
+        If some fields non-specified in English, but specified in secondary language -
+        make transliteratable version for the field and assign it
+        """
         for lang in ['ru']:
             for field in self.transliteratable_fields:
-                value_lang = getattr(self, '{}_{}'.format(field, lang))
-                value_en = getattr(self, '{}_{}'.format(field, 'en'))
+                field_en = '{}_{}'.format(field, 'en')
+                field_lang = '{}_{}'.format(field, lang)
+                value_lang = getattr(self, field_lang)
+                value_en = getattr(self, field_en)
                 value = getattr(self, field)
                 if value_lang:
                     if not value or not value_en:
@@ -34,4 +40,4 @@ class BaseModel(models.Model):
                         if not value:
                             setattr(self, field, value_translit)
                         if not value_en:
-                            setattr(self, '{}_{}'.format(field, 'en'), value_translit)
+                            setattr(self, field_en, value_translit)
