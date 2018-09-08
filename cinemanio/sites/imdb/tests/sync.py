@@ -198,7 +198,7 @@ class ImdbSyncTest(ImdbSyncBaseTest):
 
     def test_sync_all_roles_of_movie(self):
         imdb_movie = ImdbMovieFactory(id=64276)  # Easy rider
-        imdb_movie.sync(roles=True, all=True)
+        imdb_movie.sync(roles='all')
         self.assertEqual(imdb_movie.movie.cast.count(), 58)
         self.assertEqual(imdb_movie.movie.cast.filter(role=self.actor).count(), 49)
         self.assertEqual(imdb_movie.movie.cast.filter(role=self.director).count(), 1)
@@ -210,7 +210,7 @@ class ImdbSyncTest(ImdbSyncBaseTest):
 
     def test_sync_all_roles_of_person(self):
         imdb_person = self.imdb_dennis_hopper()
-        imdb_person.sync(roles=True, all=True)
+        imdb_person.sync(roles='all')
         self.assertEqual(imdb_person.person.career.count(), 218)
         self.assertEqual(imdb_person.person.career.filter(role=self.actor).count(), 204)
         self.assertEqual(imdb_person.person.career.filter(role=self.director).count(), 9)

@@ -48,7 +48,7 @@ class ImdbImporterBase:
             last, first = '', name_parts[0]
         return last, first
 
-    def apply_remote_data(self, data, roles, all):
+    def apply_remote_data(self, data, roles):
         """
         Update object with remote data
         """
@@ -60,9 +60,14 @@ class ImdbImporterBase:
         """
         raise NotImplementedError
 
-    def get_applied_data(self, roles=False, all=False):
+    def get_applied_data(self, roles=False):
+        """
+        Retrieve remote data and apply it to the self.object
+        :param roles: if True sync cast with existing, if 'all', create non-existing cast
+        :return: remote data
+        """
         data = self.get_remote_data()
-        self.apply_remote_data(data, roles=roles, all=all)
+        self.apply_remote_data(data, roles=roles)
         return data
 
 
@@ -75,7 +80,7 @@ class ImdbPersonImporter(ImdbImporterBase):
     def get_imdb_object(self, imdb_id):
         return self.imdb.get_person(imdb_id)
 
-    def apply_remote_data(self, data, roles, all):
+    def apply_remote_data(self, data, roles):
         """
         Update person with remote data
         """
@@ -94,7 +99,7 @@ class ImdbPersonImporter(ImdbImporterBase):
         # if object in database, we can update m2m fields
         if self.object.id:
             if roles:
-                self._add_roles(all)
+                self._add_roles(roles)
 
     def get_remote_data(self):
         """
@@ -138,7 +143,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                 return country.id
         return None
 
-    def _add_roles(self, all):
+    def _add_roles(self, roles):
         """
         Find movies of current person by imdb_id or title:
         1. Trying find movie by imdb_id
@@ -165,7 +170,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                     try:
                         self._create_cast(role, imdb_movie)
                     except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
-                        if all:
+                        if roles == 'all':
                             movie = self._create_movie(imdb_movie)
                             self._create_cast(role, imdb_movie, movie)
                         else:
@@ -227,7 +232,7 @@ class ImdbMovieImporter(ImdbImporterBase):
     def get_imdb_object(self, imdb_id):
         return self.imdb.get_movie(imdb_id)
 
-    def apply_remote_data(self, data, roles, all):
+    def apply_remote_data(self, data, roles):
         """
         Update movie with remote data
         """
@@ -249,7 +254,7 @@ class ImdbMovieImporter(ImdbImporterBase):
                     set(data[field]) | set(getattr(self.object, field).values_list('id', flat=True)))
 
             if roles:
-                self._add_roles(all)
+                self._add_roles(roles)
 
     def get_remote_data(self):
         """
@@ -341,7 +346,7 @@ class ImdbMovieImporter(ImdbImporterBase):
             self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
         return list(ids)
 
-    def _add_roles(self, all):
+    def _add_roles(self, roles):
         """
         Find persons of current movie by imdb_id or name:
         1. Trying find person by imdb_id
@@ -366,7 +371,7 @@ class ImdbMovieImporter(ImdbImporterBase):
                 try:
                     self._create_cast(role, imdb_person)
                 except (Person.DoesNotExist, Person.MultipleObjectsReturned):
-                    if all:
+                    if roles == 'all':
                         person = self._create_person(imdb_person)
                         self._create_cast(role, imdb_person, person)
                     else:
