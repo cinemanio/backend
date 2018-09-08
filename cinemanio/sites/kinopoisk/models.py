@@ -37,11 +37,15 @@ class KinopoiskMovie(KinopoiskBase, UrlMixin, MovieSyncMixin):
 
     link = 'http://www.kinopoisk.ru/film/{id}/'
 
-    def sync(self):
-        self.sync_details()
-        self.sync_cast()
-        self.sync_images()
-        self.sync_trailers()
+    def sync(self, details=False, roles=False, images=False, trailers=False):
+        if details:
+            self.sync_details()
+        if roles:
+            self.sync_cast()
+        if images:
+            self.sync_images()
+        if trailers:
+            self.sync_trailers()
         super().sync()
 
 
@@ -54,11 +58,15 @@ class KinopoiskPerson(KinopoiskBase, UrlMixin, PersonSyncMixin):
 
     link = 'http://www.kinopoisk.ru/name/{id}/'
 
-    def sync(self):
-        self.sync_details()
-        self.sync_career()
-        self.sync_images()
-        self.sync_trailers()
+    def sync(self, details=False, roles=False, images=False, trailers=False):
+        if details:
+            self.sync_details()
+        if roles:
+            self.sync_career(roles)
+        if images:
+            self.sync_images()
+        if trailers:
+            self.sync_trailers()
         super().sync()
 
 

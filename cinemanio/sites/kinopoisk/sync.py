@@ -53,7 +53,7 @@ class PersonSyncMixin(SyncBase):
     def sync_trailers(self):
         pass
 
-    def sync_career(self):
+    def sync_career(self, roles=True):
         """
         Find movies of current person by kinopoisk_id or title:
         1. Trying find movie by kinopoisk_id
@@ -70,55 +70,74 @@ class PersonSyncMixin(SyncBase):
             'hrono_titr_male': None,
             'himself': Role.ACTOR_ID,
         }
-        for role_key, roles in self.remote_obj.career.items():
+        for role_key, person_roles in self.remote_obj.career.items():
             role_id = role_map.get(role_key, None)
             if role_id is None:
                 continue
             role = Role.objects.get(id=role_id)
-            for person_role in roles:
-                cast = movie = created = None
-
+            for person_role in person_roles:
                 try:
-                    # get movie by kinopoisk_id
-                    movie = Movie.objects.get(kinopoisk__id=person_role.movie.id)
+                    self.create_cast(role, person_role)
+                except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
+                    if roles == 'all':
+                        movie = self.create_movie(person_role)
+                        self.create_cast(role, person_role, movie)
+                    else:
+                        continue
+
+    def create_cast(self, role, person_role, movie=None):
+        cast = created = None
+
+        try:
+            if movie is None:
+                # get movie by kinopoisk_id
+                movie = Movie.objects.get(kinopoisk__id=person_role.movie.id)
+            cast, created = Cast.objects.get_or_create(person=self.person, movie=movie, role=role)
+        except Movie.DoesNotExist:
+            if person_role.movie.title or person_role.movie.title_en:
+                try:
+                    # get movie by name among person's movies
+                    cast = self.person.career.get(
+                        Q(movie__title_en=person_role.movie.title_en) |
+                        Q(movie__title_ru=person_role.movie.title),
+                        movie__year=person_role.movie.year, role=role)
+                    movie = cast.movie
+                    created = False
+                except Cast.DoesNotExist:
+                    # get movie by name among all movies
+                    movie = Movie.objects.get(
+                        Q(title_en=person_role.movie.title_en) |
+                        Q(title_ru=person_role.movie.title),
+                        year=person_role.movie.year, kinopoisk=None)
                     cast, created = Cast.objects.get_or_create(person=self.person, movie=movie, role=role)
-                except Movie.DoesNotExist:
-                    if person_role.movie.title or person_role.movie.title_en:
-                        try:
-                            # get movie by name among person's movies
-                            cast = self.person.career.get(
-                                Q(movie__title_en=person_role.movie.title_en) |
-                                Q(movie__title_ru=person_role.movie.title),
-                                movie__year=person_role.movie.year, role=role)
-                            movie = cast.movie
-                            created = False
-                        except Cast.DoesNotExist:
-                            try:
-                                # get movie by name among all movies
-                                movie = Movie.objects.get(
-                                    Q(title_en=person_role.movie.title_en) |
-                                    Q(title_ru=person_role.movie.title),
-                                    year=person_role.movie.year, kinopoisk=None)
-                                cast, created = Cast.objects.get_or_create(person=self.person, movie=movie, role=role)
-                            except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
-                                continue
 
-                if movie and created:
-                    self.logger.info(
-                        'Create cast for person %s in movie %s with role %s' % (self.person, movie, role))
+        if movie and created:
+            self.logger.info(f'Create cast for person {self.person} in movie {movie} with role {role}')
 
-                # save kinopoisk ID for movie
-                if movie:
-                    from cinemanio.sites.kinopoisk.models import KinopoiskMovie
-                    KinopoiskMovie.objects.update_or_create(movie=movie, defaults={'id': person_role.movie.id})
+        # save kinopoisk ID for movie
+        if movie:
+            from cinemanio.sites.kinopoisk.models import KinopoiskMovie
+            KinopoiskMovie.objects.update_or_create(movie=movie, defaults={'id': person_role.movie.id})
 
-                # save name of role for actors
-                if role.is_actor() and person_role.name and cast:
-                    ad = AlphabetDetector()
-                    field_name = 'name_ru' if ad.is_cyrillic(person_role.name) else 'name_en'
-                    if not getattr(cast, field_name):
-                        setattr(cast, field_name, person_role.name)
-                        cast.save(update_fields=[field_name])
+        # save name of role for actors
+        if role.is_actor() and person_role.name and cast:
+            ad = AlphabetDetector()
+            field_name = 'name_ru' if ad.is_cyrillic(person_role.name) else 'name_en'
+            if not getattr(cast, field_name):
+                setattr(cast, field_name, person_role.name)
+                cast.save(update_fields=[field_name])
+        return cast
+
+    def create_movie(self, person_role):
+        from cinemanio.sites.kinopoisk.models import KinopoiskMovie
+        movie = Movie.objects.create(
+            title_ru=person_role.movie.title,
+            title_en=person_role.movie.title_en,
+            year=person_role.movie.year,
+        )
+        KinopoiskMovie.objects.create(movie=movie, id=person_role.movie.id)
+        self.logger.info(f'Create movie {movie} from person {self.person}')
+        return movie
 
 
 class MovieSyncMixin(SyncBase):

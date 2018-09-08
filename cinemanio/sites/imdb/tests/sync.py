@@ -206,7 +206,11 @@ class ImdbSyncTest(ImdbSyncBaseTest):
         self.assertEqual(imdb_movie.movie.cast.filter(role=self.scenarist).count(), 3)
         self.assertEqual(imdb_movie.movie.cast.filter(role=self.editor).count(), 1)
         self.assertEqual(Person.objects.count(), 54)
-        self.assertEqual(Person.objects.exclude(imdb=None).count(), 54)
+        self.assertEqual(Person.objects.filter(imdb=None).count(), 0)
+        self.assertEqual(Person.objects.filter(first_name='').count(), 0)
+        self.assertEqual(Person.objects.filter(last_name='').count(), 0)
+        self.assertEqual(Person.objects.filter(first_name_en='').count(), 0)
+        self.assertEqual(Person.objects.filter(last_name_en='').count(), 0)
 
     def test_sync_all_roles_of_person(self):
         imdb_person = self.imdb_dennis_hopper()
@@ -217,4 +221,7 @@ class ImdbSyncTest(ImdbSyncBaseTest):
         self.assertEqual(imdb_person.person.career.filter(role=self.scenarist).count(), 4)
         self.assertEqual(imdb_person.person.career.filter(role=self.writer).count(), 1)
         self.assertEqual(Movie.objects.count(), 209)
-        self.assertEqual(Movie.objects.exclude(imdb__id=None).count(), 209)
+        self.assertEqual(Movie.objects.filter(imdb=None).count(), 0)
+        self.assertEqual(Movie.objects.filter(title='').count(), 0)
+        self.assertEqual(Movie.objects.filter(title_en='').count(), 0)
+        self.assertEqual(Movie.objects.filter(year=None).count(), 6)  # series

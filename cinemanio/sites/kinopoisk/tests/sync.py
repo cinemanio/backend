@@ -1,10 +1,14 @@
 from parameterized import parameterized
 from vcr_unittest import VCRMixin
+from unittest import skip
 
-from cinemanio.core.factories import MovieFactory
-from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.core.models import Genre
+from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory, KinopoiskPersonFactory
+
+Person = PersonFactory._meta.model
+Movie = MovieFactory._meta.model
 
 
 class KinopoiskSyncTest(VCRMixin, BaseTestCase):
@@ -86,3 +90,31 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         kp_person = KinopoiskPersonFactory(id=129095)
         kp_person.sync_images()
         self.assertEqual(kp_person.person.images.count(), 1)
+
+    @skip('not implemented in kinopoiskpy')
+    def test_sync_all_roles_of_movie(self):
+        kp_movie = KinopoiskMovieFactory(id=4220)  # Easy rider
+        kp_movie.sync(roles='all')
+        self.assertEqual(kp_movie.movie.cast.count(), 58)
+        self.assertEqual(kp_movie.movie.cast.filter(role=self.actor).count(), 49)
+        self.assertEqual(kp_movie.movie.cast.filter(role=self.director).count(), 1)
+        self.assertEqual(kp_movie.movie.cast.filter(role=self.producer).count(), 4)
+        self.assertEqual(kp_movie.movie.cast.filter(role=self.scenarist).count(), 3)
+        self.assertEqual(kp_movie.movie.cast.filter(role=self.editor).count(), 1)
+        self.assertEqual(Person.objects.count(), 54)
+        self.assertEqual(Person.objects.filter(kinopoisk=None).count(), 0)
+
+    def test_sync_all_roles_of_person(self):
+        kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
+        kp_person.sync(roles='all')
+        self.assertEqual(kp_person.person.career.count(), 287)
+        self.assertEqual(kp_person.person.career.filter(role=self.actor).count(), 275)
+        self.assertEqual(kp_person.person.career.filter(role=self.director).count(), 7)
+        self.assertEqual(kp_person.person.career.filter(role=self.scenarist).count(), 4)
+        self.assertEqual(kp_person.person.career.filter(role=self.editor).count(), 1)
+        self.assertEqual(kp_person.person.career.filter(role=self.writer).count(), 0)
+        self.assertEqual(Movie.objects.count(), 277)
+        self.assertEqual(Movie.objects.filter(kinopoisk=None).count(), 0)
+        self.assertEqual(Movie.objects.filter(title_en='').count(), 0)
+        self.assertEqual(Movie.objects.filter(title_ru='').count(), 0)
+        self.assertEqual(Movie.objects.filter(year=None).count(), 30)  # series
