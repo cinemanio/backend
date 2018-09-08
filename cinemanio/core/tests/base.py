@@ -38,6 +38,14 @@ class BaseTestCase(TestCase):
     def scenarist(self):
         return Role.objects.get_scenarist()
 
+    @property
+    def editor(self):
+        return Role.objects.get_editor()
+
+    @property
+    def writer(self):
+        return Role.objects.get_writer()
+
 
 class VCRMixin(VCRMixinBase):
     pass

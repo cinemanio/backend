@@ -144,9 +144,9 @@ class ImdbMovie(SitesBaseModel, UrlMixin):
 
     objects = ImdbMovieManager()
 
-    def sync(self, roles=False):
+    def sync(self, **kwargs):
         from cinemanio.sites.imdb.importer import ImdbMovieImporter
-        ImdbMovieImporter(self.movie, self.id).get_applied_data(roles=roles)
+        ImdbMovieImporter(self.movie, self.id).get_applied_data(**kwargs)
         super().sync()
 
 
@@ -161,9 +161,9 @@ class ImdbPerson(SitesBaseModel, UrlMixin):
 
     objects = ImdbPersonManager()
 
-    def sync(self, roles=False):
+    def sync(self, **kwargs):
         from cinemanio.sites.imdb.importer import ImdbPersonImporter
-        ImdbPersonImporter(self.person, self.id).get_applied_data(roles=roles)
+        ImdbPersonImporter(self.person, self.id).get_applied_data(**kwargs)
         super().sync()
 
 

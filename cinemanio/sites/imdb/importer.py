@@ -48,7 +48,7 @@ class ImdbImporterBase:
             last, first = '', name_parts[0]
         return last, first
 
-    def apply_remote_data(self, data, roles):
+    def apply_remote_data(self, data, roles, all):
         """
         Update object with remote data
         """
@@ -60,9 +60,9 @@ class ImdbImporterBase:
         """
         raise NotImplementedError
 
-    def get_applied_data(self, roles=False):
+    def get_applied_data(self, roles=False, all=False):
         data = self.get_remote_data()
-        self.apply_remote_data(data, roles=roles)
+        self.apply_remote_data(data, roles=roles, all=all)
         return data
 
 
@@ -75,7 +75,7 @@ class ImdbPersonImporter(ImdbImporterBase):
     def get_imdb_object(self, imdb_id):
         return self.imdb.get_person(imdb_id)
 
-    def apply_remote_data(self, data, roles):
+    def apply_remote_data(self, data, roles, all):
         """
         Update person with remote data
         """
@@ -94,7 +94,7 @@ class ImdbPersonImporter(ImdbImporterBase):
         # if object in database, we can update m2m fields
         if self.object.id:
             if roles:
-                self._add_roles()
+                self._add_roles(all)
 
     def get_remote_data(self):
         """
@@ -138,7 +138,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                 return country.id
         return None
 
-    def _add_roles(self):
+    def _add_roles(self, all):
         """
         Find movies of current person by imdb_id or title:
         1. Trying find movie by imdb_id
@@ -165,21 +165,26 @@ class ImdbPersonImporter(ImdbImporterBase):
                     try:
                         self._create_cast(role, imdb_movie)
                     except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
-                        continue
+                        if all:
+                            movie = self._create_movie(imdb_movie)
+                            self._create_cast(role, imdb_movie, movie)
+                        else:
+                            continue
 
-    def _create_cast(self, role, imdb_movie):
+    def _create_cast(self, role, imdb_movie, movie=None):
         imdb_id = self.imdb.get_imdbID(imdb_movie)
         title = imdb_movie.data['title']
         year = imdb_movie.data.get('year')
-        cast = movie = None
+        cast = None
 
         # if writer has note story or novel, then it must be a
         if role.is_scenarist() and re.search(r'story|novel', imdb_movie.notes):
             role = Role.objects.get_author()
 
         try:
-            # get movie by imdb_id
-            movie = Movie.objects.get(imdb__id=imdb_id)
+            if movie is None:
+                # get movie by imdb_id
+                movie = Movie.objects.get(imdb__id=imdb_id)
             cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
         except Movie.DoesNotExist:
             try:
@@ -193,8 +198,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                 cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
 
         if movie and created:
-            self.logger.info(
-                'Create cast for person %s in movie %s with role %s' % (self.object, movie, role))
+            self.logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}')
 
         if movie:
             ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
@@ -203,6 +207,15 @@ class ImdbPersonImporter(ImdbImporterBase):
         if role.is_actor() and imdb_movie.notes and cast and not cast.name_en:
             cast.name_en = imdb_movie.notes
             cast.save(update_fields=['name_en'])
+
+    def _create_movie(self, imdb_movie):
+        imdb_id = self.imdb.get_imdbID(imdb_movie)
+        title = imdb_movie.data['title']
+        year = imdb_movie.data.get('year')
+        movie = Movie.objects.create(title=title, year=year)
+        ImdbMovie.objects.create(movie=movie, id=imdb_id)
+        self.logger.info(f'Create movie {movie} from person {self.object}')
+        return movie
 
 
 class ImdbMovieImporter(ImdbImporterBase):
@@ -214,7 +227,7 @@ class ImdbMovieImporter(ImdbImporterBase):
     def get_imdb_object(self, imdb_id):
         return self.imdb.get_movie(imdb_id)
 
-    def apply_remote_data(self, data, roles):
+    def apply_remote_data(self, data, roles, all):
         """
         Update movie with remote data
         """
@@ -236,7 +249,7 @@ class ImdbMovieImporter(ImdbImporterBase):
                     set(data[field]) | set(getattr(self.object, field).values_list('id', flat=True)))
 
             if roles:
-                self._add_roles()
+                self._add_roles(all)
 
     def get_remote_data(self):
         """
@@ -328,7 +341,7 @@ class ImdbMovieImporter(ImdbImporterBase):
             self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
         return list(ids)
 
-    def _add_roles(self):
+    def _add_roles(self, all):
         """
         Find persons of current movie by imdb_id or name:
         1. Trying find person by imdb_id
@@ -353,23 +366,28 @@ class ImdbMovieImporter(ImdbImporterBase):
                 try:
                     self._create_cast(role, imdb_person)
                 except (Person.DoesNotExist, Person.MultipleObjectsReturned):
-                    continue
+                    if all:
+                        person = self._create_person(imdb_person)
+                        self._create_cast(role, imdb_person, person)
+                    else:
+                        continue
 
-    def _create_cast(self, role, imdb_person):
+    def _create_cast(self, role, imdb_person, person=None):
         """
         Create or update Cast instance for imdb person
         """
         imdb_id = self.imdb.get_imdbID(imdb_person)
         last, first = self.get_name_parts(imdb_person.data['name'])
-        cast = person = None
+        cast = None
 
         # if writer has note story or novel, then it must be a
         if role.is_scenarist() and re.search(r'story|novel', imdb_person.notes):
             role = Role.objects.get_author()
 
         try:
-            # get person by imdb_id
-            person = Person.objects.get(imdb__id=imdb_id)
+            if person is None:
+                # get person by imdb_id
+                person = Person.objects.get(imdb__id=imdb_id)
             cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
         except Person.DoesNotExist:
             try:
@@ -384,8 +402,7 @@ class ImdbMovieImporter(ImdbImporterBase):
                 cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
 
         if person and created:
-            self.logger.info(
-                'Create role for person %s in movie %s with role %s' % (person, self.object, role))
+            self.logger.info(f'Create cast for person {person} in movie {self.object} with role {role}')
 
         if person:
             ImdbPerson.objects.update_or_create(person=person, defaults={'id': int(imdb_id)})
@@ -404,3 +421,11 @@ class ImdbMovieImporter(ImdbImporterBase):
             elif imdb_person.notes:
                 cast.name_en = imdb_person.notes
             cast.save(update_fields=['name_en'])
+
+    def _create_person(self, imdb_person):
+        imdb_id = self.imdb.get_imdbID(imdb_person)
+        last, first = self.get_name_parts(imdb_person.data['name'])
+        person = Person.objects.create(first_name=first, last_name=last)
+        ImdbPerson.objects.create(person=person, id=imdb_id)
+        self.logger.info(f'Create person {person} from movie {self.object}')
+        return person

@@ -14,6 +14,9 @@ class RoleManager(models.Manager):
     def get_author(self):
         return self.get(id=Role.AUTHOR_ID)
 
+    def get_editor(self):
+        return self.get(id=Role.EDITOR_ID)
+
     def get_operator(self):
         return self.get(id=Role.OPERATOR_ID)
 
@@ -25,6 +28,9 @@ class RoleManager(models.Manager):
 
     def get_producer(self):
         return self.get(id=Role.PRODUCER_ID)
+
+    def get_writer(self):
+        return self.get(id=Role.WRITER_ID)
 
 
 class Role(PropertyModel):

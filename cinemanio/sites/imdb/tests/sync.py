@@ -1,15 +1,18 @@
 import datetime
-from parameterized import parameterized
 from unittest import skip, mock
 
 from imdb.parser.http import IMDbHTTPAccessSystem
+from parameterized import parameterized
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.models import Genre
+from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tasks import sync_movie, sync_person
 from cinemanio.sites.imdb.tests.base import ImdbSyncBaseTest
-from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
+
+Person = PersonFactory._meta.model
+Movie = MovieFactory._meta.model
 
 
 class ImdbSyncTest(ImdbSyncBaseTest):
@@ -192,3 +195,26 @@ class ImdbSyncTest(ImdbSyncBaseTest):
         imdb_movie.sync()
         self.assertEqual(imdb_movie.movie.title, 'Wo hu cang long')
         self.assertEqual(imdb_movie.movie.title_en, 'Crouching Tiger, Hidden Dragon')
+
+    def test_sync_all_roles_of_movie(self):
+        imdb_movie = ImdbMovieFactory(id=64276)  # Easy rider
+        imdb_movie.sync(roles=True, all=True)
+        self.assertEqual(imdb_movie.movie.cast.count(), 58)
+        self.assertEqual(imdb_movie.movie.cast.filter(role=self.actor).count(), 49)
+        self.assertEqual(imdb_movie.movie.cast.filter(role=self.director).count(), 1)
+        self.assertEqual(imdb_movie.movie.cast.filter(role=self.producer).count(), 4)
+        self.assertEqual(imdb_movie.movie.cast.filter(role=self.scenarist).count(), 3)
+        self.assertEqual(imdb_movie.movie.cast.filter(role=self.editor).count(), 1)
+        self.assertEqual(Person.objects.count(), 54)
+        self.assertEqual(Person.objects.exclude(imdb=None).count(), 54)
+
+    def test_sync_all_roles_of_person(self):
+        imdb_person = self.imdb_dennis_hopper()
+        imdb_person.sync(roles=True, all=True)
+        self.assertEqual(imdb_person.person.career.count(), 218)
+        self.assertEqual(imdb_person.person.career.filter(role=self.actor).count(), 204)
+        self.assertEqual(imdb_person.person.career.filter(role=self.director).count(), 9)
+        self.assertEqual(imdb_person.person.career.filter(role=self.scenarist).count(), 4)
+        self.assertEqual(imdb_person.person.career.filter(role=self.writer).count(), 1)
+        self.assertEqual(Movie.objects.count(), 209)
+        self.assertEqual(Movie.objects.exclude(imdb__id=None).count(), 209)
