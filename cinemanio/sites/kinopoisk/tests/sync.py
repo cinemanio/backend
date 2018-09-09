@@ -95,14 +95,14 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
     def test_sync_all_roles_of_person(self):
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
         kp_person.sync(roles='all')
-        self.assertEqual(kp_person.person.career.count(), 267)
-        self.assertEqual(kp_person.person.career.filter(role=self.actor).count(), 252)
+        self.assertEqual(kp_person.person.career.count(), 171)
+        self.assertEqual(kp_person.person.career.filter(role=self.actor).count(), 156)
         self.assertEqual(kp_person.person.career.filter(role=self.director).count(), 9)
         self.assertEqual(kp_person.person.career.filter(role=self.scenarist).count(), 5)
         self.assertEqual(kp_person.person.career.filter(role=self.editor).count(), 1)
         self.assertEqual(kp_person.person.career.filter(role=self.writer).count(), 0)
-        self.assertEqual(Movie.objects.count(), 256)
+        self.assertEqual(Movie.objects.count(), 161)
         self.assertEqual(Movie.objects.filter(kinopoisk=None).count(), 0)
         self.assertEqual(Movie.objects.filter(title_en='').count(), 0)
-        self.assertEqual(Movie.objects.filter(title_ru='').count(), 55)  # non-translated
+        self.assertEqual(Movie.objects.filter(title_ru='').count(), 25)  # non-translated
         self.assertEqual(Movie.objects.filter(year=None).count(), 0)

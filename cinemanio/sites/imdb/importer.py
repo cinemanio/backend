@@ -203,9 +203,10 @@ class ImdbPersonImporter(ImdbImporterBase):
             except Cast.DoesNotExist:
                 try:
                     assert year
-                    # TODO: improve perfomance of this query
                     # get cast by role name and movie year among person's movies
+                    # TODO: improve perfomance of this query
                     cast = self.object.career.get(name_en__iexact=imdb_movie.notes.lower(), role=role,
+                                                  movie__imdb=None,
                                                   movie__year__gte=year - 1,
                                                   movie__year__lte=year + 1)
                     movie = cast.movie
