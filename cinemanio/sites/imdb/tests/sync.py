@@ -1,26 +1,24 @@
 import datetime
 from unittest import skip, mock
+from vcr_unittest import VCRMixin
 
 from imdb.parser.http import IMDbHTTPAccessSystem
 from parameterized import parameterized
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.models import Genre
+from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tasks import sync_movie, sync_person
-from cinemanio.sites.imdb.tests.base import ImdbSyncBaseTest
+from cinemanio.sites.imdb.tests.mixins import ImdbSyncMixin
 
 Person = PersonFactory._meta.model
 Movie = MovieFactory._meta.model
 
 
-class ImdbSyncTest(ImdbSyncBaseTest):
-    fixtures = ImdbSyncBaseTest.fixtures + [
-        'imdb.imdbgenre.json',
-        'imdb.imdbcountry.json',
-        'imdb.imdblanguage.json',
-    ]
+class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
+    fixtures = BaseTestCase.fixtures + ImdbSyncMixin.fixtures
 
     def test_sync_movie_matrix(self):
         imdb_movie = ImdbMovieFactory(id=133093, movie__year=None, movie__title='',
@@ -215,13 +213,13 @@ class ImdbSyncTest(ImdbSyncBaseTest):
     def test_sync_all_roles_of_person(self):
         imdb_person = self.imdb_dennis_hopper()
         imdb_person.sync(roles='all')
-        self.assertEqual(imdb_person.person.career.count(), 218)
-        self.assertEqual(imdb_person.person.career.filter(role=self.actor).count(), 204)
+        self.assertEqual(imdb_person.person.career.count(), 167)
+        self.assertEqual(imdb_person.person.career.filter(role=self.actor).count(), 153)
         self.assertEqual(imdb_person.person.career.filter(role=self.director).count(), 9)
         self.assertEqual(imdb_person.person.career.filter(role=self.scenarist).count(), 4)
         self.assertEqual(imdb_person.person.career.filter(role=self.writer).count(), 1)
-        self.assertEqual(Movie.objects.count(), 209)
+        self.assertEqual(Movie.objects.count(), 158)
         self.assertEqual(Movie.objects.filter(imdb=None).count(), 0)
         self.assertEqual(Movie.objects.filter(title='').count(), 0)
         self.assertEqual(Movie.objects.filter(title_en='').count(), 0)
-        self.assertEqual(Movie.objects.filter(year=None).count(), 6)  # series
+        self.assertEqual(Movie.objects.filter(year=None).count(), 0)

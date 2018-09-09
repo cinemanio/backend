@@ -1,3 +1,6 @@
+import operator
+from functools import reduce
+
 from alphabet_detector import AlphabetDetector
 from django.db.models import Q
 from kinopoisk.movie import Movie as KinoMovie
@@ -5,6 +8,10 @@ from kinopoisk.person import Person as KinoPerson
 
 from cinemanio.core.models import Movie, Genre, Country, Role, Cast
 from cinemanio.images.models import ImageWrongType, ImageType
+
+
+def get_q_filter(**kwargs):
+    return reduce(operator.or_, [Q(**{name: value}) for name, value in kwargs.items() if value])
 
 
 class SyncBase:
@@ -67,8 +74,8 @@ class PersonSyncMixin(SyncBase):
             'director': Role.DIRECTOR_ID,
             'writer': Role.SCENARIST_ID,
             'editor': Role.EDITOR_ID,
-            'hrono_titr_male': None,
-            'himself': Role.ACTOR_ID,
+            'hrono_titr_male': Role.ACTOR_ID,  # Актер: Хроника, В титрах не указан
+            # 'himself': Role.ACTOR_ID,
         }
         for role_key, person_roles in self.remote_obj.career.items():
             role_id = role_map.get(role_key, None)
@@ -79,7 +86,8 @@ class PersonSyncMixin(SyncBase):
                 try:
                     self.create_cast(role, person_role)
                 except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
-                    if roles == 'all':
+                    # skip series
+                    if roles == 'all' and not person_role.movie.series:
                         movie = self.create_movie(person_role)
                         self.create_cast(role, person_role, movie)
                     else:
@@ -98,16 +106,16 @@ class PersonSyncMixin(SyncBase):
                 try:
                     # get movie by name among person's movies
                     cast = self.person.career.get(
-                        Q(movie__title_en=person_role.movie.title_en) |
-                        Q(movie__title_ru=person_role.movie.title),
+                        get_q_filter(movie__title_en=person_role.movie.title_en,
+                                     movie__title_ru=person_role.movie.title),
                         movie__year=person_role.movie.year, role=role)
                     movie = cast.movie
                     created = False
                 except Cast.DoesNotExist:
                     # get movie by name among all movies
                     movie = Movie.objects.get(
-                        Q(title_en=person_role.movie.title_en) |
-                        Q(title_ru=person_role.movie.title),
+                        get_q_filter(title_en=person_role.movie.title_en,
+                                     title_ru=person_role.movie.title),
                         year=person_role.movie.year, kinopoisk=None)
                     cast, created = Cast.objects.get_or_create(person=self.person, movie=movie, role=role)
 

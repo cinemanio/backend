@@ -6,16 +6,14 @@ from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.core.models import Genre
 from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory, KinopoiskPersonFactory
+from cinemanio.sites.kinopoisk.tests.mixins import KinopoiskSyncMixin
 
 Person = PersonFactory._meta.model
 Movie = MovieFactory._meta.model
 
 
-class KinopoiskSyncTest(VCRMixin, BaseTestCase):
-    fixtures = BaseTestCase.fixtures + [
-        'kinopoisk.kinopoiskgenre.json',
-        'kinopoisk.kinopoiskcountry.json',
-    ]
+class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
+    fixtures = BaseTestCase.fixtures + KinopoiskSyncMixin.fixtures
 
     def test_movie_matrix(self):
         kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None, movie__title_en=None,
@@ -65,16 +63,6 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
         kp_person.sync_career()
         self.assert_dennis_hopper_career(kp_person, kp_movie1.movie, kp_movie2.movie)
 
-    def assert_dennis_hopper_career(self, kp_person, movie1, movie2):
-        career = kp_person.person.career
-        self.assertEqual(movie1.kinopoisk.id, 4220)
-        self.assertEqual(movie2.kinopoisk.id, 4149)
-        self.assertEqual(career.count(), 4)
-        self.assertTrue(career.get(movie=movie1, role=self.director))
-        self.assertTrue(career.get(movie=movie1, role=self.scenarist))
-        self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, 'Billy')
-        self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
-
     def test_add_posters_to_movie(self):
         kp_movie = KinopoiskMovieFactory(id=161018)  # Les amants réguliers
         kp_movie.sync_images()
@@ -107,14 +95,14 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase):
     def test_sync_all_roles_of_person(self):
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper
         kp_person.sync(roles='all')
-        self.assertEqual(kp_person.person.career.count(), 287)
-        self.assertEqual(kp_person.person.career.filter(role=self.actor).count(), 275)
-        self.assertEqual(kp_person.person.career.filter(role=self.director).count(), 7)
-        self.assertEqual(kp_person.person.career.filter(role=self.scenarist).count(), 4)
+        self.assertEqual(kp_person.person.career.count(), 267)
+        self.assertEqual(kp_person.person.career.filter(role=self.actor).count(), 252)
+        self.assertEqual(kp_person.person.career.filter(role=self.director).count(), 9)
+        self.assertEqual(kp_person.person.career.filter(role=self.scenarist).count(), 5)
         self.assertEqual(kp_person.person.career.filter(role=self.editor).count(), 1)
         self.assertEqual(kp_person.person.career.filter(role=self.writer).count(), 0)
-        self.assertEqual(Movie.objects.count(), 277)
+        self.assertEqual(Movie.objects.count(), 256)
         self.assertEqual(Movie.objects.filter(kinopoisk=None).count(), 0)
         self.assertEqual(Movie.objects.filter(title_en='').count(), 0)
-        self.assertEqual(Movie.objects.filter(title_ru='').count(), 0)
-        self.assertEqual(Movie.objects.filter(year=None).count(), 30)  # series
+        self.assertEqual(Movie.objects.filter(title_ru='').count(), 55)  # non-translated
+        self.assertEqual(Movie.objects.filter(year=None).count(), 0)

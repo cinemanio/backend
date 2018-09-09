@@ -22,7 +22,7 @@ django-celery-results = "*"
 django-celery-beat = "*"
 celery = "~=4.2.1"
 celerymon = "*"
-kinopoiskpy = "*"
+kinopoiskpy = "~=0.7.7"
 alphabet-detector = "*"
 graphene-django = {git = "https://github.com/graphql-python/graphene-django", editable = true}
 imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}

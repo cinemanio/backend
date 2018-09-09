@@ -1,11 +1,16 @@
 from datetime import date
 
-from cinemanio.core.tests.base import BaseTestCase
 from cinemanio.sites.imdb.factories import ImdbPersonFactory
 
 
-class ImdbSyncBaseTest(BaseTestCase):
+class ImdbSyncMixin:
     USA_ID = 69
+
+    fixtures = [
+        'imdb.imdbgenre.json',
+        'imdb.imdbcountry.json',
+        'imdb.imdblanguage.json',
+    ]
 
     def imdb_dennis_hopper(self):
         return ImdbPersonFactory(id=454, person__country=None, person__first_name_en='', person__last_name_en='')
