@@ -318,7 +318,7 @@
         "kinopoiskpy": {
             "editable": true,
             "git": "https://github.com/ramusus/kinopoiskpy",
-            "ref": "8ae3d9ddca7de5b64930e68ffc9e6fcbebe8c200"
+            "ref": "590e12105edfc8431bac9bfb025966bb44b6b7d0"
         },
         "kombu": {
             "hashes": [
