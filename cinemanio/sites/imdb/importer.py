@@ -374,6 +374,7 @@ class ImdbMovieImporter(ImdbImporterBase):
             (Role.PRODUCER_ID, 'producers'),
             (Role.EDITOR_ID, 'editors'),
             (Role.SCENARIST_ID, 'writers'),
+            (Role.OPERATOR_ID, 'cinematographers'),
         )
         for role_id, imdb_key in role_list:
             role = Role.objects.get(id=role_id)

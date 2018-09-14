@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "26d1f2040d190415430399052525ed4a43ad58f204c4708bb1ca4218ff104b11"
+            "sha256": "9878a3ec70b29bef9e2525923c00070d7a5522c834424a46ebe41c796e821f6d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -59,18 +59,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:45a24345e3f65c9a472b5e5058e7c882afe556406f0b516e4668fef3231319cf",
-                "sha256:f09cd3ca8f3906452e1442063ab504ea80eab4757b19dfeeb127a11b6639fe75"
+                "sha256:2152e0da8098665e6a03bbbde1de1b4fafdef7151010d1f0e53693a3f2a1deb0",
+                "sha256:323660fd1aa9c95fe90003f44c5fc37cbb891a8b506fa346967d14edcbcb90a4"
             ],
             "index": "pypi",
-            "version": "==1.9.3"
+            "version": "==1.9.4"
         },
         "botocore": {
             "hashes": [
-                "sha256:2a96d07e19b73d858db51d42704d5de46cfc93d6b4e4ed29d60d3d7205e6e46d",
-                "sha256:7b56b5ca3a3917be7af26bdbf6d7da99f7319652dfe60774a4ae14fb1eaeb5e6"
+                "sha256:7834eba53c6bedea21eb76f25a39e477dede3a24aeb51ff19c0248ea8348f007"
             ],
-            "version": "==1.12.3"
+            "version": "==1.12.4"
         },
         "celery": {
             "hashes": [
@@ -317,11 +316,9 @@
             "version": "==0.9.3"
         },
         "kinopoiskpy": {
-            "hashes": [
-                "sha256:9334796db86f20d11ae7a1f176708d9b3387fb944265f6424637298210fe1eb5"
-            ],
-            "index": "pypi",
-            "version": "==0.7.9"
+            "editable": true,
+            "git": "https://github.com/ramusus/kinopoiskpy",
+            "ref": "8ae3d9ddca7de5b64930e68ffc9e6fcbebe8c200"
         },
         "kombu": {
             "hashes": [
@@ -718,10 +715,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:ea7cfd3aeb1544732d08bd9cfba40c5b78e3a91e17b1a0698ab81bfc5554c628",
-                "sha256:f6d67f04abfb2b4bea7afc7fa6c18cf4c523a67956e455668be9ae42bccc21ad"
+                "sha256:74b32991f8e08e4f2f84858b919eca253becfaec4b3fa5fcff7fdbd70d5d78b1",
+                "sha256:c2ce42dd8361e6d392276006d757532562463c8642b1086709584200b7fd7758"
             ],
-            "version": "==0.9.0"
+            "markers": "python_version != '3.0.*' and python_version >= '2.7' and python_version != '3.1.*' and python_version != '3.2.*'",
+            "version": "==0.9.1"
         },
         "flake8": {
             "hashes": [
@@ -1032,7 +1030,7 @@
                 "sha256:f17495e6fe3d377e3faac68121caef6f974fcb9e046bc075bcff40d8e5cc69a4",
                 "sha256:f85900b9cca0c67767bb61b2b9bd53208aaa7373dae633dbe25d179b4bf38aa7"
             ],
-            "markers": "python_version >= '3.4'",
+            "markers": "python_version >= '3.4.1'",
             "version": "==1.2.6"
         }
     }

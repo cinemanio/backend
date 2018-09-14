@@ -79,18 +79,28 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
         kp_person.sync_images()
         self.assertEqual(kp_person.person.images.count(), 1)
 
-    @skip('not implemented in kinopoiskpy')
     def test_sync_all_roles_of_movie(self):
         kp_movie = KinopoiskMovieFactory(id=4220)  # Easy rider
         kp_movie.sync(roles='all')
-        self.assertEqual(kp_movie.movie.cast.count(), 58)
+        self.assertEqual(kp_movie.movie.cast.count(), 60)
         self.assertEqual(kp_movie.movie.cast.filter(role=self.actor).count(), 49)
         self.assertEqual(kp_movie.movie.cast.filter(role=self.director).count(), 1)
         self.assertEqual(kp_movie.movie.cast.filter(role=self.producer).count(), 4)
         self.assertEqual(kp_movie.movie.cast.filter(role=self.scenarist).count(), 3)
+        self.assertEqual(kp_movie.movie.cast.filter(role=self.operator).count(), 2)
         self.assertEqual(kp_movie.movie.cast.filter(role=self.editor).count(), 1)
-        self.assertEqual(Person.objects.count(), 54)
+        self.assertEqual(Person.objects.count(), 56)
         self.assertEqual(Person.objects.filter(kinopoisk=None).count(), 0)
+        self.assertEqual(Person.objects.filter(first_name='').count(), 0)
+        self.assertEqual(Person.objects.filter(last_name='').count(), 0)
+        self.assertEqual(Person.objects.filter(first_name_en='').count(), 0)
+        self.assertEqual(Person.objects.filter(last_name_en='').count(), 0)
+        self.assertEqual(Person.objects.filter(first_name_ru='').count(), 0)
+        self.assertEqual(Person.objects.filter(last_name_ru='').count(), 0)
+
+        cast = kp_movie.movie.cast.get(person__kinopoisk__id=94668)
+        self.assertEqual(cast.name_en, 'Biker')
+        self.assertEqual(cast.name_ru, '')
 
     def test_sync_all_roles_of_person(self):
         kp_person = KinopoiskPersonFactory(id=9843)  # Dennis Hopper

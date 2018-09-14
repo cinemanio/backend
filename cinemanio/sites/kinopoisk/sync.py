@@ -6,12 +6,17 @@ from django.db.models import Q
 from kinopoisk.movie import Movie as KinoMovie
 from kinopoisk.person import Person as KinoPerson
 
-from cinemanio.core.models import Movie, Genre, Country, Role, Cast
+from cinemanio.core.models import Movie, Person, Genre, Country, Role, Cast
 from cinemanio.images.models import ImageWrongType, ImageType
 
 
-def get_q_filter(**kwargs):
-    return reduce(operator.or_, [Q(**{name: value}) for name, value in kwargs.items() if value])
+def get_q_filter(*args, **kwargs):
+    q_list = []
+    if args:
+        q_list = [Q(**arg) for arg in args if ''.join(arg.values())]
+    elif kwargs:
+        q_list = [Q(**{name: value}) for name, value in kwargs.items() if value]
+    return reduce(operator.or_, q_list)
 
 
 class SyncBase:
@@ -36,6 +41,13 @@ class SyncBase:
                 self.logger.info(f'Found already downloaded image "{url}" for {instance}')
         except ImageWrongType:
             self.logger.error(f'Error saving image. Need jpeg, not "{url}"')
+
+    def get_name_parts(self, name):
+        """
+        Split name to first and last components
+        """
+        name_parts = name.split(' ')
+        return ' '.join(name_parts[:-1]), name_parts[-1]
 
 
 class PersonSyncMixin(SyncBase):
@@ -134,6 +146,7 @@ class PersonSyncMixin(SyncBase):
             if not getattr(cast, field_name):
                 setattr(cast, field_name, person_role.name)
                 cast.save(update_fields=[field_name])
+
         return cast
 
     def create_movie(self, person_role):
@@ -209,7 +222,7 @@ class MovieSyncMixin(SyncBase):
     def sync_trailers(self):
         pass
 
-    def sync_cast(self):
+    def sync_cast(self, roles=True):
         """
         Find persons of current movie by kinopoisk_id or name:
         1. Trying find person by kinopoisk_id
@@ -217,60 +230,90 @@ class MovieSyncMixin(SyncBase):
         3. Trying find person by name among all persons
         If found update kinopoisk_id of person, create/update role and role's name_en
         """
-        # self.remote_obj.get_content('cast')
+        self.remote_obj.get_content('cast')
+        role_map = {
+            'actor': Role.ACTOR_ID,
+            'director': Role.DIRECTOR_ID,
+            'writer': Role.SCENARIST_ID,
+            'editor': Role.EDITOR_ID,
+            'producer': Role.PRODUCER_ID,
+            'composer': Role.COMPOSER_ID,
+            'operator': Role.OPERATOR_ID,
+        }
+        for role_key, person_roles in self.remote_obj.cast.items():
+            role_id = role_map.get(role_key, None)
+            if role_id is None:
+                continue
+            role = Role.objects.get(id=role_id)
+            for person_role in person_roles:
+                try:
+                    self.create_cast(role, person_role)
+                except (Person.DoesNotExist, Person.MultipleObjectsReturned):
+                    if roles == 'all':
+                        person = self.create_person(person_role)
+                        self.create_cast(role, person_role, person)
+                    else:
+                        continue
 
-#         role_list = (
-#             (DIRECTOR_ID, 'director'),
-#             (ACTOR_ID, 'cast'),
-#             (PRODUCER_ID, 'producer'),
-#             (EDITOR_ID, 'editor'),
-#             (SCENARIST_ID, 'writer'),
-#         )
-#         for role_id, imdb_key in role_list:
-#             role = Role.objects.get(id=role_id)
-#             for imdb_person in self.imdb_object.data.get(imdb_key, []):
-#                 imdb_id = self.imdb.get_imdbID(imdb_person)
-#                 last, first = self.get_name_parts(imdb_person.data['name'])
-#                 cast = person = None
-#
-#                 # if writer has note story or novel, then it must be a
-#                 if role.is_scenarist() and re.search(r'story|novel', imdb_person.notes):
-#                     role = Role.objects.get_author()
-#
-#                 try:
-#                     # get person by imdb_id
-#                     person = Person.objects.get(imdb__id=imdb_id)
-#                     cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
-#                 except Person.DoesNotExist:
-#                     try:
-#                         # get person by name among movie's persons and save imdb_id for future
-#                         cast = self.object.cast.get(person__first_name_en=first, person__last_name_en=last, role=role)
-#                         person = cast.person
-#                         created = False
-#                     except Cast.DoesNotExist:
-#                         try:
-#                             # get person by name among all persons
-#                             person = Person.objects.get(first_name_en=first, last_name_en=last, imdb__id=None)
-#                             cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
-#                         except (Person.DoesNotExist, Person.MultipleObjectsReturned):
-#                             continue
-#
-#                 if person and created:
-#                     self.logger.info(
-#                         'Create role for person %s in movie %s with role %s' % (person, self.object, role))
-#
-#                 # save imdb_id for future
-#                 if person and not person.imdb.id:
-#                     person.imdb.id = imdb_id
-#                     person.save(update_fields=['imdb_id'])
-#
-#                 # save name of role for actors
-#                 if role.is_actor() and imdb_person.currentRole and cast and not cast.name_en:
-#                     if isinstance(imdb_person.currentRole, RolesList):
-#                         # may be it's better to make to different roles
-#                         # test movie http://www.imdb.com/title/tt0453249/
-#                         cast.name_en = ' / '.join(
-#                             [cr.data['name'] for cr in imdb_person.currentRole if cr.data.get('name')])
-#                     elif isinstance(imdb_person.currentRole, Character):
-#                         cast.name_en = imdb_person.currentRole.data['name']
-#                     cast.save(update_fields=['name_en'])
+    def create_cast(self, role, person_role, person=None):
+        cast = created = None
+
+        try:
+            if person is None:
+                # get person by kinopoisk_id
+                person = Person.objects.get(kinopoisk__id=person_role.person.id)
+            cast, created = Cast.objects.get_or_create(movie=self.movie, person=person, role=role)
+        except Person.DoesNotExist:
+            if person_role.person.name or person_role.person.name_en:
+                first_ru, last_ru = self.get_name_parts(person_role.person.name)
+                first_en, last_en = self.get_name_parts(person_role.person.name_en)
+                try:
+                    # get person by name among movie's persons
+                    cast = self.movie.cast.get(
+                        get_q_filter(dict(person__first_name_ru=first_ru, person__last_name_ru=last_ru),
+                                     dict(person__first_name_en=first_en, person__last_name_en=last_en)),
+                        role=role)
+                    person = cast.person
+                    created = False
+                except Cast.DoesNotExist:
+                    # get person by name among all persons
+                    person = Person.objects.get(
+                        get_q_filter(dict(first_name_ru=first_ru, last_name_ru=last_ru),
+                                     dict(first_name_en=first_en, last_name_en=last_en)),
+                        kinopoisk=None)
+                    cast, created = Cast.objects.get_or_create(movie=self.movie, person=person, role=role)
+
+        if person and created:
+            self.logger.info(f'Create cast for movie {self.movie} of person {person} with role {role}')
+
+        # save kinopoisk ID for person
+        if person:
+            from cinemanio.sites.kinopoisk.models import KinopoiskPerson
+            KinopoiskPerson.objects.update_or_create(person=person, defaults={'id': person_role.person.id})
+
+        # save notes of role
+        if person_role.name and cast:
+            ad = AlphabetDetector()
+            field_name = 'name_ru' if ad.is_cyrillic(person_role.name) else 'name_en'
+            if not getattr(cast, field_name):
+                setattr(cast, field_name, person_role.name)
+                cast.save(update_fields=[field_name])
+
+        return cast
+
+    def create_person(self, person_role):
+        from cinemanio.sites.kinopoisk.models import KinopoiskPerson
+        first_ru, last_ru = self.get_name_parts(person_role.person.name)
+        first_en, last_en = self.get_name_parts(person_role.person.name_en)
+        person = Person.objects.create(
+            first_name_ru=first_ru,
+            last_name_ru=last_ru,
+            first_name_en=first_en,
+            last_name_en=last_en,
+        )
+        if person_role.person.name_en == '':
+            person.set_transliteratable_fields()
+            person.save()
+        KinopoiskPerson.objects.create(person=person, id=person_role.person.id)
+        self.logger.info(f'Create person {person} from movie {self.movie}')
+        return person

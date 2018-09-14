@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from transliterate import translit
+from transliterate.base import registry
+
+from cinemanio.core.translit.ru import RussianLanguagePack
+
+registry.register(RussianLanguagePack)
 
 
 class BaseModel(models.Model):
