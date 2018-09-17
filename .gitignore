@@ -1,8 +1,8 @@
-db.sqlite3
-.env*
-static
-images
+/db.sqlite3
+/.env*
+/static
+/images
 
-cinemanio/migration/
-cinemanio/sites/movister/
-cinemanio/settings_migration.py
+/cinemanio/migration/
+/cinemanio/sites/movister/
+/cinemanio/settings_migration.py

@@ -1,6 +1,5 @@
 from parameterized import parameterized
 from vcr_unittest import VCRMixin
-from unittest import skip
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.core.models import Genre
