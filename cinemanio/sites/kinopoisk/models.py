@@ -41,7 +41,7 @@ class KinopoiskMovie(KinopoiskBase, UrlMixin, MovieSyncMixin):
         if details:
             self.sync_details()
         if roles:
-            self.sync_cast()
+            self.sync_cast(roles)
         if images:
             self.sync_images()
         if trailers:

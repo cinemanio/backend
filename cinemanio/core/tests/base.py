@@ -43,6 +43,10 @@ class BaseTestCase(TestCase):
         return Role.objects.get_editor()
 
     @property
+    def operator(self):
+        return Role.objects.get_operator()
+
+    @property
     def writer(self):
         return Role.objects.get_writer()
 
