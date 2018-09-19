@@ -15,7 +15,7 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
     fixtures = BaseTestCase.fixtures + KinopoiskSyncMixin.fixtures
 
     def test_movie_matrix(self):
-        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None, movie__title_en=None,
+        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None, movie__title_en='',
                                           movie__genres=[], movie__countries=[])
         kinopoisk.sync_details()
 
@@ -25,10 +25,18 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
 
         self.assertEqual(kinopoisk.movie.title_ru, 'Матрица')
         self.assertEqual(kinopoisk.movie.title_en, 'The Matrix')
+        self.assertEqual(kinopoisk.movie.title_original, 'The Matrix')
         self.assertEqual(kinopoisk.movie.year, 1999)
         self.assertEqual(kinopoisk.movie.runtime, 136)
         self.assertQuerysetEqual(kinopoisk.movie.genres.all(), ['Action', 'Sci-Fi'])
         self.assertQuerysetEqual(kinopoisk.movie.countries.all(), ['USA'])
+
+    def test_movie_solaris(self):
+        kp_movie = KinopoiskMovieFactory(id=43911, movie__title_en='')
+        kp_movie.sync_details()
+        self.assertEqual(kp_movie.movie.title_ru, 'Солярис')
+        self.assertEqual(kp_movie.movie.title_en, '')
+        self.assertEqual(kp_movie.movie.title_original, 'Солярис')
 
     def test_movie_with_genres_matrix(self):
         kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None)

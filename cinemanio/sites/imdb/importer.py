@@ -215,6 +215,11 @@ class ImdbPersonImporter(ImdbImporterBase):
                     # get cast by movie name and year among all movies
                     movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
                     cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
+                else:
+                    # update movie to make it more imdb friendly
+                    movie.title_en = title
+                    movie.year = year
+                    movie.save()
 
         if movie and created:
             self.logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}')
@@ -253,11 +258,13 @@ class ImdbMovieImporter(ImdbImporterBase):
         if data.get('imdb_rating', None):
             self.object.imdb.rating = data['imdb_rating']
 
-        for field in ['runtime']:
+        # fields should be updated even if there is value
+        for field in ['title_en', 'year', 'runtime']:
             if data.get(field, None) is not None:
                 setattr(self.object, field, data[field])
 
-        for field in ['title_en', 'title_ru', 'title', 'year']:
+        # fields should be updated only if there is no value
+        for field in ['title_ru', 'title_original']:
             if data.get(field, None) is not None and not getattr(self.object, field):
                 setattr(self.object, field, data[field])
 
@@ -282,7 +289,7 @@ class ImdbMovieImporter(ImdbImporterBase):
 
         data = {
             'imdb_id': self.imdb_object.movieID,
-            'title': self.imdb_object.data.get('title'),
+            'title_original': self.imdb_object.data.get('title'),
             'title_ru': self._get_title('ru'),
             'title_en': self._get_title('en'),
             # 'russia_start': self._get_russia_start(self.imdb),

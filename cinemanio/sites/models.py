@@ -11,18 +11,3 @@ class SitesBaseModel(models.Model):
 
     def sync(self, **_):
         self.synced_at = timezone.now()
-
-# In [2]: WikipediaPage.objects.count()
-# Out[2]: 0
-#
-# In [3]: ImdbMovie.objects.count()
-# Out[3]: 594
-#
-# In [4]: ImdbPerson.objects.count()
-# Out[4]: 317
-#
-# In [5]: KinopoiskMovie.objects.count()
-# Out[5]: 291
-#
-# In [6]: KinopoiskPerson.objects.count()
-# Out[6]: 0
