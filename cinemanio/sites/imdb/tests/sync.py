@@ -191,7 +191,7 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
     def test_movie_title_en(self):
         imdb_movie = ImdbMovieFactory(id=190332)
         imdb_movie.sync()
-        self.assertEqual(imdb_movie.movie.title, 'Wo hu cang long')
+        self.assertEqual(imdb_movie.movie.title_original, 'Wo hu cang long')
         self.assertEqual(imdb_movie.movie.title_en, 'Crouching Tiger, Hidden Dragon')
 
     def test_sync_all_roles_of_movie(self):

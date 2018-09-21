@@ -289,9 +289,9 @@ class ImdbMovieImporter(ImdbImporterBase):
 
         data = {
             'imdb_id': self.imdb_object.movieID,
-            'title_original': self.imdb_object.data.get('title'),
+            'title_en': self.imdb_object.data.get('title'),
             'title_ru': self._get_title('ru'),
-            'title_en': self._get_title('en'),
+            # 'title_original': self._get_title('en'),
             # 'russia_start': self._get_russia_start(self.imdb),
             'year': self.imdb_object.data.get('year'),
             'imdb_rating': self.imdb_object.data.get('rating'),
