@@ -61,5 +61,5 @@ class ListQueryBaseTestCase(QueryBaseTestCase):
 
 
 class ObjectQueryBaseTestCase(QueryBaseTestCase):
-    def assert_m2m_rel(self, result, queryset, fieldname='name'):
-        self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name', flat=True)))
+    def assert_m2m_rel(self, result, queryset, fieldname='nameEn'):
+        self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name_en', flat=True)))

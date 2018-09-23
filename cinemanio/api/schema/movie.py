@@ -19,7 +19,7 @@ class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesM
         model = Movie
         only_fields = (
             'id',
-            'title', 'title_en', 'title_ru',
+            'title_en', 'title_ru', 'title_original',
             'year', 'runtime', 'award',
             'genres', 'countries', 'languages',
             'sequel_for', 'prequel_for', 'remake_for',

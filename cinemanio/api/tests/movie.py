@@ -14,10 +14,10 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
         query = '''
             query Movie($id: ID!) {
               movie(id: $id) {
-                id, title
-                genres { name }
-                countries { name }
-                languages { name }
+                id
+                genres { nameEn }
+                countries { nameEn }
+                languages { nameEn }
               }
             }
         '''
@@ -32,43 +32,33 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
 
     def test_movie_with_related_movie(self):
         m = MovieFactory(prequel_for=MovieFactory(), sequel_for=MovieFactory(), remake_for=MovieFactory())
+        global_id = to_global_id(MovieNode._meta.name, m.id)
         prequel_id = to_global_id(MovieNode._meta.name, m.prequel_for.id)
         sequel_id = to_global_id(MovieNode._meta.name, m.sequel_for.id)
         remake_id = to_global_id(MovieNode._meta.name, m.remake_for.id)
         query = '''
             query Movie($id: ID!) {
               movie(id: $id) {
-                id, title, year, runtime
-                prequelFor { id, title, year, runtime }
-                sequelFor { id, title, year, runtime }
-                remakeFor { id, title, year, runtime }
+                id, year
+                prequelFor { id, year }
+                sequelFor { id, year }
+                remakeFor { id, year }
               }
             }
         '''
         with self.assertNumQueries(1):
-            result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
-        self.assertEqual(result['movie']['title'], m.title)
-        self.assertEqual(result['movie']['year'], m.year)
-        self.assertEqual(result['movie']['runtime'], m.runtime)
+            result = self.execute(query, dict(id=global_id))
+        self.assertEqual(result['movie']['id'], global_id)
         self.assertEqual(result['movie']['prequelFor']['id'], prequel_id)
-        self.assertEqual(result['movie']['prequelFor']['title'], m.prequel_for.title)
-        self.assertEqual(result['movie']['prequelFor']['year'], m.prequel_for.year)
-        self.assertEqual(result['movie']['prequelFor']['runtime'], m.prequel_for.runtime)
         self.assertEqual(result['movie']['sequelFor']['id'], sequel_id)
-        self.assertEqual(result['movie']['sequelFor']['title'], m.sequel_for.title)
-        self.assertEqual(result['movie']['sequelFor']['year'], m.sequel_for.year)
-        self.assertEqual(result['movie']['sequelFor']['runtime'], m.sequel_for.runtime)
         self.assertEqual(result['movie']['remakeFor']['id'], remake_id)
-        self.assertEqual(result['movie']['remakeFor']['title'], m.remake_for.title)
-        self.assertEqual(result['movie']['remakeFor']['year'], m.remake_for.year)
-        self.assertEqual(result['movie']['remakeFor']['runtime'], m.remake_for.runtime)
 
     def test_movie_with_related_sites(self):
         m = ImdbMovieFactory(movie=KinopoiskMovieFactory().movie).movie
         query = '''
             query Movie($id: ID!) {
               movie(id: $id) {
-                id, title
+                id
                 imdb { id, rating, votes, url }
                 kinopoisk { id, rating, votes, info, url }
               }
@@ -91,7 +81,7 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
         query = '''
             query Movie($id: ID!) {
               movie(id: $id) {
-                id, title
+                id
                 imdb { id, rating, votes }
                 kinopoisk { id, rating, votes, info }
               }
@@ -110,13 +100,13 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
         query = '''
             query Movie($id: ID!, $role: ID!) {
               movie(id: $id) {
-                id, title
+                id
                 cast(role: $role) {
                   edges {
                     node {
                       name
-                      person { firstName, lastName }
-                      role { name }
+                      person { firstNameEn, lastNameEn }
+                      role { nameEn }
                     }
                   }
                 }

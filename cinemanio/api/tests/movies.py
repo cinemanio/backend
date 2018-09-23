@@ -20,11 +20,11 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               movies {
                 edges {
                   node {
-                    title, year, runtime
+                    id
                     prequelFor { id }
-                    genres { name }
-                    countries { name }
-                    languages { name }
+                    genres { id }
+                    countries { id }
+                    languages { id }
                   }
                 }
               }
@@ -40,8 +40,8 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               movies {
                 edges {
                   node {
-                    title, year, runtime
-                    prequelFor { id }
+                    year, runtime
+                    prequelFor { year, runtime }
                     ...MovieShort
                   }
                 }
@@ -53,13 +53,13 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               ...MovieInfoLanguages
             }
             fragment MovieInfoGenres on MovieNode {
-              genres { name }
+              genres { nameEn }
             }
             fragment MovieInfoCountries on MovieNode {
-              countries { name }
+              countries { nameEn }
             }
             fragment MovieInfoLanguages on MovieNode {
-              languages { name }
+              languages { nameEn }
             }
         '''
         with self.assertNumQueries(5):
@@ -73,7 +73,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               movies(year: $year) {
                 edges {
                   node {
-                    title
+                    id
                   }
                 }
               }
@@ -98,7 +98,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               movies(%s: $rels) {
                 edges {
                   node {
-                    title
+                    id
                   }
                 }
               }
@@ -118,7 +118,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               movies(countries: $rels) {
                 edges {
                   node {
-                    title
+                    id
                   }
                 }
               }

@@ -17,27 +17,23 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             query Person($id: ID!) {
               person(id: $id) {
                 id, gender
-                name, firstName, lastName
                 nameEn, firstNameEn, lastNameEn
                 nameRu, firstNameRu, lastNameRu
                 dateBirth, dateDeath
-                country { name }
-                roles { name }
+                country { nameEn }
+                roles { nameEn }
               }
             }
         '''
         with self.assertNumQueries(2):
             result = self.execute(query, dict(id=p_id))
         self.assertEqual(result['person']['id'], p_id)
-        self.assertEqual(result['person']['name'], p.name)
         self.assertEqual(result['person']['nameEn'], p.name_en)
         self.assertEqual(result['person']['nameRu'], p.name_ru)
-        self.assertEqual(result['person']['firstName'], p.first_name)
-        self.assertEqual(result['person']['lastName'], p.last_name)
         self.assertEqual(result['person']['gender'], Gender.MALE.name)
         self.assertEqual(result['person']['dateBirth'], p.date_birth.strftime('%Y-%m-%d'))
         self.assertEqual(result['person']['dateDeath'], p.date_death.strftime('%Y-%m-%d'))
-        self.assertEqual(result['person']['country']['name'], p.country.name)
+        self.assertEqual(result['person']['country']['nameEn'], p.country.name_en)
         self.assertGreater(len(result['person']['roles']), 0)
         self.assert_m2m_rel(result['person']['roles'], p.roles)
 
@@ -46,7 +42,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         query = '''
             query Person($id: ID!) {
               person(id: $id) {
-                id, firstName, lastName
+                id
                 imdb { id, url }
                 kinopoisk { id, info, url }
               }
@@ -65,7 +61,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         query = '''
             query Person($id: ID!) {
               person(id: $id) {
-                id, firstName, lastName
+                id
                 imdb { id }
                 kinopoisk { id, info }
               }
@@ -84,13 +80,13 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
         query = '''
             query Person($id: ID!, $role: ID!) {
               person(id: $id) {
-                id, firstName, lastName
+                id
                 career(role: $role) {
                   edges {
                     node {
                       name
-                      movie { title }
-                      role { name }
+                      movie { titleEn }
+                      role { nameEn }
                     }
                   }
                 }
