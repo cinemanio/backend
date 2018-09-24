@@ -33,14 +33,15 @@ class SyncBase:
         return self._remote_obj
 
     def sync_image(self, url, instance, **kwargs):
+        extra = dict(url=url, instance=instance)
         try:
             downloaded = instance.images.get_or_download(url, **kwargs)[1]
             if downloaded:
-                self.logger.info(f'Image "{url}" downloaded for {instance} successfully')
+                self.logger.info('Image downloaded successfully', extra=extra)
             else:
-                self.logger.info(f'Found already downloaded image "{url}" for {instance}')
+                self.logger.info('Found already downloaded image', extra=extra)
         except ImageWrongType:
-            self.logger.error(f'Error saving image. Need jpeg, not "{url}"')
+            self.logger.error('Error saving image. Need jpeg', extra=extra)
 
     def get_name_parts(self, name):
         """
@@ -67,7 +68,8 @@ class PersonSyncMixin(SyncBase):
         for url in self.remote_obj.photos:
             self.sync_image(url, self.person, type=ImageType.PHOTO)
 
-        self.logger.info(f'{len(self.remote_obj.photos)} photos imported successfully for person {self.person}')
+        self.logger.info(f'Photos were imported successfully for person {self.person}',
+                         extra=dict(count=len(self.remote_obj.photos), person=self.person.id))
 
     def sync_trailers(self):
         pass
@@ -132,7 +134,8 @@ class PersonSyncMixin(SyncBase):
                     cast, created = Cast.objects.get_or_create(person=self.person, movie=movie, role=role)
 
         if movie and created:
-            self.logger.info(f'Create cast for person {self.person} in movie {movie} with role {role}')
+            self.logger.info(f'Create cast for person {self.person} in movie {movie} with role {role}',
+                             extra=dict(person=self.person.id, movie=movie.id, role=role.id))
 
         # save kinopoisk ID for movie
         if movie:
@@ -158,7 +161,8 @@ class PersonSyncMixin(SyncBase):
             year=person_role.movie.year,
         )
         KinopoiskMovie.objects.create(movie=movie, id=person_role.movie.id)
-        self.logger.info(f'Create movie {movie} from person {self.person}')
+        self.logger.info(f'Create movie {movie} from person {self.person}',
+                         extra=dict(person=self.person.id, movie=movie.id))
         return movie
 
 
@@ -213,7 +217,8 @@ class MovieSyncMixin(SyncBase):
     def _get_m2m_ids(self, model, values):
         ids = model.objects.filter(kinopoisk__name__in=values).values_list('id', flat=True)
         if len(ids) != len(values):
-            self.logger.error("Unable to find some of kinopoisk {}: {}".format(model.__name__, values))
+            self.logger.error('Unable to find some of kinopoisk properties',
+                              extra=dict(type=model.__name__, values=values))
         return ids
 
     def sync_images(self):
@@ -222,7 +227,8 @@ class MovieSyncMixin(SyncBase):
         for url in self.remote_obj.posters:
             self.sync_image(url, self.movie, type=ImageType.POSTER)
 
-        self.logger.info(f'{len(self.remote_obj.posters)} posters imported successfully for movie {self.movie}')
+        self.logger.info(f'Posters imported successfully for movie {self.movie}',
+                         extra=dict(count=len(self.remote_obj.posters), person=self.movie.id))
 
     def sync_trailers(self):
         pass
@@ -289,7 +295,8 @@ class MovieSyncMixin(SyncBase):
                     cast, created = Cast.objects.get_or_create(movie=self.movie, person=person, role=role)
 
         if person and created:
-            self.logger.info(f'Create cast for movie {self.movie} of person {person} with role {role}')
+            self.logger.info(f'Create cast for movie {self.movie} of person {person} with role {role}',
+                             extra=dict(person=person.id, movie=self.movie.id, role=role.id))
 
         # save kinopoisk ID for person
         if person:
@@ -320,5 +327,6 @@ class MovieSyncMixin(SyncBase):
             person.set_transliteratable_fields()
             person.save()
         KinopoiskPerson.objects.create(person=person, id=person_role.person.id)
-        self.logger.info(f'Create person {person} from movie {self.movie}')
+        self.logger.info(f'Create person {person} from movie {self.movie}',
+                         extra=dict(person=person.id, movie=self.movie.id))
         return person
