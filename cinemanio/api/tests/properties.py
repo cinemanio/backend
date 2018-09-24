@@ -16,12 +16,12 @@ class PropertiesQueryTestCase(QueryBaseTestCase):
         query = '''
             query Properties {
               %s {
-                id, name
+                id, nameEn
               }
             }
         ''' % fieldname
         with self.assertNumQueries(1):
             result = self.execute(query)
         self.assertEqual(len(result[fieldname]), model.objects.count())
-        self.assertEqual(result[fieldname][0]['name'], model.objects.all()[0].name)
+        self.assertEqual(result[fieldname][0]['nameEn'], model.objects.all()[0].name_en)
         self.assertEqual(int(from_global_id(result[fieldname][0]['id'])[1]), model.objects.all()[0].id)

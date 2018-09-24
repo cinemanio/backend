@@ -22,8 +22,8 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
               persons {
                 edges {
                   node {
-                    firstName, lastName,
-                    country { name }
+                    id
+                    country { nameEn }
                   }
                 }
               }
@@ -41,7 +41,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
               persons(dateBirth_Year: $year) {
                 edges {
                   node {
-                    name
+                    id
                   }
                 }
               }
@@ -58,7 +58,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
               persons(country: $country) {
                 edges {
                   node {
-                    name
+                    id
                   }
                 }
               }
@@ -79,7 +79,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
               persons(%s: $rels) {
                 edges {
                   node {
-                    name
+                    id
                   }
                 }
               }

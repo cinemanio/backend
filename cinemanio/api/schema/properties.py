@@ -5,7 +5,7 @@ from graphql_relay.node.node import to_global_id
 from cinemanio.api.utils import DjangoObjectTypeMixin
 from cinemanio.core.models import Genre, Language, Country, Role
 
-PROPERTY_FIELDS = ['id', 'name', 'name_en', 'name_ru']
+PROPERTY_FIELDS = ['id', 'name_en', 'name_ru']
 
 
 class RoleNode(DjangoObjectTypeMixin, DjangoObjectType):

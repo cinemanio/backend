@@ -65,10 +65,10 @@ class SitesSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin, KinopoiskSyncMixin):
         self.assertEqual(Movie.objects.filter(year=None).count(), 0)
 
         movie = Movie.objects.get(imdb__id=172794)
-        self.assertEqual(movie.title, 'Michael Angel')
-        self.assertEqual(movie.title_ru, 'Почерк убийцы')
-        # self.assertEqual(movie.title_en, 'The Apostate')  # en title from imdb
-        self.assertEqual(movie.year, 1999)  # 2000 on imdb
+        self.assertEqual(movie.title_ru, 'Почерк убийцы')  # ru title from kinopoisk
+        self.assertEqual(movie.title_en, 'The Apostate')  # en title from imdb
+        self.assertEqual(movie.title_original, 'Michael Angel')  # original title from kinopoisk
+        self.assertEqual(movie.year, 2000)  # 1999 on kinopoisk
 
     def test_sync_all_roles_of_movie_from_imdb_and_kinopoisk(self):
         imdb_movie = ImdbMovieFactory(id=64276)  # easy rider
@@ -136,3 +136,8 @@ class SitesSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin, KinopoiskSyncMixin):
         self.assertEqual(Person.objects.filter(last_name_en='').count(), 0)
         self.assertEqual(Person.objects.filter(first_name_ru='').count(), 0)
         self.assertEqual(Person.objects.filter(last_name_ru='').count(), 0)
+
+        # check translated role names
+        role = movie.cast.get(person__kinopoisk__id=185619)
+        self.assertEqual(role.name_ru, 'Хари')
+        self.assertEqual(role.name_en, 'Khari')

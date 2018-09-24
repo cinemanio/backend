@@ -37,6 +37,7 @@ class Movie(BaseModel):
     transliteratable_fields = ['title']
 
     title = models.CharField(_('Title'), max_length=200, default='')
+    title_original = models.CharField(_('Title original'), max_length=200, default='')
 
     year = models.PositiveSmallIntegerField(_('Year'), null=True, db_index=True,
                                             help_text=_(

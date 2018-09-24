@@ -154,6 +154,7 @@ class PersonSyncMixin(SyncBase):
         movie = Movie.objects.create(
             title_ru=person_role.movie.title,
             title_en=person_role.movie.title_en,
+            title_original=person_role.movie.title_en or person_role.movie.title,
             year=person_role.movie.year,
         )
         KinopoiskMovie.objects.create(movie=movie, id=person_role.movie.id)
@@ -189,6 +190,10 @@ class MovieSyncMixin(SyncBase):
             value = getattr(self.remote_obj, field2)
             if value and not getattr(self.movie, field1):
                 setattr(self.movie, field1, value)
+
+        # assign title_original from any available title
+        if not self.movie.title_original:
+            self.movie.title_original = self.remote_obj.title_en or self.remote_obj.title
 
         data = {
             'genres': self._get_genres(),

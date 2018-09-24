@@ -21,7 +21,6 @@ class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, Images
         model = Person
         only_fields = (
             'id',
-            'first_name', 'last_name',
             'first_name_en', 'last_name_en',
             'first_name_ru', 'last_name_ru',
             'gender', 'date_birth', 'date_death',
