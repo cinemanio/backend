@@ -49,6 +49,31 @@ class SyncBase:
         name_parts = name.split(' ')
         return ' '.join(name_parts[:-1]), name_parts[-1]
 
+    def set_movie_m2m_fields(self, movie, remote_obj):
+        data = {
+            'genres': self.get_genres(remote_obj),
+            'countries': self.get_countries(remote_obj),
+        }
+
+        for field, ids in data.items():
+            getattr(movie, field).set(
+                set(ids) | set(getattr(movie, field).values_list('id', flat=True)))
+
+    def get_genres(self, remote_obj):
+        return self.get_m2m_ids(Genre, remote_obj.genres)
+
+    def get_countries(self, remote_obj):
+        return self.get_m2m_ids(Country, remote_obj.countries)
+
+    def get_m2m_ids(self, model, values):
+        ids = model.objects.filter(kinopoisk__name__in=values).values_list('id', flat=True)
+        if len(ids) != len(values):
+            self.logger.error("Unable to find some of kinopoisk {}: {}".format(model.__name__, values))
+        return ids
+
+    def get_title_original(self, remote_obj):
+        return remote_obj.title_en or remote_obj.title
+
 
 class PersonSyncMixin(SyncBase):
     """
@@ -154,9 +179,10 @@ class PersonSyncMixin(SyncBase):
         movie = Movie.objects.create(
             title_ru=person_role.movie.title,
             title_en=person_role.movie.title_en,
-            title_original=person_role.movie.title_en or person_role.movie.title,
+            title_original=self.get_title_original(person_role.movie),
             year=person_role.movie.year,
         )
+        self.set_movie_m2m_fields(movie, person_role.movie)
         KinopoiskMovie.objects.create(movie=movie, id=person_role.movie.id)
         self.logger.info(f'Create movie {movie} from person {self.person}')
         return movie
@@ -193,28 +219,9 @@ class MovieSyncMixin(SyncBase):
 
         # assign title_original from any available title
         if not self.movie.title_original:
-            self.movie.title_original = self.remote_obj.title_en or self.remote_obj.title
+            self.movie.title_original = self.get_title_original(self.remote_obj)
 
-        data = {
-            'genres': self._get_genres(),
-            'countries': self._get_countries(),
-        }
-
-        for field, ids in data.items():
-            getattr(self.movie, field).set(
-                set(ids) | set(getattr(self.movie, field).values_list('id', flat=True)))
-
-    def _get_genres(self):
-        return self._get_m2m_ids(Genre, self.remote_obj.genres)
-
-    def _get_countries(self):
-        return self._get_m2m_ids(Country, self.remote_obj.countries)
-
-    def _get_m2m_ids(self, model, values):
-        ids = model.objects.filter(kinopoisk__name__in=values).values_list('id', flat=True)
-        if len(ids) != len(values):
-            self.logger.error("Unable to find some of kinopoisk {}: {}".format(model.__name__, values))
-        return ids
+        self.set_movie_m2m_fields(self.movie, self.remote_obj)
 
     def sync_images(self):
         self.remote_obj.get_content('posters')

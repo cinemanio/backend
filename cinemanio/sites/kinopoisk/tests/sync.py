@@ -123,3 +123,5 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
         self.assertEqual(Movie.objects.filter(title_en='').count(), 0)
         self.assertEqual(Movie.objects.filter(title_ru='').count(), 25)  # non-translated
         self.assertEqual(Movie.objects.filter(year=None).count(), 0)
+
+        self.assertQuerysetEqual(Movie.objects.get(kinopoisk__id=305858).genres.all(), ['Short'])
