@@ -1,11 +1,13 @@
-from typing import List, Type
+from typing import List
+
 import graphene
-from graphql.language.ast import FragmentSpread
+from classproperty import classproperty
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.reverse_related import OneToOneRel
 from django.db.models.options import Options
 from graphene.utils.str_converters import to_snake_case
 from graphene_django.filter import DjangoFilterConnectionField as _DjangoFilterConnectionField
+from graphql.language.ast import FragmentSpread
 
 
 class DjangoFilterConnectionField(_DjangoFilterConnectionField):
@@ -33,8 +35,8 @@ class DjangoObjectTypeMixin:
     Cast select_related to queryset for ForeignKeys of model
     """
 
-    @property
-    def _meta(self) -> Type[Options]:
+    @classproperty
+    def _meta(self) -> Options:
         raise NotImplementedError()
 
     @classmethod
