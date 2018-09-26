@@ -1,4 +1,3 @@
-import logging
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -6,18 +5,12 @@ from cinemanio.core.models import Movie, Person, Country, Genre
 from cinemanio.sites.kinopoisk.sync import PersonSyncMixin, MovieSyncMixin
 from cinemanio.sites.models import SitesBaseModel
 
-logger = logging.getLogger(__name__)
-
 
 class KinopoiskBase(SitesBaseModel):
     info = models.TextField(_('Kinopoisk information'), blank=True, default='')
 
     class Meta:
         abstract = True
-
-    @property
-    def logger(self):
-        return logger
 
 
 class UrlMixin:

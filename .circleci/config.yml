@@ -29,6 +29,9 @@ jobs:
           name: Run prospector
           command: pipenv run prospector .
       - run:
+          name: Run type checking
+          command: pipenv run python -m mypy -p cinemanio
+      - run:
           name: Collect static
           command: pipenv run python manage.py collectstatic --noinput
       - run:

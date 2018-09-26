@@ -64,7 +64,7 @@ class SitesAdminMixin:
 
 
 @register(Movie)
-class SitesMovieAdmin(SitesAdminMixin, MovieAdmin):
+class SitesMovieAdmin(SitesAdminMixin, MovieAdmin):  # type: ignore
     list_display = MovieAdmin.list_display + ['imdb_id', 'imdb_rating', 'kinopoisk_id', 'kinopoisk_rating',
                                               'wikipedia_en', 'wikipedia_ru']
     list_select_related = ('imdb', 'kinopoisk')
@@ -78,7 +78,7 @@ class SitesMovieAdmin(SitesAdminMixin, MovieAdmin):
 
 
 @register(Person)
-class SitesPersonAdmin(SitesAdminMixin, PersonAdmin):
+class SitesPersonAdmin(SitesAdminMixin, PersonAdmin):  # type: ignore
     list_display = PersonAdmin.list_display + ['imdb_id', 'kinopoisk_id', 'wikipedia_en', 'wikipedia_ru']
     list_select_related = ('imdb', 'kinopoisk')
     inlines = [ImdbPersonInline, KinopoiskPersonInline] + PersonAdmin.inlines
