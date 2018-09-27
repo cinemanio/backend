@@ -40,6 +40,5 @@ class MovieAdmin(VersionAdmin):
     )
 
     def site(self, obj):
-        from cinemanio.api.schema.movie import MovieNode
-        global_id = to_global_id(MovieNode._meta.name, obj.id)
+        global_id = to_global_id('MovieNode', obj.id)
         return mark_safe(f'<a href="{settings.FRONTEND_URL}movies/{global_id}/">link</a>')

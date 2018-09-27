@@ -30,6 +30,5 @@ class PersonAdmin(VersionAdmin):
     )
 
     def site(self, obj):
-        from cinemanio.api.schema.person import PersonNode
-        global_id = to_global_id(PersonNode._meta.name, obj.id)
+        global_id = to_global_id('PersonNode', obj.id)
         return mark_safe(f'<a href="{settings.FRONTEND_URL}persons/{global_id}/">link</a>')

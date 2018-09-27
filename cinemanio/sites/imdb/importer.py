@@ -1,7 +1,7 @@
-from typing import Tuple, Dict, Optional, List
-from datetime import date
 import logging
 import re
+from datetime import date
+from typing import Tuple, Dict, Optional, List
 
 from dateutil import parser
 from imdb import IMDb
@@ -225,7 +225,8 @@ class ImdbPersonImporter(ImdbImporterBase):
                     movie.save()
 
         if movie and created:
-            logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}')
+            logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}',
+                        extra=dict(person=self.object.id, movie=movie.id, role=role.id))
 
         if movie:
             ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
@@ -243,7 +244,8 @@ class ImdbPersonImporter(ImdbImporterBase):
         year = imdb_movie.data.get('year')
         movie = Movie.objects.create(title=title, year=year)
         ImdbMovie.objects.create(movie=movie, id=imdb_id)
-        logger.info(f'Create movie {movie} from person {self.object}')
+        logger.info(f'Create movie {movie} from person {self.object}',
+                    extra=dict(person=self.object.id, movie=movie.id))
         return movie
 
 
@@ -369,7 +371,8 @@ class ImdbMovieImporter(ImdbImporterBase):
     def _get_m2m_ids(self, model, values, callback=lambda i: i) -> List[int]:
         ids = model.objects.filter(imdb__name__in=[callback(i) for i in values]).values_list('id', flat=True)
         if len(ids) != len(values):
-            logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
+            logger.error('Unable to find some of imdb properties',
+                         extra=dict(type=model.__name__, values=values))
         return list(ids)
 
     def _add_roles(self, roles) -> None:
@@ -433,7 +436,8 @@ class ImdbMovieImporter(ImdbImporterBase):
                 cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
 
         if person and created:
-            logger.info(f'Create cast for person {person} in movie {self.object} with role {role}')
+            logger.info(f'Create cast for person {person} in movie {self.object} with role {role}',
+                        extra=dict(person=person.id, movie=self.object.id, role=role.id))
 
         if person:
             ImdbPerson.objects.update_or_create(person=person, defaults={'id': int(imdb_id)})
@@ -460,5 +464,6 @@ class ImdbMovieImporter(ImdbImporterBase):
         last, first = self.get_name_parts(imdb_person.data['name'])
         person = Person.objects.create(first_name=first, last_name=last)
         ImdbPerson.objects.create(person=person, id=imdb_id)
-        logger.info(f'Create person {person} from movie {self.object}')
+        logger.info(f'Create person {person} from movie {self.object}',
+                    extra=dict(person=person.id, movie=self.object.id))
         return person
