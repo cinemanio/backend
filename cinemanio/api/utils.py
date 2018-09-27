@@ -1,7 +1,7 @@
 from typing import List
 
 import graphene
-from classproperty import classproperty
+from classproperties import classproperty
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.reverse_related import OneToOneRel
 from django.db.models.options import Options
