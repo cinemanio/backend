@@ -1,16 +1,19 @@
 from typing import Tuple
+
 from django.contrib.admin import register
 from reversion.admin import VersionAdmin
 
 from cinemanio.core.models import Genre, Country, Language
 
+Param = Tuple[str, ...]
+
 
 class PropAdminBase(VersionAdmin):
     """Base admin model for props"""
-    list_display = ('id', 'name', 'name_ru', 'name_en', 'imdb_name', 'kinopoisk_name')  # type: Tuple[str, ...]
-    list_display_links = ('id',)
-    list_editable = ('name', 'name_ru', 'name_en')  # type: Tuple[str, ...]
-    ordering = ('id',)
+    list_display: Param = ('id', 'name', 'name_ru', 'name_en', 'imdb_name', 'kinopoisk_name')
+    list_display_links: Param = ('id',)
+    list_editable: Param = ('name', 'name_ru', 'name_en')
+    ordering: Param = ('id',)
 
     def imdb_name(self, obj):
         return obj.imdb.name

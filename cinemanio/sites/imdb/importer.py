@@ -307,18 +307,18 @@ class ImdbMovieImporter(ImdbImporterBase):
         }
         return data
 
-    def _get_russia_start(self, imdb) -> Optional[date]:
-        releases = imdb.get_movie_release_dates(self.imdb_id)
-        for date in releases['data'].get('release dates', []):
-            date = date.split('::')
-            if len(date) != 2:
-                date += date
-            if re.findall(r'russia', date[0], re.I):
-                try:
-                    return parser.parse(re.sub(r'^(\d+ \w+ \d{4}).*$', r'\1', date[1])).date()
-                except ValueError:
-                    pass
-        return None
+    # def _get_russia_start(self, imdb) -> Optional[date]:
+    #     releases = imdb.get_movie_release_dates(self.imdb_id)
+    #     for release in releases['data'].get('release dates', []):
+    #         release = release.split('::')
+    #         if len(release) != 2:
+    #             release += release
+    #         if re.findall(r'russia', release[0], re.I):
+    #             try:
+    #                 return parser.parse(re.sub(r'^(\d+ \w+ \d{4}).*$', r'\1', release[1])).date()
+    #             except ValueError:
+    #                 pass
+    #     return None
 
     def _get_title(self, language) -> str:
 

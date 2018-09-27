@@ -114,7 +114,8 @@ class PersonSyncMixin(SyncBase):
                         continue
 
     def create_cast(self, role: Role, person_role, movie=None) -> Cast:
-        cast = created = None  # type: Any
+        cast: Any = None
+        created: Any = None
 
         try:
             if movie is None:
@@ -273,7 +274,8 @@ class MovieSyncMixin(SyncBase):
                         continue
 
     def create_cast(self, role: Role, person_role, person=None) -> Cast:
-        cast = created = None  # type: Any
+        cast: Any = None
+        created: Any = None
 
         try:
             if person is None:
