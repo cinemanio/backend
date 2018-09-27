@@ -1,6 +1,6 @@
 import logging
 import re
-from datetime import date
+from datetime import date  # noqa
 from typing import Tuple, Dict, Optional, List
 
 from dateutil import parser
@@ -133,9 +133,9 @@ class ImdbPersonImporter(ImdbImporterBase):
         return first, last
 
     def _get_date(self, field) -> Optional[date]:
-        date = self.imdb_object.data.get(field)
+        date_str = self.imdb_object.data.get(field)
         try:
-            return parser.parse(date).date()
+            return parser.parse(date_str).date()
         except (ValueError, TypeError):
             return None
 
