@@ -54,26 +54,25 @@ class SyncBase:
         name_parts = name.split(' ')
         return ' '.join(name_parts[:-1]), name_parts[-1]
 
-    def set_movie_m2m_fields(self, movie, remote_obj):
+    def set_movie_m2m_fields(self, movie, remote_obj) -> None:
         data = {
             'genres': self.get_genres(remote_obj),
             'countries': self.get_countries(remote_obj),
         }
 
         for field, ids in data.items():
-            getattr(movie, field).set(
-                set(ids) | set(getattr(movie, field).values_list('id', flat=True)))
+            getattr(movie, field).set(set(ids) | set(getattr(movie, field).values_list('id', flat=True)))
 
-    def get_genres(self, remote_obj):
+    def get_genres(self, remote_obj) -> List[int]:
         return self.get_m2m_ids(Genre, remote_obj.genres)
 
-    def get_countries(self, remote_obj):
+    def get_countries(self, remote_obj) -> List[int]:
         return self.get_m2m_ids(Country, remote_obj.countries)
 
-    def get_m2m_ids(self, model, values):
+    def get_m2m_ids(self, model, values) -> List[int]:
         ids = model.objects.filter(kinopoisk__name__in=values).values_list('id', flat=True)
         if len(ids) != len(values):
-            self.logger.error("Unable to find some of kinopoisk {}: {}".format(model.__name__, values))
+            logger.error('Unable to find some of kinopoisk properties', extra=dict(type=model.__name__, values=values))
         return ids
 
     def get_title_original(self, remote_obj):
