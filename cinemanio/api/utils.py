@@ -1,9 +1,13 @@
+from typing import List
+
 import graphene
-from graphql.language.ast import FragmentSpread
+from classproperties import classproperty
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.reverse_related import OneToOneRel
+from django.db.models.options import Options
 from graphene.utils.str_converters import to_snake_case
 from graphene_django.filter import DjangoFilterConnectionField as _DjangoFilterConnectionField
+from graphql.language.ast import FragmentSpread
 
 
 class DjangoFilterConnectionField(_DjangoFilterConnectionField):
@@ -30,6 +34,10 @@ class DjangoObjectTypeMixin:
     """
     Cast select_related to queryset for ForeignKeys of model
     """
+
+    @classproperty
+    def _meta(self) -> Options:
+        raise NotImplementedError()
 
     @classmethod
     def get_node(cls, info, pk):
@@ -94,15 +102,15 @@ class DjangoObjectTypeMixin:
         return selections
 
     @classmethod
-    def select_foreign_keys(cls):
+    def select_foreign_keys(cls) -> List[str]:
         return [field.name for field in cls._meta.model._meta.fields if isinstance(field, ForeignKey)]
 
     @classmethod
-    def select_m2m_fields(cls):
+    def select_m2m_fields(cls) -> List[str]:
         return [field.name for field in cls._meta.model._meta.many_to_many]
 
     @classmethod
-    def select_o2o_related_objects(cls):
+    def select_o2o_related_objects(cls) -> List[str]:
         return [rel.related_name for rel in cls._meta.model._meta.related_objects if isinstance(rel, OneToOneRel)]
 
 

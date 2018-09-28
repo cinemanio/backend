@@ -227,3 +227,5 @@ LOGGING = {
         },
     },
 }
+
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000/', cast=str)

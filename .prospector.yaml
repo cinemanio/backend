@@ -21,6 +21,7 @@ pylint:
     - arguments-differ
     - too-many-branches
     - too-many-arguments
+    - logging-fstring-interpolation  # wait for https://github.com/PyCQA/pylint/issues/2395
     - cyclic-import  # possibly because https://github.com/PyCQA/pylint/issues/850
 
 uses:

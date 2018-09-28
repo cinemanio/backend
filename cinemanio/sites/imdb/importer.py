@@ -1,5 +1,7 @@
 import logging
 import re
+from datetime import date  # noqa
+from typing import Tuple, Dict, Optional, List
 
 from dateutil import parser
 from imdb import IMDb
@@ -9,23 +11,20 @@ from imdb.utils import RolesList
 from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
 from cinemanio.sites.imdb.models import ImdbMovie, ImdbPerson
 
+logger = logging.getLogger(__name__)
+
 
 class ImdbImporterBase:
     """
     Base importer of data from IMDB
     """
-    object = None
-    imdb = None
-    imdb_id = None
     _imdb_object = None
-    model = None
 
     logger = None
 
-    def __init__(self, instane, imdb_id, logger=None):
-        self.object = instane
+    def __init__(self, instance, imdb_id):
+        self.object = instance
         self.imdb = IMDb()
-        self.logger = logger or logging
         self.imdb_id = int(imdb_id)
 
     @property
@@ -37,10 +36,14 @@ class ImdbImporterBase:
             self._imdb_object = self.get_imdb_object(self.imdb_id)
         return self._imdb_object
 
+    @property
+    def model(self):
+        raise NotImplementedError()
+
     def get_imdb_object(self, imdb_id):
         raise NotImplementedError()
 
-    def get_name_parts(self, name):
+    def get_name_parts(self, name) -> Tuple[str, str]:
         name_parts = name.split(', ')
         if len(name_parts) >= 2:
             last, first = name_parts[:2]
@@ -48,19 +51,19 @@ class ImdbImporterBase:
             last, first = '', name_parts[0]
         return last, first
 
-    def apply_remote_data(self, data, roles):
+    def apply_remote_data(self, data, roles) -> None:
         """
         Update object with remote data
         """
         raise NotImplementedError
 
-    def get_remote_data(self):
+    def get_remote_data(self) -> Dict[str, str]:
         """
         Return dict with imdb data
         """
         raise NotImplementedError
 
-    def get_applied_data(self, roles=False):
+    def get_applied_data(self, roles=False) -> Dict[str, str]:
         """
         Retrieve remote data and apply it to the self.object
         :param roles: if True sync cast with existing, if 'all', create non-existing cast
@@ -80,7 +83,7 @@ class ImdbPersonImporter(ImdbImporterBase):
     def get_imdb_object(self, imdb_id):
         return self.imdb.get_person(imdb_id)
 
-    def apply_remote_data(self, data, roles):
+    def apply_remote_data(self, data, roles) -> None:
         """
         Update person with remote data
         """
@@ -101,7 +104,7 @@ class ImdbPersonImporter(ImdbImporterBase):
             if roles:
                 self._add_roles(roles)
 
-    def get_remote_data(self):
+    def get_remote_data(self) -> Dict[str, str]:
         """
         Return dict with essential remote data
         """
@@ -115,7 +118,7 @@ class ImdbPersonImporter(ImdbImporterBase):
         }
         return data
 
-    def _get_name_eng(self):
+    def _get_name_eng(self) -> Tuple[str, str]:
         name = self.imdb_object.data.get('name')
 
         # 'name': 'IMDb, Robert De Niro -'
@@ -129,21 +132,21 @@ class ImdbPersonImporter(ImdbImporterBase):
 
         return first, last
 
-    def _get_date(self, field):
-        date = self.imdb_object.data.get(field)
+    def _get_date(self, field) -> Optional[date]:
+        date_str = self.imdb_object.data.get(field)
         try:
-            return parser.parse(date).date()
+            return parser.parse(date_str).date()
         except (ValueError, TypeError):
             return None
 
-    def _get_country(self):
+    def _get_country(self) -> Optional[int]:
         birth_notes = self.imdb_object.data.get('birth notes', '')
         for country in Country.objects.select_related('imdb').all():
             if country.imdb.name and birth_notes.find(country.imdb.name) != -1:
                 return country.id
         return None
 
-    def _add_roles(self, roles):
+    def _add_roles(self, roles) -> None:
         """
         Find movies of current person by imdb_id or title:
         1. Trying find movie by imdb_id
@@ -180,7 +183,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                         else:
                             continue
 
-    def create_cast(self, role, imdb_movie, movie=None):
+    def create_cast(self, role: Role, imdb_movie, movie=None) -> Cast:
         imdb_id = self.imdb.get_imdbID(imdb_movie)
         title = imdb_movie.data['title']
         year = imdb_movie.data.get('year')
@@ -222,7 +225,8 @@ class ImdbPersonImporter(ImdbImporterBase):
                     movie.save()
 
         if movie and created:
-            self.logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}')
+            logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}',
+                        extra=dict(person=self.object.id, movie=movie.id, role=role.id))
 
         if movie:
             ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
@@ -232,13 +236,16 @@ class ImdbPersonImporter(ImdbImporterBase):
             cast.name_en = imdb_movie.notes
             cast.save(update_fields=['name_en'])
 
-    def create_movie(self, imdb_movie):
+        return cast
+
+    def create_movie(self, imdb_movie) -> Movie:
         imdb_id = self.imdb.get_imdbID(imdb_movie)
         title = imdb_movie.data['title']
         year = imdb_movie.data.get('year')
         movie = Movie.objects.create(title=title, year=year)
         ImdbMovie.objects.create(movie=movie, id=imdb_id)
-        self.logger.info(f'Create movie {movie} from person {self.object}')
+        logger.info(f'Create movie {movie} from person {self.object}',
+                    extra=dict(person=self.object.id, movie=movie.id))
         return movie
 
 
@@ -251,7 +258,7 @@ class ImdbMovieImporter(ImdbImporterBase):
     def get_imdb_object(self, imdb_id):
         return self.imdb.get_movie(imdb_id)
 
-    def apply_remote_data(self, data, roles):
+    def apply_remote_data(self, data, roles) -> None:
         """
         Update movie with remote data
         """
@@ -277,7 +284,7 @@ class ImdbMovieImporter(ImdbImporterBase):
             if roles:
                 self._add_roles(roles)
 
-    def get_remote_data(self):
+    def get_remote_data(self) -> Dict[str, str]:
         """
         Return dict with essential remote data
         """
@@ -302,20 +309,20 @@ class ImdbMovieImporter(ImdbImporterBase):
         }
         return data
 
-    def _get_russia_start(self, imdb):
-        releases = imdb.get_movie_release_dates(self.imdb_id)
-        for date in releases['data'].get('release dates', []):
-            date = date.split('::')
-            if len(date) != 2:
-                date += date
-            if re.findall(r'russia', date[0], re.I):
-                try:
-                    return parser.parse(re.sub(r'^(\d+ \w+ \d{4}).*$', r'\1', date[1])).date()
-                except ValueError:
-                    pass
-        return None
+    # def _get_russia_start(self, imdb) -> Optional[date]:
+    #     releases = imdb.get_movie_release_dates(self.imdb_id)
+    #     for release in releases['data'].get('release dates', []):
+    #         release = release.split('::')
+    #         if len(release) != 2:
+    #             release += release
+    #         if re.findall(r'russia', release[0], re.I):
+    #             try:
+    #                 return parser.parse(re.sub(r'^(\d+ \w+ \d{4}).*$', r'\1', release[1])).date()
+    #             except ValueError:
+    #                 pass
+    #     return None
 
-    def _get_title(self, language):
+    def _get_title(self, language) -> str:
 
         lang_dict = {
             'en': r'(International|UK|USA)',
@@ -333,8 +340,8 @@ class ImdbMovieImporter(ImdbImporterBase):
                 return re.sub(r'^"(.+)"$', r'\1', title[0].strip())
         return ''
 
-    def _get_types(self):
-        ids = []
+    def _get_types(self) -> List[int]:
+        ids = []  # type: List[int]
         data = self.imdb_object.data
         if data.get('color info') and 'Black and White' in data.get('color info') \
                 and 'Color' not in data.get('color info'):
@@ -351,23 +358,24 @@ class ImdbMovieImporter(ImdbImporterBase):
         #     ids += [10]  # сериал
         return ids
 
-    def _get_genres(self):
+    def _get_genres(self) -> List[int]:
         return self._get_m2m_ids(Genre, self.imdb_object.data.get('genres', []))
 
-    def _get_languages(self):
+    def _get_languages(self) -> List[int]:
         return self._get_m2m_ids(Language, self.imdb_object.data.get('languages', []))
 
-    def _get_countries(self):
+    def _get_countries(self) -> List[int]:
         return self._get_m2m_ids(Country, self.imdb_object.data.get('countries', []),
                                  lambda i: i.replace('United States', 'USA'))
 
-    def _get_m2m_ids(self, model, values, callback=lambda i: i):
+    def _get_m2m_ids(self, model, values, callback=lambda i: i) -> List[int]:
         ids = model.objects.filter(imdb__name__in=[callback(i) for i in values]).values_list('id', flat=True)
         if len(ids) != len(values):
-            self.logger.error("Unable to find some of imdb {}: {}".format(model.__name__, values))
+            logger.error('Unable to find some of imdb properties',
+                         extra=dict(type=model.__name__, values=values))
         return list(ids)
 
-    def _add_roles(self, roles):
+    def _add_roles(self, roles) -> None:
         """
         Find persons of current movie by imdb_id or name:
         1. Trying find person by imdb_id
@@ -399,7 +407,7 @@ class ImdbMovieImporter(ImdbImporterBase):
                     else:
                         continue
 
-    def create_cast(self, role, imdb_person, person=None):
+    def create_cast(self, role: Role, imdb_person, person=None) -> Cast:
         """
         Create or update Cast instance for imdb person
         """
@@ -428,7 +436,8 @@ class ImdbMovieImporter(ImdbImporterBase):
                 cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
 
         if person and created:
-            self.logger.info(f'Create cast for person {person} in movie {self.object} with role {role}')
+            logger.info(f'Create cast for person {person} in movie {self.object} with role {role}',
+                        extra=dict(person=person.id, movie=self.object.id, role=role.id))
 
         if person:
             ImdbPerson.objects.update_or_create(person=person, defaults={'id': int(imdb_id)})
@@ -448,10 +457,13 @@ class ImdbMovieImporter(ImdbImporterBase):
                 cast.name_en = imdb_person.notes
             cast.save(update_fields=['name_en'])
 
-    def create_person(self, imdb_person):
+        return cast
+
+    def create_person(self, imdb_person) -> Person:
         imdb_id = self.imdb.get_imdbID(imdb_person)
         last, first = self.get_name_parts(imdb_person.data['name'])
         person = Person.objects.create(first_name=first, last_name=last)
         ImdbPerson.objects.create(person=person, id=imdb_id)
-        self.logger.info(f'Create person {person} from movie {self.object}')
+        logger.info(f'Create person {person} from movie {self.object}',
+                    extra=dict(person=person.id, movie=self.object.id))
         return person

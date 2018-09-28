@@ -39,10 +39,10 @@ class ImagesInline(GenericTabularInline):
 
 
 @register(Movie)
-class ImagesMovieAdmin(MovieAdmin):
+class ImagesMovieAdmin(MovieAdmin):  # type: ignore
     inlines = MovieAdmin.inlines + [ImagesInline]
 
 
 @register(Person)
-class ImagesPersonAdmin(PersonAdmin):
+class ImagesPersonAdmin(PersonAdmin):  # type: ignore
     inlines = PersonAdmin.inlines + [ImagesInline]
