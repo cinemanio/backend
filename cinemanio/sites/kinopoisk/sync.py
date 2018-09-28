@@ -1,5 +1,7 @@
+import logging
 import operator
 from functools import reduce
+from typing import List, Tuple, Any
 
 from alphabet_detector import AlphabetDetector
 from django.db.models import Q
@@ -8,6 +10,8 @@ from kinopoisk.person import Person as KinoPerson
 
 from cinemanio.core.models import Movie, Person, Genre, Country, Role, Cast
 from cinemanio.images.models import ImageWrongType, ImageType
+
+logger = logging.getLogger(__name__)
 
 
 def get_q_filter(*args, **kwargs):
@@ -32,18 +36,18 @@ class SyncBase:
             self._remote_obj = self.model(id=self.id)
         return self._remote_obj
 
-    def sync_image(self, url, instance, **kwargs):
+    def sync_image(self, url, instance, **kwargs) -> None:
         extra = dict(url=url, instance=instance)
         try:
             downloaded = instance.images.get_or_download(url, **kwargs)[1]
             if downloaded:
-                self.logger.info('Image downloaded successfully', extra=extra)
+                logger.info('Image downloaded successfully', extra=extra)
             else:
-                self.logger.info('Found already downloaded image', extra=extra)
+                logger.info('Found already downloaded image', extra=extra)
         except ImageWrongType:
-            self.logger.error('Error saving image. Need jpeg', extra=extra)
+            logger.error('Error saving image. Need jpeg', extra=extra)
 
-    def get_name_parts(self, name):
+    def get_name_parts(self, name) -> Tuple[str, str]:
         """
         Split name to first and last components
         """
@@ -57,24 +61,28 @@ class PersonSyncMixin(SyncBase):
     """
     model = KinoPerson
 
-    def sync_details(self):
+    @property
+    def person(self) -> Person:
+        raise NotImplementedError()
+
+    def sync_details(self) -> None:
         self.remote_obj.get_content('main_page')
 
         self.info = self.remote_obj.information
 
-    def sync_images(self):
+    def sync_images(self) -> None:
         self.remote_obj.get_content('photos')
 
         for url in self.remote_obj.photos:
             self.sync_image(url, self.person, type=ImageType.PHOTO)
 
-        self.logger.info(f'Photos were imported successfully for person {self.person}',
-                         extra=dict(count=len(self.remote_obj.photos), person=self.person.id))
+        logger.info(f'Photos were imported successfully for person {self.person}',
+                    extra=dict(count=len(self.remote_obj.photos), person=self.person.id))
 
-    def sync_trailers(self):
+    def sync_trailers(self) -> None:
         pass
 
-    def sync_career(self, roles=True):
+    def sync_career(self, roles=True) -> None:
         """
         Find movies of current person by kinopoisk_id or title:
         1. Trying find movie by kinopoisk_id
@@ -107,8 +115,9 @@ class PersonSyncMixin(SyncBase):
                     else:
                         continue
 
-    def create_cast(self, role, person_role, movie=None):
-        cast = created = None
+    def create_cast(self, role: Role, person_role, movie=None) -> Cast:
+        cast: Any = None
+        created: Any = None
 
         try:
             if movie is None:
@@ -134,8 +143,8 @@ class PersonSyncMixin(SyncBase):
                     cast, created = Cast.objects.get_or_create(person=self.person, movie=movie, role=role)
 
         if movie and created:
-            self.logger.info(f'Create cast for person {self.person} in movie {movie} with role {role}',
-                             extra=dict(person=self.person.id, movie=movie.id, role=role.id))
+            logger.info(f'Create cast for person {self.person} in movie {movie} with role {role}',
+                        extra=dict(person=self.person.id, movie=movie.id, role=role.id))
 
         # save kinopoisk ID for movie
         if movie:
@@ -152,7 +161,7 @@ class PersonSyncMixin(SyncBase):
 
         return cast
 
-    def create_movie(self, person_role):
+    def create_movie(self, person_role) -> Movie:
         from cinemanio.sites.kinopoisk.models import KinopoiskMovie
         movie = Movie.objects.create(
             title_ru=person_role.movie.title,
@@ -161,8 +170,8 @@ class PersonSyncMixin(SyncBase):
             year=person_role.movie.year,
         )
         KinopoiskMovie.objects.create(movie=movie, id=person_role.movie.id)
-        self.logger.info(f'Create movie {movie} from person {self.person}',
-                         extra=dict(person=self.person.id, movie=movie.id))
+        logger.info(f'Create movie {movie} from person {self.person}',
+                    extra=dict(person=self.person.id, movie=movie.id))
         return movie
 
 
@@ -172,14 +181,18 @@ class MovieSyncMixin(SyncBase):
     """
     model = KinoMovie
 
-    def sync_details(self):
+    @property
+    def movie(self) -> Movie:
+        raise NotImplementedError()
+
+    def sync_details(self) -> None:
         self.remote_obj.get_content('main_page')
 
         fields_map = (
             ('info', 'plot'),
             ('rating', 'rating'),
             ('votes', 'votes'),
-        )
+        )  # type: Tuple[Tuple[str, str], ...]
         for field1, field2 in fields_map:
             setattr(self, field1, getattr(self.remote_obj, field2))
 
@@ -208,32 +221,32 @@ class MovieSyncMixin(SyncBase):
             getattr(self.movie, field).set(
                 set(ids) | set(getattr(self.movie, field).values_list('id', flat=True)))
 
-    def _get_genres(self):
+    def _get_genres(self) -> List[int]:
         return self._get_m2m_ids(Genre, self.remote_obj.genres)
 
-    def _get_countries(self):
+    def _get_countries(self) -> List[int]:
         return self._get_m2m_ids(Country, self.remote_obj.countries)
 
-    def _get_m2m_ids(self, model, values):
+    def _get_m2m_ids(self, model, values) -> List[int]:
         ids = model.objects.filter(kinopoisk__name__in=values).values_list('id', flat=True)
         if len(ids) != len(values):
-            self.logger.error('Unable to find some of kinopoisk properties',
-                              extra=dict(type=model.__name__, values=values))
+            logger.error('Unable to find some of kinopoisk properties',
+                         extra=dict(type=model.__name__, values=values))
         return ids
 
-    def sync_images(self):
+    def sync_images(self) -> None:
         self.remote_obj.get_content('posters')
 
         for url in self.remote_obj.posters:
             self.sync_image(url, self.movie, type=ImageType.POSTER)
 
-        self.logger.info(f'Posters imported successfully for movie {self.movie}',
-                         extra=dict(count=len(self.remote_obj.posters), person=self.movie.id))
+        logger.info(f'Posters imported successfully for movie {self.movie}',
+                    extra=dict(count=len(self.remote_obj.posters), person=self.movie.id))
 
     def sync_trailers(self):
         pass
 
-    def sync_cast(self, roles=True):
+    def sync_cast(self, roles=True) -> None:
         """
         Find persons of current movie by kinopoisk_id or name:
         1. Trying find person by kinopoisk_id
@@ -266,8 +279,9 @@ class MovieSyncMixin(SyncBase):
                     else:
                         continue
 
-    def create_cast(self, role, person_role, person=None):
-        cast = created = None
+    def create_cast(self, role: Role, person_role, person=None) -> Cast:
+        cast: Any = None
+        created: Any = None
 
         try:
             if person is None:
@@ -295,8 +309,8 @@ class MovieSyncMixin(SyncBase):
                     cast, created = Cast.objects.get_or_create(movie=self.movie, person=person, role=role)
 
         if person and created:
-            self.logger.info(f'Create cast for movie {self.movie} of person {person} with role {role}',
-                             extra=dict(person=person.id, movie=self.movie.id, role=role.id))
+            logger.info(f'Create cast for movie {self.movie} of person {person} with role {role}',
+                        extra=dict(person=person.id, movie=self.movie.id, role=role.id))
 
         # save kinopoisk ID for person
         if person:
@@ -313,7 +327,7 @@ class MovieSyncMixin(SyncBase):
 
         return cast
 
-    def create_person(self, person_role):
+    def create_person(self, person_role) -> Person:
         from cinemanio.sites.kinopoisk.models import KinopoiskPerson
         first_ru, last_ru = self.get_name_parts(person_role.person.name)
         first_en, last_en = self.get_name_parts(person_role.person.name_en)
@@ -327,6 +341,6 @@ class MovieSyncMixin(SyncBase):
             person.set_transliteratable_fields()
             person.save()
         KinopoiskPerson.objects.create(person=person, id=person_role.person.id)
-        self.logger.info(f'Create person {person} from movie {self.movie}',
-                         extra=dict(person=person.id, movie=self.movie.id))
+        logger.info(f'Create person {person} from movie {self.movie}',
+                    extra=dict(person=person.id, movie=self.movie.id))
         return person

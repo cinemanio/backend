@@ -9,5 +9,5 @@ class SitesBaseModel(models.Model):
     class Meta:
         abstract = True
 
-    def sync(self, **_):
+    def sync(self, **_) -> None:
         self.synced_at = timezone.now()

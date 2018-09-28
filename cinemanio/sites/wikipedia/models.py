@@ -104,22 +104,19 @@ class WikipediaPageManager(models.Manager):
             if m1[0] not in title:
                 return False
 
-        # remove years
-        m1 = m2 = None
-        if remove_years:
-            m1 = re.findall(r'^(.+) \(', title)
-            m2 = re.findall(r'^(.+) \(', term)
-
-        # similarity check
-        if SequenceMatcher(None,
-                           m1[0] if m1 else title,
-                           m2[0] if m2 else term).ratio() < 0.7:
-            return False
-
         # years comparison
         m1 = re.findall(r'\d{4}', title)
         m2 = re.findall(r'\d{4}', term)
         if m1 and m2 and abs(int(m1[0]) - int(m2[0])) > 1:
+            return False
+
+        # remove years
+        if remove_years:
+            title = re.sub(r'^(.+) \(.*\d{4}.*\)', r'\1', title)
+            term = re.sub(r'^(.+) \(.*\d{4}.*\)', r'\1', term)
+
+        # similarity check
+        if SequenceMatcher(None, title, term).ratio() < 0.7:
             return False
 
         return True
@@ -131,21 +128,21 @@ class WikipediaPageManager(models.Manager):
         """
         instance_type = instance._meta.model_name
         try:
-            object_exist = self.get(lang=lang, title=title)
-            if object_exist.content_object == instance:
-                return object_exist
-            raise PossibleDuplicate(
-                f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id}, "
-                f"because it's already assigned to {instance_type} ID={object_exist.content_object.id}")
+            wikipedia_page = self.get(lang=lang, title=title)
+            if wikipedia_page.content_object != instance:
+                raise PossibleDuplicate(
+                    f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id}, "
+                    f"because it's already assigned to {instance_type} ID={wikipedia_page.content_object.id}")
         except self.model.DoesNotExist:
             try:
-                instance_exist = self.get(lang=lang, **{instance_type: instance})
-                if title != instance_exist.title:
+                wikipedia_page = self.get(lang=lang, **{instance_type: instance})
+                if title != wikipedia_page.title:
                     raise WrongValue(
                         f"Can not assign Wikipedia page title='{title}' lang={lang} to {instance_type} ID={instance.id},"
-                        f" because another Wikipedia page title='{instance_exist.title}' already assigned there")
+                        f" because another Wikipedia page title='{wikipedia_page.title}' already assigned there")
             except self.model.DoesNotExist:
-                return self.create(lang=lang, title=title, content_object=instance)
+                wikipedia_page = self.create(lang=lang, title=title, content_object=instance)
+        return wikipedia_page
 
 
 class WikipediaPage(SitesBaseModel):
@@ -176,7 +173,7 @@ class WikipediaPage(SitesBaseModel):
     def url(self) -> str:
         return self.link.format(title=self.title.replace(' ', '_'), lang=self.lang)
 
-    def sync(self) -> None:
+    def sync(self, **_) -> None:
         """
         Sync instance using Wikipedia API. Update content, page_id fields
         """

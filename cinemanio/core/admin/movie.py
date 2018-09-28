@@ -1,5 +1,8 @@
+from django.conf import settings
 from django.contrib.admin import register
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from graphql_relay.node.node import to_global_id
 from reversion.admin import VersionAdmin
 
 from cinemanio.core.admin.cast import CastInline
@@ -12,7 +15,7 @@ class MovieAdmin(VersionAdmin):
     """
     Movie admin model
     """
-    list_display = ['id', 'year', 'title_en', 'title_ru']
+    list_display = ['id', 'year', 'title_en', 'title_ru', 'site']
     list_display_links = ['id']
     autocomplete_fields = ['sequel_for', 'prequel_for', 'remake_for']
     search_fields = ['title', 'title_ru', 'title_en']
@@ -35,3 +38,7 @@ class MovieAdmin(VersionAdmin):
             'fields': ('genres', 'languages', 'countries'),
         }),
     )
+
+    def site(self, obj):
+        global_id = to_global_id('MovieNode', obj.id)
+        return mark_safe(f'<a href="{settings.FRONTEND_URL}movies/{global_id}/">link</a>')
