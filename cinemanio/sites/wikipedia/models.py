@@ -112,8 +112,8 @@ class WikipediaPageManager(models.Manager):
 
         # remove years
         if remove_years:
-            title = re.sub(r'^(.+) \(\d{4}\)', r'\1', title)
-            term = re.sub(r'^(.+) \(\d{4}\)', r'\1', term)
+            title = re.sub(r'^(.+) \(.*\d{4}.*\)', r'\1', title)
+            term = re.sub(r'^(.+) \(.*\d{4}.*\)', r'\1', term)
 
         # similarity check
         if SequenceMatcher(None, title, term).ratio() < 0.7:
