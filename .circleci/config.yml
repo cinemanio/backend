@@ -32,6 +32,9 @@ jobs:
           name: Run type checking
           command: pipenv run python -m mypy -p cinemanio
       - run:
+          name: Run bandit
+          command: pipenv run python -m bandit -r .
+      - run:
           name: Collect static
           command: pipenv run python manage.py collectstatic --noinput
       - run:

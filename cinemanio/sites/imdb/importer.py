@@ -196,46 +196,42 @@ class ImdbPersonImporter(ImdbImporterBase):
             if movie is None:
                 # get movie by imdb_id
                 movie = Movie.objects.get(imdb__id=imdb_id)
-            cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
         except Movie.DoesNotExist:
             try:
                 # get cast by movie name among person's movies
                 cast = self.object.career.get(movie__title_en=title, role=role)
-                movie = cast.movie
                 created = False
             except Cast.DoesNotExist:
                 try:
-                    assert year
+                    # TODO: improve performance of this query
                     # get cast by role name and movie year among person's movies
-                    # TODO: improve perfomance of this query
                     cast = self.object.career.get(name_en__iexact=imdb_movie.notes.lower(), role=role,
                                                   movie__imdb=None,
                                                   movie__year__gte=year - 1,
                                                   movie__year__lte=year + 1)
-                    movie = cast.movie
                     created = False
-                except (Cast.DoesNotExist, AssertionError):
+                except (Cast.DoesNotExist, TypeError):
                     # get cast by movie name and year among all movies
                     movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
                     cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
                 else:
-                    # update movie to make it more imdb friendly
-                    movie.title_en = title
-                    movie.year = year
-                    movie.save()
+                    # update movie to make it more imdb friendly in case we found it using role name only
+                    cast.movie.title_en = title
+                    cast.movie.year = year
+                    cast.movie.save()
+        else:
+            cast, created = Cast.objects.get_or_create(person=self.object, movie=movie, role=role)
 
-        if movie and created:
-            logger.info(f'Create cast for person {self.object} in movie {movie} with role {role}',
-                        extra=dict(person=self.object.id, movie=movie.id, role=role.id))
-
-        if movie:
-            ImdbMovie.objects.update_or_create(movie=movie, defaults={'id': int(imdb_id)})
+        ImdbMovie.objects.update_or_create(movie=cast.movie, defaults={'id': int(imdb_id)})
 
         # save name of role for actors
-        if role.is_actor() and imdb_movie.notes and cast and not cast.name_en:
+        if role.is_actor() and imdb_movie.notes and not cast.name_en:
             cast.name_en = imdb_movie.notes
             cast.save(update_fields=['name_en'])
 
+        if created:
+            logger.info(f'Create cast for person {self.object} in movie {cast.movie} with role {role}',
+                        extra=dict(person=self.object.id, movie=cast.movie.id, cast=cast.id))
         return cast
 
     def create_movie(self, imdb_movie) -> Movie:
@@ -422,41 +418,29 @@ class ImdbMovieImporter(ImdbImporterBase):
             if person is None:
                 # get person by imdb_id
                 person = Person.objects.get(imdb__id=imdb_id)
-            cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
         except Person.DoesNotExist:
             try:
                 # get person by name among movie's persons and save imdb_id for future
                 cast = self.object.cast.get(person__first_name_en=first, person__last_name_en=last, role=role)
-                person = cast.person
                 created = False
             except Cast.DoesNotExist:
                 # get person by name among all persons
                 # TODO: remove this DANGEROUS behaviour or add some other checks
                 person = Person.objects.get(first_name_en=first, last_name_en=last, imdb__id=None)
                 cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
+        else:
+            cast, created = Cast.objects.get_or_create(movie=self.object, person=person, role=role)
 
-        if person and created:
-            logger.info(f'Create cast for person {person} in movie {self.object} with role {role}',
-                        extra=dict(person=person.id, movie=self.object.id, role=role.id))
-
-        if person:
-            ImdbPerson.objects.update_or_create(person=person, defaults={'id': int(imdb_id)})
+        ImdbPerson.objects.update_or_create(person=cast.person, defaults={'id': int(imdb_id)})
 
         # save name of role for actors
-        if role.is_actor() and cast and not cast.name_en:
-            if imdb_person.currentRole:
-                # it seems from Jul 2018 currentRole is no longer used
-                if isinstance(imdb_person.currentRole, RolesList):
-                    # may be it's better to make to different roles
-                    # test movie http://www.imdb.com/title/tt0453249/
-                    cast.name_en = ' / '.join(
-                        [cr.data['name'] for cr in imdb_person.currentRole if cr.data.get('name')])
-                elif isinstance(imdb_person.currentRole, Character):
-                    cast.name_en = imdb_person.currentRole.data['name']
-            elif imdb_person.notes:
-                cast.name_en = imdb_person.notes
+        if role.is_actor() and imdb_person.notes and not cast.name_en:
+            cast.name_en = imdb_person.notes
             cast.save(update_fields=['name_en'])
 
+        if created:
+            logger.info(f'Create cast for person {cast.person} in movie {self.object} with role {role}',
+                        extra=dict(person=cast.person.id, movie=self.object.id, cast=cast.id))
         return cast
 
     def create_person(self, imdb_person) -> Person:

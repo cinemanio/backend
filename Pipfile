@@ -55,6 +55,7 @@ pydot = "*"
 pyyaml = "*"
 prospector = "*"
 mypy = "*"
+bandit = "*"
 
 [requires]
 python_version = "3.6.4"

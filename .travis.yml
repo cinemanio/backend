@@ -10,6 +10,7 @@ script:
   - flake8 ./cinemanio
   - prospector .
   - python -m mypy -p cinemanio
+  - bandit -r .
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test
 after_success:
   - coveralls
