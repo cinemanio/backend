@@ -1,40 +1,29 @@
 # -*- coding: utf-8 -*-
 
-mapping = (
-    u"abvgdeziyklmnoprstufhcCABVGDEZIYKLMNOPRSTUFH",
-    u"абвгдезийклмнопрстуфхцЦАБВГДЕЗИЙКЛМНОПРСТУФХ",
-)
+mapping = ("abvgdeziyklmnoprstufhcCABVGDEZIYKLMNOPRSTUFH", "абвгдезийклмнопрстуфхцЦАБВГДЕЗИЙКЛМНОПРСТУФХ")
 
-reversed_specific_mapping = (
-    u"эЭыЫ",
-    u"eEyY"
-)
+reversed_specific_mapping = ("эЭыЫ", "eEyY")
 
 pre_processor_mapping = {
-    u"yo": u"ё",
-    u"Yo": u"Ё",
-    u"iy": u"ий",
-    u"zh": u"ж",
-    u"ts": u"ц",
-    u"ch": u"ч",
-    u"sh": u"ш",
-    u"sch": u"щ",
-    u"yu": u"ю",
-    u"ya": u"я",
-    u"kh": u"х",
-    u"Zh": u"Ж",
-    u"Ts": u"Ц",
-    u"Ch": u"Ч",
-    u"Sh": u"Ш",
-    u"Sch": u"Щ",
-    u"Yu": u"Ю",
-    u"Ya": u"Я",
-    u"Kh": u"Х",
+    "yo": "ё",
+    "Yo": "Ё",
+    "iy": "ий",
+    "zh": "ж",
+    "ts": "ц",
+    "ch": "ч",
+    "sh": "ш",
+    "sch": "щ",
+    "yu": "ю",
+    "ya": "я",
+    "kh": "х",
+    "Zh": "Ж",
+    "Ts": "Ц",
+    "Ch": "Ч",
+    "Sh": "Ш",
+    "Sch": "Щ",
+    "Yu": "Ю",
+    "Ya": "Я",
+    "Kh": "Х",
 }
 
-reversed_specific_pre_processor_mapping = {
-    u"ъ": u"",
-    u"Ъ": u"",
-    u"ь": u"",
-    u"Ь": u"",
-}
+reversed_specific_pre_processor_mapping = {"ъ": "", "Ъ": "", "ь": "", "Ь": ""}

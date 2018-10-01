@@ -1,8 +1,5 @@
 class KinopoiskSyncMixin:
-    fixtures = [
-        'kinopoisk.kinopoiskgenre.json',
-        'kinopoisk.kinopoiskcountry.json',
-    ]
+    fixtures = ["kinopoisk.kinopoiskgenre.json", "kinopoisk.kinopoiskcountry.json"]
 
     def assert_dennis_hopper_career(self, kp_person, movie1, movie2):
         career = kp_person.person.career
@@ -11,5 +8,5 @@ class KinopoiskSyncMixin:
         self.assertEqual(career.count(), 4)
         self.assertTrue(career.get(movie=movie1, role=self.director))
         self.assertTrue(career.get(movie=movie1, role=self.scenarist))
-        self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, 'Billy')
-        self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, 'Clifford Worley')
+        self.assertEqual(career.get(movie=movie1, role=self.actor).name_en, "Billy")
+        self.assertEqual(career.get(movie=movie2, role=self.actor).name_en, "Clifford Worley")

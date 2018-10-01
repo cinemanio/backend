@@ -69,7 +69,8 @@ class DjangoObjectTypeMixin:
         for selection in selections:
             if isinstance(selection, FragmentSpread):
                 fields += cls.convert_selections_to_fields(
-                    info.fragments[selection.name.value].selection_set.selections, info)
+                    info.fragments[selection.name.value].selection_set.selections, info
+                )
             else:
                 fields.append(selection.name.value)
         return fields
@@ -87,13 +88,13 @@ class DjangoObjectTypeMixin:
                     i += 1
                     continue
 
-            if selections[i].name.value in [cls._meta.model._meta.model_name, 'node']:
+            if selections[i].name.value in [cls._meta.model._meta.model_name, "node"]:
                 found = True
 
             selections = selections[i].selection_set.selections
             i = 0
 
-            if found is True and selections[0].name.value == 'edges':
+            if found is True and selections[0].name.value == "edges":
                 found = False
 
             if found:

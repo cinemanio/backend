@@ -37,6 +37,7 @@ class Role(PropertyModel):
     """
     Role model
     """
+
     ACTOR_ID = 1
     ACTOR_VOICE_ID = 22
     DIRECTOR_ID = 16
@@ -52,8 +53,8 @@ class Role(PropertyModel):
     objects = RoleManager()
 
     class Meta(PropertyModel.Meta):
-        verbose_name = _('role')
-        verbose_name_plural = _('roles')
+        verbose_name = _("role")
+        verbose_name_plural = _("roles")
 
     def is_actor(self):
         return self.id == self.ACTOR_ID

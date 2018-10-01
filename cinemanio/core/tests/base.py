@@ -7,15 +7,10 @@ from cinemanio.core.models import Role
 
 
 class BaseTestCase(TestCase):
-    fixtures = [
-        'core.role.json',
-        'core.genre.json',
-        'core.country.json',
-        'core.language.json',
-    ]
+    fixtures = ["core.role.json", "core.genre.json", "core.country.json", "core.language.json"]
 
     def setUp(self):
-        translation.activate('en')
+        translation.activate("en")
         super().setUp()
 
     @property

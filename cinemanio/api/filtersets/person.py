@@ -10,10 +10,10 @@ codes = PersonRelation().codes
 
 
 class PersonFilterSet(BaseFilterSet, RelationsMixin):
-    roles = ModelGlobalIdMultipleChoiceFilter(queryset=Role.objects.all(), method='filter_m2m')
-    relation = ChoiceFilter(choices=[[code] * 2 for code in codes], method='filter_relation')
+    roles = ModelGlobalIdMultipleChoiceFilter(queryset=Role.objects.all(), method="filter_m2m")
+    relation = ChoiceFilter(choices=[[code] * 2 for code in codes], method="filter_relation")
     order_by = OrderingFilter(fields=get_relations_ordering_fields(codes))
 
     class Meta:
         model = Person
-        fields = ['country', 'roles', 'relation']
+        fields = ["country", "roles", "relation"]

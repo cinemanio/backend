@@ -52,16 +52,16 @@ def search_link(content_type_id, object_id, links, html):
     """
     instance = ContentType.objects.get(id=content_type_id).get_object_for_this_type(id=object_id)
     if isinstance(instance, Movie):
-        prefix = 'title/tt'
+        prefix = "title/tt"
         model = ImdbMovie
     elif isinstance(instance, Person):
-        prefix = 'name/nm'
+        prefix = "name/nm"
         model = ImdbPerson
     else:
         raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
 
     for link in links + [html]:
-        m = re.findall(rf'https?://(?:www\.)?imdb\.com/{prefix}(\d+)/?', link)
+        m = re.findall(rf"https?://(?:www\.)?imdb\.com/{prefix}(\d+)/?", link)
         if m:
             model.objects.safe_create(m[0], instance)
             break

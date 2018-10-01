@@ -1,5 +1,3 @@
 from .movie import MovieForm
 
-__all__ = [
-    'MovieForm',
-]
+__all__ = ["MovieForm"]

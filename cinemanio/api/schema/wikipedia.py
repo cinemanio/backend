@@ -10,6 +10,6 @@ class WikipediaPageNode(DjangoObjectTypeMixin, DjangoObjectType):
 
     class Meta:
         model = WikipediaPage
-        filter_fields = ('lang',)
-        only_fields = ('lang', 'title', 'content')
+        filter_fields = ("lang",)
+        only_fields = ("lang", "title", "content")
         use_connection = True

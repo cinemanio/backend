@@ -11,7 +11,7 @@ from cinemanio.sites.kinopoisk.factories import KinopoiskMovieFactory
 class MovieQueryTestCase(ObjectQueryBaseTestCase):
     def test_movie_with_m2m(self):
         m = MovieFactory()
-        query = '''
+        query = """
             query Movie($id: ID!) {
               movie(id: $id) {
                 id
@@ -20,15 +20,15 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
                 languages { nameEn }
               }
             }
-        '''
+        """
         with self.assertNumQueries(4):
             result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
-        self.assertGreater(len(result['movie']['genres']), 0)
-        self.assertGreater(len(result['movie']['languages']), 0)
-        self.assertGreater(len(result['movie']['countries']), 0)
-        self.assert_m2m_rel(result['movie']['genres'], m.genres)
-        self.assert_m2m_rel(result['movie']['languages'], m.languages)
-        self.assert_m2m_rel(result['movie']['countries'], m.countries)
+        self.assertGreater(len(result["movie"]["genres"]), 0)
+        self.assertGreater(len(result["movie"]["languages"]), 0)
+        self.assertGreater(len(result["movie"]["countries"]), 0)
+        self.assert_m2m_rel(result["movie"]["genres"], m.genres)
+        self.assert_m2m_rel(result["movie"]["languages"], m.languages)
+        self.assert_m2m_rel(result["movie"]["countries"], m.countries)
 
     def test_movie_with_related_movie(self):
         m = MovieFactory(prequel_for=MovieFactory(), sequel_for=MovieFactory(), remake_for=MovieFactory())
@@ -36,7 +36,7 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
         prequel_id = to_global_id(MovieNode._meta.name, m.prequel_for.id)
         sequel_id = to_global_id(MovieNode._meta.name, m.sequel_for.id)
         remake_id = to_global_id(MovieNode._meta.name, m.remake_for.id)
-        query = '''
+        query = """
             query Movie($id: ID!) {
               movie(id: $id) {
                 id, year
@@ -45,17 +45,17 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
                 remakeFor { id, year }
               }
             }
-        '''
+        """
         with self.assertNumQueries(1):
             result = self.execute(query, dict(id=global_id))
-        self.assertEqual(result['movie']['id'], global_id)
-        self.assertEqual(result['movie']['prequelFor']['id'], prequel_id)
-        self.assertEqual(result['movie']['sequelFor']['id'], sequel_id)
-        self.assertEqual(result['movie']['remakeFor']['id'], remake_id)
+        self.assertEqual(result["movie"]["id"], global_id)
+        self.assertEqual(result["movie"]["prequelFor"]["id"], prequel_id)
+        self.assertEqual(result["movie"]["sequelFor"]["id"], sequel_id)
+        self.assertEqual(result["movie"]["remakeFor"]["id"], remake_id)
 
     def test_movie_with_related_sites(self):
         m = ImdbMovieFactory(movie=KinopoiskMovieFactory().movie).movie
-        query = '''
+        query = """
             query Movie($id: ID!) {
               movie(id: $id) {
                 id
@@ -63,22 +63,22 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
                 kinopoisk { id, rating, votes, info, url }
               }
             }
-        '''
+        """
         with self.assertNumQueries(1):
             result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
-        self.assertEqual(result['movie']['imdb']['id'], m.imdb.id)
-        self.assertEqual(result['movie']['imdb']['rating'], m.imdb.rating)
-        self.assertEqual(result['movie']['imdb']['votes'], m.imdb.votes)
-        self.assertEqual(result['movie']['imdb']['url'], m.imdb.url)
-        self.assertEqual(result['movie']['kinopoisk']['id'], m.kinopoisk.id)
-        self.assertEqual(result['movie']['kinopoisk']['rating'], m.kinopoisk.rating)
-        self.assertEqual(result['movie']['kinopoisk']['votes'], m.kinopoisk.votes)
-        self.assertEqual(result['movie']['kinopoisk']['info'], m.kinopoisk.info)
-        self.assertEqual(result['movie']['kinopoisk']['url'], m.kinopoisk.url)
+        self.assertEqual(result["movie"]["imdb"]["id"], m.imdb.id)
+        self.assertEqual(result["movie"]["imdb"]["rating"], m.imdb.rating)
+        self.assertEqual(result["movie"]["imdb"]["votes"], m.imdb.votes)
+        self.assertEqual(result["movie"]["imdb"]["url"], m.imdb.url)
+        self.assertEqual(result["movie"]["kinopoisk"]["id"], m.kinopoisk.id)
+        self.assertEqual(result["movie"]["kinopoisk"]["rating"], m.kinopoisk.rating)
+        self.assertEqual(result["movie"]["kinopoisk"]["votes"], m.kinopoisk.votes)
+        self.assertEqual(result["movie"]["kinopoisk"]["info"], m.kinopoisk.info)
+        self.assertEqual(result["movie"]["kinopoisk"]["url"], m.kinopoisk.url)
 
     def test_movie_without_related_sites(self):
         m = MovieFactory()
-        query = '''
+        query = """
             query Movie($id: ID!) {
               movie(id: $id) {
                 id
@@ -86,18 +86,18 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
                 kinopoisk { id, rating, votes, info }
               }
             }
-        '''
+        """
         with self.assertNumQueries(1):
             result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
-        self.assertEqual(result['movie']['imdb'], None)
-        self.assertEqual(result['movie']['kinopoisk'], None)
+        self.assertEqual(result["movie"]["imdb"], None)
+        self.assertEqual(result["movie"]["kinopoisk"], None)
 
     def test_movie_with_cast(self):
         m = MovieFactory()
         for i in range(100):
             cast = CastFactory(movie=m)
         CastFactory(role=cast.role)
-        query = '''
+        query = """
             query Movie($id: ID!, $role: ID!) {
               movie(id: $id) {
                 id
@@ -112,8 +112,10 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id),
-                                              role=to_global_id(RoleNode._meta.name, cast.role.id)))
-        self.assertEqual(len(result['movie']['cast']['edges']), m.cast.filter(role=cast.role).count())
+            result = self.execute(
+                query,
+                dict(id=to_global_id(MovieNode._meta.name, m.id), role=to_global_id(RoleNode._meta.name, cast.role.id)),
+            )
+        self.assertEqual(len(result["movie"]["cast"]["edges"]), m.cast.filter(role=cast.role).count())

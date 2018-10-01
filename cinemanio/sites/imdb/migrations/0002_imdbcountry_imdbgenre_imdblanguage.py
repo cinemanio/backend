@@ -6,45 +6,51 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0002_auto_20180206_1854'),
-        ('imdb', '0001_initial'),
-    ]
+    dependencies = [("core", "0002_auto_20180206_1854"), ("imdb", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='ImdbCountry',
+            name="ImdbCountry",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, null=True, unique=True, verbose_name='IMDb name')),
-                ('code', models.CharField(max_length=2, null=True, unique=True, verbose_name='IMDb code')),
-                ('country', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='imdb', to='core.Country')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=50, null=True, unique=True, verbose_name="IMDb name")),
+                ("code", models.CharField(max_length=2, null=True, unique=True, verbose_name="IMDb code")),
+                (
+                    "country",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="imdb", to="core.Country"
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
         ),
         migrations.CreateModel(
-            name='ImdbGenre',
+            name="ImdbGenre",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, null=True, unique=True, verbose_name='IMDb name')),
-                ('genre', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='imdb', to='core.Genre')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=50, null=True, unique=True, verbose_name="IMDb name")),
+                (
+                    "genre",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="imdb", to="core.Genre"
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
         ),
         migrations.CreateModel(
-            name='ImdbLanguage',
+            name="ImdbLanguage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, null=True, unique=True, verbose_name='IMDb name')),
-                ('code', models.CharField(max_length=2, null=True, unique=True, verbose_name='IMDb code')),
-                ('language', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='imdb', to='core.Language')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=50, null=True, unique=True, verbose_name="IMDb name")),
+                ("code", models.CharField(max_length=2, null=True, unique=True, verbose_name="IMDb code")),
+                (
+                    "language",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="imdb", to="core.Language"
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
         ),
     ]

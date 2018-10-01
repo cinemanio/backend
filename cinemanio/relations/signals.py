@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from cinemanio.relations.models import MovieRelation, PersonRelation, UserRelation
 from cinemanio.relations.tasks import recount_familiar_objects, delete_empty_relations, recount_object_relations
 
-relation_changed = Signal(providing_args=['instance', 'code', 'request'])
+relation_changed = Signal(providing_args=["instance", "code", "request"])
 
 
 @receiver(relation_changed, sender=MovieRelation)

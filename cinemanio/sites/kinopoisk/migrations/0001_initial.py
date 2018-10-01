@@ -10,35 +10,47 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('core', '0001_initial'),
-    ]
+    dependencies = [("core", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='KinopoiskMovie',
+            name="KinopoiskMovie",
             fields=[
-                ('info', models.TextField(blank=True, default='', verbose_name='Kinopoisk information')),
-                ('id', models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name='Kinopoisk ID')),
-                ('rating', models.FloatField(blank=True, db_index=True, null=True, verbose_name='Kinopoisk rating')),
-                ('votes', models.FloatField(blank=True, null=True, verbose_name='Kinopoisk votes number')),
-                ('movie', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='kinopoisk', to='core.Movie')),
+                ("info", models.TextField(blank=True, default="", verbose_name="Kinopoisk information")),
+                ("id", models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name="Kinopoisk ID")),
+                ("rating", models.FloatField(blank=True, db_index=True, null=True, verbose_name="Kinopoisk rating")),
+                ("votes", models.FloatField(blank=True, null=True, verbose_name="Kinopoisk votes number")),
+                (
+                    "movie",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="kinopoisk", to="core.Movie"
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
-            bases=(models.Model, cinemanio.sites.kinopoisk.models.UrlMixin, cinemanio.sites.kinopoisk.sync.MovieSyncMixin),
+            options={"abstract": False},
+            bases=(
+                models.Model,
+                cinemanio.sites.kinopoisk.models.UrlMixin,
+                cinemanio.sites.kinopoisk.sync.MovieSyncMixin,
+            ),
         ),
         migrations.CreateModel(
-            name='KinopoiskPerson',
+            name="KinopoiskPerson",
             fields=[
-                ('info', models.TextField(blank=True, default='', verbose_name='Kinopoisk information')),
-                ('id', models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name='Kinopoisk ID')),
-                ('person', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='kinopoisk', to='core.Person')),
+                ("info", models.TextField(blank=True, default="", verbose_name="Kinopoisk information")),
+                ("id", models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name="Kinopoisk ID")),
+                (
+                    "person",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="kinopoisk", to="core.Person"
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
-            bases=(models.Model, cinemanio.sites.kinopoisk.models.UrlMixin, cinemanio.sites.kinopoisk.sync.PersonSyncMixin),
+            options={"abstract": False},
+            bases=(
+                models.Model,
+                cinemanio.sites.kinopoisk.models.UrlMixin,
+                cinemanio.sites.kinopoisk.sync.PersonSyncMixin,
+            ),
         ),
     ]

@@ -5,19 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('imdb', '0003_imdbmovie_votes'),
-    ]
+    dependencies = [("imdb", "0003_imdbmovie_votes")]
 
     operations = [
         migrations.AddField(
-            model_name='imdbmovie',
-            name='synced_at',
-            field=models.DateTimeField(db_index=True, null=True, verbose_name='Synced at'),
+            model_name="imdbmovie",
+            name="synced_at",
+            field=models.DateTimeField(db_index=True, null=True, verbose_name="Synced at"),
         ),
         migrations.AddField(
-            model_name='imdbperson',
-            name='synced_at',
-            field=models.DateTimeField(db_index=True, null=True, verbose_name='Synced at'),
+            model_name="imdbperson",
+            name="synced_at",
+            field=models.DateTimeField(db_index=True, null=True, verbose_name="Synced at"),
         ),
     ]

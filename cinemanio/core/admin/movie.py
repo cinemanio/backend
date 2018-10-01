@@ -15,30 +15,25 @@ class MovieAdmin(VersionAdmin):
     """
     Movie admin model
     """
-    list_display = ['id', 'year', 'title_en', 'title_ru', 'site']
-    list_display_links = ['id']
-    autocomplete_fields = ['sequel_for', 'prequel_for', 'remake_for']
-    search_fields = ['title', 'title_ru', 'title_en']
+
+    list_display = ["id", "year", "title_en", "title_ru", "site"]
+    list_display_links = ["id"]
+    autocomplete_fields = ["sequel_for", "prequel_for", "remake_for"]
+    search_fields = ["title", "title_ru", "title_en"]
     form = MovieForm
     inlines = [CastInline]
     fieldsets = (
-        (None, {
-            'fields': (
-                ('title', 'year',),
-                ('title_en', 'title_ru'),
-                ('runtime', 'novel_isbn'),
-            ),
-        }),
-        (_('Associations with other movies'), {
-            'classes': ('collapse', 'collapsed'),
-            'fields': ('sequel_for', 'prequel_for', 'remake_for'),
-        }),
-        (_('Genres, languages and countries'), {
-            'classes': ('collapse', 'collapsed'),
-            'fields': ('genres', 'languages', 'countries'),
-        }),
+        (None, {"fields": (("title", "year"), ("title_en", "title_ru"), ("runtime", "novel_isbn"))}),
+        (
+            _("Associations with other movies"),
+            {"classes": ("collapse", "collapsed"), "fields": ("sequel_for", "prequel_for", "remake_for")},
+        ),
+        (
+            _("Genres, languages and countries"),
+            {"classes": ("collapse", "collapsed"), "fields": ("genres", "languages", "countries")},
+        ),
     )
 
     def site(self, obj):
-        global_id = to_global_id('MovieNode', obj.id)
+        global_id = to_global_id("MovieNode", obj.id)
         return mark_safe(f'<a href="{settings.FRONTEND_URL}movies/{global_id}/">link</a>')

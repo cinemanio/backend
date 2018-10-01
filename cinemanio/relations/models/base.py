@@ -10,15 +10,20 @@ class RelationBase(models.Model):
     """
 
     class Meta:
-        unique_together = ('object', 'user')
-        ordering = ('id',)
+        unique_together = ("object", "user")
+        ordering = ("id",)
         abstract = True
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __repr__(self):
-        return ' | '.join([repr(self.object), repr(self.user),
-                           ', '.join(['{}={}'.format(code, getattr(self, code)) for code in self.codes])])
+        return " | ".join(
+            [
+                repr(self.object),
+                repr(self.user),
+                ", ".join(["{}={}".format(code, getattr(self, code)) for code in self.codes]),
+            ]
+        )
 
     def __str__(self):
         return repr(self)

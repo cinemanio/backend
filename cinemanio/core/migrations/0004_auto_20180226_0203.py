@@ -6,19 +6,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0003_auto_20180210_2106'),
-    ]
+    dependencies = [("core", "0003_auto_20180210_2106")]
 
     operations = [
         migrations.AddField(
-            model_name='country',
-            name='code',
-            field=models.CharField(default='', max_length=2, verbose_name='Code'),
+            model_name="country", name="code", field=models.CharField(default="", max_length=2, verbose_name="Code")
         ),
         migrations.AlterField(
-            model_name='movie',
-            name='year',
-            field=models.PositiveSmallIntegerField(db_index=True, help_text='Year in between 1894 and 2028', null=True, validators=[django.core.validators.MinValueValidator(1894), django.core.validators.MaxValueValidator(2028)], verbose_name='Year'),
+            model_name="movie",
+            name="year",
+            field=models.PositiveSmallIntegerField(
+                db_index=True,
+                help_text="Year in between 1894 and 2028",
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(1894),
+                    django.core.validators.MaxValueValidator(2028),
+                ],
+                verbose_name="Year",
+            ),
         ),
     ]

@@ -13,7 +13,7 @@ class ImageNode(DjangoObjectTypeMixin, DjangoObjectType):
 
     class Meta:
         model = Image
-        only_fields = ('type', 'original')
+        only_fields = ("type", "original")
         use_connection = True
 
     def resolve_original(self, _, **__):
@@ -35,6 +35,6 @@ class ImageNode(DjangoObjectTypeMixin, DjangoObjectType):
 class ImageLinkNode(DjangoObjectTypeMixin, DjangoObjectType):
     class Meta:
         model = ImageLink
-        filter_fields = ('image',)
-        only_fields = ('image',)
+        filter_fields = ("image",)
+        only_fields = ("image",)
         use_connection = True

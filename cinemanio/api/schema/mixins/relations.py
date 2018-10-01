@@ -25,7 +25,7 @@ class RelationsMixin:
         try:
             return self.relations_count
         except ObjectDoesNotExist:
-            return self._meta.get_field('relations_count').related_model()
+            return self._meta.get_field("relations_count").related_model()
 
     @classmethod
     def get_queryset(cls, info):
@@ -39,10 +39,12 @@ class RelationsMixin:
         fields_to_select = cls.convert_selections_to_fields(selections, info)
 
         for field_to_select in fields_to_select:
-            if field_to_select == 'relation':
-                model = cls._meta.model._meta.get_field('relations').related_model
-                queryset = queryset.prefetch_related(Prefetch(
-                    'relations', to_attr='user_relation_prefetched',
-                    queryset=model.objects.filter(user_id=user.id)))
+            if field_to_select == "relation":
+                model = cls._meta.model._meta.get_field("relations").related_model
+                queryset = queryset.prefetch_related(
+                    Prefetch(
+                        "relations", to_attr="user_relation_prefetched", queryset=model.objects.filter(user_id=user.id)
+                    )
+                )
 
         return queryset

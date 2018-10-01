@@ -18,12 +18,21 @@ class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesM
     class Meta:
         model = Movie
         only_fields = (
-            'id',
-            'title_en', 'title_ru', 'title_original',
-            'year', 'runtime', 'award',
-            'genres', 'countries', 'languages',
-            'sequel_for', 'prequel_for', 'remake_for',
-            'imdb', 'kinopoisk',
+            "id",
+            "title_en",
+            "title_ru",
+            "title_original",
+            "year",
+            "runtime",
+            "award",
+            "genres",
+            "countries",
+            "languages",
+            "sequel_for",
+            "prequel_for",
+            "remake_for",
+            "imdb",
+            "kinopoisk",
         )
         interfaces = (relay.Node,)
         connection_class = CountableConnectionBase

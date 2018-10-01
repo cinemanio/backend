@@ -6,7 +6,7 @@ from django.db.transaction import atomic
 from cinemanio.relations.models import MovieRelation, PersonRelation, MovieRelationCount, PersonRelationCount
 from cinemanio.relations.signals import relation_changed
 
-EXCLUDE_FIELDS = ('object', 'user')
+EXCLUDE_FIELDS = ("object", "user")
 
 
 class MovieRelationNode(DjangoObjectType):
@@ -51,10 +51,7 @@ class Relate(graphene.Mutation):
     count = graphene.Field(RelationCountNode)
     relation = graphene.Field(RelationNode)
 
-    models_map = {
-        'MovieNode': MovieRelation,
-        'PersonNode': PersonRelation,
-    }
+    models_map = {"MovieNode": MovieRelation, "PersonNode": PersonRelation}
 
     def mutate(self, info, id, code):  # pylint: disable=redefined-builtin
         user = info.context.user
@@ -69,10 +66,7 @@ class Relate(graphene.Mutation):
             relation.save()
             relation_changed.send(sender=relation.__class__, instance=relation)
 
-        return Relate(
-            count=relation.object.relations_count,
-            relation=relation,
-        )
+        return Relate(count=relation.object.relations_count, relation=relation)
 
 
 class RelationMutation:

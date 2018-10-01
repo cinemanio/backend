@@ -10,14 +10,14 @@ from .images import ImagesQueryTestCase
 from .wikipedia import WikipediaQueryTestCase
 
 __all__ = [
-    'MovieQueryTestCase',
-    'MoviesQueryTestCase',
-    'PersonQueryTestCase',
-    'PersonsQueryTestCase',
-    'PropertiesQueryTestCase',
-    'AuthTestCase',
-    'RelationsQueryTestCase',
-    'PaginationQueryTestCase',
-    'ImagesQueryTestCase',
-    'WikipediaQueryTestCase',
+    "MovieQueryTestCase",
+    "MoviesQueryTestCase",
+    "PersonQueryTestCase",
+    "PersonsQueryTestCase",
+    "PropertiesQueryTestCase",
+    "AuthTestCase",
+    "RelationsQueryTestCase",
+    "PaginationQueryTestCase",
+    "ImagesQueryTestCase",
+    "WikipediaQueryTestCase",
 ]

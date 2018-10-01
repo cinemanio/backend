@@ -4,12 +4,12 @@ from cinemanio.core.models import Cast, Genre, Language, Country, Role, Movie, P
 
 
 class OptionsMixin:
-    required_languages = ('en', )
+    required_languages = ("en",)
 
 
 @register(Cast)
 class CastTranslationOptions(TranslationOptions, OptionsMixin):
-    fields = ('name',)
+    fields = ("name",)
 
 
 @register(Genre)
@@ -17,14 +17,14 @@ class CastTranslationOptions(TranslationOptions, OptionsMixin):
 @register(Country)
 @register(Role)
 class PropertyTranslationOptions(TranslationOptions, OptionsMixin):
-    fields = ('name',)
+    fields = ("name",)
 
 
 @register(Movie)
 class MovieTranslationOptions(TranslationOptions, OptionsMixin):
-    fields = ('title',)
+    fields = ("title",)
 
 
 @register(Person)
 class PersonTranslationOptions(TranslationOptions, OptionsMixin):
-    fields = ('first_name', 'last_name')
+    fields = ("first_name", "last_name")

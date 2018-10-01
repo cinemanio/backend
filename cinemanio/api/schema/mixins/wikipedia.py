@@ -8,5 +8,6 @@ class WikipediaMixin:
     wikipedia = DjangoFilterConnectionField(WikipediaPageNode)
 
     def resolve_wikipedia(self, info, **_):
-        return WikipediaPageNode.get_queryset(info).filter(object_id=self.pk,
-                                                           content_type=ContentType.objects.get_for_model(self))
+        return WikipediaPageNode.get_queryset(info).filter(
+            object_id=self.pk, content_type=ContentType.objects.get_for_model(self)
+        )

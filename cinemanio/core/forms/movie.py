@@ -7,13 +7,25 @@ class MovieForm(ModelForm):
     """
     Movie Form
     """
+
     class Meta:
         model = Movie
         fields = (
-            'title', 'title_ru', 'title_en', 'year', 'runtime', 'novel_isbn',
-            'sequel_for', 'prequel_for', 'remake_for', 'novel_isbn',
-            'genres', 'languages', 'countries',
-            'site_official_url', 'site_fan_url',
+            "title",
+            "title_ru",
+            "title_en",
+            "year",
+            "runtime",
+            "novel_isbn",
+            "sequel_for",
+            "prequel_for",
+            "remake_for",
+            "novel_isbn",
+            "genres",
+            "languages",
+            "countries",
+            "site_official_url",
+            "site_fan_url",
         )
 
     # def clean_sequel_for(self):

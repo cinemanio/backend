@@ -5,14 +5,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0007_auto_20180226_1957'),
-    ]
+    dependencies = [("core", "0007_auto_20180226_1957")]
 
     operations = [
         migrations.AddField(
-            model_name='person',
-            name='roles',
-            field=models.ManyToManyField(to='core.Role', verbose_name='Roles'),
-        ),
+            model_name="person", name="roles", field=models.ManyToManyField(to="core.Role", verbose_name="Roles")
+        )
     ]

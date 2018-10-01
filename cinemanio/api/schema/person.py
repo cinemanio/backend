@@ -20,12 +20,18 @@ class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, Images
     class Meta:
         model = Person
         only_fields = (
-            'id',
-            'first_name_en', 'last_name_en',
-            'first_name_ru', 'last_name_ru',
-            'gender', 'date_birth', 'date_death',
-            'country', 'roles',
-            'imdb', 'kinopoisk',
+            "id",
+            "first_name_en",
+            "last_name_en",
+            "first_name_ru",
+            "last_name_ru",
+            "gender",
+            "date_birth",
+            "date_death",
+            "country",
+            "roles",
+            "imdb",
+            "kinopoisk",
         )
         interfaces = (relay.Node,)
         connection_class = CountableConnectionBase

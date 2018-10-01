@@ -16,7 +16,7 @@ admin.site.unregister(Person)
 
 
 class InlineBase(TabularInline):
-    classes = ('collapse', 'collapsed',)
+    classes = ("collapse", "collapsed")
 
 
 class ImdbMovieInline(InlineBase):
@@ -43,31 +43,42 @@ class SitesAdminMixin:
         return mark_safe(f'<a href="{obj.kinopoisk.url}" target="_blank">{obj.kinopoisk.id}</a>')
 
     def wikipedia_en(self, obj):
-        return self.wikipedia(obj, 'en')
+        return self.wikipedia(obj, "en")
 
     def wikipedia_ru(self, obj):
-        return self.wikipedia(obj, 'ru')
+        return self.wikipedia(obj, "ru")
 
     def wikipedia(self, obj, lang):
         try:
-            wikipedia = getattr(obj, f'wikipedia_{lang}')[0]
+            wikipedia = getattr(obj, f"wikipedia_{lang}")[0]
             return mark_safe(f'<a href="{wikipedia.url}" target="_blank">{wikipedia.title}</a>')
         except IndexError:
-            return ''
+            return ""
 
     def get_queryset(self, request):
-        return super().get_queryset(request) \
+        return (
+            super()
+            .get_queryset(request)
             .prefetch_related(
-            Prefetch('wikipedia', to_attr='wikipedia_en', queryset=WikipediaPage.objects.filter(lang='en'))) \
+                Prefetch("wikipedia", to_attr="wikipedia_en", queryset=WikipediaPage.objects.filter(lang="en"))
+            )
             .prefetch_related(
-            Prefetch('wikipedia', to_attr='wikipedia_ru', queryset=WikipediaPage.objects.filter(lang='ru')))
+                Prefetch("wikipedia", to_attr="wikipedia_ru", queryset=WikipediaPage.objects.filter(lang="ru"))
+            )
+        )
 
 
 @register(Movie)
 class SitesMovieAdmin(SitesAdminMixin, MovieAdmin):  # type: ignore
-    list_display = MovieAdmin.list_display + ['imdb_id', 'imdb_rating', 'kinopoisk_id', 'kinopoisk_rating',
-                                              'wikipedia_en', 'wikipedia_ru']
-    list_select_related = ('imdb', 'kinopoisk')
+    list_display = MovieAdmin.list_display + [
+        "imdb_id",
+        "imdb_rating",
+        "kinopoisk_id",
+        "kinopoisk_rating",
+        "wikipedia_en",
+        "wikipedia_ru",
+    ]
+    list_select_related = ("imdb", "kinopoisk")
     inlines = [ImdbMovieInline, KinopoiskMovieInline] + MovieAdmin.inlines
 
     def imdb_rating(self, obj):
@@ -79,6 +90,6 @@ class SitesMovieAdmin(SitesAdminMixin, MovieAdmin):  # type: ignore
 
 @register(Person)
 class SitesPersonAdmin(SitesAdminMixin, PersonAdmin):  # type: ignore
-    list_display = PersonAdmin.list_display + ['imdb_id', 'kinopoisk_id', 'wikipedia_en', 'wikipedia_ru']
-    list_select_related = ('imdb', 'kinopoisk')
+    list_display = PersonAdmin.list_display + ["imdb_id", "kinopoisk_id", "wikipedia_en", "wikipedia_ru"]
+    list_select_related = ("imdb", "kinopoisk")
     inlines = [ImdbPersonInline, KinopoiskPersonInline] + PersonAdmin.inlines

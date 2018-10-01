@@ -3,7 +3,7 @@ from django.dispatch import Signal, receiver
 from cinemanio.sites.wikipedia.models import WikipediaPage
 from cinemanio.sites.wikipedia.tasks import search_roles_links
 
-wikipedia_page_synced = Signal(providing_args=['content_type_id', 'object_id', 'lang', 'page'])
+wikipedia_page_synced = Signal(providing_args=["content_type_id", "object_id", "lang", "page"])
 
 
 @receiver(wikipedia_page_synced, sender=WikipediaPage)

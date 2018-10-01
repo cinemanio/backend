@@ -25,8 +25,8 @@ class ImageType(IntEnum):
 
 
 class ImageSourceType(Enum):
-    KINOPOISK = 'kinopoisk'
-    WIKICOMMONS = 'wikicommons'
+    KINOPOISK = "kinopoisk"
+    WIKICOMMONS = "wikicommons"
 
 
 class ImageLinkManager(models.Manager):
@@ -41,8 +41,9 @@ class ImageLinkManager(models.Manager):
 
         if image.id:
             # pylint: disable=unsubscriptable-object
-            image_link = self.get_or_create(image=image, object_id=self.instance.id,
-                                            content_type=ContentType.objects.get_for_model(self.instance))[0]
+            image_link = self.get_or_create(
+                image=image, object_id=self.instance.id, content_type=ContentType.objects.get_for_model(self.instance)
+            )[0]
             downloaded = False
         else:
             image_link = self.download(url, **kwargs)
@@ -88,8 +89,8 @@ class ImageManager(models.Manager):
         image = self.get_image_from_url(url)
         if not image.id:
             image.__dict__.update(kwargs)
-            if 'http' not in url:
-                url = 'http:' + url
+            if "http" not in url:
+                url = "http:" + url
             image.source = urlparse(url).netloc
             image.download(url)
         return image
@@ -99,30 +100,31 @@ class Image(models.Model):
     """
     Image model
     """
+
     SOURCE_REGEXP = {
         # http://st3.kinopoisk.ru/im/poster/1/1/1/kinopoisk.ru-Title-495390.jpg
         # //st.kp.yandex.net/im/poster/4/8/3/kinopoisk.ru-Les-amants-r_26_23233_3Bguliers-483294.jpg
-        ImageSourceType.KINOPOISK: r'kinopoisk.ru\-.+\-(\d+)\.jpg$',
+        ImageSourceType.KINOPOISK: r"kinopoisk.ru\-.+\-(\d+)\.jpg$",
         # http://upload.wikimedia.org/wikipedia/commons/1/14/Francis_Ford_Coppola%28CannesPhotoCall%29_crop.jpg
         # http://upload.wikimedia.org/wikipedia/commons/9/9e/Francis_Ford_Coppola_2007_crop.jpg
-        ImageSourceType.WIKICOMMONS: r'^http://upload.wikimedia.org/wikipedia/commons/.+/([^/]+)$',
+        ImageSourceType.WIKICOMMONS: r"^http://upload.wikimedia.org/wikipedia/commons/.+/([^/]+)$",
     }
 
-    type = EnumIntegerField(ImageType, verbose_name=_('Type'), null=True, db_index=True)
-    original = ImageField(_('Original'), upload_to='images')
+    type = EnumIntegerField(ImageType, verbose_name=_("Type"), null=True, db_index=True)
+    original = ImageField(_("Original"), upload_to="images")
 
-    source = models.CharField(_('Source'), max_length=100, default='', blank=True)
-    source_type = EnumField(ImageSourceType, verbose_name=_('Type of source'), max_length=20, null=True, blank=True)
-    source_id = models.CharField(_('Source ID'), max_length=300, null=True, blank=True)
+    source = models.CharField(_("Source"), max_length=100, default="", blank=True)
+    source_type = EnumField(ImageSourceType, verbose_name=_("Type of source"), max_length=20, null=True, blank=True)
+    source_id = models.CharField(_("Source ID"), max_length=300, null=True, blank=True)
 
     objects = ImageManager()
 
     class Meta:
-        verbose_name = _('image')
-        verbose_name_plural = _('images')
-        get_latest_by = 'id'
-        unique_together = ('source_type', 'source_id')
-        ordering = ('-id',)
+        verbose_name = _("image")
+        verbose_name_plural = _("images")
+        get_latest_by = "id"
+        unique_together = ("source_type", "source_id")
+        ordering = ("-id",)
 
     DETAIL_SIZE = (180, 255)
     FULL_CARD_SIZE = (100, 140)
@@ -130,13 +132,13 @@ class Image(models.Model):
     ICON_SIZE = (30, 40)
 
     def get_thumbnail(self, width, height):
-        return get_thumbnail(self.original, f'{width}x{height}', crop='center', upscale=True)
+        return get_thumbnail(self.original, f"{width}x{height}", crop="center", upscale=True)
 
     def download(self, url):
         """
         Download image from url and save it into ImageField
         """
-        name = f'{time.time()}.jpg'
+        name = f"{time.time()}.jpg"
         f = urlopen(url)
         self.original.save(name, ContentFile(f.read()))
 
@@ -145,7 +147,8 @@ class ImageLink(models.Model):
     """
     Image link to object model
     """
-    image = models.ForeignKey(Image, related_name='links', on_delete=models.CASCADE)
+
+    image = models.ForeignKey(Image, related_name="links", on_delete=models.CASCADE)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(db_index=True)
@@ -154,14 +157,14 @@ class ImageLink(models.Model):
     objects = ImageLinkManager()
 
     class Meta:
-        verbose_name = _('image link')
-        verbose_name_plural = _('image links')
-        unique_together = ('image', 'content_type', 'object_id')
-        get_latest_by = 'id'
+        verbose_name = _("image link")
+        verbose_name_plural = _("image links")
+        unique_together = ("image", "content_type", "object_id")
+        get_latest_by = "id"
 
     def __repr__(self):
-        return f'ImageLink: {self.object}'
+        return f"ImageLink: {self.object}"
 
 
-Movie.add_to_class('images', GenericRelation(ImageLink, verbose_name=_('Images')))
-Person.add_to_class('images', GenericRelation(ImageLink, verbose_name=_('Images')))
+Movie.add_to_class("images", GenericRelation(ImageLink, verbose_name=_("Images")))
+Person.add_to_class("images", GenericRelation(ImageLink, verbose_name=_("Images")))

@@ -12,10 +12,11 @@ class BaseModel(models.Model):
     """
     Base model for Movie and Person
     """
-    slug = models.SlugField(_('Slug'), max_length=100, unique=True, null=True, blank=True)
 
-    site_official_url = models.URLField(_('Official site'), null=True, blank=True)
-    site_fan_url = models.URLField(_('Fan site'), null=True, blank=True)
+    slug = models.SlugField(_("Slug"), max_length=100, unique=True, null=True, blank=True)
+
+    site_official_url = models.URLField(_("Official site"), null=True, blank=True)
+    site_fan_url = models.URLField(_("Fan site"), null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -32,10 +33,10 @@ class BaseModel(models.Model):
         If some fields non-specified in English, but specified in other language -
         assign transliteratable version for the English and main field
         """
-        for lang in ['ru']:
+        for lang in ["ru"]:
             for field in self.transliteratable_fields:
-                field_lang = '{}_{}'.format(field, lang)
-                field_en = '{}_{}'.format(field, 'en')
+                field_lang = "{}_{}".format(field, lang)
+                field_en = "{}_{}".format(field, "en")
                 value_lang = getattr(self, field_lang)
                 value_en = getattr(self, field_en)
                 value = getattr(self, field)

@@ -23,12 +23,12 @@ class CountryFactory(DjangoModelFactory):
 
 def create_m2m_objects(self, create, extracted, relation_name, model):
     if create:
-        value = extracted if (extracted is not None) else model.objects.order_by('?')[:random.randint(1, 4)]
+        value = extracted if (extracted is not None) else model.objects.order_by("?")[: random.randint(1, 4)]
         getattr(self, relation_name).set(value)
 
 
 class MovieFactory(DjangoModelFactory):
-    title = factory.Faker('sentence', nb_words=3)
+    title = factory.Faker("sentence", nb_words=3)
     year = factory.LazyAttribute(lambda o: random.randrange(1900, 2020))
 
     class Meta:
@@ -36,49 +36,49 @@ class MovieFactory(DjangoModelFactory):
 
     @factory.post_generation
     def genres(self, create, extracted):
-        create_m2m_objects(self, create, extracted, 'genres', Genre)
+        create_m2m_objects(self, create, extracted, "genres", Genre)
 
     @factory.post_generation
     def languages(self, create, extracted):
-        create_m2m_objects(self, create, extracted, 'languages', Language)
+        create_m2m_objects(self, create, extracted, "languages", Language)
 
     @factory.post_generation
     def countries(self, create, extracted):
-        create_m2m_objects(self, create, extracted, 'countries', Country)
+        create_m2m_objects(self, create, extracted, "countries", Country)
 
 
 class PersonFactory(DjangoModelFactory):
     gender = factory.LazyAttribute(lambda o: random.choice([Gender.MALE, Gender.FEMALE]))
 
-    first_name = factory.Faker('sentence', nb_words=1)
-    last_name = factory.Faker('sentence', nb_words=1)
+    first_name = factory.Faker("sentence", nb_words=1)
+    last_name = factory.Faker("sentence", nb_words=1)
 
-    first_name_en = factory.Faker('sentence', nb_words=1)
-    last_name_en = factory.Faker('sentence', nb_words=1)
+    first_name_en = factory.Faker("sentence", nb_words=1)
+    last_name_en = factory.Faker("sentence", nb_words=1)
 
-    first_name_ru = factory.Faker('sentence', nb_words=1)
-    last_name_ru = factory.Faker('sentence', nb_words=1)
+    first_name_ru = factory.Faker("sentence", nb_words=1)
+    last_name_ru = factory.Faker("sentence", nb_words=1)
 
-    date_birth = factory.Faker('past_date', start_date="-60y", tzinfo=None)
-    date_death = factory.Faker('past_date', start_date="-60y", tzinfo=None)
+    date_birth = factory.Faker("past_date", start_date="-60y", tzinfo=None)
+    date_death = factory.Faker("past_date", start_date="-60y", tzinfo=None)
 
     class Meta:
         model = Person
 
     @factory.post_generation
     def roles(self, create, extracted):
-        create_m2m_objects(self, create, extracted, 'roles', Role)
+        create_m2m_objects(self, create, extracted, "roles", Role)
 
     @factory.post_generation
     def country(self, create, extracted):
         if create:
-            setattr(self, 'country', extracted if (extracted is not None) else Country.objects.order_by('?').first())
+            setattr(self, "country", extracted if (extracted is not None) else Country.objects.order_by("?").first())
 
 
 class CastFactory(DjangoModelFactory):
     movie = factory.SubFactory(MovieFactory)
     person = factory.SubFactory(PersonFactory)
-    role = factory.LazyAttribute(lambda o: Role.objects.order_by('?').first())
+    role = factory.LazyAttribute(lambda o: Role.objects.order_by("?").first())
 
     class Meta:
         model = Cast

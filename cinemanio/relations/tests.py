@@ -22,38 +22,38 @@ class RelationsFieldsTest(TestCase, RelationsTestMixin):
     def test_relation_change_method(self):
         rel = MovieRelationFactory()
         self.assert_relation(rel, [])
-        rel.change('like')
-        self.assert_relation(rel, ['seen', 'like'])
+        rel.change("like")
+        self.assert_relation(rel, ["seen", "like"])
 
     def test_movie_relation_change_fav(self):
         rel = MovieRelationFactory(fav=True, like=True, seen=True)
-        self.assert_relation(rel, ['fav', 'seen', 'like'])
-        rel.change('fav')
-        self.assert_relation(rel, ['seen', 'like'])
+        self.assert_relation(rel, ["fav", "seen", "like"])
+        rel.change("fav")
+        self.assert_relation(rel, ["seen", "like"])
 
     def test_movie_relation_fields(self):
         rel = MovieRelationFactory()
         self.assert_relation(rel, [])
         rel.fav = True
-        self.assert_relation(rel, ['fav', 'seen', 'like'])
+        self.assert_relation(rel, ["fav", "seen", "like"])
         rel.fav = False
-        self.assert_relation(rel, ['seen', 'like'])
+        self.assert_relation(rel, ["seen", "like"])
         rel.seen = False
         self.assert_relation(rel, [])
         rel.fav = True
-        self.assert_relation(rel, ['seen', 'like', 'fav'])
+        self.assert_relation(rel, ["seen", "like", "fav"])
         rel.dislike = True
-        self.assert_relation(rel, ['seen', 'dislike'])
+        self.assert_relation(rel, ["seen", "dislike"])
 
     def test_person_relation_fields(self):
         rel = PersonRelationFactory()
         self.assert_relation(rel, [])
         rel.fav = True
-        self.assert_relation(rel, ['fav', 'like'])
+        self.assert_relation(rel, ["fav", "like"])
         rel.dislike = True
-        self.assert_relation(rel, ['dislike'])
+        self.assert_relation(rel, ["dislike"])
         rel.like = True
-        self.assert_relation(rel, ['like'])
+        self.assert_relation(rel, ["like"])
         rel.fav = True
         rel.like = False
         self.assert_relation(rel, [])
@@ -65,7 +65,7 @@ class RelationsTest(TestCase):
         Signal should delete records with False relations
         """
         rel = MovieRelationFactory(seen=True)
-        relation_changed.send(sender=MovieRelation, instance=rel, code='seen')
+        relation_changed.send(sender=MovieRelation, instance=rel, code="seen")
 
         self.assertEqual(MovieRelation.objects.count(), 1)
 
@@ -77,13 +77,13 @@ class RelationsTest(TestCase):
 
     def test_user_familiar_objects_count(self):
         rel1 = MovieRelationFactory(seen=True)
-        relation_changed.send(sender=MovieRelation, instance=rel1, code='seen')
+        relation_changed.send(sender=MovieRelation, instance=rel1, code="seen")
 
         count = rel1.user.relations_count
         self.assertEqual(count.movies, 1)
 
         rel2 = MovieRelationFactory(user=rel1.user, seen=True)
-        relation_changed.send(sender=MovieRelation, instance=rel2, code='seen')
+        relation_changed.send(sender=MovieRelation, instance=rel2, code="seen")
 
         count.refresh_from_db()
         self.assertEqual(count.movies, 2)

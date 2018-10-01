@@ -9,25 +9,33 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('core', '0001_initial'),
-    ]
+    dependencies = [("core", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='ImdbMovie',
+            name="ImdbMovie",
             fields=[
-                ('id', models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name='IMDb ID')),
-                ('rating', models.FloatField(blank=True, db_index=True, null=True, verbose_name='IMDb rating')),
-                ('movie', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='imdb', to='core.Movie')),
+                ("id", models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name="IMDb ID")),
+                ("rating", models.FloatField(blank=True, db_index=True, null=True, verbose_name="IMDb rating")),
+                (
+                    "movie",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="imdb", to="core.Movie"
+                    ),
+                ),
             ],
             bases=(models.Model, cinemanio.sites.imdb.models.UrlMixin),
         ),
         migrations.CreateModel(
-            name='ImdbPerson',
+            name="ImdbPerson",
             fields=[
-                ('id', models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name='IMDb ID')),
-                ('person', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='imdb', to='core.Person')),
+                ("id", models.PositiveIntegerField(primary_key=True, serialize=False, verbose_name="IMDb ID")),
+                (
+                    "person",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="imdb", to="core.Person"
+                    ),
+                ),
             ],
             bases=(models.Model, cinemanio.sites.imdb.models.UrlMixin),
         ),

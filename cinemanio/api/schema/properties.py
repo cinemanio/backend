@@ -5,7 +5,7 @@ from graphql_relay.node.node import to_global_id
 from cinemanio.api.utils import DjangoObjectTypeMixin
 from cinemanio.core.models import Genre, Language, Country, Role
 
-PROPERTY_FIELDS = ['id', 'name_en', 'name_ru']
+PROPERTY_FIELDS = ["id", "name_en", "name_ru"]
 
 
 class RoleNode(DjangoObjectTypeMixin, DjangoObjectType):
@@ -14,7 +14,7 @@ class RoleNode(DjangoObjectTypeMixin, DjangoObjectType):
         only_fields = PROPERTY_FIELDS
 
     def resolve_id(self, info):
-        return to_global_id('RoleNode', self.pk)
+        return to_global_id("RoleNode", self.pk)
 
 
 class GenreNode(DjangoObjectType):
@@ -23,7 +23,7 @@ class GenreNode(DjangoObjectType):
         only_fields = PROPERTY_FIELDS
 
     def resolve_id(self, info):
-        return to_global_id('GenreNode', self.pk)
+        return to_global_id("GenreNode", self.pk)
 
 
 class LanguageNode(DjangoObjectType):
@@ -32,16 +32,16 @@ class LanguageNode(DjangoObjectType):
         only_fields = PROPERTY_FIELDS
 
     def resolve_id(self, info):
-        return to_global_id('LanguageNode', self.pk)
+        return to_global_id("LanguageNode", self.pk)
 
 
 class CountryNode(DjangoObjectType):
     class Meta:
         model = Country
-        only_fields = PROPERTY_FIELDS + ['code']
+        only_fields = PROPERTY_FIELDS + ["code"]
 
     def resolve_id(self, info):
-        return to_global_id('CountryNode', self.pk)
+        return to_global_id("CountryNode", self.pk)
 
 
 class PropertiesQuery:

@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('imdb', '0002_imdbcountry_imdbgenre_imdblanguage'),
-    ]
+    dependencies = [("imdb", "0002_imdbcountry_imdbgenre_imdblanguage")]
 
     operations = [
         migrations.AddField(
-            model_name='imdbmovie',
-            name='votes',
-            field=models.PositiveIntegerField(blank=True, null=True, verbose_name='IMDb votes number'),
-        ),
+            model_name="imdbmovie",
+            name="votes",
+            field=models.PositiveIntegerField(blank=True, null=True, verbose_name="IMDb votes number"),
+        )
     ]

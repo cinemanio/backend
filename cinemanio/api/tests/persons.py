@@ -17,7 +17,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
             PersonFactory()
 
     def test_persons_query(self):
-        query = '''
+        query = """
             query Persons {
               persons {
                 edges {
@@ -28,15 +28,15 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertNumQueries(2):
             result = self.execute(query)
-        self.assert_count_equal(result['persons'], self.count)
+        self.assert_count_equal(result["persons"], self.count)
 
-    @skip('add this filter to filterset')
+    @skip("add this filter to filterset")
     def test_persons_query_filter_by_birth_year(self):
         year = Person.objects.all()[0].date_birth.year
-        query = '''
+        query = """
             query Persons($year: Float!) {
               persons(dateBirth_Year: $year) {
                 edges {
@@ -46,14 +46,14 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertNumQueries(2):
             result = self.execute(query, dict(year=year))
-        self.assert_count_equal(result['persons'], Person.objects.filter(date_birth__year=year).count())
+        self.assert_count_equal(result["persons"], Person.objects.filter(date_birth__year=year).count())
 
     def test_persons_query_filter_by_country(self):
         country = Person.objects.all()[0].country
-        query = '''
+        query = """
             query Persons($country: ID!) {
               persons(country: $country) {
                 edges {
@@ -63,18 +63,19 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertNumQueries(2):
             result = self.execute(query, dict(country=to_global_id(CountryNode._meta.name, country.id)))
-        self.assert_count_equal(result['persons'], Person.objects.filter(country=country).count())
+        self.assert_count_equal(result["persons"], Person.objects.filter(country=country).count())
 
-    @parameterized.expand([(Role, RoleNode, 'roles')])
+    @parameterized.expand([(Role, RoleNode, "roles")])
     def test_movies_filter_by_m2m(self, model, node, fieldname):
         items = model.objects.all()[:2]
         item1, item2 = items
         for m in Person.objects.all()[:10]:
             getattr(m, fieldname).set(items)
-        query = '''
+        query = (
+            """
             query Persons($rels: [ID!]) {
               persons(%s: $rels) {
                 edges {
@@ -84,11 +85,14 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        ''' % fieldname
+        """
+            % fieldname
+        )
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(rels=[to_global_id(node._meta.name, item1.id),
-                                                    to_global_id(node._meta.name, item2.id)]))
-        self.assert_count_equal(result['persons'], (Person.objects
-                                                    .filter(**{fieldname: item1})
-                                                    .filter(**{fieldname: item2}).count()))
+            result = self.execute(
+                query, dict(rels=[to_global_id(node._meta.name, item1.id), to_global_id(node._meta.name, item2.id)])
+            )
+        self.assert_count_equal(
+            result["persons"], (Person.objects.filter(**{fieldname: item1}).filter(**{fieldname: item2}).count())
+        )

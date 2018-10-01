@@ -15,7 +15,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             MovieFactory()
 
     def test_movies_query(self):
-        query = '''
+        query = """
             query Movies {
               movies {
                 edges {
@@ -29,13 +29,13 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertNumQueries(5):
             result = self.execute(query)
-        self.assert_count_equal(result['movies'], self.count)
+        self.assert_count_equal(result["movies"], self.count)
 
     def test_movies_query_fragments(self):
-        query = '''
+        query = """
             query Movies {
               movies {
                 edges {
@@ -61,14 +61,14 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             fragment MovieInfoLanguages on MovieNode {
               languages { nameEn }
             }
-        '''
+        """
         with self.assertNumQueries(5):
             result = self.execute(query)
-        self.assert_count_equal(result['movies'], self.count)
+        self.assert_count_equal(result["movies"], self.count)
 
     def test_movies_filter_by_year(self):
         year = Movie.objects.all()[0].year
-        query = '''
+        query = """
             query Movies($year: Float!) {
               movies(year: $year) {
                 edges {
@@ -78,22 +78,21 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertNumQueries(2):
             result = self.execute(query, dict(year=year))
-        self.assert_count_equal(result['movies'], Movie.objects.filter(year=year).count())
+        self.assert_count_equal(result["movies"], Movie.objects.filter(year=year).count())
 
-    @parameterized.expand([
-        (Genre, GenreNode, 'genres'),
-        (Country, CountryNode, 'countries'),
-        (Language, LanguageNode, 'languages'),
-    ])
+    @parameterized.expand(
+        [(Genre, GenreNode, "genres"), (Country, CountryNode, "countries"), (Language, LanguageNode, "languages")]
+    )
     def test_movies_filter_by_m2m(self, model, node, fieldname):
         items = model.objects.all()[:2]
         item1, item2 = items
         for m in Movie.objects.all()[:10]:
             getattr(m, fieldname).set(items)
-        query = '''
+        query = (
+            """
             query Movies($rels: [ID!]) {
               movies(%s: $rels) {
                 edges {
@@ -103,17 +102,20 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        ''' % fieldname
+        """
+            % fieldname
+        )
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(rels=(to_global_id(node._meta.name, item1.id),
-                                                    to_global_id(node._meta.name, item2.id))))
-        self.assert_count_equal(result['movies'], (Movie.objects
-                                                   .filter(**{fieldname: item1})
-                                                   .filter(**{fieldname: item2}).count()))
+            result = self.execute(
+                query, dict(rels=(to_global_id(node._meta.name, item1.id), to_global_id(node._meta.name, item2.id)))
+            )
+        self.assert_count_equal(
+            result["movies"], (Movie.objects.filter(**{fieldname: item1}).filter(**{fieldname: item2}).count())
+        )
 
     def test_movies_filter_by_wrong_m2m(self):
-        query = '''
+        query = """
             query Movies($rels: [ID!]) {
               movies(countries: $rels) {
                 edges {
@@ -123,13 +125,14 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
+        """
         with self.assertRaises(AssertionError):
-            self.execute(query, dict(rels=(to_global_id(GenreNode._meta.name, 1),
-                                           to_global_id(CountryNode._meta.name, 1))))
+            self.execute(
+                query, dict(rels=(to_global_id(GenreNode._meta.name, 1), to_global_id(CountryNode._meta.name, 1)))
+            )
 
     def test_movies_order(self):
-        query = '''
+        query = """
             query Movies($order: String!) {
               movies(orderBy: $order) {
                 edges {
@@ -139,8 +142,13 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 }
               }
             }
-        '''
-        self.assert_response_order(query, 'movies', order_by='year', queries_count=2,
-                                   earliest=Movie.objects.earliest('year').year,
-                                   latest=Movie.objects.latest('year').year,
-                                   get_value=lambda n: n['year'])
+        """
+        self.assert_response_order(
+            query,
+            "movies",
+            order_by="year",
+            queries_count=2,
+            earliest=Movie.objects.earliest("year").year,
+            latest=Movie.objects.latest("year").year,
+            get_value=lambda n: n["year"],
+        )

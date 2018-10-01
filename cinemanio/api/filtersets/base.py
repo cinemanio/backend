@@ -14,8 +14,10 @@ class ModelGlobalIdMultipleChoiceField(ModelMultipleChoiceField):
     """
     Multiple choice field with support of relay global_id
     """
+
     def _check_values(self, value):
         from cinemanio.api import schema
+
         local_ids = []
         for global_id in value:
             node, local_id = from_global_id(global_id)
@@ -30,4 +32,5 @@ class ModelGlobalIdMultipleChoiceFilter(ModelMultipleChoiceFilter):
     """
     Multiple choice filter with support of relay global_id
     """
+
     field_class = ModelGlobalIdMultipleChoiceField

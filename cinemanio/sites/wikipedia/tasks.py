@@ -30,7 +30,7 @@ def sync_person(person_id):
 
 def sync(instance):
     if instance.wikipedia.count() == 0:
-        for lang in ['en', 'ru']:
+        for lang in ["en", "ru"]:
             try:
                 WikipediaPage.objects.create_for(instance, lang=lang)
             except (NothingFound, ValueError):
@@ -53,7 +53,7 @@ def search_roles_links(content_type_id, object_id, lang, links):
     if isinstance(instance, Movie):
         linked_instances = instance.persons.all()
     elif isinstance(instance, Person):
-        linked_instances = instance.movies.order_by('id')
+        linked_instances = instance.movies.order_by("id")
     else:
         raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
 

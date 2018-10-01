@@ -6,22 +6,23 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('users', '0003_remove_user_types'),
-        ('core', '0002_auto_20180206_1854'),
-    ]
+    dependencies = [("users", "0003_remove_user_types"), ("core", "0002_auto_20180206_1854")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='movie',
-            name='types',
-        ),
+        migrations.RemoveField(model_name="movie", name="types"),
         migrations.AlterField(
-            model_name='movie',
-            name='year',
-            field=models.SmallIntegerField(db_index=True, help_text='Year in between 1894 and 2028', null=True, validators=[django.core.validators.MaxValueValidator(2028), django.core.validators.MinValueValidator(1894)], verbose_name='Year'),
+            model_name="movie",
+            name="year",
+            field=models.SmallIntegerField(
+                db_index=True,
+                help_text="Year in between 1894 and 2028",
+                null=True,
+                validators=[
+                    django.core.validators.MaxValueValidator(2028),
+                    django.core.validators.MinValueValidator(1894),
+                ],
+                verbose_name="Year",
+            ),
         ),
-        migrations.DeleteModel(
-            name='Type',
-        ),
+        migrations.DeleteModel(name="Type"),
     ]

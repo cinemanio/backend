@@ -1,4 +1,4 @@
 [flake8]
 max-line-length = 121
 exclude = migrations, migrations
-ignore = F405
+ignore = F405,W503

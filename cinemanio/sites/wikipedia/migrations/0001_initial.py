@@ -8,26 +8,26 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('contenttypes', '0002_remove_content_type_name'),
-    ]
+    dependencies = [("contenttypes", "0002_remove_content_type_name")]
 
     operations = [
         migrations.CreateModel(
-            name='WikipediaPage',
+            name="WikipediaPage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('synced_at', models.DateTimeField(db_index=True, null=True, verbose_name='Synced at')),
-                ('lang', models.CharField(db_index=True, max_length=5, verbose_name='Language')),
-                ('title', models.CharField(max_length=100, unique=True, verbose_name='Title')),
-                ('content', models.TextField(blank='', default='', verbose_name='Content')),
-                ('page_id', models.PositiveIntegerField(null=True, verbose_name='Page ID')),
-                ('object_id', models.PositiveIntegerField()),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("synced_at", models.DateTimeField(db_index=True, null=True, verbose_name="Synced at")),
+                ("lang", models.CharField(db_index=True, max_length=5, verbose_name="Language")),
+                ("title", models.CharField(max_length=100, unique=True, verbose_name="Title")),
+                ("content", models.TextField(blank="", default="", verbose_name="Content")),
+                ("page_id", models.PositiveIntegerField(null=True, verbose_name="Page ID")),
+                ("object_id", models.PositiveIntegerField()),
+                (
+                    "content_type",
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="contenttypes.ContentType"),
+                ),
             ],
         ),
         migrations.AlterUniqueTogether(
-            name='wikipediapage',
-            unique_together={('content_type', 'object_id', 'lang'), ('lang', 'title')},
+            name="wikipediapage", unique_together={("content_type", "object_id", "lang"), ("lang", "title")}
         ),
     ]

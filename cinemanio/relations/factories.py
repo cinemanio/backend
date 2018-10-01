@@ -2,8 +2,13 @@ import factory
 import random
 from factory.django import DjangoModelFactory
 
-from cinemanio.relations.models import (MovieRelation, PersonRelation, UserRelation,
-                                        MovieRelationCount, PersonRelationCount)
+from cinemanio.relations.models import (
+    MovieRelation,
+    PersonRelation,
+    UserRelation,
+    MovieRelationCount,
+    PersonRelationCount,
+)
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.users.factories import UserFactory
 

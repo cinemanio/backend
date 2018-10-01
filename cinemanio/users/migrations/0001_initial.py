@@ -10,57 +10,165 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('auth', '0009_alter_user_last_name_max_length'),
-        ('core', '0001_initial'),
-    ]
+    dependencies = [("auth", "0009_alter_user_last_name_max_length"), ("core", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=30, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('date_birth', models.DateField(blank=True, null=True, verbose_name='Date of birth')),
-                ('gender', models.IntegerField(blank=True, choices=[(1, 'Boy'), (0, 'Girl')], db_index=True, null=True, verbose_name='Gender')),
-                ('icq', models.PositiveIntegerField(blank=True, null=True, verbose_name='ICQ')),
-                ('jabber', models.CharField(blank=True, max_length=50, verbose_name='Jabber')),
-                ('gtalk', models.CharField(blank=True, default='', max_length=50, verbose_name='Google Talk')),
-                ('googleprofile', models.CharField(blank=True, default='', max_length=50, verbose_name='Google Profile')),
-                ('skype', models.CharField(blank=True, max_length=50, verbose_name='Skype')),
-                ('msn', models.CharField(blank=True, max_length=50, verbose_name='Messenger')),
-                ('lj', models.CharField(blank=True, max_length=50, null=True, unique=True, verbose_name='Livejournal')),
-                ('site', models.URLField(blank=True, verbose_name='Homepage')),
-                ('about', models.TextField(blank=True, verbose_name='About myself')),
-                ('city', models.CharField(blank=True, max_length=50, verbose_name='City')),
-                ('email_about_answers', models.BooleanField(default=True, help_text='Allow send notifications with new answers for your comments', verbose_name='New answers')),
-                ('email_about_comments', models.BooleanField(default=True, help_text='Allow send notifications with new comments for your texts or lists', verbose_name='New comments')),
-                ('email_about_listlinks', models.BooleanField(default=True, help_text='Allow send notifications about new objects in your lists', verbose_name='New object in lists')),
-                ('email_super_listlinks', models.BooleanField(default=True, help_text='Allow send notifications about new objects in your favorite lists', verbose_name='New object in favorite lists')),
-                ('email_super_objects_comments', models.BooleanField(db_index=True, default=True, help_text='Allow send notifications about new comments of texts or lists you marked as "super"', verbose_name='Favorite object comments')),
-                ('email_super_objects_changes', models.BooleanField(db_index=True, default=True, help_text='Allow send notifications about changes of any objects you marked as "super"', verbose_name='Favorite object changes')),
-                ('genres', models.ManyToManyField(blank=True, related_name='users', to='core.Genre', verbose_name='Favorite genres')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
-                ('types', models.ManyToManyField(blank=True, related_name='users', to='core.Type', verbose_name='Favorite types')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                ("last_login", models.DateTimeField(blank=True, null=True, verbose_name="last login")),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={"unique": "A user with that username already exists."},
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[django.contrib.auth.validators.UnicodeUsernameValidator()],
+                        verbose_name="username",
+                    ),
+                ),
+                ("first_name", models.CharField(blank=True, max_length=30, verbose_name="first name")),
+                ("last_name", models.CharField(blank=True, max_length=150, verbose_name="last name")),
+                ("email", models.EmailField(blank=True, max_length=254, verbose_name="email address")),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                ("date_joined", models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined")),
+                ("date_birth", models.DateField(blank=True, null=True, verbose_name="Date of birth")),
+                (
+                    "gender",
+                    models.IntegerField(
+                        blank=True, choices=[(1, "Boy"), (0, "Girl")], db_index=True, null=True, verbose_name="Gender"
+                    ),
+                ),
+                ("icq", models.PositiveIntegerField(blank=True, null=True, verbose_name="ICQ")),
+                ("jabber", models.CharField(blank=True, max_length=50, verbose_name="Jabber")),
+                ("gtalk", models.CharField(blank=True, default="", max_length=50, verbose_name="Google Talk")),
+                (
+                    "googleprofile",
+                    models.CharField(blank=True, default="", max_length=50, verbose_name="Google Profile"),
+                ),
+                ("skype", models.CharField(blank=True, max_length=50, verbose_name="Skype")),
+                ("msn", models.CharField(blank=True, max_length=50, verbose_name="Messenger")),
+                ("lj", models.CharField(blank=True, max_length=50, null=True, unique=True, verbose_name="Livejournal")),
+                ("site", models.URLField(blank=True, verbose_name="Homepage")),
+                ("about", models.TextField(blank=True, verbose_name="About myself")),
+                ("city", models.CharField(blank=True, max_length=50, verbose_name="City")),
+                (
+                    "email_about_answers",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Allow send notifications with new answers for your comments",
+                        verbose_name="New answers",
+                    ),
+                ),
+                (
+                    "email_about_comments",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Allow send notifications with new comments for your texts or lists",
+                        verbose_name="New comments",
+                    ),
+                ),
+                (
+                    "email_about_listlinks",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Allow send notifications about new objects in your lists",
+                        verbose_name="New object in lists",
+                    ),
+                ),
+                (
+                    "email_super_listlinks",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Allow send notifications about new objects in your favorite lists",
+                        verbose_name="New object in favorite lists",
+                    ),
+                ),
+                (
+                    "email_super_objects_comments",
+                    models.BooleanField(
+                        db_index=True,
+                        default=True,
+                        help_text='Allow send notifications about new comments of texts or lists you marked as "super"',
+                        verbose_name="Favorite object comments",
+                    ),
+                ),
+                (
+                    "email_super_objects_changes",
+                    models.BooleanField(
+                        db_index=True,
+                        default=True,
+                        help_text='Allow send notifications about changes of any objects you marked as "super"',
+                        verbose_name="Favorite object changes",
+                    ),
+                ),
+                (
+                    "genres",
+                    models.ManyToManyField(
+                        blank=True, related_name="users", to="core.Genre", verbose_name="Favorite genres"
+                    ),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "types",
+                    models.ManyToManyField(
+                        blank=True, related_name="users", to="core.Type", verbose_name="Favorite types"
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
-                'ordering': ('username',),
-                'abstract': False,
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "ordering": ("username",),
+                "abstract": False,
             },
-            managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
-            ],
-        ),
+            managers=[("objects", django.contrib.auth.models.UserManager())],
+        )
     ]

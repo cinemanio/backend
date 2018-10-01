@@ -10,7 +10,7 @@ from cinemanio.sites.models import SitesBaseModel
 class UrlMixin:
     @property
     def url(self):
-        return self.link.format(id=f'{self.id:07}')
+        return self.link.format(id=f"{self.id:07}")
 
 
 class ImdbBaseManager(models.Manager):
@@ -44,19 +44,21 @@ class ImdbBaseManager(models.Manager):
         instance_type = instance._meta.model_name
         try:
             instance_exist = self.get(id=imdb_id)
-            instance_exist_id = getattr(instance_exist, f'{instance_type}_id')
+            instance_exist_id = getattr(instance_exist, f"{instance_type}_id")
             if instance.id == instance_exist_id:
                 return instance_exist
             raise PossibleDuplicate(
                 f"Can not assign IMDb ID={imdb_id} to {instance_type} ID={instance.id}, "
-                f"because it's already assigned to {instance_type} ID={instance_exist_id}")
+                f"because it's already assigned to {instance_type} ID={instance_exist_id}"
+            )
         except self.model.DoesNotExist:
             try:
                 instance_exist = self.get(**{instance_type: instance})
                 if imdb_id != instance_exist.id:
                     raise WrongValue(
                         f"Can not assign IMDb ID={imdb_id} to {instance_type} ID={instance.id}, "
-                        f"because another IMDb ID={instance_exist.id} already assigned there")
+                        f"because another IMDb ID={instance_exist.id} already assigned there"
+                    )
             except self.model.DoesNotExist:
                 return self.create(id=imdb_id, **{instance_type: instance})
 
@@ -71,41 +73,41 @@ class ImdbMovieManager(ImdbBaseManager):
         if movie.cast.exclude(person__imdb=None).exists():
             person_imdb_id = movie.cast.exclude(person__imdb=None)[0].person.imdb.id
             person_imdb = imdb.get_person(person_imdb_id)
-            for category in person_imdb['filmography']:
+            for category in person_imdb["filmography"]:
                 for __, results in category.items():
                     for result in results:
-                        if result.data['title'] == movie.title and result.data['year'] == movie.year:
+                        if result.data["title"] == movie.title and result.data["year"] == movie.year:
                             return self.safe_create(result.movieID, movie)
         raise NothingFound
 
     def search(self, imdb, movie):
         """Search by movie's title"""
         for result in imdb.search_movie(movie.title):
-            if result.data['year'] == movie.year:
+            if result.data["year"] == movie.year:
                 return self.safe_create(result.movieID, movie)
         raise NothingFound
 
 
 class ImdbPersonManager(ImdbBaseManager):
     movie_persons_categories = [
-        'cast',
-        'art department',
+        "cast",
+        "art department",
         # 'assistant directors',
         # 'camera department',
         # 'casting department',
-        'cinematographers',
-        'director',
-        'directors',
-        'editors',
+        "cinematographers",
+        "director",
+        "directors",
+        "editors",
         # 'make up department',
-        'music department',
-        'producers',
+        "music department",
+        "producers",
         # 'production managers',
         # 'sound department',
         # 'thanks',
         # 'visual effects',
-        'writer',
-        'writers',
+        "writer",
+        "writers",
     ]
 
     def validate_for_search(self, person):
@@ -119,7 +121,7 @@ class ImdbPersonManager(ImdbBaseManager):
             movie_imdb = imdb.get_movie(movie_imdb_id)
             for category in self.movie_persons_categories:
                 for result in movie_imdb.get(category, []):
-                    if result.data['name'] == f'{person.last_name}, {person.first_name}':
+                    if result.data["name"] == f"{person.last_name}, {person.first_name}":
                         return self.safe_create(result.personID, person)
         raise NothingFound
 
@@ -135,17 +137,19 @@ class ImdbMovie(SitesBaseModel, UrlMixin):
     """
     Imdb movie model
     """
-    id = models.PositiveIntegerField(_('IMDb ID'), primary_key=True)
-    rating = models.FloatField(_('IMDb rating'), null=True, db_index=True, blank=True)
-    votes = models.PositiveIntegerField(_('IMDb votes number'), null=True, blank=True)
-    movie = models.OneToOneField(Movie, related_name='imdb', on_delete=models.CASCADE)
 
-    link = 'http://www.imdb.com/title/tt{id}/'
+    id = models.PositiveIntegerField(_("IMDb ID"), primary_key=True)
+    rating = models.FloatField(_("IMDb rating"), null=True, db_index=True, blank=True)
+    votes = models.PositiveIntegerField(_("IMDb votes number"), null=True, blank=True)
+    movie = models.OneToOneField(Movie, related_name="imdb", on_delete=models.CASCADE)
+
+    link = "http://www.imdb.com/title/tt{id}/"
 
     objects = ImdbMovieManager()
 
     def sync(self, **kwargs):
         from cinemanio.sites.imdb.importer import ImdbMovieImporter
+
         ImdbMovieImporter(self.movie, self.id).get_applied_data(**kwargs)
         super().sync()
 
@@ -154,35 +158,37 @@ class ImdbPerson(SitesBaseModel, UrlMixin):
     """
     Imdb person model
     """
-    id = models.PositiveIntegerField(_('IMDb ID'), primary_key=True)
-    person = models.OneToOneField(Person, related_name='imdb', on_delete=models.CASCADE)
 
-    link = 'http://www.imdb.com/name/nm{id}/'
+    id = models.PositiveIntegerField(_("IMDb ID"), primary_key=True)
+    person = models.OneToOneField(Person, related_name="imdb", on_delete=models.CASCADE)
+
+    link = "http://www.imdb.com/name/nm{id}/"
 
     objects = ImdbPersonManager()
 
     def sync(self, **kwargs):
         from cinemanio.sites.imdb.importer import ImdbPersonImporter
+
         ImdbPersonImporter(self.person, self.id).get_applied_data(**kwargs)
         super().sync()
 
 
 class ImdbPropBase(models.Model):
-    name = models.CharField(_('IMDb name'), max_length=50, null=True, unique=True)
+    name = models.CharField(_("IMDb name"), max_length=50, null=True, unique=True)
 
     class Meta:
         abstract = True
 
 
 class ImdbGenre(ImdbPropBase):
-    genre = models.OneToOneField(Genre, related_name='imdb', on_delete=models.CASCADE)
+    genre = models.OneToOneField(Genre, related_name="imdb", on_delete=models.CASCADE)
 
 
 class ImdbLanguage(ImdbPropBase):
-    language = models.OneToOneField(Language, related_name='imdb', on_delete=models.CASCADE)
-    code = models.CharField(_('IMDb code'), max_length=2, null=True, unique=True)
+    language = models.OneToOneField(Language, related_name="imdb", on_delete=models.CASCADE)
+    code = models.CharField(_("IMDb code"), max_length=2, null=True, unique=True)
 
 
 class ImdbCountry(ImdbPropBase):
-    country = models.OneToOneField(Country, related_name='imdb', on_delete=models.CASCADE)
-    code = models.CharField(_('IMDb code'), max_length=2, null=True, unique=True)
+    country = models.OneToOneField(Country, related_name="imdb", on_delete=models.CASCADE)
+    code = models.CharField(_("IMDb code"), max_length=2, null=True, unique=True)

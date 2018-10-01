@@ -13,22 +13,34 @@ class PersonAdmin(VersionAdmin):
     """
     Person admin model
     """
-    list_display = ['id', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru', 'date_birth', 'date_death',
-                    'site']
-    list_display_links = ['id']
-    search_fields = ['first_name', 'last_name', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru']
+
+    list_display = [
+        "id",
+        "first_name_en",
+        "last_name_en",
+        "first_name_ru",
+        "last_name_ru",
+        "date_birth",
+        "date_death",
+        "site",
+    ]
+    list_display_links = ["id"]
+    search_fields = ["first_name", "last_name", "first_name_en", "last_name_en", "first_name_ru", "last_name_ru"]
     inlines = [CastInline]
     fieldsets = (
-        (None, {
-            'fields': (
-                ('first_name', 'last_name', 'gender'),
-                ('first_name_en', 'last_name_en'),
-                ('first_name_ru', 'last_name_ru'),
-                ('country', 'date_birth', 'date_death'),
-            )
-        }),
+        (
+            None,
+            {
+                "fields": (
+                    ("first_name", "last_name", "gender"),
+                    ("first_name_en", "last_name_en"),
+                    ("first_name_ru", "last_name_ru"),
+                    ("country", "date_birth", "date_death"),
+                )
+            },
+        ),
     )
 
     def site(self, obj):
-        global_id = to_global_id('PersonNode', obj.id)
+        global_id = to_global_id("PersonNode", obj.id)
         return mark_safe(f'<a href="{settings.FRONTEND_URL}persons/{global_id}/">link</a>')

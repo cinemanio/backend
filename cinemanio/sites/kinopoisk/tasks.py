@@ -31,16 +31,16 @@ def search_link(content_type_id, object_id, links, html):
     """
     instance = ContentType.objects.get(id=content_type_id).get_object_for_this_type(id=object_id)
     if isinstance(instance, Movie):
-        prefix = 'film'
+        prefix = "film"
         model = KinopoiskMovie
     elif isinstance(instance, Person):
-        prefix = 'name'
+        prefix = "name"
         model = KinopoiskPerson
     else:
         raise TypeError(f"Type of instance attribute is unknown: {type(instance)}")
 
     for link in links + [html]:
-        m = re.findall(rf'https?://(?:www\.)?kinopoisk\.ru/{prefix}/(\d+)/?', link)
+        m = re.findall(rf"https?://(?:www\.)?kinopoisk\.ru/{prefix}/(\d+)/?", link)
         if m:
             model.objects.get_or_create(id=m[0], defaults={instance._meta.model_name: instance})
             break
