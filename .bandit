@@ -1,2 +1,2 @@
 [bandit]
-exclude: factories.py,tests
+exclude: factories.py,tests,.venv
