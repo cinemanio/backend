@@ -1,5 +1,5 @@
 from django.forms.widgets import Widget
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 from sorl.thumbnail import get_thumbnail
 
 from cinemanio.images.models import Image
@@ -11,15 +11,10 @@ class AdminImagePreviewWidget(Widget):
     """
 
     def render(self, name, value, **_):
-        if value:
-            try:
-                # is image
-                thumb = get_thumbnail(value, '{}x{}'.format(*Image.ICON_SIZE)).url
-                output = f'''<input type="hidden" name="{name}" value="{value}" />
-                    <a target="_blank" href="{value.url}"><img src="{thumb}" alt="{value}" /></a>'''
-            except IOError:  # not image
-                output = f'<input type="text" name="{name}" />'
-        else:
-            output = f'<input type="text" name="name" />'
+        if not value:
+            return ''
 
-        return mark_safe(output)
+        thumb = get_thumbnail(value, '{}x{}'.format(*Image.ICON_SIZE)).url
+
+        return format_html('''<input type="hidden" name="{}" value="{}" />
+            <a target="_blank" href="{}"><img src="{}" alt="{}" /></a>''', name, value, value.url, thumb, value)

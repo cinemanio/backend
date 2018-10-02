@@ -139,7 +139,7 @@ class Image(models.Model):
         Download image from url and save it into ImageField
         """
         name = f'{time.time()}.jpg'
-        with urlopen(Request(url)) as response:
+        with urlopen(Request(url)) as response:  # nosec
             self.original.save(name, ContentFile(response.read()))
 
 

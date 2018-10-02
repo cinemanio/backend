@@ -5,8 +5,6 @@ from typing import Tuple, Dict, Optional, List
 
 from dateutil import parser
 from imdb import IMDb
-from imdb.Character import Character
-from imdb.utils import RolesList
 
 from cinemanio.core.models import Movie, Person, Genre, Language, Country, Role, Cast
 from cinemanio.sites.imdb.models import ImdbMovie, ImdbPerson
