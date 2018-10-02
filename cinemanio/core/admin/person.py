@@ -1,8 +1,4 @@
-from django.conf import settings
 from django.contrib.admin import register
-from django.utils.safestring import mark_safe
-from graphql_relay.node.node import to_global_id
-from reversion.admin import VersionAdmin
 
 from cinemanio.core.admin.base import BaseAdmin
 from cinemanio.core.admin.cast import CastInline
