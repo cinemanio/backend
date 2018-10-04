@@ -1,6 +1,6 @@
 import time
 from urllib.parse import urlparse
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 import re
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -35,7 +35,8 @@ class ImageLinkManager(models.Manager):
         Try to get already downloaded or download image using self.download() method
         Return tuple with image_link instance and boolean flag equal True if image was downloaded
         """
-        assert self.instance, "Manager method should be called: instance.images.get_or_download()"
+        if not self.instance:
+            raise RuntimeError("Manager method should be called: instance.images.get_or_download()")
 
         image = Image.objects.get_image_from_url(url=url)
 
@@ -54,7 +55,8 @@ class ImageLinkManager(models.Manager):
         """
         Download image and link it to self.instance
         """
-        assert self.instance, "Manager method should be called: instance.images.download()"
+        if not self.instance:
+            raise RuntimeError("Manager method should be called: instance.images.download()")
 
         image = Image.objects.download(url, **kwargs)
         image_link = self.model(image=image, object=self.instance)
@@ -137,8 +139,8 @@ class Image(models.Model):
         Download image from url and save it into ImageField
         """
         name = f'{time.time()}.jpg'
-        f = urlopen(url)
-        self.original.save(name, ContentFile(f.read()))
+        with urlopen(Request(url)) as response:  # nosec
+            self.original.save(name, ContentFile(response.read()))
 
 
 class ImageLink(models.Model):

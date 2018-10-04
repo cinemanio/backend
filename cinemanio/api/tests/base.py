@@ -28,12 +28,12 @@ class QueryBaseTestCase(BaseTestCase):
 
     def execute(self, query, values=None, context=None):
         result = self._execute(query, values, context)
-        assert not result.errors, result.errors
+        self.assertFalse(result.errors, result.errors)
         return result.data
 
     def execute_with_errors(self, query, values=None, context=None):
         result = self._execute(query, values, context)
-        assert result.errors, result.data
+        self.assertTrue(result.errors, result.data)
         return result
 
 

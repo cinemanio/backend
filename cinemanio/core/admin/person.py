@@ -1,15 +1,12 @@
-from django.conf import settings
 from django.contrib.admin import register
-from django.utils.safestring import mark_safe
-from graphql_relay.node.node import to_global_id
-from reversion.admin import VersionAdmin
 
+from cinemanio.core.admin.base import BaseAdmin
 from cinemanio.core.admin.cast import CastInline
 from cinemanio.core.models import Person
 
 
 @register(Person)
-class PersonAdmin(VersionAdmin):
+class PersonAdmin(BaseAdmin):
     """
     Person admin model
     """
@@ -28,7 +25,3 @@ class PersonAdmin(VersionAdmin):
             )
         }),
     )
-
-    def site(self, obj):
-        global_id = to_global_id('PersonNode', obj.id)
-        return mark_safe(f'<a href="{settings.FRONTEND_URL}persons/{global_id}/">link</a>')

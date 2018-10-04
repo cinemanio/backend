@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import register, TabularInline
 from django.db.models import Prefetch
-from django.utils.safestring import mark_safe
+from django.utils.html import strip_tags, format_html
 
 from cinemanio.core.admin import get_registered_admin_class
 from cinemanio.core.models import Movie, Person
@@ -13,6 +13,8 @@ MovieAdmin = get_registered_admin_class(Movie)
 PersonAdmin = get_registered_admin_class(Person)
 admin.site.unregister(Movie)
 admin.site.unregister(Person)
+
+LINK = '<a href="{}" target="_blank" title="Open remote link in a new tab">{}</a>'
 
 
 class InlineBase(TabularInline):
@@ -37,10 +39,10 @@ class KinopoiskPersonInline(InlineBase):
 
 class SitesAdminMixin:
     def imdb_id(self, obj):
-        return mark_safe(f'<a href="{obj.imdb.url}" target="_blank">{obj.imdb.id}</a>')
+        return format_html(LINK, obj.imdb.url, obj.imdb.id)
 
     def kinopoisk_id(self, obj):
-        return mark_safe(f'<a href="{obj.kinopoisk.url}" target="_blank">{obj.kinopoisk.id}</a>')
+        return format_html(LINK, obj.kinopoisk.url, obj.kinopoisk.id)
 
     def wikipedia_en(self, obj):
         return self.wikipedia(obj, 'en')
@@ -51,7 +53,7 @@ class SitesAdminMixin:
     def wikipedia(self, obj, lang):
         try:
             wikipedia = getattr(obj, f'wikipedia_{lang}')[0]
-            return mark_safe(f'<a href="{wikipedia.url}" target="_blank">{wikipedia.title}</a>')
+            return format_html(LINK, wikipedia.url, strip_tags(wikipedia.title))
         except IndexError:
             return ''
 

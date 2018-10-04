@@ -87,6 +87,6 @@ class ImagesQueryTestCase(QueryBaseTestCase):
         self.assertEqual(result[query_name][field]['type'], image_type.name)
         self.assertTrue(len(result[query_name][field]['original']) > 0)
 
-        # try again and compare
+        # try again to check random image
         result_another = self.execute(query, values)
         self.assertNotEqual(result[query_name][field]['original'], result_another[query_name][field]['original'])

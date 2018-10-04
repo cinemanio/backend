@@ -1,17 +1,14 @@
-from django.conf import settings
 from django.contrib.admin import register
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from graphql_relay.node.node import to_global_id
-from reversion.admin import VersionAdmin
 
+from cinemanio.core.admin.base import BaseAdmin
 from cinemanio.core.admin.cast import CastInline
 from cinemanio.core.forms import MovieForm
 from cinemanio.core.models import Movie
 
 
 @register(Movie)
-class MovieAdmin(VersionAdmin):
+class MovieAdmin(BaseAdmin):
     """
     Movie admin model
     """
@@ -38,7 +35,3 @@ class MovieAdmin(VersionAdmin):
             'fields': ('genres', 'languages', 'countries'),
         }),
     )
-
-    def site(self, obj):
-        global_id = to_global_id('MovieNode', obj.id)
-        return mark_safe(f'<a href="{settings.FRONTEND_URL}movies/{global_id}/">link</a>')
