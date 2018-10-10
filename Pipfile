@@ -42,6 +42,7 @@ honcho = "*"
 wikipedia = "*"
 transliterate = "*"
 classproperties = "*"
+algoliasearch-django = "*"
 
 [dev-packages]
 vcrpy-unittest = "*"

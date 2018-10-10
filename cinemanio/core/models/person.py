@@ -3,12 +3,16 @@ from django.db import models
 from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _, get_language
 
-from cinemanio.core.models.base import BaseModel
+from cinemanio.core.models.base import BaseModel, BaseQuerySet
 
 
 class Gender(IntEnum):
     FEMALE = 0
     MALE = 1
+
+
+class PersonQuerySet(BaseQuerySet):
+    pass
 
 
 class Person(BaseModel):
@@ -29,6 +33,8 @@ class Person(BaseModel):
     country = models.ForeignKey('Country', verbose_name=_('Country of birth'), blank=True, null=True,
                                 on_delete=models.CASCADE)
     movies = models.ManyToManyField('Movie', verbose_name=_('Movies'), through='Cast')
+
+    objects = PersonQuerySet.as_manager()
 
     class Meta:
         verbose_name = _('person')

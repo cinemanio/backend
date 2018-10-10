@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'celerymon',
     'corsheaders',
     'graphene_django',
+    'algoliasearch_django',
     'silk',
     'sorl.thumbnail',
     'storages',
@@ -229,3 +230,9 @@ LOGGING = {
 }
 
 FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000/', cast=str)
+
+# algolia search
+ALGOLIA = {
+    'APPLICATION_ID': config('ALGOLIASEARCH_APPLICATION_ID', default='', cast=str),
+    'API_KEY': config('ALGOLIASEARCH_API_KEY', default='', cast=str),
+}

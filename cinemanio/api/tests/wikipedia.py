@@ -1,6 +1,6 @@
-from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
+from cinemanio.api.helpers import global_id
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.person import PersonNode
 from cinemanio.api.tests.base import QueryBaseTestCase
@@ -17,7 +17,7 @@ class WikipediaQueryTestCase(QueryBaseTestCase):
         instance = factory()
         en = WikipediaPageFactory(content_object=instance, lang='en')
         ru = WikipediaPageFactory(content_object=instance, lang='ru')
-        query_name = instance.__class__.__name__.lower()
+        query_name = instance._meta.model_name
         query = '''
             query Movie($id: ID!) {
               %s(id: $id) {
@@ -36,7 +36,7 @@ class WikipediaQueryTestCase(QueryBaseTestCase):
         ''' % query_name
 
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(id=to_global_id(node._meta.name, instance.id)))
+            result = self.execute(query, dict(id=global_id(instance)))
 
         self.assertEqual(len(result[query_name]['wikipedia']['edges']), 2)
         self.assertEqual(result[query_name]['wikipedia']['edges'][0]['node']['title'], en.title)

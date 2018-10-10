@@ -1,5 +1,4 @@
-from graphql_relay.node.node import to_global_id
-
+from cinemanio.api.helpers import global_id
 from cinemanio.api.schema.person import PersonNode
 from cinemanio.api.schema.properties import RoleNode
 from cinemanio.api.tests.base import ObjectQueryBaseTestCase
@@ -12,7 +11,7 @@ from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory
 class PersonQueryTestCase(ObjectQueryBaseTestCase):
     def test_person(self):
         p = PersonFactory(gender=Gender.MALE)
-        p_id = to_global_id(PersonNode._meta.name, p.id)
+        p_id = global_id(p)
         query = '''
             query Person($id: ID!) {
               person(id: $id) {
@@ -49,7 +48,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(1):
-            result = self.execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id)))
+            result = self.execute(query, dict(id=global_id(p)))
         self.assertEqual(result['person']['imdb']['id'], p.imdb.id)
         self.assertEqual(result['person']['imdb']['url'], p.imdb.url)
         self.assertEqual(result['person']['kinopoisk']['id'], p.kinopoisk.id)
@@ -68,7 +67,7 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(1):
-            result = self.execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id)))
+            result = self.execute(query, dict(id=global_id(p)))
         self.assertEqual(result['person']['imdb'], None)
         self.assertEqual(result['person']['kinopoisk'], None)
 
@@ -94,6 +93,5 @@ class PersonQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(id=to_global_id(PersonNode._meta.name, p.id),
-                                              role=to_global_id(RoleNode._meta.name, cast.role.id)))
+            result = self.execute(query, dict(id=global_id(p), role=global_id(cast.role)))
         self.assertEqual(len(result['person']['career']['edges']), p.career.filter(role=cast.role).count())

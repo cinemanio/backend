@@ -28,21 +28,38 @@ class QueryBaseTestCase(BaseTestCase):
 
     def execute(self, query, values=None, context=None):
         result = self._execute(query, values, context)
-        self.assertFalse(result.errors, result.errors)
+        self.assertIsNone(result.errors, result.errors)
         return result.data
 
     def execute_with_errors(self, query, values=None, context=None):
         result = self._execute(query, values, context)
-        self.assertTrue(result.errors, result.data)
+        self.assertIsNotNone(result.errors, result.data)
         return result
 
 
 class ListQueryBaseTestCase(QueryBaseTestCase):
     def assert_count_equal(self, result, count):
+        """
+        Check there are items in API response and amount is equal to count argument
+        :param result: API response
+        :param count: expected amount of items in API response
+        """
         self.assertGreater(count, 0)
         self.assertEqual(len(result['edges']), count)
 
     def assert_response_order(self, query, query_name, order_by, queries_count, earliest, latest, get_value):
+        """
+        Check earliest is not equal to latest
+        Execute query 2 times with order_by parameter ASC and DESC
+        Check that first and last items of responses are equal to earliest and latest arguments correspondingly
+        :param query: search query
+        :param query_name: root of search query
+        :param order_by: sort param
+        :param queries_count: number of DB queries
+        :param earliest: earliest expected item
+        :param latest: lastest expected item
+        :param get_value: get value method
+        """
         self.assertNotEqual(earliest, latest)
 
         with self.assertNumQueries(queries_count):

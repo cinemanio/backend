@@ -1,6 +1,6 @@
-from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
+from cinemanio.api.helpers import global_id
 from cinemanio.api.schema.properties import GenreNode, CountryNode, LanguageNode
 from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.core.factories import MovieFactory
@@ -106,8 +106,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         ''' % fieldname
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(rels=(to_global_id(node._meta.name, item1.id),
-                                                    to_global_id(node._meta.name, item2.id))))
+            result = self.execute(query, dict(rels=(global_id(item1), global_id(item2))))
         self.assert_count_equal(result['movies'], (Movie.objects
                                                    .filter(**{fieldname: item1})
                                                    .filter(**{fieldname: item2}).count()))
@@ -125,8 +124,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             }
         '''
         with self.assertRaises(AssertionError):
-            self.execute(query, dict(rels=(to_global_id(GenreNode._meta.name, 1),
-                                           to_global_id(CountryNode._meta.name, 1))))
+            self.execute(query, dict(rels=(global_id(Genre(id=1)), global_id(Country(id=1)))))
 
     def test_movies_order(self):
         query = '''

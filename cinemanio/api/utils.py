@@ -12,7 +12,7 @@ from graphql.language.ast import FragmentSpread
 
 class DjangoFilterConnectionField(_DjangoFilterConnectionField):
     """
-    Temporary fix for select_related issue
+    Preserve select_related and prefetch_related attributes of old queryset during querysets merge
     """
 
     def __init__(self, node, **kwargs):
@@ -28,6 +28,17 @@ class DjangoFilterConnectionField(_DjangoFilterConnectionField):
         # pylint: disable=protected-access
         queryset_merged._prefetch_related_lookups = queryset._prefetch_related_lookups
         return queryset_merged
+
+
+class DjangoFilterConnectionSearchableField(DjangoFilterConnectionField):
+    """
+    Preserve queryset.search_result_ids during querysets merge
+    """
+
+    @classmethod
+    def merge_querysets(cls, default_queryset, queryset):
+        queryset.search_result_ids = default_queryset.search_result_ids
+        return super().merge_querysets(default_queryset, queryset)
 
 
 class DjangoObjectTypeMixin:

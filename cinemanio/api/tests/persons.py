@@ -1,9 +1,9 @@
 from unittest import skip
 
-from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
-from cinemanio.api.schema.properties import CountryNode, RoleNode
+from cinemanio.api.helpers import global_id
+from cinemanio.api.schema.properties import RoleNode
 from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.core.factories import PersonFactory
 from cinemanio.core.models import Person, Role
@@ -65,7 +65,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(2):
-            result = self.execute(query, dict(country=to_global_id(CountryNode._meta.name, country.id)))
+            result = self.execute(query, dict(country=global_id(country)))
         self.assert_count_equal(result['persons'], Person.objects.filter(country=country).count())
 
     @parameterized.expand([(Role, RoleNode, 'roles')])
@@ -87,8 +87,7 @@ class PersonsQueryTestCase(ListQueryBaseTestCase):
         ''' % fieldname
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(rels=[to_global_id(node._meta.name, item1.id),
-                                                    to_global_id(node._meta.name, item2.id)]))
+            result = self.execute(query, dict(rels=[global_id(item1), global_id(item2)]))
         self.assert_count_equal(result['persons'], (Person.objects
                                                     .filter(**{fieldname: item1})
                                                     .filter(**{fieldname: item2}).count()))

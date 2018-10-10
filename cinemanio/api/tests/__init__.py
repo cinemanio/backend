@@ -8,6 +8,7 @@ from .relations import RelationsQueryTestCase
 from .pagination import PaginationQueryTestCase
 from .images import ImagesQueryTestCase
 from .wikipedia import WikipediaQueryTestCase
+from .search import SearchQueryTestCase
 
 __all__ = [
     'MovieQueryTestCase',
@@ -20,4 +21,5 @@ __all__ = [
     'PaginationQueryTestCase',
     'ImagesQueryTestCase',
     'WikipediaQueryTestCase',
+    'SearchQueryTestCase',
 ]

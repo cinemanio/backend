@@ -4,7 +4,8 @@ from graphene_django import DjangoObjectType
 from cinemanio.api.schema.mixins import ImagesMixin, RelationsMixin, WikipediaMixin
 from cinemanio.api.schema.cast import CastNode
 from cinemanio.api.filtersets import PersonFilterSet
-from cinemanio.api.utils import DjangoObjectTypeMixin, DjangoFilterConnectionField, CountableConnectionBase
+from cinemanio.api.utils import (DjangoObjectTypeMixin, DjangoFilterConnectionField,
+                                 DjangoFilterConnectionSearchableField, CountableConnectionBase)
 from cinemanio.api.schema.image import ImageNode
 from cinemanio.core.models import Person
 from cinemanio.images.models import ImageType
@@ -39,7 +40,7 @@ class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, Images
 
 class PersonQuery:
     person = relay.Node.Field(PersonNode)
-    persons = DjangoFilterConnectionField(PersonNode, filterset_class=PersonFilterSet)
+    persons = DjangoFilterConnectionSearchableField(PersonNode, filterset_class=PersonFilterSet)
 
     def resolve_person(self, info):
         return PersonNode.get_queryset(info)

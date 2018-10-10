@@ -18,3 +18,9 @@ LOGGING = {
     'disable_existing_loggers': False,
     'loggers': {},
 }
+
+ALGOLIA = {
+    'APPLICATION_ID': '',
+    'API_KEY': '',
+    'AUTO_INDEXING': False,
+}
