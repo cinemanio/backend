@@ -7,6 +7,7 @@ from transliterate import translit
 from transliterate.base import registry
 
 from cinemanio.core.translit.ru import RussianLanguagePack
+from cinemanio.api.helpers import global_id
 
 registry.register(RussianLanguagePack)
 
@@ -15,6 +16,7 @@ class BaseModel(models.Model):
     """
     Base model for Movie and Person
     """
+    # TODO: remove field
     slug = models.SlugField(_('Slug'), max_length=100, unique=True, null=True, blank=True)
 
     site_official_url = models.URLField(_('Official site'), null=True, blank=True)
@@ -25,6 +27,10 @@ class BaseModel(models.Model):
 
     def __str__(self):
         return repr(self)
+
+    @property
+    def global_id(self):
+        return global_id(self)
 
     @property
     def transliteratable_fields(self):

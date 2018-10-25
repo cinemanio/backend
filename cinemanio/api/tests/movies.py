@@ -66,11 +66,10 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             result = self.execute(query)
         self.assert_count_equal(result['movies'], self.count)
 
-    def test_movies_filter_by_year(self):
-        year = Movie.objects.all()[0].year
+    def test_movies_filter_by_year_range(self):
         query = '''
-            query Movies($year: Float!) {
-              movies(year: $year) {
+            query Movies($min: Float!, $max: Float!) {
+              movies(year_Gte: $min, year_Lte: $max) {
                 edges {
                   node {
                     id
@@ -80,8 +79,8 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(2):
-            result = self.execute(query, dict(year=year))
-        self.assert_count_equal(result['movies'], Movie.objects.filter(year=year).count())
+            result = self.execute(query, dict(min=1940, max=1980))
+        self.assert_count_equal(result['movies'], Movie.objects.filter(year__gte=1940, year__lte=1980).count())
 
     @parameterized.expand([
         (Genre, GenreNode, 'genres'),

@@ -18,4 +18,11 @@ class MovieFilterSet(BaseFilterSet, RelationsMixin):
 
     class Meta:
         model = Movie
-        fields = ['year', 'genres', 'languages', 'countries', 'relation', 'search']
+        fields = {
+            'year': ['exact', 'lte', 'gte'],
+            'genres': ['exact'],
+            'languages': ['exact'],
+            'countries': ['exact'],
+            'relation': ['exact'],
+            'search': ['exact'],
+        }
