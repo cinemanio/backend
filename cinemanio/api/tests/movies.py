@@ -73,6 +73,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
                 edges {
                   node {
                     id
+                    year
                   }
                 }
               }
@@ -81,6 +82,9 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         with self.assertNumQueries(2):
             result = self.execute(query, dict(min=1940, max=1980))
         self.assert_count_equal(result['movies'], Movie.objects.filter(year__gte=1940, year__lte=1980).count())
+        for movie in result['movies']['edges']:
+            assert movie['node']['year'] >= 1940
+            assert movie['node']['year'] <= 1980
 
     @parameterized.expand([
         (Genre, GenreNode, 'genres'),
