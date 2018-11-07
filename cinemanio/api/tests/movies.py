@@ -1,6 +1,6 @@
-from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
+from cinemanio.api.helpers import global_id
 from cinemanio.api.schema.properties import GenreNode, CountryNode, LanguageNode
 from cinemanio.api.tests.base import ListQueryBaseTestCase
 from cinemanio.core.factories import MovieFactory
@@ -66,22 +66,25 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             result = self.execute(query)
         self.assert_count_equal(result['movies'], self.count)
 
-    def test_movies_filter_by_year(self):
-        year = Movie.objects.all()[0].year
+    def test_movies_filter_by_year_range(self):
         query = '''
-            query Movies($year: Float!) {
-              movies(year: $year) {
+            query Movies($min: Float!, $max: Float!) {
+              movies(year_Gte: $min, year_Lte: $max) {
                 edges {
                   node {
                     id
+                    year
                   }
                 }
               }
             }
         '''
         with self.assertNumQueries(2):
-            result = self.execute(query, dict(year=year))
-        self.assert_count_equal(result['movies'], Movie.objects.filter(year=year).count())
+            result = self.execute(query, dict(min=1940, max=1980))
+        self.assert_count_equal(result['movies'], Movie.objects.filter(year__gte=1940, year__lte=1980).count())
+        for movie in result['movies']['edges']:
+            assert movie['node']['year'] >= 1940
+            assert movie['node']['year'] <= 1980
 
     @parameterized.expand([
         (Genre, GenreNode, 'genres'),
@@ -106,8 +109,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
         ''' % fieldname
         # TODO: decrease number of queries by 1
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(rels=(to_global_id(node._meta.name, item1.id),
-                                                    to_global_id(node._meta.name, item2.id))))
+            result = self.execute(query, dict(rels=(global_id(item1), global_id(item2))))
         self.assert_count_equal(result['movies'], (Movie.objects
                                                    .filter(**{fieldname: item1})
                                                    .filter(**{fieldname: item2}).count()))
@@ -125,8 +127,7 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
             }
         '''
         with self.assertRaises(AssertionError):
-            self.execute(query, dict(rels=(to_global_id(GenreNode._meta.name, 1),
-                                           to_global_id(CountryNode._meta.name, 1))))
+            self.execute(query, dict(rels=(global_id(Genre(id=1)), global_id(Country(id=1)))))
 
     def test_movies_order(self):
         query = '''

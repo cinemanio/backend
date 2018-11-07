@@ -174,8 +174,11 @@ class ImdbPersonImporter(ImdbImporterBase):
                         self.create_cast(role, imdb_movie)
                     except (Movie.DoesNotExist, Movie.MultipleObjectsReturned):
                         # skip series and video games
-                        if (roles == 'all' and imdb_movie.data['kind'] not in ['tv series', 'video game'] and
-                                'Series' not in imdb_movie.notes):
+                        if (
+                                roles == 'all'
+                                and imdb_movie.data['kind'] not in ['tv series', 'video game']
+                                and 'Series' not in imdb_movie.notes
+                        ):
                             movie = self.create_movie(imdb_movie)
                             self.create_cast(role, imdb_movie, movie)
                         else:

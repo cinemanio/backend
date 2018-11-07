@@ -1,19 +1,28 @@
 from graphql_relay.node.node import from_global_id
-from django_filters import FilterSet
+from django_filters import FilterSet, CharFilter
 from django_filters.filters import ModelMultipleChoiceFilter, ModelMultipleChoiceField
 
 
 class BaseFilterSet(FilterSet):
+    """
+    Base filter set for Movie and Person
+    """
+    search = CharFilter(method='filter_by_search_term')
+
     def filter_m2m(self, qs, name, value):
         for instance in value:
             qs = qs.filter(**{name: instance.id})
         return qs
+
+    def filter_by_search_term(self, qs, _, value):
+        return qs.search(value)
 
 
 class ModelGlobalIdMultipleChoiceField(ModelMultipleChoiceField):
     """
     Multiple choice field with support of relay global_id
     """
+
     def _check_values(self, value):
         from cinemanio.api import schema
         local_ids = []

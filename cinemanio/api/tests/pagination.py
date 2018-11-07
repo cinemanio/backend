@@ -16,7 +16,7 @@ class PaginationQueryTestCase(ListQueryBaseTestCase):
     def test_object_pagination(self, factory):
         for i in range(100):
             instance = factory()
-        query_name = instance.__class__.__name__.lower() + 's'
+        query_name = instance._meta.model_name + 's'
         query = '''
             query Objects($after: String!){
               %s(first: 10, after: $after) {

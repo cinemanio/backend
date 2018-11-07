@@ -25,9 +25,9 @@ jobs:
             - ~/.local
             - ~/.cache
 #      - run: flake8 ./cinemanio
-      - run:
-          name: Run prospector
-          command: pipenv run prospector .
+#      - run:
+#          name: Run prospector
+#          command: pipenv run prospector .
       - run:
           name: Run type checking
           command: pipenv run python -m mypy -p cinemanio

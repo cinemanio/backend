@@ -1,6 +1,6 @@
-from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
+from cinemanio.api.helpers import global_id
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.person import PersonNode
 from cinemanio.api.tests.base import QueryBaseTestCase
@@ -18,7 +18,7 @@ class ImagesQueryTestCase(QueryBaseTestCase):
         instance = factory()
         for i in range(10):
             ImageLinkFactory(object=instance, image__type=image_type)
-        query_name = instance.__class__.__name__.lower()
+        query_name = instance._meta.model_name
         query = '''
             query Object($id: ID!) {
               %s(id: $id) {
@@ -42,7 +42,7 @@ class ImagesQueryTestCase(QueryBaseTestCase):
         ''' % query_name
         # TODO: reduce number of queries
         with self.assertNumQueries(3 + (4 * 10)):
-            result = self.execute(query, dict(id=to_global_id(node._meta.name, instance.id)))
+            result = self.execute(query, dict(id=global_id(instance)))
         self.assertEqual(len(result[query_name]['images']['edges']), instance.images.count())
         first = result[query_name]['images']['edges'][0]['node']['image']
         self.assertEqual(first['type'], image_type.name)
@@ -55,7 +55,7 @@ class ImagesQueryTestCase(QueryBaseTestCase):
     ])
     def test_object_image(self, factory, node, image_type, field):
         instance = factory()
-        query_name = instance.__class__.__name__.lower()
+        query_name = instance._meta.model_name
         query = '''
             query Object($id: ID!) {
               %s(id: $id) {
@@ -71,7 +71,7 @@ class ImagesQueryTestCase(QueryBaseTestCase):
               }
             }
         ''' % (query_name, field)
-        values = dict(id=to_global_id(node._meta.name, instance.id))
+        values = dict(id=global_id(instance))
 
         # no images
         with self.assertNumQueries(3):

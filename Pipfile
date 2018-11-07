@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "~=2.0.5"
+django = "~=2.1.3"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
 django-modeltranslation = {git = "https://github.com/deschler/django-modeltranslation", editable = true}
-django-filter = "~=1.1.0"
+django-filter = "~=2.0.0"
 django-cors-headers = "*"
 django-reversion = "*"
 django-silk = "*"
@@ -22,10 +22,11 @@ django-celery-results = "*"
 django-celery-beat = "*"
 celery = "~=4.2.1"
 celerymon = "*"
-kinopoiskpy = {git = "https://github.com/ramusus/kinopoiskpy", editable = true}
+algoliasearch-django = "*"
 alphabet-detector = "*"
+kinopoiskpy = {git = "https://github.com/ramusus/kinopoiskpy", editable = true}
 graphene-django = {git = "https://github.com/graphql-python/graphene-django", editable = true}
-imdbpy = {git = "https://github.com/alberanid/imdbpy", editable = true}
+imdbpy = {git = "https://github.com/alberanid/imdbpy", ref = "f4c4c2d9e544ea7152c09228ca0f274248cc58b8", editable = true}
 "psycopg2-binary" = "*"
 dj-database-url = "*"
 python-decouple = "*"
@@ -37,7 +38,6 @@ sorl-thumbnail = "*"
 botocore = "==1.12.3"
 lxml = "==4.1.1"
 redis = "*"
-pycodestyle = "==2.3.1"
 honcho = "*"
 wikipedia = "*"
 transliterate = "*"
@@ -53,7 +53,6 @@ coveralls = "*"
 pylint-django = "*"
 pydot = "*"
 pyyaml = "*"
-prospector = "*"
 mypy = "*"
 bandit = "*"
 

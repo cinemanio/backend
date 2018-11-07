@@ -1,6 +1,6 @@
-from graphql_relay.node.node import to_global_id
 from parameterized import parameterized
 
+from cinemanio.api.helpers import global_id
 from cinemanio.api.schema.movie import MovieNode
 from cinemanio.api.schema.person import PersonNode
 from cinemanio.api.tests.base import ListQueryBaseTestCase
@@ -136,7 +136,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
 
         with self.assertNumQueries(9 + queries_count):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
-                                  dict(id=to_global_id(node._meta.name, instance.id), code='fav'))
+                                  dict(id=global_id(instance), code='fav'))
 
         self.assert_response_relation_and_counts(result['relate']['relation'],
                                                  result['relate']['count'], relation(), codes)
@@ -154,7 +154,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
 
         with self.assertNumQueries(6 + queries_count):
             result = self.execute(self.relate_mutation % self.get_relate_vars(rel),
-                                  dict(id=to_global_id(node._meta.name, rel.object.id), code='fav'))
+                                  dict(id=global_id(rel.object), code='fav'))
 
         self.assert_response_relation_and_counts(result['relate']['relation'],
                                                  result['relate']['count'], rel, codes)
@@ -167,11 +167,11 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     ])
     def test_object_relation(self, factory, node, codes):
         rel = self.create_relation(factory, **{code: True for code in codes})
-        query_name = rel.object.__class__.__name__.lower()
+        query_name = rel.object._meta.model_name
 
         with self.assertNumQueries(2):
             result = self.execute(self.object_relation_query % self.get_object_vars(rel),
-                                  dict(id=to_global_id(node._meta.name, rel.object.id)))
+                                  dict(id=global_id(rel.object)))
 
         self.assert_response_relation_and_counts(result[query_name]['relation'],
                                                  result[query_name]['relationsCount'], rel, codes)
@@ -183,11 +183,11 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     def test_object_no_relation(self, factory, node, relation):
         instance = factory()
         rel = relation(object=instance)
-        query_name = instance.__class__.__name__.lower()
+        query_name = instance._meta.model_name
 
         with self.assertNumQueries(2):
             result = self.execute(self.object_relation_query % self.get_object_vars(rel),
-                                  dict(id=to_global_id(node._meta.name, instance.id)))
+                                  dict(id=global_id(instance)))
 
         self.assert_response_relation_and_counts(result[query_name]['relation'],
                                                  result[query_name]['relationsCount'], relation(), [])
@@ -198,11 +198,11 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     ])
     def test_object_relation_unauth(self, factory, node, codes):
         rel = self.create_relation(factory, **{code: True for code in codes})
-        query_name = rel.object.__class__.__name__.lower()
+        query_name = rel.object._meta.model_name
 
         with self.assertNumQueries(1):
             result = self.execute(self.object_relation_query % self.get_object_vars(rel),
-                                  dict(id=to_global_id(node._meta.name, rel.object.id)),
+                                  dict(id=global_id(rel.object)),
                                   self.get_context())
 
         self.assert_unauth_response_relation_and_counts(result[query_name]['relation'],
@@ -215,7 +215,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     def test_objects_relation(self, factory, node, codes):
         for i in range(100):
             rel = self.create_relation(factory, **{code: True for code in codes})
-            query_name = rel.object.__class__.__name__.lower() + 's'
+            query_name = rel.object._meta.model_name + 's'
 
         with self.assertNumQueries(3):
             result = self.execute(self.objects_relation_query % self.get_objects_vars(rel))
@@ -232,7 +232,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     def test_objects_no_relation(self, factory, relation):
         for i in range(100):
             instance = factory()
-            query_name = instance.__class__.__name__.lower() + 's'
+            query_name = instance._meta.model_name + 's'
         rel = relation(object=instance)
 
         with self.assertNumQueries(3):
@@ -250,7 +250,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     def test_objects_relation_unauth(self, factory, codes):
         for i in range(100):
             rel = self.create_relation(factory, **{code: True for code in codes})
-            query_name = rel.object.__class__.__name__.lower() + 's'
+            query_name = rel.object._meta.model_name + 's'
 
         with self.assertNumQueries(2):
             result = self.execute(self.objects_relation_query % self.get_objects_vars(rel),
@@ -269,7 +269,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     def test_objects_relation_filter(self, factory):
         for i in range(100):
             rel = self.create_relation(factory, fav=bool(i % 2))
-            query_name = rel.object.__class__.__name__.lower() + 's'
+            query_name = rel.object._meta.model_name + 's'
         query = '''
             query %s($relation: String!) {
               %s(relation: $relation) {
@@ -293,7 +293,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     def test_objects_relation_order(self, factory):
         for i in range(100):
             rel = factory()
-            query_name = rel.object.__class__.__name__.lower() + 's'
+            query_name = rel.object._meta.model_name + 's'
             model = rel.object.__class__
             model_name = rel.object.__class__.__name__
         query = '''

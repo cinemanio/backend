@@ -1,7 +1,4 @@
-from graphql_relay.node.node import to_global_id
-
-from cinemanio.api.schema.movie import MovieNode
-from cinemanio.api.schema.properties import RoleNode
+from cinemanio.api.helpers import global_id
 from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.core.factories import MovieFactory, CastFactory
 from cinemanio.sites.imdb.factories import ImdbMovieFactory
@@ -22,7 +19,7 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(4):
-            result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
+            result = self.execute(query, dict(id=global_id(m)))
         self.assertGreater(len(result['movie']['genres']), 0)
         self.assertGreater(len(result['movie']['languages']), 0)
         self.assertGreater(len(result['movie']['countries']), 0)
@@ -32,10 +29,10 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
 
     def test_movie_with_related_movie(self):
         m = MovieFactory(prequel_for=MovieFactory(), sequel_for=MovieFactory(), remake_for=MovieFactory())
-        global_id = to_global_id(MovieNode._meta.name, m.id)
-        prequel_id = to_global_id(MovieNode._meta.name, m.prequel_for.id)
-        sequel_id = to_global_id(MovieNode._meta.name, m.sequel_for.id)
-        remake_id = to_global_id(MovieNode._meta.name, m.remake_for.id)
+        m_id = global_id(m)
+        prequel_id = global_id(m.prequel_for)
+        sequel_id = global_id(m.sequel_for)
+        remake_id = global_id(m.remake_for)
         query = '''
             query Movie($id: ID!) {
               movie(id: $id) {
@@ -47,8 +44,8 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(1):
-            result = self.execute(query, dict(id=global_id))
-        self.assertEqual(result['movie']['id'], global_id)
+            result = self.execute(query, dict(id=m_id))
+        self.assertEqual(result['movie']['id'], m_id)
         self.assertEqual(result['movie']['prequelFor']['id'], prequel_id)
         self.assertEqual(result['movie']['sequelFor']['id'], sequel_id)
         self.assertEqual(result['movie']['remakeFor']['id'], remake_id)
@@ -65,7 +62,7 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(1):
-            result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
+            result = self.execute(query, dict(id=global_id(m)))
         self.assertEqual(result['movie']['imdb']['id'], m.imdb.id)
         self.assertEqual(result['movie']['imdb']['rating'], m.imdb.rating)
         self.assertEqual(result['movie']['imdb']['votes'], m.imdb.votes)
@@ -88,7 +85,7 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(1):
-            result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id)))
+            result = self.execute(query, dict(id=global_id(m)))
         self.assertEqual(result['movie']['imdb'], None)
         self.assertEqual(result['movie']['kinopoisk'], None)
 
@@ -114,6 +111,5 @@ class MovieQueryTestCase(ObjectQueryBaseTestCase):
             }
         '''
         with self.assertNumQueries(3):
-            result = self.execute(query, dict(id=to_global_id(MovieNode._meta.name, m.id),
-                                              role=to_global_id(RoleNode._meta.name, cast.role.id)))
+            result = self.execute(query, dict(id=global_id(m), role=global_id(cast.role)))
         self.assertEqual(len(result['movie']['cast']['edges']), m.cast.filter(role=cast.role).count())

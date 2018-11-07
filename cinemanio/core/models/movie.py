@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _, get_language
 
-from cinemanio.core.models.base import BaseModel
+from cinemanio.core.models.base import BaseModel, BaseQuerySet
 
 AWARD_CHOICES = (
     (1773, 'Берлинский кинофестиваль'),
@@ -27,6 +27,10 @@ AWARD_CHOICES = (
     (1771, 'Сезар'),
     (1764, 'Эмми'),
 )
+
+
+class MovieQuerySet(BaseQuerySet):
+    pass
 
 
 class Movie(BaseModel):
@@ -60,6 +64,8 @@ class Movie(BaseModel):
     remake_for = models.ForeignKey('Movie', verbose_name=_('Remake of movie'), related_name='remakes', blank=True,
                                    null=True, on_delete=models.CASCADE)
     novel_isbn = models.IntegerField(_('ISBN'), blank=True, null=True)
+
+    objects = MovieQuerySet.as_manager()
 
     class Meta:
         verbose_name = _('movie')
