@@ -18,7 +18,7 @@ jobs:
             - cache-
       - run:
           name: Install dependencies
-          command: pipenv sync --dev
+          command: pipenv sync --dev && pip install prospector
       - save_cache:
           key: cache-{{ checksum "Pipfile.lock" }}
           paths:
