@@ -18,16 +18,16 @@ jobs:
             - cache-
       - run:
           name: Install dependencies
-          command: pipenv sync --dev && pipenv install prospector
+          command: pipenv sync --dev
       - save_cache:
           key: cache-{{ checksum "Pipfile.lock" }}
           paths:
             - ~/.local
             - ~/.cache
 #      - run: flake8 ./cinemanio
-      - run:
-          name: Run prospector
-          command: pipenv run prospector .
+#      - run:
+#          name: Run prospector
+#          command: pipenv run prospector .
       - run:
           name: Run type checking
           command: pipenv run python -m mypy -p cinemanio
