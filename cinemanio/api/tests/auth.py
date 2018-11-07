@@ -32,7 +32,7 @@ class AuthTestCase(QueryBaseTestCase):
     def assert_payload(self, payload):
         self.assertEqual(payload['username'], self.user.username)
         self.assertGreater(payload['exp'] - time.time(), 300 - 2)
-        self.assertLess(payload['orig_iat'] - time.time(), 0)
+        self.assertLess(payload['origIat'] - time.time(), 0)
 
     def assert_empty_response_with_error(self, result, key, error):
         self.assertEqual(result.data[key], None)
