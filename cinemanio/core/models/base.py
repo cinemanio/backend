@@ -1,4 +1,4 @@
-from typing import Iterable, TYPE_CHECKING
+from typing import Iterator, TYPE_CHECKING
 
 from algoliasearch_django import raw_search
 from django.db import models
@@ -11,6 +11,7 @@ from cinemanio.core.translit.ru import RussianLanguagePack
 
 if TYPE_CHECKING:
     from django.db.models import QuerySet  # noqa
+    from typing import Iterable, List  # noqa
 
 registry.register(RussianLanguagePack)
 
@@ -64,7 +65,7 @@ class BaseQuerySet(models.QuerySet):
     """
     Base queryset for Movie and Person
     """
-    search_result_ids = []
+    search_result_ids = []  # type: List[int]
 
     def search(self, term: str) -> 'QuerySet':
         """
@@ -98,15 +99,15 @@ class BaseQuerySet(models.QuerySet):
         """
         Return True if search results defined or use regular Django logic
         """
-        return self.search_result_ids or super().ordered
+        return bool(self.search_result_ids) or super().ordered
 
-    def __iter__(self) -> Iterable:
+    def __iter__(self) -> Iterator[models.Model]:
         """
         Sort results using search results order if it's defined
         """
         self._fetch_all()
         if self.search_result_ids:
-            self._result_cache = sorted(self._result_cache, key=self.search_sort_helper)
+            self._result_cache = sorted(self._result_cache, key=self.search_sort_helper)  # type: Iterable[models.Model]
         return iter(self._result_cache)
 
     def search_sort_helper(self, i):

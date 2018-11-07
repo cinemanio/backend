@@ -1,6 +1,4 @@
 from cinemanio.api.helpers import global_id
-from cinemanio.api.schema.person import PersonNode
-from cinemanio.api.schema.properties import RoleNode
 from cinemanio.api.tests.base import ObjectQueryBaseTestCase
 from cinemanio.core.factories import PersonFactory, CastFactory
 from cinemanio.core.models import Gender
