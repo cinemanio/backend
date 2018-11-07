@@ -1,13 +1,16 @@
-from typing import Iterable
+from typing import Iterable, TYPE_CHECKING
+
 from algoliasearch_django import raw_search
 from django.db import models
-from django.db.models import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from transliterate import translit
 from transliterate.base import registry
 
-from cinemanio.core.translit.ru import RussianLanguagePack
 from cinemanio.api.helpers import global_id
+from cinemanio.core.translit.ru import RussianLanguagePack
+
+if TYPE_CHECKING:
+    from django.db.models import QuerySet  # noqa
 
 registry.register(RussianLanguagePack)
 
