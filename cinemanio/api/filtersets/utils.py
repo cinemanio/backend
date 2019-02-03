@@ -3,6 +3,9 @@ from django_filters import OrderingFilter
 
 
 class OrderingWithNullsFilter(OrderingFilter):
+    """
+    Ordering Filter with respect to null values (specifically for Postgres)
+    """
 
     def get_ordering_value(self, param):
         descending = param.startswith('-')
@@ -11,5 +14,5 @@ class OrderingWithNullsFilter(OrderingFilter):
 
         if descending:
             return F(field_name).desc(nulls_last=True)
-        else:
-            return F(field_name).asc(nulls_first=True)
+
+        return F(field_name).asc(nulls_first=True)
