@@ -213,14 +213,14 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         (PersonRelationFactory, PersonNode, ['fav', 'like']),
     ])
     def test_objects_relation(self, factory, node, codes):
-        for i in range(100):
+        for i in range(self.count):
             rel = self.create_relation(factory, **{code: True for code in codes})
             query_name = rel.object._meta.model_name + 's'
 
         with self.assertNumQueries(3):
             result = self.execute(self.objects_relation_query % self.get_objects_vars(rel))
 
-        self.assertEqual(len(result[query_name]['edges']), 100)
+        self.assertEqual(len(result[query_name]['edges']), self.count)
         for obj in result[query_name]['edges']:
             self.assert_response_relation_and_counts(obj['node']['relation'],
                                                      obj['node']['relationsCount'], rel, codes)
@@ -230,7 +230,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         (PersonFactory, PersonRelation),
     ])
     def test_objects_no_relation(self, factory, relation):
-        for i in range(100):
+        for i in range(self.count):
             instance = factory()
             query_name = instance._meta.model_name + 's'
         rel = relation(object=instance)
@@ -238,7 +238,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         with self.assertNumQueries(3):
             result = self.execute(self.objects_relation_query % self.get_objects_vars(rel))
 
-        self.assertEqual(len(result[query_name]['edges']), 100)
+        self.assertEqual(len(result[query_name]['edges']), self.count)
         for obj in result[query_name]['edges']:
             self.assert_response_relation_and_counts(obj['node']['relation'],
                                                      obj['node']['relationsCount'], rel, [])
@@ -248,7 +248,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         (PersonRelationFactory, ['fav', 'like']),
     ])
     def test_objects_relation_unauth(self, factory, codes):
-        for i in range(100):
+        for i in range(self.count):
             rel = self.create_relation(factory, **{code: True for code in codes})
             query_name = rel.object._meta.model_name + 's'
 
@@ -257,7 +257,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
                                   None,
                                   self.get_context())
 
-        self.assertEqual(len(result[query_name]['edges']), 100)
+        self.assertEqual(len(result[query_name]['edges']), self.count)
         for obj in result[query_name]['edges']:
             self.assert_unauth_response_relation_and_counts(obj['node']['relation'],
                                                             obj['node']['relationsCount'], rel, codes)
@@ -267,7 +267,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         (PersonRelationFactory,),
     ])
     def test_objects_relation_filter(self, factory):
-        for i in range(100):
+        for i in range(self.count):
             rel = self.create_relation(factory, fav=bool(i % 2))
             query_name = rel.object._meta.model_name + 's'
         query = '''
@@ -291,11 +291,14 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
         (PersonRelationCountFactory,),
     ])
     def test_objects_relation_order(self, factory):
-        for i in range(100):
+        for i in range(self.count):
             rel = factory()
             query_name = rel.object._meta.model_name + 's'
             model = rel.object.__class__
             model_name = rel.object.__class__.__name__
+            # simulate absense of relaction_count instance case
+            if i % 2 == 0:
+                rel.delete()
         query = '''
             query %s($order: String!) {
               %s(orderBy: $order) {
@@ -314,7 +317,12 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
             }
         ''' % (query_name, query_name, f'{model_name}RelationCountNode')
 
-        self.assert_response_order(query, query_name, order_by='relations_count__fav', queries_count=2,
-                                   earliest=model.objects.earliest('relations_count__fav').relations_count.fav,
-                                   latest=model.objects.latest('relations_count__fav').relations_count.fav,
-                                   get_value=lambda n: n['relationsCount']['fav'])
+        def get_value_instance(instance):
+            try:
+                return instance.relations_count.fav
+            except factory._meta.model.DoesNotExist:
+                return factory._meta.model().fav
+
+        self.assert_response_orders(query, query_name, order_by='relations_count__fav', queries_count=2, model=model,
+                                    get_value_instance=get_value_instance,
+                                    get_value_result=lambda n: n['relationsCount']['fav'])

@@ -38,6 +38,8 @@ class QueryBaseTestCase(BaseTestCase):
 
 
 class ListQueryBaseTestCase(QueryBaseTestCase):
+    count = 100
+
     def assert_count_equal(self, result, count):
         """
         Check there are items in API response and amount is equal to count argument
@@ -47,34 +49,36 @@ class ListQueryBaseTestCase(QueryBaseTestCase):
         self.assertGreater(count, 0)
         self.assertEqual(len(result['edges']), count)
 
-    def assert_response_order(self, query, query_name, order_by, queries_count, earliest, latest, get_value):
+    def assert_response_orders(self, *args, **kwargs):
         """
-        Check earliest is not equal to latest
+        Check result is ordered the same way as queryset
         Execute query 2 times with order_by parameter ASC and DESC
-        Check that first and last items of responses are equal to earliest and latest arguments correspondingly
+        """
+        self.assert_response_order(*args, **kwargs)
+        kwargs['order_by'] = '-' + kwargs['order_by']
+        self.assert_response_order(*args, **kwargs)
+
+    def assert_response_order(self, query, query_name, order_by, queries_count, model,
+                              get_value_instance, get_value_result):
+        """
+        Check first and last items of result contains different values
+        Check result is ordered the same way as queryset
         :param query: search query
         :param query_name: root of search query
         :param order_by: sort param
         :param queries_count: number of DB queries
-        :param earliest: earliest expected item
-        :param latest: lastest expected item
-        :param get_value: get value method
+        :param model: model
+        :param get_value_result: get value method of result
+        :param get_value_instance: get value method of instance
         """
-        self.assertNotEqual(earliest, latest)
-
         with self.assertNumQueries(queries_count):
             result = self.execute(query, dict(order=order_by))
 
-        count = len(result[query_name]['edges']) - 1
-        self.assertEqual(get_value(result[query_name]['edges'][0]['node']), earliest)
-        self.assertEqual(get_value(result[query_name]['edges'][count]['node']), latest)
-
-        with self.assertNumQueries(queries_count):
-            result = self.execute(query, dict(order='-' + order_by))
-
-        count = len(result[query_name]['edges']) - 1
-        self.assertEqual(get_value(result[query_name]['edges'][0]['node']), latest)
-        self.assertEqual(get_value(result[query_name]['edges'][count]['node']), earliest)
+        self.assertEqual(len(result[query_name]['edges']), self.count)
+        self.assertNotEqual(get_value_result(result[query_name]['edges'][0]['node']),
+                            get_value_result(result[query_name]['edges'][self.count - 1]['node']))
+        for i, instance in enumerate(model.objects.order_by(order_by)):
+            self.assertEqual(get_value_result(result[query_name]['edges'][i]['node']), get_value_instance(instance))
 
 
 class ObjectQueryBaseTestCase(QueryBaseTestCase):

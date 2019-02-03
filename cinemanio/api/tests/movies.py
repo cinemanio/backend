@@ -8,8 +8,6 @@ from cinemanio.core.models import Movie, Genre, Country, Language
 
 
 class MoviesQueryTestCase(ListQueryBaseTestCase):
-    count = 100
-
     def setUp(self):
         for i in range(self.count):
             MovieFactory()
@@ -141,7 +139,6 @@ class MoviesQueryTestCase(ListQueryBaseTestCase):
               }
             }
         '''
-        self.assert_response_order(query, 'movies', order_by='year', queries_count=2,
-                                   earliest=Movie.objects.earliest('year').year,
-                                   latest=Movie.objects.latest('year').year,
-                                   get_value=lambda n: n['year'])
+        self.assert_response_orders(query, 'movies', order_by='year', queries_count=2, model=Movie,
+                                    get_value_instance=lambda n: n.year,
+                                    get_value_result=lambda n: n['year'])
