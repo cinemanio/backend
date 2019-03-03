@@ -1,0 +1,32 @@
+{% block subject %}{{ user.username }}, welcome to cineman.io!{% endblock %}
+
+{% block plain %}
+    Hi {{ user.get_full_name }},
+
+    You just signed up for cineman.io, using:
+    username: {{ user.username }}
+    password: {{ user.password }}
+    email: {{ user.email }}
+
+    To activate your account, follow this link:
+
+    {{ link }}
+
+    The link will work during the next {{ expiration_days }} days.
+{% endblock %}
+
+{% block html %}
+    <p>Hi {{ user.get_full_name }},</p>
+    <p>You just signed up for my cineman.io, using: </p>
+    <dl>
+        <dt>username</dt>
+        <dd>{{ user.username }}</dd>
+        <dt>password</dt>
+        <dd>{{ user.password }}</dd>
+        <dt>email</dt>
+        <dd>{{ user.email }}</dd>
+    </dl>
+    <p>To activate your account, follow this link:</p>
+    <p><a href="{{ link }}">{{ link }}</a></p>
+    <p>The link will work during the next {{ expiration_days }} days.</p>
+{% endblock %}

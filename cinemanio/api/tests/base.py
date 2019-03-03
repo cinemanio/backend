@@ -1,7 +1,11 @@
+import time
 from recordclass import recordclass
 from graphql_jwt.shortcuts import get_token
+from django.contrib.auth.models import AnonymousUser
 
+from cinemanio.api.helpers import global_id
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.users.models import User
 from cinemanio.users.factories import UserFactory
 from cinemanio.schema import schema
 
@@ -9,26 +13,33 @@ from cinemanio.schema import schema
 class QueryBaseTestCase(BaseTestCase):
     user = None
     password = 'secret'
-    Context = recordclass('Request', ['user', 'Meta', 'META'])
+    Context = recordclass('Request', ['user', 'Meta', 'META', 'is_secure', 'get_host'])
 
     def get_context(self, user=None):
-        if user is None:
-            return self.Context(user=None, Meta={}, META={})
-        token = get_token(user)
-        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
-        return self.Context(user=user, Meta=headers, META=headers)
+        kwargs = dict(user=AnonymousUser(), Meta={}, META={}, is_secure=lambda: True, get_host=lambda: '')
+        if user:
+            token = get_token(user)
+            headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
+            kwargs['user'] = user
+            kwargs['Meta'] = kwargs['META'] = headers
+        return self.Context(**kwargs)
+
+    def get_user(self, **kwargs):
+        user = UserFactory.build(username='user', **kwargs)
+        user.set_password(self.password)
+        return user
 
     def create_user(self, **kwargs):
-        self.user = UserFactory(username='user', **kwargs)
-        self.user.set_password(self.password)
-        self.user.save()
+        user = self.get_user(**kwargs)
+        user.save()
+        return user
 
     def _execute(self, query, values=None, context=None):
         return schema.execute(query, variable_values=values, context_value=context or self.get_context(self.user))
 
     def execute(self, query, values=None, context=None):
         result = self._execute(query, values, context)
-        self.assertIsNone(result.errors, result.errors)
+        self.assertIsNone(result.errors, result.to_dict())
         return result.data
 
     def execute_with_errors(self, query, values=None, context=None):
@@ -84,3 +95,26 @@ class ListQueryBaseTestCase(QueryBaseTestCase):
 class ObjectQueryBaseTestCase(QueryBaseTestCase):
     def assert_m2m_rel(self, result, queryset, fieldname='nameEn'):
         self.assertListEqual([r[fieldname] for r in result], list(queryset.values_list('name_en', flat=True)))
+
+
+class AuthQueryBaseTestCase(QueryBaseTestCase):
+    def assert_payload(self, payload, user):
+        self.assertEqual(payload['username'], user.username)
+        self.assertGreater(payload['exp'] - time.time(), 300 - 2)
+        self.assertLess(payload['origIat'] - time.time(), 0)
+
+    def assert_token(self, token, user):
+        user = User.objects.get(username=user.username)
+        self.assertEqual(len(token), 157)
+        self.assertEqual(token, get_token(user))
+
+    def assert_empty_response_with_error(self, result, key, error):
+        self.assertTrue(result.data, msg=result.to_dict())
+        self.assertEqual(result.data[key], None)
+        self.assertEqual(str(result.errors[0].original_error), error)
+
+    def assert_user(self, result, user):
+        user = User.objects.get(username=user.username)
+        self.assertDictEqual(result, dict(
+            id=global_id(user), username=user.username, email=user.email,
+            firstName=user.first_name, lastName=user.last_name))

@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-import dj_database_url
 import os
 from datetime import timedelta
+
+import dj_database_url
 from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -134,7 +135,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -153,7 +153,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -236,3 +235,12 @@ ALGOLIA = {
     'APPLICATION_ID': config('ALGOLIASEARCH_APPLICATION_ID', default='', cast=str),
     'API_KEY': config('ALGOLIASEARCH_API_KEY', default='', cast=str),
 }
+
+# registration
+ACCOUNT_ACTIVATION_DAYS = config('ACCOUNT_ACTIVATION_DAYS', default=7, cast=int)
+REGISTRATION_SALT = config('REGISTRATION_SALT', default='graphql_registration', cast=str)
+PASSWORD_RESET_URL_TEMPLATE = f'{FRONTEND_URL}password/reset/%(uid)s/%(token)s/'
+ACTIVATE_USER_URL_TEMPLATE = f'{FRONTEND_URL}account/activate/%(key)s/'
+
+# email
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='staff@cineman.io', cast=str)

@@ -1,0 +1,17 @@
+{% block subject %}{{ user.username }}, your cineman.io account activated!{% endblock %}
+
+{% block plain %}
+    Hi {{ user.get_full_name }},
+
+    Congratulations!
+    Your account on cineman.io has been activated successfuly.
+
+    Great job!
+{% endblock %}
+
+{% block html %}
+    <p>Hi {{ user.full_name }},</p>
+    <p>Congratulations!</p>
+    <p>Your account on <a href="http://cineman.io">cineman.io</a> has been activated successfuly.</p>
+    <p>Great job!</p>
+{% endblock %}
