@@ -1,7 +1,7 @@
 {% block subject %}{{ user.username }}, welcome to cineman.io!{% endblock %}
 
 {% block plain %}
-    Hi {{ user.get_full_name }},
+    Hi {{ user.username }},
 
     You just signed up for cineman.io, using:
     username: {{ user.username }}
@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block html %}
-    <p>Hi {{ user.get_full_name }},</p>
+    <p>Hi {{ user.username }},</p>
     <p>You just signed up for my cineman.io, using: </p>
     <dl>
         <dt>username</dt>

@@ -1,6 +1,6 @@
 import time
 from recordclass import recordclass
-from graphql_jwt.shortcuts import get_token
+from graphql_jwt.shortcuts import get_token, get_user_by_token
 from django.contrib.auth.models import AnonymousUser
 
 from cinemanio.api.helpers import global_id
@@ -106,7 +106,7 @@ class AuthQueryBaseTestCase(QueryBaseTestCase):
     def assert_token(self, token, user):
         user = User.objects.get(username=user.username)
         self.assertEqual(len(token), 157)
-        self.assertEqual(token, get_token(user))
+        self.assertEqual(get_user_by_token(token), user)
 
     def assert_empty_response_with_error(self, result, key, error):
         self.assertTrue(result.data, msg=result.to_dict())

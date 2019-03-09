@@ -18,9 +18,9 @@ django-storages = "*"
 django-cleanup = "*"
 django-enumfields = "*"
 django-graphql-jwt = {git = "https://github.com/flavors/django-graphql-jwt", editable = true}
-django-graphql-extensions = "*"
 django-celery-results = "*"
 django-celery-beat = "*"
+django-anymail = "*"
 django-templated-email = "*"
 django-registration = "*"
 celery = "~=4.2.1"
@@ -59,6 +59,7 @@ pyyaml = "*"
 mypy = "*"
 bandit = "*"
 pylint = "==2.1.1"
+astroid = "==2.0.4"
 
 [requires]
 python_version = "3.6.4"

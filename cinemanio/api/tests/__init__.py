@@ -13,6 +13,7 @@ from .register import (
 from .relations import RelationsQueryTestCase
 from .search import SearchQueryTestCase
 from .wikipedia import WikipediaQueryTestCase
+from .user import UserQueryTestCase
 
 
 __all__ = [
@@ -27,6 +28,7 @@ __all__ = [
     'WikipediaQueryTestCase',
     'SearchQueryTestCase',
     'AuthTestCase',
+    'UserQueryTestCase',
     # register
     'RegisterUserTestCase',
     'ActivateUserTestCase',

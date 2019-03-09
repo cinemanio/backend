@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'silk',
     'sorl.thumbnail',
     'storages',
+    'anymail',
 
     # cinemanio apps
     'cinemanio.core',
@@ -76,7 +77,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'silk.middleware.SilkyMiddleware',
 ]
@@ -198,8 +198,10 @@ RAVEN_CONFIG = {
 
 GRAPHENE = {
     'SCHEMA': 'cinemanio.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'] if DEBUG else [],
+    'MIDDLEWARE': ['graphql_jwt.middleware.JSONWebTokenMiddleware']
 }
+if DEBUG:
+    GRAPHENE['MIDDLEWARE'] += ['graphene_django.debug.DjangoDebugMiddleware']
 
 # TODO: choose right settings for CORS
 CORS_ORIGIN_ALLOW_ALL = True
@@ -239,8 +241,18 @@ ALGOLIA = {
 # registration
 ACCOUNT_ACTIVATION_DAYS = config('ACCOUNT_ACTIVATION_DAYS', default=7, cast=int)
 REGISTRATION_SALT = config('REGISTRATION_SALT', default='graphql_registration', cast=str)
-PASSWORD_RESET_URL_TEMPLATE = f'{FRONTEND_URL}password/reset/%(uid)s/%(token)s/'
-ACTIVATE_USER_URL_TEMPLATE = f'{FRONTEND_URL}account/activate/%(key)s/'
+PASSWORD_RESET_URL_TEMPLATE = FRONTEND_URL + 'password/reset/{uid}/{token}'
+ACTIVATE_USER_URL_TEMPLATE = FRONTEND_URL + 'account/activate/{key}'
 
 # email
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='staff@cineman.io', cast=str)
+ANYMAIL = {
+    'MAILGUN_API_KEY': config('MAILGUN_API_KEY', cast=str),
+    "MAILGUN_SENDER_DOMAIN": config('MAILGUN_DOMAIN', cast=str),
+    'MAILGUN_SMTP_LOGIN': config('MAILGUN_SMTP_LOGIN', cast=str),
+    'MAILGUN_SMTP_PASSWORD': config('MAILGUN_SMTP_PASSWORD', cast=str),
+    'MAILGUN_SMTP_PORT': config('MAILGUN_SMTP_PORT', cast=str),
+    'MAILGUN_SMTP_SERVER': config('MAILGUN_SMTP_SERVER', cast=str),
+}
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='staff@' + ANYMAIL['MAILGUN_SENDER_DOMAIN'], cast=str)
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+SERVER_EMAIL = config('SERVER_EMAIL', default='server@cineman.io', cast=str)

@@ -24,10 +24,10 @@ user_fragment = '''
 class RegisterUserTestCase(AuthQueryBaseTestCase):
     register_user_mutation = '''
         mutation RegisterUser(
-          $username: String!, $email: String!, $password: String!, $first_name: String, $last_name: String
+          $username: String!, $email: String!, $password: String!, $firstName: String, $lastName: String
         ) {
           registerUser(
-            username: $username, email: $email, password: $password, firstName: $first_name, lastName: $last_name
+            username: $username, email: $email, password: $password, firstName: $firstName, lastName: $lastName
           ) {
             ok
           }
@@ -39,7 +39,7 @@ class RegisterUserTestCase(AuthQueryBaseTestCase):
         with self.assertNumQueries(1):
             result = self.execute(self.register_user_mutation,
                                   dict(username=user.username, password=self.password, email=user.email,
-                                       first_name=user.first_name, last_name=user.last_name))
+                                       firstName=user.first_name, lastName=user.last_name))
         self.assertTrue(result['registerUser']['ok'])
         self.assertFalse(User.objects.get(username=user.username).is_active)
         self.assertEqual(len(mail.outbox), 1)
@@ -131,6 +131,8 @@ class ResetPasswordTestCase(AuthQueryBaseTestCase):
         mutation ResetPassword($password: String!, $uid: String!, $token: String!) {
           resetPassword(password: $password, uid: $uid, token: $token) {
             %(user)s
+            token
+            payload
           }
         }
     ''' % dict(user=user_fragment)
@@ -142,6 +144,8 @@ class ResetPasswordTestCase(AuthQueryBaseTestCase):
         with self.assertNumQueries(2):
             result = self.execute(self.reset_password_mutation, dict(password='new_password', uid=uid, token=token))
         self.assertTrue(authenticate(username=user.username, password='new_password'))
+        self.assert_token(result['resetPassword']['token'], user)
+        self.assert_payload(result['resetPassword']['payload'], user)
         self.assert_user(result['resetPassword']['user'], user)
         self.assertEqual(len(mail.outbox), 1)
 
@@ -164,49 +168,48 @@ class ResetPasswordTestCase(AuthQueryBaseTestCase):
 
 class ChangePasswordTestCase(AuthQueryBaseTestCase):
     change_password_mutation = '''
-        mutation ChangePassword($old_password: String!, $new_password1: String!, $new_password2: String!) {
-          changePassword(oldPassword: $old_password, newPassword1: $new_password1, newPassword2: $new_password2) {
-            %(user)s
+        mutation ChangePassword($oldPassword: String!, $newPassword: String!) {
+          changePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+            ok
           }
         }
-    ''' % dict(user=user_fragment)
+    '''
 
     def test_change_password(self):
         self.user = self.create_user()
         with self.assertNumQueries(1):
-            result = self.execute(self.change_password_mutation, dict(
-                old_password=self.password, new_password1='new_password', new_password2='new_password'))
+            result = self.execute(self.change_password_mutation, dict(oldPassword=self.password,
+                                                                      newPassword='new_password'))
         self.assertTrue(authenticate(username=self.user.username, password='new_password'))
-        self.assert_user(result['changePassword']['user'], self.user)
+        self.assertTrue(result['changePassword']['ok'])
         self.assertEqual(len(mail.outbox), 1)
 
     @parameterized.expand([
-        ('', 'new_password', 'new_password', 'This field is required.'),
-        ('wrong', 'new_password', 'new_password', 'Your old password was entered incorrectly. Please enter it again.'),
-        (None, '', '', 'This field is required.'),
-        (None, 'short', 'short', 'This password is too short. It must contain at least 8 characters.'),
-        (None, 'new_password', 'new_password1', 'The two password fields didn\'t match.'),
+        ('', 'new_password', 'This field is required.'),
+        ('wrong', 'new_password', 'Your old password was entered incorrectly. Please enter it again.'),
+        (None, '', 'This field is required.'),
+        (None, 'short', 'This password is too short. It must contain at least 8 characters.'),
     ])
-    def test_change_password_invalid_input(self, old_password, new_password1, new_password2, message):
+    def test_change_password_invalid_input(self, old_password, new_password, message):
         self.user = self.create_user()
         if old_password is None:
             old_password = self.password
-        result = self.execute_with_errors(self.change_password_mutation, dict(
-            old_password=old_password, new_password1=new_password1, new_password2=new_password2))
+        result = self.execute_with_errors(self.change_password_mutation, dict(oldPassword=old_password,
+                                                                              newPassword=new_password))
         self.assert_empty_response_with_error(result, 'changePassword', message)
 
     def test_change_password_unauth_user(self):
         self.create_user()
-        result = self.execute_with_errors(self.change_password_mutation, dict(
-            old_password=self.password, new_password1='new_password', new_password2='new_password'))
+        result = self.execute_with_errors(self.change_password_mutation, dict(oldPassword=self.password,
+                                                                              newPassword='new_password'))
         self.assert_empty_response_with_error(result, 'changePassword',
                                               'You do not have permission to perform this action')
 
 
 class UpdateUserTestCase(AuthQueryBaseTestCase):
     update_user_mutation = '''
-        mutation UpdateUser($username: String!, $email: String!, $first_name: String, $last_name: String) {
-          updateUser(username: $username, email: $email, firstName: $first_name, lastName: $last_name) {
+        mutation UpdateUser($username: String!, $email: String!, $firstName: String, $lastName: String) {
+          updateUser(username: $username, email: $email, firstName: $firstName, lastName: $lastName) {
             %(user)s
           }
         }
@@ -216,17 +219,17 @@ class UpdateUserTestCase(AuthQueryBaseTestCase):
         self.user = self.create_user()
         user = self.user
         user.__dict__.update(dict(username='user1', email='user1@gmail.com',
-                                  first_name='FirstName', last_name='LastName'))
+                                  firstName='FirstName', lastName='LastName'))
         with self.assertNumQueries(1):
             result = self.execute(self.update_user_mutation,
                                   dict(username=user.username, email=user.email,
-                                       first_name=user.first_name, last_name=user.last_name))
+                                       firstName=user.first_name, lastName=user.last_name))
         self.assert_user(result['updateUser']['user'], user)
 
     def test_update_user_unauth_user(self):
         user = self.create_user()
         result = self.execute_with_errors(self.update_user_mutation,
                                           dict(username=user.username, email=user.email,
-                                               first_name=user.first_name, last_name=user.last_name))
+                                               firstName=user.first_name, lastName=user.last_name))
         self.assert_empty_response_with_error(result, 'updateUser',
                                               'You do not have permission to perform this action')

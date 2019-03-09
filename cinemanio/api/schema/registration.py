@@ -7,13 +7,13 @@ from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.core.validators import validate_email
 from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_encode as uid_encoder, urlsafe_base64_decode as uid_decoder
-from graphene import relay, AbstractType
+from graphene import AbstractType
 from graphene.types.generic import GenericScalar
-from graphene_django import DjangoObjectType
-from graphql_extensions.auth.decorators import login_required
+from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import get_token, get_payload
 from django_registration.backends.activation.views import RegistrationView, ActivationView, ActivationError
 
+from cinemanio.api.schema.user import UserNode
 from cinemanio.users.emails.signals import (
     user_registered, user_activated, change_password_confirmation, reset_password_requested,
 )
@@ -28,10 +28,11 @@ settings_check_map = {
     'ACTIVATE_USER_URL_TEMPLATE': ['key'],
     'PASSWORD_RESET_URL_TEMPLATE': ['uid', 'token'],
 }
+
 for const, vars in settings_check_map.items():
     for var in vars:
-        if f'%({var})s' not in globals()[const]:
-            raise ImproperlyConfigured(f'{const} must contain var %({var})s')
+        if '{%s}' % var not in globals()[const]:
+            raise ImproperlyConfigured('%s must contain var {%s}' % (const, var))
 
 
 class DynamicUsernameMeta(type):
@@ -42,25 +43,9 @@ class DynamicUsernameMeta(type):
 
 class UpdateUsernameMeta(type):
     def __new__(mcs, classname, bases, dictionary):
-        for field in ('email', 'username', 'first_name', 'last_name',):
+        for field in UserNode._meta.fields.keys():
             dictionary[field] = graphene.String()
         return type.__new__(mcs, classname, bases, dictionary)
-
-
-class UserNode(DjangoObjectType):
-    class Meta:
-        model = User
-        interfaces = (relay.Node,)
-        only_fields = ('email', 'username', 'first_name', 'last_name',)
-        filter_fields = ('email', 'username', 'first_name', 'last_name',)
-
-    @classmethod
-    def get_node(cls, info, id):
-        user = super(UserNode, cls).get_node(info, id)
-        if info.context.user.id and (user.id == info.context.user.id or info.context.user.is_staff):
-            return user
-        else:
-            return None
 
 
 class RegisterUser(graphene.Mutation):
@@ -126,7 +111,7 @@ class ResetPasswordRequest(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, **kwargs):
-        email = kwargs.pop('email')
+        email = kwargs.get('email')
 
         try:
             validate_email(email)
@@ -149,6 +134,8 @@ class ResetPassword(graphene.Mutation):
         token = graphene.String(required=True)
 
     user = graphene.Field(UserNode)
+    token = graphene.String()
+    payload = GenericScalar()
 
     @classmethod
     def mutate(cls, root, info, **kwargs):
@@ -173,24 +160,26 @@ class ResetPassword(graphene.Mutation):
         form.save()
         change_password_confirmation.send(sender=User, user=user, request=info.context)
 
-        return cls(user=user)
+        token = get_token(user, info.context)
+        payload = get_payload(token, info.context)
+
+        return cls(user=user, token=token, payload=payload)
 
 
 class ChangePassword(graphene.Mutation):
     class Arguments:
         old_password = graphene.String(required=True)
-        new_password1 = graphene.String(required=True)
-        new_password2 = graphene.String(required=True)
+        new_password = graphene.String(required=True)
 
-    user = graphene.Field(UserNode)
+    ok = graphene.Boolean()
 
     @classmethod
     @login_required
     def mutate(cls, root, info, **kwargs):
         data = {
             'old_password': kwargs.get('old_password'),
-            'new_password1': kwargs.get('new_password1'),
-            'new_password2': kwargs.get('new_password2')
+            'new_password1': kwargs.get('new_password'),
+            'new_password2': kwargs.get('new_password')
         }
         user = info.context.user
         form = PasswordChangeForm(user=user, data=data)
@@ -202,7 +191,7 @@ class ChangePassword(graphene.Mutation):
         form.save()
         change_password_confirmation.send(sender=User, user=user, request=info.context)
 
-        return cls(user=user)
+        return cls(ok=True)
 
 
 class UpdateUser(graphene.Mutation):
