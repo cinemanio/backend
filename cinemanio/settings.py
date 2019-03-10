@@ -196,12 +196,15 @@ RAVEN_CONFIG = {
     'release': '0.3.6',
 }
 
+# graphene
+GRAPHENE_MIDDLEWARE = ['graphql_jwt.middleware.JSONWebTokenMiddleware']
+if DEBUG:
+    GRAPHENE_MIDDLEWARE += ['graphene_django.debug.DjangoDebugMiddleware']
+
 GRAPHENE = {
     'SCHEMA': 'cinemanio.schema.schema',
-    'MIDDLEWARE': ['graphql_jwt.middleware.JSONWebTokenMiddleware']
+    'MIDDLEWARE': GRAPHENE_MIDDLEWARE,
 }
-if DEBUG:
-    GRAPHENE['MIDDLEWARE'] += ['graphene_django.debug.DjangoDebugMiddleware']
 
 # TODO: choose right settings for CORS
 CORS_ORIGIN_ALLOW_ALL = True

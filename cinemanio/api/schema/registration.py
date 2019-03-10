@@ -29,23 +29,23 @@ settings_check_map = {
     'PASSWORD_RESET_URL_TEMPLATE': ['uid', 'token'],
 }
 
-for const, vars in settings_check_map.items():
-    for var in vars:
+for const, variables in settings_check_map.items():
+    for var in variables:
         if '{%s}' % var not in globals()[const]:
             raise ImproperlyConfigured('%s must contain var {%s}' % (const, var))
 
 
 class DynamicUsernameMeta(type):
-    def __new__(mcs, classname, bases, dictionary):
+    def __new__(cls, classname, bases, dictionary):
         dictionary[User.USERNAME_FIELD] = graphene.String(required=True)
-        return type.__new__(mcs, classname, bases, dictionary)
+        return type.__new__(cls, classname, bases, dictionary)
 
 
 class UpdateUsernameMeta(type):
-    def __new__(mcs, classname, bases, dictionary):
+    def __new__(cls, classname, bases, dictionary):
         for field in UserNode._meta.fields.keys():
             dictionary[field] = graphene.String()
-        return type.__new__(mcs, classname, bases, dictionary)
+        return type.__new__(cls, classname, bases, dictionary)
 
 
 class RegisterUser(graphene.Mutation):
@@ -58,7 +58,7 @@ class RegisterUser(graphene.Mutation):
     ok = graphene.Boolean()
 
     @classmethod
-    def mutate(cls, root, info, **kwargs):
+    def mutate(cls, _, info, **kwargs):
         email = kwargs.pop('email')
         username = kwargs.pop(User.USERNAME_FIELD, email)
         password = kwargs.pop('password') if 'password' in kwargs else User.objects.make_random_password()
@@ -87,7 +87,7 @@ class ActivateUser(graphene.Mutation):
     payload = GenericScalar()
 
     @classmethod
-    def mutate(cls, root, info, **kwargs):
+    def mutate(cls, _, info, **kwargs):
         key = kwargs.pop('key')
 
         try:
@@ -110,7 +110,7 @@ class ResetPasswordRequest(graphene.Mutation):
     ok = graphene.Boolean()
 
     @classmethod
-    def mutate(cls, root, info, **kwargs):
+    def mutate(cls, _, info, **kwargs):
         email = kwargs.get('email')
 
         try:
@@ -138,7 +138,7 @@ class ResetPassword(graphene.Mutation):
     payload = GenericScalar()
 
     @classmethod
-    def mutate(cls, root, info, **kwargs):
+    def mutate(cls, _, info, **kwargs):
         data = {
             'uid': kwargs.get('uid'),
             'token': kwargs.get('token'),
@@ -175,7 +175,7 @@ class ChangePassword(graphene.Mutation):
 
     @classmethod
     @login_required
-    def mutate(cls, root, info, **kwargs):
+    def mutate(cls, _, info, **kwargs):
         data = {
             'old_password': kwargs.get('old_password'),
             'new_password1': kwargs.get('new_password'),
@@ -202,7 +202,7 @@ class UpdateUser(graphene.Mutation):
 
     @classmethod
     @login_required
-    def mutate(cls, root, info, **kwargs):
+    def mutate(cls, _, info, **kwargs):
         user = info.context.user
 
         for key, value in kwargs.items():
