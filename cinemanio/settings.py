@@ -249,13 +249,13 @@ ACTIVATE_USER_URL_TEMPLATE = FRONTEND_URL + 'account/activate/{key}'
 
 # email
 ANYMAIL = {
-    'MAILGUN_API_KEY': config('MAILGUN_API_KEY', cast=str),
-    "MAILGUN_SENDER_DOMAIN": config('MAILGUN_DOMAIN', cast=str),
-    'MAILGUN_SMTP_LOGIN': config('MAILGUN_SMTP_LOGIN', cast=str),
-    'MAILGUN_SMTP_PASSWORD': config('MAILGUN_SMTP_PASSWORD', cast=str),
-    'MAILGUN_SMTP_PORT': config('MAILGUN_SMTP_PORT', cast=str),
-    'MAILGUN_SMTP_SERVER': config('MAILGUN_SMTP_SERVER', cast=str),
+    'MAILGUN_API_KEY': config('MAILGUN_API_KEY', default='', cast=str),
+    "MAILGUN_SENDER_DOMAIN": config('MAILGUN_DOMAIN', default='', cast=str),
+    'MAILGUN_SMTP_LOGIN': config('MAILGUN_SMTP_LOGIN', default='', cast=str),
+    'MAILGUN_SMTP_PASSWORD': config('MAILGUN_SMTP_PASSWORD', default='', cast=str),
+    'MAILGUN_SMTP_PORT': config('MAILGUN_SMTP_PORT', default='', cast=str),
+    'MAILGUN_SMTP_SERVER': config('MAILGUN_SMTP_SERVER', default='', cast=str),
 }
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='staff@' + ANYMAIL['MAILGUN_SENDER_DOMAIN'], cast=str)
+SERVER_EMAIL = config('SERVER_EMAIL', default='server@' + ANYMAIL['MAILGUN_SENDER_DOMAIN'], cast=str)
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-SERVER_EMAIL = config('SERVER_EMAIL', default='server@cineman.io', cast=str)
