@@ -13,7 +13,7 @@ class EmailsTest(QueryBaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         email = mail.outbox[0]
         self.assertTrue(user.username in email.subject)
-        self.assertTrue(user.get_full_name() in email.body)
+        self.assertTrue(user.username in email.body)
 
     def test_welcome_email(self):
         user = self.create_user()

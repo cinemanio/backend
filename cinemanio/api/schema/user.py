@@ -21,4 +21,4 @@ class UserQuery:
     def resolve_me(self, info):
         if info.context.user.is_authenticated:
             return UserNode.get_node(info, info.context.user.id)
-        return
+        return None
