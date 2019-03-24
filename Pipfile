@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "~=2.1.5"
+django = "~=2.1.6"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-cache-machine = "*"
@@ -59,7 +59,6 @@ pyyaml = "*"
 mypy = "*"
 bandit = "*"
 pylint = "==2.1.1"
-astroid = "==2.0.4"
 
 [requires]
 python_version = "3.6.4"
