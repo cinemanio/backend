@@ -4,7 +4,7 @@
     Hi {{ user.username }},
 
     Congratulations!
-    Your account on cineman.io has been activated successfuly.
+    Your account on cineman.io has been activated successfully.
 
     Great job!
 {% endblock %}
@@ -12,6 +12,6 @@
 {% block html %}
     <p>Hi {{ user.username }},</p>
     <p>Congratulations!</p>
-    <p>Your account on <a href="http://cineman.io">cineman.io</a> has been activated successfuly.</p>
+    <p>Your account on <a href="http://cineman.io">cineman.io</a> has been activated successfully.</p>
     <p>Great job!</p>
 {% endblock %}
