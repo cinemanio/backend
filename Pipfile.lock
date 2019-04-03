@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "de039a504e18a28cad97e182ba868740afaceb352156349514ede5758e395e5a"
+            "sha256": "6a8d26c5cd0daec91b7cf7d636261b88926756d09201f121bc8c8c72ad461668"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -323,7 +323,8 @@
         },
         "graphene-django": {
             "editable": true,
-            "git": "https://github.com/graphql-python/graphene-django"
+            "git": "https://github.com/graphql-python/graphene-django",
+            "ref": "f76f38ef30b88d921df243b09c4970528b1a4007"
         },
         "graphql-core": {
             "hashes": [
@@ -1148,7 +1149,6 @@
                 "sha256:d659517ca116e6750101a1326107d3479028c5191f0ecee3c7203c50f5b915b0",
                 "sha256:eddd3fb1f3e0f82e5915a899285a39ee34ce18fd25d89582bc89fc9fb16cd2c6"
             ],
-            "markers": "implementation_name == 'cpython'",
             "version": "==1.3.1"
         },
         "urllib3": {

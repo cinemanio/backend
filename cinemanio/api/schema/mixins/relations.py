@@ -28,9 +28,9 @@ class RelationsMixin:
             return self._meta.get_field('relations_count').related_model()
 
     @classmethod
-    def get_queryset(cls, info):
+    def get_queryset(cls, info, *args, **kwargs):
         user = info.context.user
-        queryset = super().get_queryset(info)
+        queryset = super().get_queryset(info, *args, **kwargs)
 
         if not user or not user.is_authenticated:
             return queryset

@@ -58,7 +58,7 @@ class DjangoObjectTypeMixin:
             return None
 
     @classmethod
-    def get_queryset(cls, info):
+    def get_queryset(cls, info, *_, **__):
         queryset = cls._meta.model.objects.all()
         fields = cls.select_foreign_keys() + cls.select_o2o_related_objects()
         fields_m2m = cls.select_m2m_fields()
