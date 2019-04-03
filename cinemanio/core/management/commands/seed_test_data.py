@@ -16,7 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.flush_db()
 
-        for i in range(1000):
+        for _ in range(1000):
             CastFactory()
 
         self.stdout.write(self.style.SUCCESS('Successfully seeded {} movies, {} persons, {} cast'.format(
