@@ -3,7 +3,7 @@ python:
   - "3.6"
 install:
   - pip install pipenv # prospector
-  - pipenv sync --dev --verbose
+  - pipenv sync --dev --sequential
   - pipenv graph
 before_script:
   - python manage.py collectstatic
