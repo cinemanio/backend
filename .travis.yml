@@ -7,7 +7,7 @@ env:
     - PIPENV_IGNORE_VIRTUALENVS=1
 install:
   - pip install pipenv # prospector
-  - pipenv sync --dev --sequential
+  - pipenv sync --dev --sequential --three
   - pipenv graph
 before_script:
   - python manage.py collectstatic
