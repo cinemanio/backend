@@ -2,8 +2,9 @@ language: python
 python:
   - "3.6"
 install:
-  - pip install pipenv django==2.1.8 # prospector
-  - pipenv sync --dev --sequential --three
+  - pip install pipenv # prospector
+  - pipenv sync --dev
+  - pipenv install django==2.1.8
   - pipenv graph
 before_script:
   - python manage.py collectstatic
