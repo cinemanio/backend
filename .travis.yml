@@ -1,8 +1,8 @@
 language: python
 python:
-  - "3.7"
+  - "3.6"
 install:
-  - pip install pipenv # prospector
+  - pip install pipenv django==2.1.8 # prospector
   - pipenv sync --dev --sequential --three
   - pipenv graph
 before_script:
