@@ -9,7 +9,7 @@ before_script:
   - python manage.py collectstatic
 script:
   - flake8 ./cinemanio
-  - prospector .
+#  - prospector .
   - mypy -p cinemanio
   - bandit -r .
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test

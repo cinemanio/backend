@@ -3,8 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.4
-        environment:
-          PIPENV_VENV_IN_PROJECT: true
+#        environment:
 #          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
 #      - image: circleci/postgres:9.6.2
 #        environment:
@@ -13,35 +12,35 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys:
-            - cache-{{ checksum "requirements/prod.txt" }}{{ checksum "requirements/dev.txt" }}
-            - cache-
+          key: cache-{{ checksum "requirements/prod.txt" }}{{ checksum "requirements/dev.txt" }}
       - run:
           name: Install dependencies
-          command: pip install -r requirements/dev.txt
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt
       - save_cache:
           key: cache-{{ checksum "requirements/prod.txt" }}{{ checksum "requirements/dev.txt" }}
           paths:
-            - ~/.local
-            - ~/.cache
+            - "venv"
 #      - run: flake8 ./cinemanio
 #      - run:
 #          name: Run prospector
 #          command: prospector .
       - run:
           name: Run type checking
-          command: python -m mypy -p cinemanio
+          command: venv/bin/python -m mypy -p cinemanio
       - run:
           name: Run bandit
-          command: python -m bandit -r .
+          command: venv/bin/python -m bandit -r .
       - run:
           name: Collect static
-          command: python manage.py collectstatic --noinput
+          command: venv/bin/python manage.py collectstatic --noinput
       - run:
           name: Run tests
-          command: python manage.py test --settings=cinemanio.settings_test
-      - store_test_results:
-          path: test-results
+          command: venv/bin/python manage.py test --settings=cinemanio.settings_test
       - store_artifacts:
           path: test-results
           destination: tr1
+      - store_test_results:
+          path: test-results
