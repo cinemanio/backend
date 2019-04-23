@@ -14,32 +14,32 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - cache-{{ checksum "Pipfile.lock" }}
+            - cache-{{ checksum "requirements/prod.txt" }}{{ checksum "requirements/dev.txt" }}
             - cache-
       - run:
           name: Install dependencies
-          command: pipenv sync --dev
+          command: pip install -r requirements/dev.txt
       - save_cache:
-          key: cache-{{ checksum "Pipfile.lock" }}
+          key: cache-{{ checksum "requirements/prod.txt" }}{{ checksum "requirements/dev.txt" }}
           paths:
             - ~/.local
             - ~/.cache
 #      - run: flake8 ./cinemanio
 #      - run:
 #          name: Run prospector
-#          command: pipenv run prospector .
+#          command: prospector .
       - run:
           name: Run type checking
-          command: pipenv run python -m mypy -p cinemanio
+          command: python -m mypy -p cinemanio
       - run:
           name: Run bandit
-          command: pipenv run python -m bandit -r .
+          command: python -m bandit -r .
       - run:
           name: Collect static
-          command: pipenv run python manage.py collectstatic --noinput
+          command: python manage.py collectstatic --noinput
       - run:
           name: Run tests
-          command: pipenv run python manage.py test --settings=cinemanio.settings_test
+          command: python manage.py test --settings=cinemanio.settings_test
       - store_test_results:
           path: test-results
       - store_artifacts:
