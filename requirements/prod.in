@@ -1,0 +1,38 @@
+django~=2.1.5
+django-debug-toolbar
+django-extensions
+django-cache-machine
+django-filter~=2.0.0
+django-cors-headers
+django-reversion
+django-silk
+django-cursor-pagination
+django-storages
+django-cleanup
+django-enumfields
+-e git+https://github.com/deschler/django-modeltranslation.git#egg=django-modeltranslation
+-e git+https://github.com/flavors/django-graphql-jwt.git#egg=django-graphql-jwt
+django-celery-results
+django-celery-beat
+celery~=4.2.1
+celerymon
+algoliasearch-django
+alphabet-detector
+-e git+https://github.com/ramusus/kinopoiskpy.git#egg=kinopoiskpy
+-e git+https://github.com/graphql-python/graphene-django.git@f76f38ef30b88d921df243b09c4970528b1a4007#egg=graphene-django
+-e git+https://github.com/alberanid/imdbpy.git@f4c4c2d9e544ea7152c09228ca0f274248cc58b8#egg=imdbpy
+psycopg2-binary
+dj-database-url
+python-decouple
+gunicorn
+whitenoise~=3.3.1
+pillow
+sorl-thumbnail
+boto3==1.9.3
+botocore==1.12.3
+lxml==4.1.1
+redis
+honcho
+wikipedia
+transliterate
+classproperties

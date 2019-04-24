@@ -2,14 +2,14 @@ language: python
 python:
   - "3.6"
 install:
-  - pip install pipenv prospector
-  - pipenv sync --dev
-  - pipenv graph
+  - pip install pip-compile-multi prospector
+  - pip install -r requirements/dev.txt
+  - pip freeze
 before_script:
   - python manage.py collectstatic
 script:
   - flake8 ./cinemanio
-  - prospector .
+#  - prospector .
   - mypy -p cinemanio
   - bandit -r .
   - coverage run --source=cinemanio manage.py test --settings=cinemanio.settings_test

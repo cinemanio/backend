@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'debug_toolbar',
     'reversion',
-    'celerymon',
+    # 'celerymon',
     'corsheaders',
     'graphene_django',
     'algoliasearch_django',
