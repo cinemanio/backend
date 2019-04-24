@@ -2,10 +2,9 @@ language: python
 python:
   - "3.6"
 install:
-  - pip install pipenv # prospector
-  - pipenv sync --dev
-  - pipenv install django==2.1.8
-  - pipenv graph
+  - pip install pip-compile-multi prospector
+  - pip install -r requirements/dev.txt
+  - pip freeze
 before_script:
   - python manage.py collectstatic
 script:
