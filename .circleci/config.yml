@@ -23,7 +23,9 @@ jobs:
           key: cache-{{ checksum "requirements/prod.txt" }}{{ checksum "requirements/dev.txt" }}
           paths:
             - "venv"
-#      - run: flake8 ./cinemanio
+      - run:
+          name: Run flake8
+          command: venv/bin/flake8 ./cinemanio
 #      - run:
 #          name: Run prospector
 #          command: prospector .
@@ -32,7 +34,7 @@ jobs:
           command: venv/bin/python -m mypy -p cinemanio
       - run:
           name: Run bandit
-          command: venv/bin/python -m bandit -r .
+          command: venv/bin/python -m bandit -r . -x venv
       - run:
           name: Collect static
           command: venv/bin/python manage.py collectstatic --noinput
