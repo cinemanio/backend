@@ -1,4 +1,4 @@
-django~=2.1.5
+django~=2.1.8
 django-debug-toolbar
 django-extensions
 django-cache-machine
@@ -25,12 +25,12 @@ psycopg2-binary
 dj-database-url
 python-decouple
 gunicorn
-whitenoise~=3.3.1
+whitenoise
 pillow
 sorl-thumbnail
 boto3==1.9.3
 botocore==1.12.3
-lxml==4.1.1
+lxml
 redis
 honcho
 wikipedia
