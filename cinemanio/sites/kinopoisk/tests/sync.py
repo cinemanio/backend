@@ -15,7 +15,7 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
     fixtures = BaseTestCase.fixtures + KinopoiskSyncMixin.fixtures
 
     def test_movie_matrix(self):
-        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None, movie__title_en='',
+        kinopoisk = KinopoiskMovieFactory(id=301, movie__year=None, movie__title_en='', movie__title_ru='',
                                           movie__genres=[], movie__countries=[])
         kinopoisk.sync_details()
 
@@ -32,7 +32,7 @@ class KinopoiskSyncTest(VCRMixin, BaseTestCase, KinopoiskSyncMixin):
         self.assertQuerysetEqual(kinopoisk.movie.countries.all(), ['USA'])
 
     def test_movie_solaris(self):
-        kp_movie = KinopoiskMovieFactory(id=43911, movie__title_en='')
+        kp_movie = KinopoiskMovieFactory(id=43911, movie__title_en='', movie__title_ru='')
         kp_movie.sync_details()
         self.assertEqual(kp_movie.movie.title_ru, 'Солярис')
         self.assertEqual(kp_movie.movie.title_en, '')

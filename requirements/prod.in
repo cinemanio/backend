@@ -10,6 +10,9 @@ django-cursor-pagination
 django-storages
 django-cleanup
 django-enumfields
+django-anymail
+django-templated-email
+django-registration
 -e git+https://github.com/deschler/django-modeltranslation.git#egg=django-modeltranslation
 -e git+https://github.com/flavors/django-graphql-jwt.git#egg=django-graphql-jwt
 django-celery-results

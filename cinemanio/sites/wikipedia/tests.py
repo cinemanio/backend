@@ -162,9 +162,9 @@ class WikipediaTest(VCRMixin, BaseTestCase):
         (MovieFactory, sync_movie, dict(year=1984, title_en='Report from the Abyss', title_ru='Репортаж из бездны')),
         (MovieFactory, sync_movie, dict(year=2007, title_en='', title_ru='Нелюбимые')),
         (MovieFactory, sync_movie, dict(year=2006, title_en='', title_ru='Ты - это я')),
-        (MovieFactory, sync_movie, dict(year=1998, title_en='I Just Want to Kiss You')),
-        (MovieFactory, sync_movie, dict(year=2008, title_en='Senior Skip Day')),
-        (MovieFactory, sync_movie, dict(year=1990, title_en='The Killer\'s Edge')),
+        (MovieFactory, sync_movie, dict(year=1998, title_en='I Just Want to Kiss You', title_ru='')),
+        (MovieFactory, sync_movie, dict(year=2008, title_en='Senior Skip Day', title_ru='')),
+        (MovieFactory, sync_movie, dict(year=1990, title_en='The Killer\'s Edge', title_ru='')),
     ])
     def test_sync_object_with_no_page(self, factory, sync_method, kwargs):
         instance = factory(**kwargs)

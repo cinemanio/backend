@@ -1,14 +1,20 @@
 from .auth import AuthTestCase
+from .images import ImagesQueryTestCase
 from .movie import MovieQueryTestCase
 from .movies import MoviesQueryTestCase
+from .pagination import PaginationQueryTestCase
 from .person import PersonQueryTestCase
 from .persons import PersonsQueryTestCase
 from .properties import PropertiesQueryTestCase
+from .register import (
+    RegisterUserTestCase, ActivateUserTestCase, ResetPasswordRequestTestCase, ResetPasswordTestCase,
+    ChangePasswordTestCase, UpdateUserTestCase
+)
 from .relations import RelationsQueryTestCase
-from .pagination import PaginationQueryTestCase
-from .images import ImagesQueryTestCase
-from .wikipedia import WikipediaQueryTestCase
 from .search import SearchQueryTestCase
+from .wikipedia import WikipediaQueryTestCase
+from .user import UserQueryTestCase
+
 
 __all__ = [
     'MovieQueryTestCase',
@@ -16,10 +22,18 @@ __all__ = [
     'PersonQueryTestCase',
     'PersonsQueryTestCase',
     'PropertiesQueryTestCase',
-    'AuthTestCase',
     'RelationsQueryTestCase',
     'PaginationQueryTestCase',
     'ImagesQueryTestCase',
     'WikipediaQueryTestCase',
     'SearchQueryTestCase',
+    'AuthTestCase',
+    'UserQueryTestCase',
+    # register
+    'RegisterUserTestCase',
+    'ActivateUserTestCase',
+    'ResetPasswordRequestTestCase',
+    'ResetPasswordTestCase',
+    'ChangePasswordTestCase',
+    'UpdateUserTestCase',
 ]

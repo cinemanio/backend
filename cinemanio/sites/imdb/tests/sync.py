@@ -27,7 +27,7 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
         self.assert_matrix(imdb_movie)
 
     def test_search_and_sync_movie_matrix(self):
-        movie = MovieFactory(year=1999, title='The Matrix', genres=[], languages=[], countries=[])
+        movie = MovieFactory(year=1999, title_en='The Matrix', genres=[], languages=[], countries=[])
         sync_movie(movie.id)
         self.assert_matrix(movie.imdb)
 
@@ -59,8 +59,8 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
 
     @mock.patch.object(IMDbHTTPAccessSystem, 'search_movie')
     def test_search_and_sync_right_movie_by_person(self, search_movie):
-        movie1 = MovieFactory(year=2014, title='The Prince')
-        movie2 = MovieFactory(year=2014, title='The Prince')
+        movie1 = MovieFactory(year=2014, title_en='The Prince')
+        movie2 = MovieFactory(year=2014, title_en='The Prince')
         ImdbPersonFactory(id=2357819, person=CastFactory(movie=movie1).person)
         ImdbPersonFactory(id=3167230, person=CastFactory(movie=movie2).person)
         sync_movie(movie1.id)
@@ -70,7 +70,7 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
         self.assertFalse(search_movie.called)
 
     @parameterized.expand([
-        (MovieFactory, sync_movie, dict(year=2014, title='The Prince')),
+        (MovieFactory, sync_movie, dict(year=2014, title_en='The Prince')),
         (PersonFactory, sync_person, dict(first_name_en='Allison', last_name_en='Williams')),
     ])
     def test_sync_object_duplicates(self, factory, sync_method, kwargs):
@@ -82,7 +82,7 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
             sync_method(instance2.id)
 
     @parameterized.expand([
-        ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title='The Prince')),
+        ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title_en='The Prince')),
         ('person', ImdbPersonFactory, dict(person__first_name_en='Allison', person__last_name_en='Williams')),
     ])
     def test_sync_object_wrong_value(self, model_name, factory, kwargs):
