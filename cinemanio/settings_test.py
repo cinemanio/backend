@@ -24,3 +24,6 @@ ALGOLIA = {
     'API_KEY': '',
     'AUTO_INDEXING': False,
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = join(BASE_DIR, 'tmp/emails')

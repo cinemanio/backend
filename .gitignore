@@ -3,6 +3,7 @@
 /.mypy_cache/
 /static
 /images
+/env
 
 /cinemanio/migration/
 /cinemanio/sites/movister/

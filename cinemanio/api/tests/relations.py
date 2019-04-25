@@ -75,7 +75,7 @@ class RelationsQueryTestCase(ListQueryBaseTestCase, RelationsTestMixin):
     '''
 
     def setUp(self):
-        self.create_user()
+        self.user = self.create_user()
 
     def get_relate_vars(self, rel):
         model_name = rel.object.__class__.__name__

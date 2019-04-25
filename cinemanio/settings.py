@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-import dj_database_url
 import os
 from datetime import timedelta
+
+import dj_database_url
 from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'silk',
     'sorl.thumbnail',
     'storages',
+    'anymail',
 
     # cinemanio apps
     'cinemanio.core',
@@ -75,7 +77,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'silk.middleware.SilkyMiddleware',
 ]
@@ -134,7 +135,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -153,7 +153,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -197,9 +196,14 @@ RAVEN_CONFIG = {
     'release': '0.3.6',
 }
 
+# graphene
+GRAPHENE_MIDDLEWARE = ['graphql_jwt.middleware.JSONWebTokenMiddleware']
+if DEBUG:
+    GRAPHENE_MIDDLEWARE += ['graphene_django.debug.DjangoDebugMiddleware']
+
 GRAPHENE = {
     'SCHEMA': 'cinemanio.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'] if DEBUG else [],
+    'MIDDLEWARE': GRAPHENE_MIDDLEWARE,
 }
 
 # TODO: choose right settings for CORS
@@ -236,3 +240,22 @@ ALGOLIA = {
     'APPLICATION_ID': config('ALGOLIASEARCH_APPLICATION_ID', default='', cast=str),
     'API_KEY': config('ALGOLIASEARCH_API_KEY', default='', cast=str),
 }
+
+# registration
+ACCOUNT_ACTIVATION_DAYS = config('ACCOUNT_ACTIVATION_DAYS', default=7, cast=int)
+REGISTRATION_SALT = config('REGISTRATION_SALT', default='graphql_registration', cast=str)
+PASSWORD_RESET_URL_TEMPLATE = FRONTEND_URL + 'password/reset/{uid}/{token}'
+ACTIVATE_USER_URL_TEMPLATE = FRONTEND_URL + 'account/activate/{key}'
+
+# email
+ANYMAIL = {
+    'MAILGUN_API_KEY': config('MAILGUN_API_KEY', default='', cast=str),
+    "MAILGUN_SENDER_DOMAIN": config('MAILGUN_DOMAIN', default='', cast=str),
+    'MAILGUN_SMTP_LOGIN': config('MAILGUN_SMTP_LOGIN', default='', cast=str),
+    'MAILGUN_SMTP_PASSWORD': config('MAILGUN_SMTP_PASSWORD', default='', cast=str),
+    'MAILGUN_SMTP_PORT': config('MAILGUN_SMTP_PORT', default='', cast=str),
+    'MAILGUN_SMTP_SERVER': config('MAILGUN_SMTP_SERVER', default='', cast=str),
+}
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='staff@' + ANYMAIL['MAILGUN_SENDER_DOMAIN'], cast=str)
+SERVER_EMAIL = config('SERVER_EMAIL', default='server@' + ANYMAIL['MAILGUN_SENDER_DOMAIN'], cast=str)
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
