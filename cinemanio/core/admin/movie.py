@@ -1,18 +1,19 @@
 from django.contrib.admin import register
 from django.utils.translation import ugettext_lazy as _
 
+from cinemanio.core.admin.site import site
 from cinemanio.core.admin.base import BaseAdmin
 from cinemanio.core.admin.cast import CastInline
 from cinemanio.core.forms import MovieForm
 from cinemanio.core.models import Movie
 
 
-@register(Movie)
+@register(Movie, site=site)
 class MovieAdmin(BaseAdmin):
     """
     Movie admin model
     """
-    list_display = ['id', 'year', 'title_en', 'title_ru', 'site']
+    list_display = ['id', 'year', 'title_en', 'title_ru', 'view']
     list_display_links = ['id']
     autocomplete_fields = ['sequel_for', 'prequel_for', 'remake_for']
     search_fields = ['title', 'title_ru', 'title_en']

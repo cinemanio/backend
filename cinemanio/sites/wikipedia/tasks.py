@@ -29,8 +29,8 @@ def sync_person(person_id):
 
 
 def sync(instance):
-    if instance.wikipedia.count() == 0:
-        for lang in ['en', 'ru']:
+    for lang in ['en', 'ru']:
+        if not instance.wikipedia.filter(lang=lang).exists():
             try:
                 WikipediaPage.objects.create_for(instance, lang=lang)
             except (NothingFound, ValueError):
@@ -60,5 +60,5 @@ def search_roles_links(content_type_id, object_id, lang, links):
     for linked_instance in linked_instances:
         try:
             WikipediaPage.objects.create_from_list_for(linked_instance, lang, links)
-        except ValueError:
+        except (ValueError, NothingFound):
             continue

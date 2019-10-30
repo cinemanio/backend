@@ -52,8 +52,8 @@ class AdminTest(AdminBaseTest):
         self.assertEqual(response.status_code, 200)
 
     @parameterized.expand([
-        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 19),
-        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 14),
+        ('movie', MovieFactory, ImdbMovieFactory, KinopoiskMovieFactory, 20),
+        ('person', PersonFactory, ImdbPersonFactory, KinopoiskPersonFactory, 15),
     ])
     def test_object_page(self, object_type, factory, imdb_factory, kinopoisk_factory, queries):
         instance = factory()

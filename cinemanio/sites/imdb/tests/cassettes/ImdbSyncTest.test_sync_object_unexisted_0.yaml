@@ -1,0 +1,901 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: http://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
+        bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>CloudFront</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '183'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 19 Oct 2019 02:55:15 GMT
+      Location:
+      - https://www.imdb.com/name/nm1621579/
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 e155b4148d60f528f875d5b690853c59.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - deW3AxHekBHEP8BdF5eqnYwcz9IZFmTEGs9kw2KlnteTdewPJeJeUg==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Redirect from cloudfront
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"
+        />\n  <title>404 Error - IMDb</title>\n  <style>\nhtml, body {\n  height:
+        100%;\n}\nbody {\n  margin: auto;\n  width: 1008px;\n  background-color: #D4D9DD;\n
+        \ font-family: Verdana, Arial, sans-serif;\n}\na {\n  text-decoration: none;\n}\na:hover
+        {\n  text-decoration: underline;\n}\na:link, a:hover, a:visited {\n  color:
+        #136CB2;\n}\na:active {\n  color: #E7BE00;\n}\n#error {\n  height: 100%;\n
+        \ background-color: white;\n  border-left: 1px solid #999999;\n  border-right:
+        1px solid #999999;\n  box-shadow: 0 0 5px 5px #C5CACD;\n}\n.error_message
+        {\n  color: #999999;\n  font-size: 17.5px;\n  padding: 30px 70px 20px;\n}\n.error_bubble
+        {\n  font-family: Arial, helvetica, sans-serif;\n  font-weight: bold;\n  border-radius:
+        8px;\n  -moz-border-radius: 8px;\n  margin: 0 70px 0 70px;\n  padding: 50px;\n}\n.error_bubble
+        div {\n  display: inline-block;\n  vertical-align: middle;\n}\n.error_quote
+        {\n  color: #FFFFFF;\n  font-size: 30px;\n  line-height: 1.35em;\n  padding-left:
+        50px;\n  width: 500px;\n}\n.error_code {\n  font-size: 100px;\n  line-height:
+        50px;\n  margin-top:8px\n}\n.error_arrow {\n  border-color: #DECA16 transparent
+        transparent transparent;\n  border-style: solid;\n  border-width: 21px 0px
+        0px 32px;\n  height: 0;\n  left: 700px;\n  line-height: 0;\n  position: relative;\n
+        \ top: -1px;\n  width: 0;\n}\n.error_code > span {\n  font-size: 50px;\n}\n.error_attrib
+        {\n  color: #999999;\n  float: right;\n  font-size: 14px;\n  font-style: italic;\n
+        \ padding: 10px 70px 36px;\n}\n.error_code_403 .error_bubble,\n.error_code_404
+        .error_bubble,\n.error_code_400 .error_bubble,\n.error_code_409 .error_bubble
+        \ {\n  background: none repeat scroll 0% 0% #DECA16;\n  border: 1px solid
+        #DECA16;\n}\n.error_code_403 .error_code,\n.error_code_404 .error_code,\n.error_code_400
+        .error_code,\n.error_code_409 .error_code {\n  color: #BFAD13;\n}\n.error_code_500
+        .error_bubble {\n  background: none repeat scroll 0% 0% #EDCA24;\n  border:
+        1px solid #EDCA24;\n}\n.error_code_500 .error_code {\n  color: #CCAD1F;\n}\n.error_code_500
+        .error_arrow{\n  border-color: #EDCA24 transparent transparent transparent;\n}\n.error_code_503
+        .error_bubble {\n  background: none repeat scroll 0% 0% #2E9CEA;\n  border:
+        1px solid #2E9CEA;\n}\n.error_code_503 .error_code {\n  color: #2173B2;\n}\n.error_code_503
+        .error_arrow {\n  border-color: #2E9CEA transparent transparent transparent;\n}\na.btn
+        {\n  background-repeat: repeat-x; \n  background-color: #ECE2C6;\n  background-image:
+        linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8)
+        100%); \n  background-image: -moz-linear-gradient(rgba(255,255,255,.8) 5%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  background-image:
+        -webkit-linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%,
+        rgba(255,255,255,0.8) 100%); \n  background-image: -ms-linear-gradient(rgba(255,255,255,.8)
+        5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  border-color:
+        #E0E0E0 #C0C0C0 #C0C0C0 #E0E0E0;\n  border-radius: 3px 3px 3px 3px;\n  border-style:
+        solid;\n  border-width: 1px;\n  color: #000000;\n  cursor: pointer;\n  float:
+        right;\n  margin-right: 70px;\n  margin-top: 26px;\n  padding: 0.3em 0.6em;\n
+        \ text-decoration: none;\n}\na.btn:hover {\n  background-image: none;\n  border-color:
+        #E6B800;\n}\n.clear {\n  clear: both;\n}\n  </style>\n</head>\n<body>\n<div
+        id=\"error\" class=\"error_code_404\">\n    <div class=\"error_message\">\n
+        \       The requested URL was not found on our server.\n        <a href=\"/\">Go
+        to the homepage</a> &raquo;\n    </div>\n    <div class=\"error_bubble\">\n
+        \       <div class=\"error_code\">404<br><span>ERROR</span></div>\n        <div
+        class=\"error_quote\">Yeah... I'm gonna need you to go ahead and find another
+        page.</div>\n    </div>\n    <div class=\"error_arrow\"></div>\n    <div class=\"error_attrib\">\n
+        \       <span>Bill Lumbergh, </span><a href=\"/title/tt0151804/\">Office Space
+        (1999)</a>\n    </div>\n    <div class=\"clear\"></div>\n</div>\n<!-- The
+        next level -->\n</body>\n</html>\n"
+    headers:
+      Connection:
+      - close
+      Content-Language:
+      - en-US
+      Content-Security-Policy:
+      - frame-ancestors 'self' imdb.com *.imdb.com *.media-imdb.com withoutabox.com
+        *.withoutabox.com amazon.com *.amazon.com amazon.co.uk *.amazon.co.uk amazon.de
+        *.amazon.de translate.google.com images.google.com www.google.com www.google.co.uk
+        search.aol.com bing.com www.bing.com
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 19 Oct 2019 02:55:15 GMT
+      Server:
+      - Server
+      Strict-Transport-Security:
+      - max-age=47474747; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+      Via:
+      - 1.1 29206f4909cacc031d06a0daf330fb6a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - RPzwzf9zAnMS-9b0ps6zzHtOquDXsH3ENQuAWiTej8ZWzHKhhy-n3w==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Frame-Options:
+      - SAMEORIGIN
+      x-amz-rid:
+      - E853FCPEA5683TF5WHQW
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: http://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
+        bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>CloudFront</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '183'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Location:
+      - https://www.imdb.com/name/nm1621579/
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 b3866c48e4cb6dc0d3dbbcbdc1d92d00.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - JsXn-JoMFWT67J0WJBQCtTHj6umorqQR6Tir6sQ4u--f7oZudYd6Uw==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Redirect from cloudfront
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"
+        />\n  <title>404 Error - IMDb</title>\n  <style>\nhtml, body {\n  height:
+        100%;\n}\nbody {\n  margin: auto;\n  width: 1008px;\n  background-color: #D4D9DD;\n
+        \ font-family: Verdana, Arial, sans-serif;\n}\na {\n  text-decoration: none;\n}\na:hover
+        {\n  text-decoration: underline;\n}\na:link, a:hover, a:visited {\n  color:
+        #136CB2;\n}\na:active {\n  color: #E7BE00;\n}\n#error {\n  height: 100%;\n
+        \ background-color: white;\n  border-left: 1px solid #999999;\n  border-right:
+        1px solid #999999;\n  box-shadow: 0 0 5px 5px #C5CACD;\n}\n.error_message
+        {\n  color: #999999;\n  font-size: 17.5px;\n  padding: 30px 70px 20px;\n}\n.error_bubble
+        {\n  font-family: Arial, helvetica, sans-serif;\n  font-weight: bold;\n  border-radius:
+        8px;\n  -moz-border-radius: 8px;\n  margin: 0 70px 0 70px;\n  padding: 50px;\n}\n.error_bubble
+        div {\n  display: inline-block;\n  vertical-align: middle;\n}\n.error_quote
+        {\n  color: #FFFFFF;\n  font-size: 30px;\n  line-height: 1.35em;\n  padding-left:
+        50px;\n  width: 500px;\n}\n.error_code {\n  font-size: 100px;\n  line-height:
+        50px;\n  margin-top:8px\n}\n.error_arrow {\n  border-color: #DECA16 transparent
+        transparent transparent;\n  border-style: solid;\n  border-width: 21px 0px
+        0px 32px;\n  height: 0;\n  left: 700px;\n  line-height: 0;\n  position: relative;\n
+        \ top: -1px;\n  width: 0;\n}\n.error_code > span {\n  font-size: 50px;\n}\n.error_attrib
+        {\n  color: #999999;\n  float: right;\n  font-size: 14px;\n  font-style: italic;\n
+        \ padding: 10px 70px 36px;\n}\n.error_code_403 .error_bubble,\n.error_code_404
+        .error_bubble,\n.error_code_400 .error_bubble,\n.error_code_409 .error_bubble
+        \ {\n  background: none repeat scroll 0% 0% #DECA16;\n  border: 1px solid
+        #DECA16;\n}\n.error_code_403 .error_code,\n.error_code_404 .error_code,\n.error_code_400
+        .error_code,\n.error_code_409 .error_code {\n  color: #BFAD13;\n}\n.error_code_500
+        .error_bubble {\n  background: none repeat scroll 0% 0% #EDCA24;\n  border:
+        1px solid #EDCA24;\n}\n.error_code_500 .error_code {\n  color: #CCAD1F;\n}\n.error_code_500
+        .error_arrow{\n  border-color: #EDCA24 transparent transparent transparent;\n}\n.error_code_503
+        .error_bubble {\n  background: none repeat scroll 0% 0% #2E9CEA;\n  border:
+        1px solid #2E9CEA;\n}\n.error_code_503 .error_code {\n  color: #2173B2;\n}\n.error_code_503
+        .error_arrow {\n  border-color: #2E9CEA transparent transparent transparent;\n}\na.btn
+        {\n  background-repeat: repeat-x; \n  background-color: #ECE2C6;\n  background-image:
+        linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8)
+        100%); \n  background-image: -moz-linear-gradient(rgba(255,255,255,.8) 5%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  background-image:
+        -webkit-linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%,
+        rgba(255,255,255,0.8) 100%); \n  background-image: -ms-linear-gradient(rgba(255,255,255,.8)
+        5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  border-color:
+        #E0E0E0 #C0C0C0 #C0C0C0 #E0E0E0;\n  border-radius: 3px 3px 3px 3px;\n  border-style:
+        solid;\n  border-width: 1px;\n  color: #000000;\n  cursor: pointer;\n  float:
+        right;\n  margin-right: 70px;\n  margin-top: 26px;\n  padding: 0.3em 0.6em;\n
+        \ text-decoration: none;\n}\na.btn:hover {\n  background-image: none;\n  border-color:
+        #E6B800;\n}\n.clear {\n  clear: both;\n}\n  </style>\n</head>\n<body>\n<div
+        id=\"error\" class=\"error_code_404\">\n    <div class=\"error_message\">\n
+        \       The requested URL was not found on our server.\n        <a href=\"/\">Go
+        to the homepage</a> &raquo;\n    </div>\n    <div class=\"error_bubble\">\n
+        \       <div class=\"error_code\">404<br><span>ERROR</span></div>\n        <div
+        class=\"error_quote\">Dude...</div>\n    </div>\n    <div class=\"error_arrow\"></div>\n
+        \   <div class=\"error_attrib\">\n        <span>Hurley, </span><a href=\"/title/tt0411008/\">Lost
+        (2004) - TV Series</a>\n    </div>\n    <div class=\"clear\"></div>\n</div>\n<!--
+        The next level -->\n</body>\n</html>\n"
+    headers:
+      Connection:
+      - close
+      Content-Language:
+      - en-US
+      Content-Security-Policy:
+      - frame-ancestors 'self' imdb.com *.imdb.com *.media-imdb.com withoutabox.com
+        *.withoutabox.com amazon.com *.amazon.com amazon.co.uk *.amazon.co.uk amazon.de
+        *.amazon.de translate.google.com images.google.com www.google.com www.google.co.uk
+        search.aol.com bing.com www.bing.com
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Server:
+      - Server
+      Strict-Transport-Security:
+      - max-age=47474747; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+      Via:
+      - 1.1 c3b15a2f4f7b243c2f55b89e8a7489c6.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - Nd2fFz2GzhjaZYJ5d05kHmnZ68QOOD4YBFegtfzTUxRxlHFhlv7tWw==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Frame-Options:
+      - SAMEORIGIN
+      x-amz-rid:
+      - Q3HKC580PDXAPX73FDS9
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: http://www.imdb.com/name/nm1621579/bio
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
+        bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>CloudFront</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '183'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Location:
+      - https://www.imdb.com/name/nm1621579/bio
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 66114286e54efb82c700272100713f2f.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 9wKBt8GFWAC0bBrwsm_69i2HrwbRVlkHv5AYlSz1Uv5a-z8NvcoJCQ==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Redirect from cloudfront
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://www.imdb.com/name/nm1621579/bio
+  response:
+    body:
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"
+        />\n  <title>404 Error - IMDb</title>\n  <style>\nhtml, body {\n  height:
+        100%;\n}\nbody {\n  margin: auto;\n  width: 1008px;\n  background-color: #D4D9DD;\n
+        \ font-family: Verdana, Arial, sans-serif;\n}\na {\n  text-decoration: none;\n}\na:hover
+        {\n  text-decoration: underline;\n}\na:link, a:hover, a:visited {\n  color:
+        #136CB2;\n}\na:active {\n  color: #E7BE00;\n}\n#error {\n  height: 100%;\n
+        \ background-color: white;\n  border-left: 1px solid #999999;\n  border-right:
+        1px solid #999999;\n  box-shadow: 0 0 5px 5px #C5CACD;\n}\n.error_message
+        {\n  color: #999999;\n  font-size: 17.5px;\n  padding: 30px 70px 20px;\n}\n.error_bubble
+        {\n  font-family: Arial, helvetica, sans-serif;\n  font-weight: bold;\n  border-radius:
+        8px;\n  -moz-border-radius: 8px;\n  margin: 0 70px 0 70px;\n  padding: 50px;\n}\n.error_bubble
+        div {\n  display: inline-block;\n  vertical-align: middle;\n}\n.error_quote
+        {\n  color: #FFFFFF;\n  font-size: 30px;\n  line-height: 1.35em;\n  padding-left:
+        50px;\n  width: 500px;\n}\n.error_code {\n  font-size: 100px;\n  line-height:
+        50px;\n  margin-top:8px\n}\n.error_arrow {\n  border-color: #DECA16 transparent
+        transparent transparent;\n  border-style: solid;\n  border-width: 21px 0px
+        0px 32px;\n  height: 0;\n  left: 700px;\n  line-height: 0;\n  position: relative;\n
+        \ top: -1px;\n  width: 0;\n}\n.error_code > span {\n  font-size: 50px;\n}\n.error_attrib
+        {\n  color: #999999;\n  float: right;\n  font-size: 14px;\n  font-style: italic;\n
+        \ padding: 10px 70px 36px;\n}\n.error_code_403 .error_bubble,\n.error_code_404
+        .error_bubble,\n.error_code_400 .error_bubble,\n.error_code_409 .error_bubble
+        \ {\n  background: none repeat scroll 0% 0% #DECA16;\n  border: 1px solid
+        #DECA16;\n}\n.error_code_403 .error_code,\n.error_code_404 .error_code,\n.error_code_400
+        .error_code,\n.error_code_409 .error_code {\n  color: #BFAD13;\n}\n.error_code_500
+        .error_bubble {\n  background: none repeat scroll 0% 0% #EDCA24;\n  border:
+        1px solid #EDCA24;\n}\n.error_code_500 .error_code {\n  color: #CCAD1F;\n}\n.error_code_500
+        .error_arrow{\n  border-color: #EDCA24 transparent transparent transparent;\n}\n.error_code_503
+        .error_bubble {\n  background: none repeat scroll 0% 0% #2E9CEA;\n  border:
+        1px solid #2E9CEA;\n}\n.error_code_503 .error_code {\n  color: #2173B2;\n}\n.error_code_503
+        .error_arrow {\n  border-color: #2E9CEA transparent transparent transparent;\n}\na.btn
+        {\n  background-repeat: repeat-x; \n  background-color: #ECE2C6;\n  background-image:
+        linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8)
+        100%); \n  background-image: -moz-linear-gradient(rgba(255,255,255,.8) 5%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  background-image:
+        -webkit-linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%,
+        rgba(255,255,255,0.8) 100%); \n  background-image: -ms-linear-gradient(rgba(255,255,255,.8)
+        5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  border-color:
+        #E0E0E0 #C0C0C0 #C0C0C0 #E0E0E0;\n  border-radius: 3px 3px 3px 3px;\n  border-style:
+        solid;\n  border-width: 1px;\n  color: #000000;\n  cursor: pointer;\n  float:
+        right;\n  margin-right: 70px;\n  margin-top: 26px;\n  padding: 0.3em 0.6em;\n
+        \ text-decoration: none;\n}\na.btn:hover {\n  background-image: none;\n  border-color:
+        #E6B800;\n}\n.clear {\n  clear: both;\n}\n  </style>\n</head>\n<body>\n<div
+        id=\"error\" class=\"error_code_404\">\n    <div class=\"error_message\">\n
+        \       The requested URL was not found on our server.\n        <a href=\"/\">Go
+        to the homepage</a> &raquo;\n    </div>\n    <div class=\"error_bubble\">\n
+        \       <div class=\"error_code\">404<br><span>ERROR</span></div>\n        <div
+        class=\"error_quote\">Lord! It's a miracle! Webpage up and vanished like a
+        fart in the wind!</div>\n    </div>\n    <div class=\"error_arrow\"></div>\n
+        \   <div class=\"error_attrib\">\n        <span>Warden Norton, </span><a href=\"/title/tt0111161/\">The
+        Shawshank Redemption (1994)</a>\n    </div>\n    <div class=\"clear\"></div>\n</div>\n<!--
+        The next level -->\n</body>\n</html>\n"
+    headers:
+      Connection:
+      - close
+      Content-Language:
+      - en-US
+      Content-Security-Policy:
+      - frame-ancestors 'self' imdb.com *.imdb.com *.media-imdb.com withoutabox.com
+        *.withoutabox.com amazon.com *.amazon.com amazon.co.uk *.amazon.co.uk amazon.de
+        *.amazon.de translate.google.com images.google.com www.google.com www.google.co.uk
+        search.aol.com bing.com www.bing.com
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Server:
+      - Server
+      Strict-Transport-Security:
+      - max-age=47474747; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+      Via:
+      - 1.1 d4cdd862c8bc0148f37b685614031cf5.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - plRvekFXbj0z9Bn1lkEuPD8eEE4_h4WrRN7QAmKX_afGxYfGjdT5-g==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Frame-Options:
+      - SAMEORIGIN
+      x-amz-rid:
+      - K0GYM7NT84SG7NMBGWD2
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: http://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
+        bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>CloudFront</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '183'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Location:
+      - https://www.imdb.com/name/nm1621579/
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 f05c071c806220a4a58a278496a54430.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 60Hx7gXqyO5h5d-HOb6V6-6p20WOLolO19xfeR-5EFeTCj0j7e_utg==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Redirect from cloudfront
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"
+        />\n  <title>404 Error - IMDb</title>\n  <style>\nhtml, body {\n  height:
+        100%;\n}\nbody {\n  margin: auto;\n  width: 1008px;\n  background-color: #D4D9DD;\n
+        \ font-family: Verdana, Arial, sans-serif;\n}\na {\n  text-decoration: none;\n}\na:hover
+        {\n  text-decoration: underline;\n}\na:link, a:hover, a:visited {\n  color:
+        #136CB2;\n}\na:active {\n  color: #E7BE00;\n}\n#error {\n  height: 100%;\n
+        \ background-color: white;\n  border-left: 1px solid #999999;\n  border-right:
+        1px solid #999999;\n  box-shadow: 0 0 5px 5px #C5CACD;\n}\n.error_message
+        {\n  color: #999999;\n  font-size: 17.5px;\n  padding: 30px 70px 20px;\n}\n.error_bubble
+        {\n  font-family: Arial, helvetica, sans-serif;\n  font-weight: bold;\n  border-radius:
+        8px;\n  -moz-border-radius: 8px;\n  margin: 0 70px 0 70px;\n  padding: 50px;\n}\n.error_bubble
+        div {\n  display: inline-block;\n  vertical-align: middle;\n}\n.error_quote
+        {\n  color: #FFFFFF;\n  font-size: 30px;\n  line-height: 1.35em;\n  padding-left:
+        50px;\n  width: 500px;\n}\n.error_code {\n  font-size: 100px;\n  line-height:
+        50px;\n  margin-top:8px\n}\n.error_arrow {\n  border-color: #DECA16 transparent
+        transparent transparent;\n  border-style: solid;\n  border-width: 21px 0px
+        0px 32px;\n  height: 0;\n  left: 700px;\n  line-height: 0;\n  position: relative;\n
+        \ top: -1px;\n  width: 0;\n}\n.error_code > span {\n  font-size: 50px;\n}\n.error_attrib
+        {\n  color: #999999;\n  float: right;\n  font-size: 14px;\n  font-style: italic;\n
+        \ padding: 10px 70px 36px;\n}\n.error_code_403 .error_bubble,\n.error_code_404
+        .error_bubble,\n.error_code_400 .error_bubble,\n.error_code_409 .error_bubble
+        \ {\n  background: none repeat scroll 0% 0% #DECA16;\n  border: 1px solid
+        #DECA16;\n}\n.error_code_403 .error_code,\n.error_code_404 .error_code,\n.error_code_400
+        .error_code,\n.error_code_409 .error_code {\n  color: #BFAD13;\n}\n.error_code_500
+        .error_bubble {\n  background: none repeat scroll 0% 0% #EDCA24;\n  border:
+        1px solid #EDCA24;\n}\n.error_code_500 .error_code {\n  color: #CCAD1F;\n}\n.error_code_500
+        .error_arrow{\n  border-color: #EDCA24 transparent transparent transparent;\n}\n.error_code_503
+        .error_bubble {\n  background: none repeat scroll 0% 0% #2E9CEA;\n  border:
+        1px solid #2E9CEA;\n}\n.error_code_503 .error_code {\n  color: #2173B2;\n}\n.error_code_503
+        .error_arrow {\n  border-color: #2E9CEA transparent transparent transparent;\n}\na.btn
+        {\n  background-repeat: repeat-x; \n  background-color: #ECE2C6;\n  background-image:
+        linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8)
+        100%); \n  background-image: -moz-linear-gradient(rgba(255,255,255,.8) 5%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  background-image:
+        -webkit-linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%,
+        rgba(255,255,255,0.8) 100%); \n  background-image: -ms-linear-gradient(rgba(255,255,255,.8)
+        5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  border-color:
+        #E0E0E0 #C0C0C0 #C0C0C0 #E0E0E0;\n  border-radius: 3px 3px 3px 3px;\n  border-style:
+        solid;\n  border-width: 1px;\n  color: #000000;\n  cursor: pointer;\n  float:
+        right;\n  margin-right: 70px;\n  margin-top: 26px;\n  padding: 0.3em 0.6em;\n
+        \ text-decoration: none;\n}\na.btn:hover {\n  background-image: none;\n  border-color:
+        #E6B800;\n}\n.clear {\n  clear: both;\n}\n  </style>\n</head>\n<body>\n<div
+        id=\"error\" class=\"error_code_404\">\n    <div class=\"error_message\">\n
+        \       The requested URL was not found on our server.\n        <a href=\"/\">Go
+        to the homepage</a> &raquo;\n    </div>\n    <div class=\"error_bubble\">\n
+        \       <div class=\"error_code\">404<br><span>ERROR</span></div>\n        <div
+        class=\"error_quote\">Where's the page, Lebowski?  Where's the page?</div>\n
+        \   </div>\n    <div class=\"error_arrow\"></div>\n    <div class=\"error_attrib\">\n
+        \       <span>Blond Thug, </span><a href=\"/title/tt0118715/\">The Big Lebowski
+        (1998)</a>\n    </div>\n    <div class=\"clear\"></div>\n</div>\n<!-- The
+        next level -->\n</body>\n</html>\n"
+    headers:
+      Connection:
+      - close
+      Content-Language:
+      - en-US
+      Content-Security-Policy:
+      - frame-ancestors 'self' imdb.com *.imdb.com *.media-imdb.com withoutabox.com
+        *.withoutabox.com amazon.com *.amazon.com amazon.co.uk *.amazon.co.uk amazon.de
+        *.amazon.de translate.google.com images.google.com www.google.com www.google.co.uk
+        search.aol.com bing.com www.bing.com
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Server:
+      - Server
+      Strict-Transport-Security:
+      - max-age=47474747; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+      Via:
+      - 1.1 69871091d5ae923909dc2904245b7354.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - D56I5ISFi7TSpBhtQ9DW5QZTtynjibmflM6kGzg0sLT8MKVe4MJENA==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Frame-Options:
+      - SAMEORIGIN
+      x-amz-rid:
+      - F87NJ2SJ9G5FVXNXN4FQ
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: http://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
+        bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>CloudFront</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '183'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Location:
+      - https://www.imdb.com/name/nm1621579/
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 bf5abe06e7e8ddc3963a0afd0a961f75.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - NVnh8-aOWHLCMk63_O7cGYMxhGL8JClNSVR3jBhAgB3lu1yNaTDJew==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Redirect from cloudfront
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://www.imdb.com/name/nm1621579/
+  response:
+    body:
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"
+        />\n  <title>404 Error - IMDb</title>\n  <style>\nhtml, body {\n  height:
+        100%;\n}\nbody {\n  margin: auto;\n  width: 1008px;\n  background-color: #D4D9DD;\n
+        \ font-family: Verdana, Arial, sans-serif;\n}\na {\n  text-decoration: none;\n}\na:hover
+        {\n  text-decoration: underline;\n}\na:link, a:hover, a:visited {\n  color:
+        #136CB2;\n}\na:active {\n  color: #E7BE00;\n}\n#error {\n  height: 100%;\n
+        \ background-color: white;\n  border-left: 1px solid #999999;\n  border-right:
+        1px solid #999999;\n  box-shadow: 0 0 5px 5px #C5CACD;\n}\n.error_message
+        {\n  color: #999999;\n  font-size: 17.5px;\n  padding: 30px 70px 20px;\n}\n.error_bubble
+        {\n  font-family: Arial, helvetica, sans-serif;\n  font-weight: bold;\n  border-radius:
+        8px;\n  -moz-border-radius: 8px;\n  margin: 0 70px 0 70px;\n  padding: 50px;\n}\n.error_bubble
+        div {\n  display: inline-block;\n  vertical-align: middle;\n}\n.error_quote
+        {\n  color: #FFFFFF;\n  font-size: 30px;\n  line-height: 1.35em;\n  padding-left:
+        50px;\n  width: 500px;\n}\n.error_code {\n  font-size: 100px;\n  line-height:
+        50px;\n  margin-top:8px\n}\n.error_arrow {\n  border-color: #DECA16 transparent
+        transparent transparent;\n  border-style: solid;\n  border-width: 21px 0px
+        0px 32px;\n  height: 0;\n  left: 700px;\n  line-height: 0;\n  position: relative;\n
+        \ top: -1px;\n  width: 0;\n}\n.error_code > span {\n  font-size: 50px;\n}\n.error_attrib
+        {\n  color: #999999;\n  float: right;\n  font-size: 14px;\n  font-style: italic;\n
+        \ padding: 10px 70px 36px;\n}\n.error_code_403 .error_bubble,\n.error_code_404
+        .error_bubble,\n.error_code_400 .error_bubble,\n.error_code_409 .error_bubble
+        \ {\n  background: none repeat scroll 0% 0% #DECA16;\n  border: 1px solid
+        #DECA16;\n}\n.error_code_403 .error_code,\n.error_code_404 .error_code,\n.error_code_400
+        .error_code,\n.error_code_409 .error_code {\n  color: #BFAD13;\n}\n.error_code_500
+        .error_bubble {\n  background: none repeat scroll 0% 0% #EDCA24;\n  border:
+        1px solid #EDCA24;\n}\n.error_code_500 .error_code {\n  color: #CCAD1F;\n}\n.error_code_500
+        .error_arrow{\n  border-color: #EDCA24 transparent transparent transparent;\n}\n.error_code_503
+        .error_bubble {\n  background: none repeat scroll 0% 0% #2E9CEA;\n  border:
+        1px solid #2E9CEA;\n}\n.error_code_503 .error_code {\n  color: #2173B2;\n}\n.error_code_503
+        .error_arrow {\n  border-color: #2E9CEA transparent transparent transparent;\n}\na.btn
+        {\n  background-repeat: repeat-x; \n  background-color: #ECE2C6;\n  background-image:
+        linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8)
+        100%); \n  background-image: -moz-linear-gradient(rgba(255,255,255,.8) 5%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  background-image:
+        -webkit-linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%,
+        rgba(255,255,255,0.8) 100%); \n  background-image: -ms-linear-gradient(rgba(255,255,255,.8)
+        5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  border-color:
+        #E0E0E0 #C0C0C0 #C0C0C0 #E0E0E0;\n  border-radius: 3px 3px 3px 3px;\n  border-style:
+        solid;\n  border-width: 1px;\n  color: #000000;\n  cursor: pointer;\n  float:
+        right;\n  margin-right: 70px;\n  margin-top: 26px;\n  padding: 0.3em 0.6em;\n
+        \ text-decoration: none;\n}\na.btn:hover {\n  background-image: none;\n  border-color:
+        #E6B800;\n}\n.clear {\n  clear: both;\n}\n  </style>\n</head>\n<body>\n<div
+        id=\"error\" class=\"error_code_404\">\n    <div class=\"error_message\">\n
+        \       The requested URL was not found on our server.\n        <a href=\"/\">Go
+        to the homepage</a> &raquo;\n    </div>\n    <div class=\"error_bubble\">\n
+        \       <div class=\"error_code\">404<br><span>ERROR</span></div>\n        <div
+        class=\"error_quote\">Dude, where's my webpage?</div>\n    </div>\n    <div
+        class=\"error_arrow\"></div>\n    <div class=\"error_attrib\">\n        <span>Jesse
+        Montgomery III, </span><a href=\"/title/tt0242423/\">Dude, Where's My Car?
+        (2000)</a>\n    </div>\n    <div class=\"clear\"></div>\n</div>\n<!-- The
+        next level -->\n</body>\n</html>\n"
+    headers:
+      Connection:
+      - close
+      Content-Language:
+      - en-US
+      Content-Security-Policy:
+      - frame-ancestors 'self' imdb.com *.imdb.com *.media-imdb.com withoutabox.com
+        *.withoutabox.com amazon.com *.amazon.com amazon.co.uk *.amazon.co.uk amazon.de
+        *.amazon.de translate.google.com images.google.com www.google.com www.google.co.uk
+        search.aol.com bing.com www.bing.com
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Server:
+      - Server
+      Strict-Transport-Security:
+      - max-age=47474747; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+      Via:
+      - 1.1 1e0c086b1361f8d4ae58a5db76efda36.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - sr_ucbUt6ZgKgIkc34K--UMk9uX0qBvdDxI_o-VBUQPwY5Gyy5DazA==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Frame-Options:
+      - SAMEORIGIN
+      x-amz-rid:
+      - XTEBHHYVYC5VX8HQA94T
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: http://www.imdb.com/name/nm1621579/bio
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
+        bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>CloudFront</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '183'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 19 Oct 2019 02:55:16 GMT
+      Location:
+      - https://www.imdb.com/name/nm1621579/bio
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 c14d1dd7b538a9c80411fdf27e8cb2c8.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 3eButBGIrZcHMFPJEvuz6RY8zz13TVwPbf5NFTjlRH6V-GecLcm0yA==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Redirect from cloudfront
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Language:
+      - en-us,en;q=0.5
+      Connection:
+      - close
+      Cookie:
+      - id=BCYmoyqSm2WglmOzG-SrFWSvVpxsTZOB0qEOOqmAwCBxCbaNgKOxd0DTKzUvt7t04Pya5gV2tUrpDmYxrc1Dr54DQj2UXI7QI35__M5-HI2KrbOI3PjDz6M-_U3HG8topMfN64R24tmBixoZhMYXVaEc556lf0Z4gQNJVYRANXvwytP5v1lpfeToRlu9aVJwN4kT;
+        uu=BCYquDS8Y2i8R1pJxS4nB77YrhjHHXeOea2Xl9KtZvE6RZKVfMvzTGU4Vl5-yxfPbgRSiFJasyf-hhPuVvXyaHlfeBjNlbFT8hz2HzFFkQ_SxKxq05J51gi7Fv4SaAws1M-i7zmQ1TRunfJqCVIYqPwIs2NO7s4_YDH2ZoISVGLgca8OY2K58HychOZB1oRWHVeAJNhLJMrCWJBuGRLCNnQK5X9tA0dPPntr2Ussy0ouul-N1GQz-8y5vda3JJ_C6xkwmHcA6JrOdOFO_HqMWjVSXuxGEdrXC919JM9H0vooVvKeVgAEJnTh2GiVlUJUoH3c
+      Host:
+      - www.imdb.com
+      User-Agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://www.imdb.com/name/nm1621579/bio
+  response:
+    body:
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"
+        />\n  <title>404 Error - IMDb</title>\n  <style>\nhtml, body {\n  height:
+        100%;\n}\nbody {\n  margin: auto;\n  width: 1008px;\n  background-color: #D4D9DD;\n
+        \ font-family: Verdana, Arial, sans-serif;\n}\na {\n  text-decoration: none;\n}\na:hover
+        {\n  text-decoration: underline;\n}\na:link, a:hover, a:visited {\n  color:
+        #136CB2;\n}\na:active {\n  color: #E7BE00;\n}\n#error {\n  height: 100%;\n
+        \ background-color: white;\n  border-left: 1px solid #999999;\n  border-right:
+        1px solid #999999;\n  box-shadow: 0 0 5px 5px #C5CACD;\n}\n.error_message
+        {\n  color: #999999;\n  font-size: 17.5px;\n  padding: 30px 70px 20px;\n}\n.error_bubble
+        {\n  font-family: Arial, helvetica, sans-serif;\n  font-weight: bold;\n  border-radius:
+        8px;\n  -moz-border-radius: 8px;\n  margin: 0 70px 0 70px;\n  padding: 50px;\n}\n.error_bubble
+        div {\n  display: inline-block;\n  vertical-align: middle;\n}\n.error_quote
+        {\n  color: #FFFFFF;\n  font-size: 30px;\n  line-height: 1.35em;\n  padding-left:
+        50px;\n  width: 500px;\n}\n.error_code {\n  font-size: 100px;\n  line-height:
+        50px;\n  margin-top:8px\n}\n.error_arrow {\n  border-color: #DECA16 transparent
+        transparent transparent;\n  border-style: solid;\n  border-width: 21px 0px
+        0px 32px;\n  height: 0;\n  left: 700px;\n  line-height: 0;\n  position: relative;\n
+        \ top: -1px;\n  width: 0;\n}\n.error_code > span {\n  font-size: 50px;\n}\n.error_attrib
+        {\n  color: #999999;\n  float: right;\n  font-size: 14px;\n  font-style: italic;\n
+        \ padding: 10px 70px 36px;\n}\n.error_code_403 .error_bubble,\n.error_code_404
+        .error_bubble,\n.error_code_400 .error_bubble,\n.error_code_409 .error_bubble
+        \ {\n  background: none repeat scroll 0% 0% #DECA16;\n  border: 1px solid
+        #DECA16;\n}\n.error_code_403 .error_code,\n.error_code_404 .error_code,\n.error_code_400
+        .error_code,\n.error_code_409 .error_code {\n  color: #BFAD13;\n}\n.error_code_500
+        .error_bubble {\n  background: none repeat scroll 0% 0% #EDCA24;\n  border:
+        1px solid #EDCA24;\n}\n.error_code_500 .error_code {\n  color: #CCAD1F;\n}\n.error_code_500
+        .error_arrow{\n  border-color: #EDCA24 transparent transparent transparent;\n}\n.error_code_503
+        .error_bubble {\n  background: none repeat scroll 0% 0% #2E9CEA;\n  border:
+        1px solid #2E9CEA;\n}\n.error_code_503 .error_code {\n  color: #2173B2;\n}\n.error_code_503
+        .error_arrow {\n  border-color: #2E9CEA transparent transparent transparent;\n}\na.btn
+        {\n  background-repeat: repeat-x; \n  background-color: #ECE2C6;\n  background-image:
+        linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8)
+        100%); \n  background-image: -moz-linear-gradient(rgba(255,255,255,.8) 5%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  background-image:
+        -webkit-linear-gradient(rgba(255,255,255,.8) 5%, rgba(255,255,255,0.0) 70%,
+        rgba(255,255,255,0.8) 100%); \n  background-image: -ms-linear-gradient(rgba(255,255,255,.8)
+        5%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.8) 100%); \n  border-color:
+        #E0E0E0 #C0C0C0 #C0C0C0 #E0E0E0;\n  border-radius: 3px 3px 3px 3px;\n  border-style:
+        solid;\n  border-width: 1px;\n  color: #000000;\n  cursor: pointer;\n  float:
+        right;\n  margin-right: 70px;\n  margin-top: 26px;\n  padding: 0.3em 0.6em;\n
+        \ text-decoration: none;\n}\na.btn:hover {\n  background-image: none;\n  border-color:
+        #E6B800;\n}\n.clear {\n  clear: both;\n}\n  </style>\n</head>\n<body>\n<div
+        id=\"error\" class=\"error_code_404\">\n    <div class=\"error_message\">\n
+        \       The requested URL was not found on our server.\n        <a href=\"/\">Go
+        to the homepage</a> &raquo;\n    </div>\n    <div class=\"error_bubble\">\n
+        \       <div class=\"error_code\">404<br><span>ERROR</span></div>\n        <div
+        class=\"error_quote\">Someday we'll find it... the website connection...</div>\n
+        \   </div>\n    <div class=\"error_arrow\"></div>\n    <div class=\"error_attrib\">\n
+        \       <span>Kermit the Frog, </span><a href=\"/title/tt0079588/\">The Muppet
+        Movie (1979)</a>\n    </div>\n    <div class=\"clear\"></div>\n</div>\n<!--
+        The next level -->\n</body>\n</html>\n"
+    headers:
+      Connection:
+      - close
+      Content-Language:
+      - en-US
+      Content-Security-Policy:
+      - frame-ancestors 'self' imdb.com *.imdb.com *.media-imdb.com withoutabox.com
+        *.withoutabox.com amazon.com *.amazon.com amazon.co.uk *.amazon.co.uk amazon.de
+        *.amazon.de translate.google.com images.google.com www.google.com www.google.co.uk
+        search.aol.com bing.com www.bing.com
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 19 Oct 2019 02:55:17 GMT
+      Server:
+      - Server
+      Strict-Transport-Security:
+      - max-age=47474747; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+      Via:
+      - 1.1 215207bc7fb93e55e70ed5107d9c8949.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - k3p5Nk_n1ckY_olRClW-4bd6-Ujj4OhrYzoKOa23wNGcdJyQY3uLbg==
+      X-Amz-Cf-Pop:
+      - EWR52-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Frame-Options:
+      - SAMEORIGIN
+      x-amz-rid:
+      - 618AT7KVWJ1D76NC6H0H
+    status:
+      code: 404
+      message: Not Found
+version: 1

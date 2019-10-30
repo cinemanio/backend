@@ -1,11 +1,15 @@
+from datetime import timedelta
+from django.utils import timezone
 from vcr_unittest import VCRMixin
+from parameterized import parameterized
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.core.tests.base import BaseTestCase
-from cinemanio.sites.imdb.factories import ImdbMovieFactory
+from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tests.mixins import ImdbSyncMixin
 from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory, KinopoiskMovieFactory
 from cinemanio.sites.kinopoisk.tests.mixins import KinopoiskSyncMixin
+from cinemanio.sites.wikipedia.factories import WikipediaPageFactory
 
 Person = PersonFactory._meta.model
 Movie = MovieFactory._meta.model
@@ -141,3 +145,31 @@ class SitesSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin, KinopoiskSyncMixin):
         role = movie.cast.get(person__kinopoisk__id=185619)
         self.assertEqual(role.name_ru, 'Хари')
         self.assertEqual(role.name_en, 'Khari')
+
+
+class SiteManagersTest(BaseTestCase):
+    @parameterized.expand([
+        (Movie, MovieFactory, ImdbMovieFactory, ('imdb',)),
+        (Person, PersonFactory, ImdbPersonFactory, ('imdb',)),
+        (Movie, MovieFactory, KinopoiskMovieFactory, ('kinopoisk',)),
+        (Person, PersonFactory, KinopoiskPersonFactory, ('kinopoisk',)),
+        (Movie, MovieFactory, WikipediaPageFactory, ('wikipedia', 'en')),
+        (Person, PersonFactory, WikipediaPageFactory, ('wikipedia', 'en')),
+    ])
+    def test_sites_manager_methods(self, model, model_factory, site_model_factory, args):
+        def create_site(**kwargs):
+            if site_model_factory == WikipediaPageFactory:
+                kwargs.update(dict(lang=args[1], content_object=model_factory()))
+            site_model_factory(**kwargs)
+
+        for i in range(10):
+            model_factory()
+        for i in range(10):
+            create_site(synced_at=timezone.now())
+        for i in range(5):
+            create_site(synced_at=timezone.now() - timedelta(days=9999))
+
+        self.assertEqual(model.sites.without_site(*args).count(), 10)
+        self.assertEqual(model.sites.with_site(*args).count(), 15)
+        self.assertEqual(model.sites.with_site_uptodate(*args).count(), 10)
+        self.assertEqual(model.sites.with_site_outdated(*args).count(), 5)

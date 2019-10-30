@@ -33,6 +33,14 @@ class WikipediaTest(VCRMixin, BaseTestCase):
         self.assertEqual(instance.wikipedia.first().url, url)
 
     @parameterized.expand([
+        (MovieFactory, 'Junk_(film)', 'en'),
+    ])
+    def test_create_title_underscore(self, factory, title, lang):
+        instance = factory()
+        page = WikipediaPage.objects.create(content_object=instance, title=title, lang=lang)
+        self.assertEqual(page.title, title.replace('_', ' '))
+
+    @parameterized.expand([
         (MovieFactory, 'xcmvhker', 'en'),
     ])
     def test_sync_bad_page(self, factory, title, lang):
@@ -45,6 +53,11 @@ class WikipediaTest(VCRMixin, BaseTestCase):
     @parameterized.expand([
         (MovieFactory, 'Junk', 'Junk (film)', 'en', dict(title_en='Junk')),
         (MovieFactory, 'Процесс', 'Процесс (фильм, 1962)', 'ru', dict(year=1962, title_ru='Процесс')),
+        (MovieFactory, 'Umrao_Jaan', 'Umrao Jaan (2006 film)', 'en', dict(year=2006, title_en='')),
+        (MovieFactory, 'Being_Human', 'Being Human (1994 film)', 'en', dict(year=1993, title_en='')),
+        # too complex with series from UK and North America
+        # (MovieFactory, 'Being_Human_(TV_series)', 'Being Human (UK TV series)', 'en',
+        #  dict(year=1993, title_en='', genres=[Genre.objects.get(id=45)])),
         # wrong values in e.options
         # (MovieFactory, 'Ариэль (фильм)', 'Ариэль (фильм, 1988)', 'ru', dict(year=1988, title_ru='Ариэль')),
     ])
@@ -125,6 +138,9 @@ class WikipediaTest(VCRMixin, BaseTestCase):
             cast = CastFactory(**role[0], role=self.actor)
             field = list(role[0])[0].split('__')[0]
             linked_instances.append(getattr(cast, field))
+
+            # create underscore version of wikipedia en page
+            WikipediaPage.objects.safe_create(role[1].replace(' ', '_'), 'en', getattr(cast, field))
 
         sync_method(instance.id)
         self.assert_wikipedia(instance, en_title, ru_title)

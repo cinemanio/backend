@@ -31,8 +31,6 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
-    'modeltranslation',  # before admin for integration
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -54,8 +52,10 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'storages',
     'anymail',
+    'modeltranslation',  # before admin for integration
 
     # cinemanio apps
+    'cinemanio.core.apps.AdminConfig',
     'cinemanio.core',
     'cinemanio.users',
     'cinemanio.relations',

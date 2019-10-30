@@ -9,6 +9,9 @@ class BaseAdmin(VersionAdmin):
     """
     Base admin model
     """
-    def site(self, obj):
+    def view_on_site(self, obj):
         link = f'{settings.FRONTEND_URL}{obj._meta.object_name.lower()}s/{global_id(obj)}/'
-        return format_html('<a href="{}">link</a>', link)
+        return link
+
+    def view(self, obj):
+        return format_html('<a href="{}">site</a>', self.view_on_site(obj))

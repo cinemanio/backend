@@ -1,8 +1,12 @@
 from os.path import join
+import logging
 
 from cinemanio.settings import *  # noqa
 
+logging.disable(logging.CRITICAL)
+
 CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True
 
 DATABASES = {
     'default': {

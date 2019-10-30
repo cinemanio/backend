@@ -1,0 +1,1030 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Being+Human&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:43 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Being+Human&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '561161245'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Being+Human&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA51RTUvEMBD9KzIHT93tl91tA4vgyR/gyYtk07ENpklMp7qy+N+dWSiICIK5JHlv
+        5uXNyxmOmsxowhQdEoICyOB1wfQB6gxRDzjLoWzaqt5XNytoe1ArloHnmiIDsuRE4Q6tH67ul0l7
+        FjPBE3qaQo+OyXf7YglPxIwIOe2HhXdm0P/ARpqc4bbfuN4mhh0lxiksZkR2BFVRdpui21T7h6JR
+        9U7V5SMXOD1Twjcx3ZVtWVe7qmUU/UAjqLYpM3henFuSGByJ4qzyHP1WvEZ+Sm9DGnK55ZfZntbZ
+        mKO/unLrezxt4xhvLwEdvklca0M2+IPoSFTaB2+N/ocTySamEC+/1dtZT0fLQYm6/OmnrC8hgd/C
+        7AEAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=28939 t=1570123483678273
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '289'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:43 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1345.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1079 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 210099546, 701252806
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvparse=&rvlimit=1&titles=Being+Human&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:43 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvparse=&rvlimit=1&titles=Being+Human&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '558899643'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvparse=&rvlimit=1&titles=Being+Human&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        C964zXvxNgvGIfsmrSsHnz98xt9flltyq2gQAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=201658 t=1570123483914472
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1682'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:44 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1286.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1085 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 977096850, 715360783
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:44 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Being+Human+%281994+film%29&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '556315660'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=info%7Cpageprops&inprop=url&ppprop=disambiguation&redirects=&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6VQQU7DMBD8SuQDAilN4pKmjaUKiRMP4MQlMs42tnDWIdlAUcXfWUf0gkAc6ou9
+        s7PjmT2JZ03GmtAPHgiEEiIVrzOMH0KdxKA7mOJDyo3crqsz5lqhvqFUIDOKVJAjH+fvwWGXPMy9
+        xuRa1nWZHJzvb1jWBCRA6kMLnonv7sURHIk7UdNr7Ga+uQP4A7PUe8Njv/VaNzLsaWScwmwssDmx
+        LmS9KuqVlI9yp2SlitsnJng90Qhv0X8ty2qzK8sNo4AdWaGqbc3VYfZ+HqNDSzRMKs8Bs2h24L90
+        FsYuj1W+BG2WoM0StDkHZR79p5A7bOGYDXa4Wza3/0PuShtyAfdRM+5QY0Bn9EUOP/l8ARfHCnP5
+        AQAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=35119 t=1570123484342541
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '288'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:44 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1345.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1079 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 227547097, 713756542
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:44 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=Being+Human+%281994+film%29&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '545488472'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=extracts%7Crevisions&explaintext=&rvprop=ids&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=387785 t=1570123484608110
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:44 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1341.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1077 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 187044314, 711493547
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:45 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=Being+Human+%281994+film%29&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '553141428'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=links&plnamespace=0&pllimit=max&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4WV3U4bQQyFX8XaG6iUIqigLdyVAAnQAErSoqrqhTPrZE1mZ9L5gW5R3r3eAFJV
+        eendas43s7bn2PNYzDCZyvh6ZSlRcVQUveJnptAUR4/FChcU24+9vYO9D+/ev6xxWRw9L/UKJ8Ru
+        r0icbLv/mNgtYJhrdLC9d3i4D3O29Rs51rJbCvv98d8tn5xhcgnGvqZi3VN0hzBAKxBq+jFbC2c+
+        xCZVnfoVL6pGVf0vuJ7P2RCM/J1XkUC4bNM63+T08fA5JxXlxLGCybKB4+CxNBiTbNXYPt6TlEmV
+        2IkEfg4XuPof8sVxohIu5Telr1VWKls2b8uAsqONvQOa+5AAXQkXvtlkut+daT/kiKX4Q9FO8J5L
+        uMkpOVT/dep4IaHcBF9mk9i7qFOJQkJ2dWuPW6KlVa/w9EHMNjKDQAsfNOAscLYskEW3yOJgFcp3
+        HNEtiUFKUWfHBjehwSD4vNK2DJAsm1dPfQqq2ZJTONjXiemD31BqMYZkkg9wavm3d6Xq06HPkZZE
+        q9ar2503dz46manrzmBwm5w1+QIdJRhhlEZWdV85mOaQcgheB+TwSm5h2JRqrS7J2kZmR3vtmv6Z
+        XRmxgX5oE1UJb9DCkIJ/Jf+/oTpHuWbbwYUg5iNpZDRGTWlEtm1zv1SvbMSmEoeInbLtSOkFGfBs
+        FmG7HcQ+UlDjucJ0SzFp0vUDORhY4hmFjpEy9qIl6GOwjaUOgh3cyrRkrKNOpCQ/mvoak9dbf2KE
+        aSfgivxK/8+Ea9/263EOjtSGnkjBtPVphQkm8o60Bj8jaT59sk4rgit6gG8+LGHKtR5qS43lTeEo
+        bW+oAwkUEcY5RjGnhnxl2Svj6WTr2vl5YNUnt9JYFFqrxB1Vfyo6DHekwYzU5Md6vW6fzJrT5gV+
+        fjwPdnfX6z9l2tS5tQcAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=29212 t=1570123485326241
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '700'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:45 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1339.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1085 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 970217481, 705250307
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:45 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=Being+Human+%281994+film%29&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '562925795'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=extlinks&ellimit=max&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5WSYU+DMBCG/8rST2pwbUFgJVmWqTP+B2MWBsc4pXS2t7Fl4b8LuMWo++KHXprL
+        +9z75tojW6WUlZnRmwoIWMKYxz62YA8sObJNugbXX6QMZexH5x7mLDm1PFZ3CuExQqp6/h6wXo+e
+        tzqtR1dSqbtRgZW+7sbCniqs3zv5y5HddNKSaJNw3jTNGJpxl4FDw1NLmFXAhef5Qk5iqaQnxLgk
+        XbHW+wNaQwQ1GZ2SATcM0XzVZ1iWfQb+G3JQO3CmyLAGnQ6AL8QdX1tI6TZHCxkZ63jRlQOVP3l3
+        cl2ZvSkKzECbN/NlanYIjs8wnw7ug3mf+iKPOl8N2LA1TiSkiIJY8f+pyeIO05mFYjklWpLd9efi
+        jPpAqM8L6rNyC11tOthN1VwEi8VjLKNAPakgnAdhHEYPYq4iX4UTPxKsfW3b1mMVaqThS3y/ZihE
+        234CXWF5jkkCAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=29678 t=1570123485555408
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '353'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:45 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1342.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1085 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 999786252, 703512182
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: http://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 03 Oct 2019 17:24:45 GMT
+      Location:
+      - https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=Being+Human+%281994+film%29&format=json&action=query
+      Server:
+      - Varnish
+      Server-Timing:
+      - cache;desc="int-front"
+      Set-Cookie:
+      - WMF-Last-Access=03-Oct-2019;Path=/;HttpOnly;secure;Expires=Mon, 04 Nov 2019
+        12:00:00 GMT
+      - WMF-Last-Access-Global=03-Oct-2019;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        04 Nov 2019 12:00:00 GMT
+      X-Cache:
+      - cp1083 int
+      X-Cache-Status:
+      - int-front
+      X-Client-IP:
+      - 69.143.219.38
+      X-Varnish:
+      - '544171091'
+    status:
+      code: 301
+      message: TLS Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - WMF-Last-Access=03-Oct-2019; WMF-Last-Access-Global=03-Oct-2019
+      User-Agent:
+      - wikipedia (https://github.com/goldsmith/Wikipedia/)
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?prop=revisions&rvprop=content&rvlimit=1&rvparse=&titles=Being+Human+%281994+film%29&format=json&action=query
+  response:
+    body:
+      string: !!binary |
+        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
+        h2u8XnkVzI2ld/7+/W/83/8DrfSMaNZhAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Backend-Timing:
+      - D=371017 t=1570123485803355
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Oct 2019 17:24:46 GMT
+      P3P:
+      - CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more
+        info."
+      Server:
+      - mw1283.eqiad.wmnet
+      Server-Timing:
+      - cache;desc="pass"
+      Set-Cookie:
+      - GeoIP=US:MD:Rockville:39.05:-77.12:v4; Path=/; secure; Domain=.wikipedia.org
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=03-Oct-2019;WMF-Last-Access-Global=03-Oct-2019;https=1
+      X-Cache:
+      - cp1077 pass, cp1079 pass
+      X-Cache-Status:
+      - pass
+      X-Client-IP:
+      - 2601:152:4103:d9b0:e89a:b3f6:7d9f:c1dc
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - PHP/7.2.22-1+0~20190902.26+debian9~1.gbpd64eb7+wmf1
+      X-Varnish:
+      - 177875380, 670688091
+    status:
+      code: 200
+      message: OK
+version: 1

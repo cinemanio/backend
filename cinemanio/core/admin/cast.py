@@ -11,6 +11,7 @@ class CastInline(admin.TabularInline):
     model = Cast
     classes = ('collapse', 'collapsed',)
     autocomplete_fields = ['movie', 'person']
+    readonly_fields = ['sources', 'created_at', 'updated_at']
     form = CastInlineForm
     extra = 0
 

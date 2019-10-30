@@ -29,12 +29,13 @@ class WikipediaPageManager(models.Manager):
         '(значения)',
     ]
 
-    def get_term_for(self, instance, lang) -> str:
+    def get_term_for(self, instance, lang, disamb_term=None) -> str:
         """
         Get search term for Wikipedia search API
+        For movie disamb_term could be used instead of title if latter is undefined
         """
         if isinstance(instance, Movie):
-            title = getattr(instance, f'title_{lang}')
+            title = getattr(instance, f'title_{lang}') or disamb_term
             if not title:
                 raise ValueError("To be able search Wikipedia page movie should has a title")
             term = self.movie_term_map[lang].format(title=title, year=instance.year)
@@ -173,6 +174,10 @@ class WikipediaPage(SitesBaseModel):
     def url(self) -> str:
         return self.link.format(title=self.title.replace(' ', '_'), lang=self.lang)
 
+    def save(self, *args, **kwargs):
+        self.title = self.title.replace('_', ' ')
+        super().save(*args, **kwargs)
+
     def sync(self, **_) -> None:
         """
         Sync instance using Wikipedia API. Update content, page_id fields
@@ -184,11 +189,12 @@ class WikipediaPage(SitesBaseModel):
         except PageError:
             self.delete()
         except DisambiguationError as e:
-            term = WikipediaPage.objects.get_term_for(self.content_object, self.lang)
+            term = WikipediaPage.objects.get_term_for(self.content_object, self.lang, self.title)
             for title in e.options:
                 if WikipediaPage.objects.validate_title(title, term, remove_years=False):
                     self.title = title
                     self.sync()
+                    return
         else:
             self.content = page.content
             self.page_id = page.pageid

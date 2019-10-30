@@ -3,6 +3,7 @@ from typing import Tuple
 from django.contrib.admin import register
 from reversion.admin import VersionAdmin
 
+from cinemanio.core.admin.site import site
 from cinemanio.core.models import Genre, Country, Language
 
 Param = Tuple[str, ...]
@@ -29,14 +30,14 @@ class PropAdminBase(VersionAdmin):
         return self.model.objects.select_related('imdb', 'kinopoisk')
 
 
-@register(Genre)
+@register(Genre, site=site)
 class GenreAdmin(PropAdminBase):
     """
     Genre admin model
     """
 
 
-@register(Country)
+@register(Country, site=site)
 class CountryAdmin(PropAdminBase):
     """
     Country admin model
@@ -45,7 +46,7 @@ class CountryAdmin(PropAdminBase):
     list_editable = ('name', 'name_ru', 'name_en', 'code')
 
 
-@register(Language)
+@register(Language, site=site)
 class LanguageAdmin(PropAdminBase):
     """
     Language admin model

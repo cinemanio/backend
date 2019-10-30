@@ -1,14 +1,16 @@
 import datetime
 from unittest import skip, mock
-from vcr_unittest import VCRMixin
 
+from freezegun import freeze_time
+from vcr_unittest import VCRMixin
+from django.utils import timezone
 from imdb.parser.http import IMDbHTTPAccessSystem
 from parameterized import parameterized
 
 from cinemanio.core.factories import MovieFactory, PersonFactory, CastFactory
 from cinemanio.core.models import Genre
 from cinemanio.core.tests.base import BaseTestCase
-from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue
+from cinemanio.sites.exceptions import PossibleDuplicate, WrongValue, NothingFound
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tasks import sync_movie, sync_person
 from cinemanio.sites.imdb.tests.mixins import ImdbSyncMixin
@@ -40,6 +42,102 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
         person = PersonFactory(first_name_en='Dennis', last_name_en='Hopper')
         sync_person(person.id)
         self.assert_dennis_hopper(person.imdb)
+
+    def test_sync_movie_series_episode(self):
+        imdb_movie = ImdbMovieFactory(id=9236792)
+        sync_movie(imdb_movie.movie.id, roles=False)
+        with self.assertRaises(ImdbMovieFactory._meta.model.DoesNotExist):
+            imdb_movie.refresh_from_db()
+
+    @skip('https://github.com/alberanid/imdbpy/issues/242')
+    def test_sync_person_with_2_ids(self):
+        imdb_person = ImdbPersonFactory(id=1890852, person__country=None, person__first_name_en='', person__last_name_en='')
+        sync_person(imdb_person.person.id, roles=False)
+        self.assertEqual(imdb_person.id, 440022)
+
+    def test_sync_movie_with_wrong_person(self):
+        dan_brown_wrong = ImdbPersonFactory(id=1640149, person__country=None,
+                                            person__first_name_en='Dan', person__last_name_en='Brown')
+        imdb_movie = ImdbMovieFactory(id=382625,
+                                      movie=CastFactory(person=dan_brown_wrong.person, role=self.producer).movie)
+        sync_movie(imdb_movie.movie.id, roles='all')
+        self.assertTrue(imdb_movie.movie.cast.get(role=self.producer, person__imdb__id=1467010))
+
+    def test_sync_person_movies_with_the_same_title(self):
+        # person has 2 movies "The Conversation" 1974 and 1995
+        movie1 = MovieFactory(title_en='The Conversation', year=1974)
+        imdb_person = ImdbPersonFactory(id=338)
+        CastFactory(movie=movie1, person=imdb_person.person, role=self.producer)
+        sync_person(imdb_person.person.id, roles='all')
+        self.assertTrue(imdb_person.person.career.get(role=self.producer, movie=movie1, movie__imdb__id=71360))
+        self.assertTrue(imdb_person.person.career.get(role=self.producer, movie__imdb__id=8041860))
+
+    def test_sync_person_with_no_filmography(self):
+        imdb_person = ImdbPersonFactory(id=1404411)
+        sync_person(imdb_person.person.id, roles='all')
+        self.assertEqual(imdb_person.person.career.count(), 0)
+
+    @parameterized.expand([
+        (ImdbPersonFactory, 1621579, sync_person, 'person'),
+        (ImdbMovieFactory, 0, sync_movie, 'movie'),
+    ])
+    def test_sync_object_unexisted(self, imdb_factory, imdb_id, sync_method, field_name):
+        imdb_object = imdb_factory(id=imdb_id)
+        instance = getattr(imdb_object, field_name)
+        sync_method(instance.id, roles=False)
+        with self.assertRaises(imdb_factory._meta.model.DoesNotExist):
+            imdb_object.refresh_from_db()
+
+    @parameterized.expand([
+        (PersonFactory, dict(first_name_en='Dan', last_name_en='Brown'), ImdbMovieFactory, dict(id=382625),
+         sync_movie, 'movie', 'cast', 1467010),
+        (MovieFactory, dict(title_en='Besy', year=1992), ImdbPersonFactory, dict(id=307628),
+         sync_person, 'person', 'career', 103799),
+    ])
+    def test_sync_object_with_duplicated_cast_objects(self, model_factory, model_kwargs,
+                                                      imdb_factory, imdb_kwargs, sync_method,
+                                                      field_name, roles_field, imdb_id):
+        instance1 = model_factory(**model_kwargs)
+        instance2 = model_factory(**model_kwargs)
+        imdb_object = imdb_factory(**imdb_kwargs)
+        instance = getattr(imdb_object, field_name)
+        roles = getattr(instance, roles_field)
+        instance_type = model_factory._meta.model.__name__.lower()
+        cast_kwargs = {field_name: instance, 'role': self.actor, instance_type: instance1}
+        CastFactory(**cast_kwargs)
+        cast_kwargs[instance_type] = instance2
+        CastFactory(**cast_kwargs)
+        sync_method(instance.id, roles='all')
+        get_kwargs = {'role': self.actor, instance_type: instance1, f'{instance_type}__imdb__id': imdb_id}
+        self.assertTrue(roles.get(**get_kwargs))
+
+    @parameterized.expand([
+        (ImdbMovieFactory, dict(id=382625), sync_movie, 'movie', 'cast', dict(person__first_name_en='Dan',
+                                                                              person__last_name_en='Brown')),
+        (ImdbPersonFactory, dict(id=454), sync_person, 'person', 'career', dict(movie__title_en='Easy Rider',
+                                                                                movie__year=1969)),
+    ])
+    def test_sync_object_update_cast_sources_dates(self, imdb_factory, imdb_kwargs, sync_method,
+                                                   field_name, roles_field, cast_kwargs):
+        now = timezone.now()
+        before = now - datetime.timedelta(days=9)
+        imdb_object = imdb_factory(**imdb_kwargs)
+        instance = getattr(imdb_object, field_name)
+        roles = getattr(instance, roles_field)
+        cast_kwargs.update(**{field_name: instance})
+        # created old cast
+        with freeze_time(before):
+            cast_old = CastFactory(role=self.actor, **cast_kwargs)
+        self.assertEqual(cast_old.created_at, before)
+        self.assertEqual(cast_old.updated_at, before)
+        self.assertEqual(roles.count(), 1)
+        with freeze_time(now):
+            sync_method(instance.id, roles='all')
+        self.assertGreater(roles.count(), 1)
+        for cast in roles.all():
+            self.assertEqual(cast.sources, 'imdb')
+            self.assertEqual(cast.updated_at, now)
+            self.assertEqual(cast.created_at, before if cast == cast_old else now)
 
     @mock.patch.object(IMDbHTTPAccessSystem, 'search_person')
     def test_search_and_sync_right_person_by_movie(self, search_person):
@@ -80,6 +178,14 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
         self.assertTrue(instance1.imdb.id)
         with self.assertRaises(PossibleDuplicate):
             sync_method(instance2.id)
+
+    @parameterized.expand([
+        (MovieFactory, sync_movie, dict(title_en='Platina')),  # no year in search results
+    ])
+    def test_sync_object_nothing_found(self, factory, sync_method, kwargs):
+        instance = factory(**kwargs)
+        with self.assertRaises(NothingFound):
+            sync_method(instance.id)
 
     @parameterized.expand([
         ('movie', ImdbMovieFactory, dict(movie__year=2014, movie__title_en='The Prince')),
@@ -176,8 +282,8 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
     def test_add_imdb_id_to_movies_of_person(self):
         imdb_person = self.imdb_dennis_hopper()
         # TODO: fix if cast for easy rider with role actor, director will not be created
-        cast1 = CastFactory(person=imdb_person.person, movie__title_en='Easy Rider', role=self.director)
-        cast2 = CastFactory(person=imdb_person.person, movie__title_en='True Romance', role=self.actor)
+        cast1 = CastFactory(person=imdb_person.person, movie__title_en='Easy Rider', movie__year=1969, role=self.director)
+        cast2 = CastFactory(person=imdb_person.person, movie__title_en='True Romance', movie__year=1994, role=self.actor)
         imdb_person.sync(roles=True)
         self.assert_dennis_hopper_career(imdb_person, cast1.movie, cast2.movie)
 

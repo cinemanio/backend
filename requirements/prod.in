@@ -15,7 +15,7 @@ django-templated-email
 django-registration
 -e git+https://github.com/deschler/django-modeltranslation.git#egg=django-modeltranslation
 -e git+https://github.com/flavors/django-graphql-jwt.git#egg=django-graphql-jwt
-django-celery-results
+django-celery-results~=1.0.4  # pin to satisfy dependency resolution for celery
 django-celery-beat
 celery~=4.2.1
 celerymon

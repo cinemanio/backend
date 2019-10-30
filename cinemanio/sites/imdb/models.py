@@ -64,7 +64,7 @@ class ImdbBaseManager(models.Manager):
 class ImdbMovieManager(ImdbBaseManager):
     def validate_for_search(self, movie):
         if not movie.title or not movie.year:
-            raise ValueError("To be able search IMDb movie it should has at lease title and year")
+            raise ValueError("To be able search IMDb movie it should has at least title and year")
 
     def search_using_roles(self, imdb, movie):
         """Search by movie's imdb person"""
@@ -81,7 +81,8 @@ class ImdbMovieManager(ImdbBaseManager):
     def search(self, imdb, movie):
         """Search by movie's title"""
         for result in imdb.search_movie(movie.title):
-            if result.data['year'] == movie.year:
+            year = result.data.get('year')
+            if year and year == movie.year:
                 return self.safe_create(result.movieID, movie)
         raise NothingFound
 

@@ -13,3 +13,4 @@ mypy
 bandit
 pylint==2.1.1
 astroid==2.0.4
+freezegun

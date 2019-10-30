@@ -10,7 +10,12 @@ class Cast(models.Model):
     person = models.ForeignKey('Person', verbose_name=_('Person'), related_name='career', on_delete=models.CASCADE)
     movie = models.ForeignKey('Movie', verbose_name=_('Movie'), related_name='cast', on_delete=models.CASCADE)
     role = models.ForeignKey('Role', verbose_name=_('Role'), related_name='roles', on_delete=models.CASCADE)
-    name = models.CharField(_('Role name'), max_length=300, blank=True, default='')
+    name = models.CharField(_('Role name'), max_length=1000, blank=True, default='')
+
+    created_at = models.DateTimeField(_('Created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated at'), auto_now=True)
+
+    sources = models.CharField(_('Sources'), max_length=100, blank=True, default='')
 
     class Meta:
         verbose_name = _('cast')
@@ -33,3 +38,14 @@ class Cast(models.Model):
         if self.role.id not in [Role.ACTOR_ID, Role.ACTOR_VOICE_ID]:
             self.name = ''
         super().save(*args, **kwargs)
+
+    def set_source(self, value):
+        new_value = set(self.get_sources())
+        new_value.add(value)
+        self.set_sources(new_value)
+
+    def get_sources(self):
+        return self.sources.split(',') if self.sources else []
+
+    def set_sources(self, value):
+        self.sources = ','.join(sorted(value))

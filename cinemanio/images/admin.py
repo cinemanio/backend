@@ -3,6 +3,7 @@ from django.contrib.admin import register
 from django.contrib.contenttypes.admin import GenericTabularInline
 from reversion.admin import VersionAdmin
 
+from cinemanio.core.admin.site import site
 from cinemanio.core.admin import get_registered_admin_class
 from cinemanio.core.models import Movie, Person
 from cinemanio.images.models import Image, ImageLink
@@ -14,14 +15,14 @@ admin.site.unregister(Movie)
 admin.site.unregister(Person)
 
 
-@register(Image)
+@register(Image, site=site)
 class ImageAdmin(VersionAdmin):
     """
     Image admin model
     """
 
 
-@register(ImageLink)
+@register(ImageLink, site=site)
 class ImageLinkAdmin(VersionAdmin):
     """
     ImageLink admin model
@@ -41,11 +42,11 @@ class ImagesInline(GenericTabularInline):
         return False
 
 
-@register(Movie)
+@register(Movie, site=site)
 class ImagesMovieAdmin(MovieAdmin):  # type: ignore
     inlines = MovieAdmin.inlines + [ImagesInline]
 
 
-@register(Person)
+@register(Person, site=site)
 class ImagesPersonAdmin(PersonAdmin):  # type: ignore
     inlines = PersonAdmin.inlines + [ImagesInline]

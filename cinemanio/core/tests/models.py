@@ -96,3 +96,11 @@ class ModelsTest(BaseTestCase):
         self.assertEqual(Person.objects.filter(gender=None).count(), 0)
         self.assertGreater(Person.objects.filter(gender=Gender.MALE).count(), 0)
         self.assertGreater(Person.objects.filter(gender=Gender.FEMALE).count(), 0)
+
+    def test_cast_sources(self):
+        cast = CastFactory()
+        self.assertEqual(cast.sources, '')
+        cast.set_source('site1')
+        self.assertEqual(cast.sources, 'site1')
+        cast.set_source('site2')
+        self.assertEqual(cast.sources, 'site1,site2')

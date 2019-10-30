@@ -17,3 +17,10 @@ class WrongValue(Exception):
     Raised, when trying to assign wrong value
     """
     pass
+
+
+class SiteIDDoesNotExist(Exception):
+    """
+    Raised, when trying to sync unexisted site link
+    """
+    pass
