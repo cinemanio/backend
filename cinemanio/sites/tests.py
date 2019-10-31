@@ -1,10 +1,13 @@
 from datetime import timedelta
 from django.utils import timezone
+from django.urls.base import reverse
+from django.contrib.contenttypes.models import ContentType
 from vcr_unittest import VCRMixin
 from parameterized import parameterized
 
 from cinemanio.core.factories import MovieFactory, PersonFactory
 from cinemanio.core.tests.base import BaseTestCase
+from cinemanio.core.tests.admin import AdminBaseTest
 from cinemanio.sites.imdb.factories import ImdbMovieFactory, ImdbPersonFactory
 from cinemanio.sites.imdb.tests.mixins import ImdbSyncMixin
 from cinemanio.sites.kinopoisk.factories import KinopoiskPersonFactory, KinopoiskMovieFactory
@@ -147,7 +150,23 @@ class SitesSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin, KinopoiskSyncMixin):
         self.assertEqual(role.name_en, 'Khari')
 
 
-class SiteManagersTest(BaseTestCase):
+class PopulateMixin:
+    def populate(self, factory, site_factory, args=None):
+        def get_kwargs():
+            kwargs = {}
+            if site_factory == WikipediaPageFactory:
+                kwargs = dict(lang=args[1], content_object=factory())
+            return kwargs
+
+        for i in range(10):
+            factory()
+        for i in range(10):
+            site_factory(synced_at=timezone.now(), **get_kwargs())
+        for i in range(5):
+            site_factory(synced_at=timezone.now() - timedelta(days=9999), **get_kwargs())
+
+
+class SitesManagersTest(BaseTestCase, PopulateMixin):
     @parameterized.expand([
         (Movie, MovieFactory, ImdbMovieFactory, ('imdb',)),
         (Person, PersonFactory, ImdbPersonFactory, ('imdb',)),
@@ -156,20 +175,33 @@ class SiteManagersTest(BaseTestCase):
         (Movie, MovieFactory, WikipediaPageFactory, ('wikipedia', 'en')),
         (Person, PersonFactory, WikipediaPageFactory, ('wikipedia', 'en')),
     ])
-    def test_sites_manager_methods(self, model, model_factory, site_model_factory, args):
-        def create_site(**kwargs):
-            if site_model_factory == WikipediaPageFactory:
-                kwargs.update(dict(lang=args[1], content_object=model_factory()))
-            site_model_factory(**kwargs)
-
-        for i in range(10):
-            model_factory()
-        for i in range(10):
-            create_site(synced_at=timezone.now())
-        for i in range(5):
-            create_site(synced_at=timezone.now() - timedelta(days=9999))
-
+    def test_sites_manager_methods(self, model, factory, site_factory, args):
+        self.populate(factory, site_factory, args)
         self.assertEqual(model.sites.without_site(*args).count(), 10)
         self.assertEqual(model.sites.with_site(*args).count(), 15)
         self.assertEqual(model.sites.with_site_uptodate(*args).count(), 10)
         self.assertEqual(model.sites.with_site_outdated(*args).count(), 5)
+
+
+class SitesAdminTest(AdminBaseTest, PopulateMixin):
+    def setUp(self):
+        super().setUp()
+        self._login('admin')
+
+    @parameterized.expand([
+        (Movie, MovieFactory, ImdbMovieFactory, 'imdb'),
+        (Person, PersonFactory, ImdbPersonFactory, 'imdb'),
+        (Movie, MovieFactory, KinopoiskMovieFactory, 'kinopoisk'),
+        (Person, PersonFactory, KinopoiskPersonFactory, 'kinopoisk'),
+        (Movie, MovieFactory, WikipediaPageFactory, 'wikipedia_en'),
+        (Person, PersonFactory, WikipediaPageFactory, 'wikipedia_en'),
+    ])
+    def test_objects_page_sites_filtration(self, model, factory, site_factory, param):
+        # this request to cache ContentType value
+        ContentType.objects.get_for_model(model)
+        self.populate(factory, site_factory, param.split('_'))
+        object_type = model._meta.model_name
+        for value in ['present', 'no', 'uptodate', 'outdated']:
+            with self.assertNumQueries(9):
+                response = self.client.get(reverse(f'admin:core_{object_type}_changelist') + f'?{param}={value}')
+            self.assertEqual(response.status_code, 200)

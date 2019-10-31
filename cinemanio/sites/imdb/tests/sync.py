@@ -94,15 +94,15 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
         (MovieFactory, dict(title_en='Besy', year=1992), ImdbPersonFactory, dict(id=307628),
          sync_person, 'person', 'career', 103799),
     ])
-    def test_sync_object_with_duplicated_cast_objects(self, model_factory, model_kwargs,
+    def test_sync_object_with_duplicated_cast_objects(self, factory, factory_kwargs,
                                                       imdb_factory, imdb_kwargs, sync_method,
                                                       field_name, roles_field, imdb_id):
-        instance1 = model_factory(**model_kwargs)
-        instance2 = model_factory(**model_kwargs)
+        instance1 = factory(**factory_kwargs)
+        instance2 = factory(**factory_kwargs)
         imdb_object = imdb_factory(**imdb_kwargs)
         instance = getattr(imdb_object, field_name)
         roles = getattr(instance, roles_field)
-        instance_type = model_factory._meta.model.__name__.lower()
+        instance_type = factory._meta.model.__name__.lower()
         cast_kwargs = {field_name: instance, 'role': self.actor, instance_type: instance1}
         CastFactory(**cast_kwargs)
         cast_kwargs[instance_type] = instance2
