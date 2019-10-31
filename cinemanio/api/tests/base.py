@@ -1,4 +1,6 @@
 import time
+from typing import Dict
+
 from graphql_jwt.shortcuts import get_token, get_user_by_token
 from django.contrib.auth.models import AnonymousUser
 
@@ -12,8 +14,8 @@ from cinemanio.schema import schema
 class Context:
     _jwt_token_auth = None
     user = AnonymousUser()
-    Meta = {}
-    META = {}
+    Meta: Dict[str, str] = {}
+    META: Dict[str, str] = {}
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
