@@ -14,11 +14,15 @@ class Context:
     user = AnonymousUser()
     Meta = {}
     META = {}
-    is_secure = lambda: True
-    get_host = lambda: ''
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+
+    def is_secure(self):
+        return True
+
+    def get_host(self):
+        return ''
 
 
 class QueryBaseTestCase(BaseTestCase):
