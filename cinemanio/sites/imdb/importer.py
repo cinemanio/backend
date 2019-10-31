@@ -203,7 +203,7 @@ class ImdbPersonImporter(ImdbImporterBase):
                 # get movie by imdb_id
                 movie = Movie.objects.get(imdb__id=imdb_id)
         except Movie.DoesNotExist:
-            try:
+            if year:
                 cast_filter_kwargs = dict(movie__imdb=None, role=role,
                                           movie__year__gte=year - 1,
                                           movie__year__lte=year + 1)
@@ -215,22 +215,26 @@ class ImdbPersonImporter(ImdbImporterBase):
                     cast = self.object.career.filter(movie__title_en=title, **cast_filter_kwargs).order_by('id')[0]
                     created = False
                 except Cast.DoesNotExist:
-                    try:
-                        assert len(imdb_movie.notes) > 0
-                        # TODO: improve performance of this query
-                        # get cast by role name and movie year among person's movies
-                        cast = self.object.career.get(name_en__iexact=imdb_movie.notes.lower(), **cast_filter_kwargs)
-                        created = False
-                    except (Cast.DoesNotExist, AssertionError):
+                    if imdb_movie.notes:
+                        try:
+                            # TODO: improve performance of this query
+                            # get cast by role name and movie year among person's movies
+                            cast = self.object.career.get(name_en__iexact=imdb_movie.notes.lower(), **cast_filter_kwargs)
+                            created = False
+                        except Cast.DoesNotExist:
+                            # get cast by movie name and year among all movies
+                            movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
+                            cast, created = Cast.objects.get_or_create(movie=movie, **cast_kwargs)
+                        else:
+                            # update movie to make it more imdb friendly in case we found it using role name only
+                            cast.movie.title_en = title
+                            cast.movie.year = year
+                            cast.movie.save()
+                    else:
                         # get cast by movie name and year among all movies
                         movie = Movie.objects.get(title_en=title, year=year, imdb__id=None)
                         cast, created = Cast.objects.get_or_create(movie=movie, **cast_kwargs)
-                    else:
-                        # update movie to make it more imdb friendly in case we found it using role name only
-                        cast.movie.title_en = title
-                        cast.movie.year = year
-                        cast.movie.save()
-            except TypeError:
+            else:
                 # get cast by movie name among all movies
                 movie = Movie.objects.get(title_en=title, imdb__id=None)
                 cast, created = Cast.objects.get_or_create(movie=movie, **cast_kwargs)
