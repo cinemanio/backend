@@ -208,7 +208,7 @@ GRAPHENE = {
 
 # TODO: choose right settings for CORS
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = config('DJANGO_CORS_ORIGIN_WHITELIST', default='.cineman.io', cast=Csv())
+CORS_ORIGIN_WHITELIST = config('DJANGO_CORS_ORIGIN_WHITELIST', default='https://cineman.io', cast=Csv())
 CORS_URLS_REGEX = r'^/graphql/.*$'
 CORS_ALLOW_METHODS = (
     'GET',
