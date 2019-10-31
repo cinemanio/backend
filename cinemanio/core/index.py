@@ -1,9 +1,9 @@
-from algoliasearch_django import AlgoliaIndex
-from algoliasearch_django.decorators import register
-
-from .models import Movie, Person
-
-
+# from algoliasearch_django import AlgoliaIndex
+# from algoliasearch_django.decorators import register
+#
+# from .models import Movie, Person
+#
+#
 # @register(Movie)
 # class MovieIndex(AlgoliaIndex):
 #     fields = ('title_en', 'title_ru', 'title_original', 'year')

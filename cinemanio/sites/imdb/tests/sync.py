@@ -51,7 +51,8 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
 
     @skip('https://github.com/alberanid/imdbpy/issues/242')
     def test_sync_person_with_2_ids(self):
-        imdb_person = ImdbPersonFactory(id=1890852, person__country=None, person__first_name_en='', person__last_name_en='')
+        imdb_person = ImdbPersonFactory(id=1890852, person__country=None,
+                                        person__first_name_en='', person__last_name_en='')
         sync_person(imdb_person.person.id, roles=False)
         self.assertEqual(imdb_person.id, 440022)
 
@@ -282,7 +283,8 @@ class ImdbSyncTest(VCRMixin, BaseTestCase, ImdbSyncMixin):
     def test_add_imdb_id_to_movies_of_person(self):
         imdb_person = self.imdb_dennis_hopper()
         # TODO: fix if cast for easy rider with role actor, director will not be created
-        cast1 = CastFactory(person=imdb_person.person, movie__title_en='Easy Rider', movie__year=1969, role=self.director)
+        cast1 = CastFactory(person=imdb_person.person, movie__title_en='Easy Rider', movie__year=1969,
+                            role=self.director)
         cast2 = CastFactory(person=imdb_person.person, movie__title_en='True Romance', movie__year=1994, role=self.actor)
         imdb_person.sync(roles=True)
         self.assert_dennis_hopper_career(imdb_person, cast1.movie, cast2.movie)
