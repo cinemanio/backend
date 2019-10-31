@@ -9512,7 +9512,7 @@ interactions:
       User-Agent: ['Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9.1.8) Gecko/20100214
           Linux Mint/8 (Helena) Firefox/3.5.8']
     method: GET
-    uri: http://www.kinopoisk.ru/handler_info.php?token=sWSSbZuI35RIH0lR4T0fVvFyiYUjk9I9pfXbb860Fok&obj_type=actor&obj_id=6245
+    uri: http://www.kinopoisk.ru/handler_get_trivia_list.php?token=sWSSbZuI35RIH0lR4T0fVvFyiYUjk9I9pfXbb860Fok&obj_type=actor&obj_id=6245
   response:
     body: {string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body
         bgcolor=\"white\">\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"}
@@ -9522,7 +9522,7 @@ interactions:
       Content-Type: [text/html]
       Date: ['Mon, 29 Jan 2018 00:41:43 GMT']
       Keep-Alive: [timeout=60]
-      Location: ['https://www.kinopoisk.ru/handler_info.php?token=sWSSbZuI35RIH0lR4T0fVvFyiYUjk9I9pfXbb860Fok&obj_type=actor&obj_id=6245']
+      Location: ['https://www.kinopoisk.ru/handler_get_trivia_list.php?token=sWSSbZuI35RIH0lR4T0fVvFyiYUjk9I9pfXbb860Fok&obj_type=actor&obj_id=6245']
       Server: [nginx]
     status: {code: 301, message: Moved Permanently}
 - request:
@@ -9540,7 +9540,7 @@ interactions:
       User-Agent: ['Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9.1.8) Gecko/20100214
           Linux Mint/8 (Helena) Firefox/3.5.8']
     method: GET
-    uri: https://www.kinopoisk.ru/handler_info.php?token=sWSSbZuI35RIH0lR4T0fVvFyiYUjk9I9pfXbb860Fok&obj_type=actor&obj_id=6245
+    uri: https://www.kinopoisk.ru/handler_get_trivia_list.php?token=sWSSbZuI35RIH0lR4T0fVvFyiYUjk9I9pfXbb860Fok&obj_type=actor&obj_id=6245
   response:
     body:
       string: !!binary |

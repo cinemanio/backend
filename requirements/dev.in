@@ -3,7 +3,6 @@
 vcrpy-unittest
 parameterized
 factory-boy
-recordclass
 coveralls
 flake8
 pylint-django

@@ -1,2 +1,1 @@
-[bandit]
-exclude: factories.py,tests,venv
+exclude_dirs: [tests, factories.py]

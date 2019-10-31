@@ -32,7 +32,7 @@ whitenoise
 pillow
 sorl-thumbnail
 boto3==1.9.3
-botocore==1.12.3
+botocore>=1.12.3
 lxml
 redis
 honcho

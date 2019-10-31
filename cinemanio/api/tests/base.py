@@ -1,5 +1,6 @@
 import time
-from recordclass import recordclass
+from typing import Dict
+
 from graphql_jwt.shortcuts import get_token, get_user_by_token
 from django.contrib.auth.models import AnonymousUser
 
@@ -10,19 +11,34 @@ from cinemanio.users.factories import UserFactory
 from cinemanio.schema import schema
 
 
+class Context:
+    _jwt_token_auth = None
+    user = AnonymousUser()
+    Meta: Dict[str, str] = {}
+    META: Dict[str, str] = {}
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+    def is_secure(self):
+        return True
+
+    def get_host(self):
+        return ''
+
+
 class QueryBaseTestCase(BaseTestCase):
     user = None
     password = 'secret'
-    Context = recordclass('Request', ['user', 'Meta', 'META', 'is_secure', 'get_host'])
 
     def get_context(self, user=None):
-        kwargs = dict(user=AnonymousUser(), Meta={}, META={}, is_secure=lambda: True, get_host=lambda: '')
+        kwargs = {}
         if user:
             token = get_token(user)
             headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
             kwargs['user'] = user
             kwargs['Meta'] = kwargs['META'] = headers
-        return self.Context(**kwargs)
+        return Context(**kwargs)
 
     def get_user(self, **kwargs):
         user = UserFactory.build(username='user', **kwargs)
