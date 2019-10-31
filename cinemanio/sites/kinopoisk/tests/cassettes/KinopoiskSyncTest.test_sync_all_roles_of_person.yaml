@@ -16990,12 +16990,12 @@ interactions:
       User-Agent: ['Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9.1.8) Gecko/20100214
           Linux Mint/8 (Helena) Firefox/3.5.8']
     method: GET
-    uri: http://www.kinopoisk.ru/handler_info.php?token=QMhJUXN4yTl4QwNlHIwfQ5-jHSEUzj1Esk7Dn7rB9S8&obj_type=actor&obj_id=9843
+    uri: http://www.kinopoisk.ru/handler_get_trivia_list.php?token=QMhJUXN4yTl4QwNlHIwfQ5-jHSEUzj1Esk7Dn7rB9S8&obj_type=actor&obj_id=9843
   response:
     body: {string: ''}
     headers:
       Content-Length: ['0']
-      Location: ['https://www.kinopoisk.ru/handler_info.php?token=QMhJUXN4yTl4QwNlHIwfQ5-jHSEUzj1Esk7Dn7rB9S8&obj_type=actor&obj_id=9843']
+      Location: ['https://www.kinopoisk.ru/handler_get_trivia_list.php?token=QMhJUXN4yTl4QwNlHIwfQ5-jHSEUzj1Esk7Dn7rB9S8&obj_type=actor&obj_id=9843']
       Strict-Transport-Security: [max-age=31536000]
     status: {code: 301, message: Moved permanently}
 - request:
@@ -17013,7 +17013,7 @@ interactions:
       User-Agent: ['Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9.1.8) Gecko/20100214
           Linux Mint/8 (Helena) Firefox/3.5.8']
     method: GET
-    uri: https://www.kinopoisk.ru/handler_info.php?token=QMhJUXN4yTl4QwNlHIwfQ5-jHSEUzj1Esk7Dn7rB9S8&obj_type=actor&obj_id=9843
+    uri: https://www.kinopoisk.ru/handler_get_trivia_list.php?token=QMhJUXN4yTl4QwNlHIwfQ5-jHSEUzj1Esk7Dn7rB9S8&obj_type=actor&obj_id=9843
   response:
     body: {string: ''}
     headers:
