@@ -139,7 +139,7 @@ class ResetPasswordTestCase(AuthQueryBaseTestCase):
 
     def test_reset_password(self):
         user = self.create_user()
-        uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = token_generator.make_token(user)
         with self.assertNumQueries(2):
             result = self.execute(self.reset_password_mutation, dict(password='new_password', uid=uid, token=token))
@@ -160,7 +160,7 @@ class ResetPasswordTestCase(AuthQueryBaseTestCase):
     @parameterized.expand(['', 'wrong'])
     def test_reset_password_invalid_token(self, token):
         user = self.create_user()
-        uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
         result = self.execute_with_errors(self.reset_password_mutation, dict(password='new_password', uid=uid,
                                                                              token=token))
         self.assert_empty_response_with_error(result, 'resetPassword', 'The token is not valid.')
