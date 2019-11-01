@@ -119,7 +119,7 @@ class ResetPasswordRequest(graphene.Mutation):
             raise ValueError(e.message)
 
         for user in User.objects.filter(email=email):
-            uid = uid_encoder(force_bytes(user.pk)).decode()
+            uid = uid_encoder(force_bytes(user.pk))
             token = token_generator.make_token(user)
             link = PASSWORD_RESET_URL_TEMPLATE.format(token=token, uid=uid)
             reset_password_requested.send(sender=User, user=user, link=link, request=info.context)
