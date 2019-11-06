@@ -6,6 +6,7 @@ from cinemanio.core.admin.base import BaseAdmin
 from cinemanio.core.admin.cast import CastInline
 from cinemanio.core.forms import MovieForm
 from cinemanio.core.models import Movie
+from cinemanio.core.utils.languages import translated_fields
 
 
 @register(Movie, site=site)
@@ -13,17 +14,17 @@ class MovieAdmin(BaseAdmin):
     """
     Movie admin model
     """
-    list_display = ['id', 'year', 'title_en', 'title_ru', 'view']
-    list_display_links = ['id']
-    autocomplete_fields = ['sequel_for', 'prequel_for', 'remake_for']
-    search_fields = ['title', 'title_ru', 'title_en']
+    list_display = ('id', 'year') + translated_fields('title') + ('view',)
+    list_display_links = ('id',)
+    autocomplete_fields = ('sequel_for', 'prequel_for', 'remake_for')
+    search_fields = translated_fields('title', with_base=True)
     form = MovieForm
-    inlines = [CastInline]
+    inlines = (CastInline,)
     fieldsets = (
         (None, {
             'fields': (
                 ('title', 'year',),
-                ('title_en', 'title_ru'),
+                translated_fields('title'),
                 ('runtime', 'novel_isbn'),
             ),
         }),

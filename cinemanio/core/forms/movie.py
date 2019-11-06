@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 
 from cinemanio.core.models import Movie
+from cinemanio.core.utils.languages import translated_fields
 
 
 class MovieForm(ModelForm):
@@ -9,8 +10,8 @@ class MovieForm(ModelForm):
     """
     class Meta:
         model = Movie
-        fields = (
-            'title', 'title_ru', 'title_en', 'year', 'runtime', 'novel_isbn',
+        fields = translated_fields('title', with_base=True) + (
+            'year', 'runtime', 'novel_isbn',
             'sequel_for', 'prequel_for', 'remake_for', 'novel_isbn',
             'genres', 'languages', 'countries',
             'site_official_url', 'site_fan_url',

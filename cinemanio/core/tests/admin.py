@@ -72,3 +72,11 @@ class AdminTest(AdminBaseTest):
         self.assertContains(response, f'Kinopoisk {object_type}s')
         self.assertContains(response, 'Cast')
         self.assertContains(response, 'Image links')
+
+    def test_stat_page(self):
+        for i in range(100):
+            ImdbMovieFactory(movie=KinopoiskMovieFactory().movie)
+            ImdbPersonFactory(person=KinopoiskPersonFactory().person)
+        with self.assertNumQueries(23):
+            response = self.client.get(reverse(f'admin:statistic'))
+        self.assertEqual(response.status_code, 200)
