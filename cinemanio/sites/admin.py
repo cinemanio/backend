@@ -66,7 +66,7 @@ class SitesAdminMixin:
             return ''
 
     def get_queryset(self, request):
-        return self.model.sites.all() \
+        return super().get_queryset(request) \
             .prefetch_related(
             Prefetch('wikipedia', to_attr='wikipedia_en', queryset=WikipediaPage.objects.filter(lang='en'))) \
             .prefetch_related(

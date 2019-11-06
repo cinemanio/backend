@@ -50,5 +50,10 @@ def get_sites_queryset(queryset):
     return SitesQuerySet
 
 
-Movie.add_to_class('sites', get_sites_queryset(MovieQuerySet).as_manager())
-Person.add_to_class('sites', get_sites_queryset(PersonQuerySet).as_manager())
+pairs = [
+    (Movie, MovieQuerySet),
+    (Person, PersonQuerySet),
+]
+for model, query_set in pairs:
+    model.add_to_class('sites', get_sites_queryset(query_set).as_manager())
+    model._meta.default_manager_name = 'sites'
