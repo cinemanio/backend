@@ -9,6 +9,7 @@ from cinemanio.api.utils import (DjangoObjectTypeMixin, DjangoFilterConnectionFi
                                  DjangoFilterConnectionSearchableField, CountableConnectionBase)
 from cinemanio.api.schema.image import ImageNode
 from cinemanio.core.models import Movie
+from cinemanio.core.utils.languages import translated_fields
 from cinemanio.images.models import ImageType
 
 
@@ -18,9 +19,9 @@ class MovieNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, ImagesM
 
     class Meta:
         model = Movie
-        only_fields = (
+        only_fields = translated_fields('title') + (
             'id',
-            'title_en', 'title_ru', 'title_original',
+            'title_original',
             'year', 'runtime', 'award',
             'genres', 'countries', 'languages',
             'sequel_for', 'prequel_for', 'remake_for',

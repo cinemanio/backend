@@ -4,8 +4,9 @@ from graphene_django import DjangoObjectType
 from cinemanio.api.helpers import global_id
 from cinemanio.api.utils import DjangoObjectTypeMixin
 from cinemanio.core.models import Genre, Language, Country, Role
+from cinemanio.core.utils.languages import translated_fields
 
-PROPERTY_FIELDS = ['id', 'name_en', 'name_ru']
+PROPERTY_FIELDS = ('id',) + translated_fields('name')
 
 
 class RoleNode(DjangoObjectTypeMixin, DjangoObjectType):
@@ -38,7 +39,7 @@ class LanguageNode(DjangoObjectType):
 class CountryNode(DjangoObjectType):
     class Meta:
         model = Country
-        only_fields = PROPERTY_FIELDS + ['code']
+        only_fields = PROPERTY_FIELDS + ('code',)
 
     def resolve_id(self, info):
         return global_id(Country(id=self.pk))

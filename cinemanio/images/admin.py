@@ -59,10 +59,10 @@ def insert_after(fields_list, field_name, new_fields):
 @register(Movie, site=site)
 class ImagesMovieAdmin(ImagesMixin, MovieAdmin):  # type: ignore
     list_display = insert_after(MovieAdmin.list_display, 'roles_count', ('images_count',))
-    inlines = MovieAdmin.inlines + [ImagesInline]
+    inlines = MovieAdmin.inlines + (ImagesInline,)
 
 
 @register(Person, site=site)
 class ImagesPersonAdmin(ImagesMixin, PersonAdmin):  # type: ignore
     list_display = insert_after(PersonAdmin.list_display, 'roles_count', ('images_count',))
-    inlines = PersonAdmin.inlines + [ImagesInline]
+    inlines = PersonAdmin.inlines + (ImagesInline,)

@@ -8,6 +8,7 @@ from cinemanio.api.utils import (DjangoObjectTypeMixin, DjangoFilterConnectionFi
                                  DjangoFilterConnectionSearchableField, CountableConnectionBase)
 from cinemanio.api.schema.image import ImageNode
 from cinemanio.core.models import Person
+from cinemanio.core.utils.languages import translated_fields
 from cinemanio.images.models import ImageType
 
 
@@ -20,10 +21,8 @@ class PersonNode(RelationsMixin, DjangoObjectTypeMixin, DjangoObjectType, Images
 
     class Meta:
         model = Person
-        only_fields = (
+        only_fields = translated_fields('first_name', 'last_name') + (
             'id',
-            'first_name_en', 'last_name_en',
-            'first_name_ru', 'last_name_ru',
             'gender', 'date_birth', 'date_death',
             'country', 'roles',
             'imdb', 'kinopoisk',

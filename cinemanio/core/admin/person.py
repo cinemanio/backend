@@ -4,6 +4,7 @@ from cinemanio.core.admin.site import site
 from cinemanio.core.admin.base import BaseAdmin
 from cinemanio.core.admin.cast import CastInline
 from cinemanio.core.models import Person
+from cinemanio.core.utils.languages import translated_fields
 
 
 @register(Person, site=site)
@@ -12,17 +13,16 @@ class PersonAdmin(BaseAdmin):
     Person admin model
     """
     roles_name = 'career'
-    list_display = ('id', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru', 'date_birth', 'date_death',
-                    'roles_count', 'view')
-    list_display_links = ['id']
-    search_fields = ['first_name', 'last_name', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru']
-    inlines = [CastInline]
+    list_display = ('id',) + translated_fields('first_name', 'last_name') + ('date_birth', 'date_death',
+                                                                             'roles_count', 'view')
+    list_display_links = ('id',)
+    search_fields = translated_fields('first_name', 'last_name', with_base=True)
+    inlines = (CastInline,)
     fieldsets = (
         (None, {
             'fields': (
                 ('first_name', 'last_name', 'gender'),
-                ('first_name_en', 'last_name_en'),
-                ('first_name_ru', 'last_name_ru'),
+                translated_fields('first_name', 'last_name'),
                 ('country', 'date_birth', 'date_death'),
             )
         }),
