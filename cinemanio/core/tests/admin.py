@@ -77,6 +77,6 @@ class AdminTest(AdminBaseTest):
         for i in range(100):
             ImdbMovieFactory(movie=KinopoiskMovieFactory().movie)
             ImdbPersonFactory(person=KinopoiskPersonFactory().person)
-        with self.assertNumQueries(23):
+        with self.assertNumQueries(21):
             response = self.client.get(reverse(f'admin:statistic'))
         self.assertEqual(response.status_code, 200)
