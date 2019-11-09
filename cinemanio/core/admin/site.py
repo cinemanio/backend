@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.template.response import TemplateResponse
 
 from cinemanio.core.models import Movie, Person, Cast
+from cinemanio.core.utils.languages import iter_languages
 
 
 class AdminSite(admin.AdminSite):
@@ -51,36 +52,34 @@ class AdminSite(admin.AdminSite):
             'Total count',
             'No iMDB',
             'No Kinopoisk',
-            'No Wikipedia EN',
-            'No Wikipedia RU',
+        ] + [
+            f'No Wikipedia {lang.upper()}' for lang in iter_languages()
+        ] + [
             'iMDB outdated',
             'Kinopoisk outdated',
-            'Wikipedia EN outdated',
-            'Wikipedia RU outdated',
+        ] + [
+            f'Wikipedia {lang.upper()} outdated' for lang in iter_languages()
         ]
 
     def get_model_stat(self, model):
         total = model.objects.count()
-        if model == Cast:
-            return {'total': total}
-        imdb = model.sites.with_site('imdb').count()
-        kinopoisk = model.sites.with_site('kinopoisk').count()
-        wikipedia_en = model.sites.with_site('wikipedia', 'en').count()
-        wikipedia_ru = model.sites.with_site('wikipedia', 'ru').count()
+        context = {'total': total}
+        if model != Cast:
+            imdb = model.sites.with_site('imdb').count()
+            kinopoisk = model.sites.with_site('kinopoisk').count()
+            context.update(self.get_site_stat(model, total, imdb, 'imdb'))
+            context.update(self.get_site_stat(model, total, kinopoisk, 'kinopoisk'))
+            for lang in iter_languages():
+                wikipedia = model.sites.with_site('wikipedia', lang).count()
+                context.update(self.get_site_stat(model, total, wikipedia, 'wikipedia', lang))
+        return context
+
+    def get_site_stat(self, model, total, count, name, lang=None):
+        prefix = f'{name}_{lang}' if lang else name
         return {
-            'total': total,
-            'imdb__present': imdb,
-            'kinopoisk__present': kinopoisk,
-            'wikipedia_en__present': wikipedia_en,
-            'wikipedia_ru__present': wikipedia_ru,
-            'imdb__no': total - imdb,
-            'kinopoisk__no': total - kinopoisk,
-            'wikipedia_en__no': total - wikipedia_en,
-            'wikipedia_ru__no': total - wikipedia_ru,
-            'imdb__outdated': model.sites.with_site_outdated('imdb').count(),
-            'kinopoisk__outdated': model.sites.with_site_outdated('kinopoisk').count(),
-            'wikipedia_en__outdated': model.sites.with_site_outdated('wikipedia', 'en').count(),
-            'wikipedia_ru__outdated': model.sites.with_site_outdated('wikipedia', 'ru').count(),
+            f'{prefix}__present': count,
+            f'{prefix}__no': total - count,
+            f'{prefix}__outdated': model.sites.with_site_outdated(name, lang).count(),
         }
 
 
