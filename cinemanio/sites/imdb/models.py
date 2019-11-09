@@ -10,7 +10,7 @@ from cinemanio.sites.models import SitesBaseModel
 class UrlMixin:
     @property
     def url(self):
-        return self.link.format(id=f'{self.id:07}')
+        return self.link.format(id=f'{self.id:0>7}')
 
 
 class ImdbBaseManager(models.Manager):
