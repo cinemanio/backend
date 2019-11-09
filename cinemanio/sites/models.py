@@ -1,3 +1,4 @@
+from typing import List, Tuple
 from datetime import timedelta
 from django.db import models
 from django.utils import timezone
@@ -53,7 +54,7 @@ def get_sites_queryset(queryset):
 pairs = [
     (Movie, MovieQuerySet),
     (Person, PersonQuerySet),
-]
+]  # type: List[Tuple[models.Model, models.QuerySet]]
 for model, query_set in pairs:
     model.add_to_class('sites', get_sites_queryset(query_set).as_manager())
     model._meta.default_manager_name = 'sites'

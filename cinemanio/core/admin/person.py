@@ -11,8 +11,9 @@ class PersonAdmin(BaseAdmin):
     """
     Person admin model
     """
-    list_display = ['id', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru', 'date_birth', 'date_death',
-                    'view']
+    roles_name = 'career'
+    list_display = ('id', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru', 'date_birth', 'date_death',
+                    'roles_count', 'view')
     list_display_links = ['id']
     search_fields = ['first_name', 'last_name', 'first_name_en', 'last_name_en', 'first_name_ru', 'last_name_ru']
     inlines = [CastInline]
