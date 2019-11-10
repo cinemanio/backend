@@ -1,4 +1,3 @@
-import time
 from urllib.parse import urlparse
 from urllib.request import urlopen, Request
 
@@ -138,7 +137,9 @@ class Image(models.Model):
         """
         Download image from url and save it into ImageField
         """
-        name = f'{time.time()}.jpg'
+        if not self.id:
+            self.save()
+        name = f'{self.id}.jpg'
         with urlopen(Request(url)) as response:  # nosec
             self.original.save(name, ContentFile(response.read()))
 

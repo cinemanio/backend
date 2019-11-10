@@ -67,7 +67,7 @@ class SitesAdminMixin:
             return ''
 
     def get_queryset(self, request):
-        queryset = self.model.sites.all()
+        queryset = super().get_queryset(request)
         for lang in iter_languages():
             queryset = queryset.prefetch_related(Prefetch('wikipedia', to_attr=f'wikipedia_{lang}',
                                                           queryset=WikipediaPage.objects.filter(lang=lang)))

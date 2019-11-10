@@ -14,7 +14,8 @@ class MovieAdmin(BaseAdmin):
     """
     Movie admin model
     """
-    list_display = ('id', 'year') + translated_fields('title') + ('view',)
+    roles_name = 'cast'
+    list_display = ('id', 'year') + translated_fields('title') + ('roles_count', 'view',)
     list_display_links = ('id',)
     autocomplete_fields = ('sequel_for', 'prequel_for', 'remake_for')
     search_fields = translated_fields('title', with_base=True)

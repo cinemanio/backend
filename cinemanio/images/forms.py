@@ -1,3 +1,4 @@
+from enumfields import Enum
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -24,4 +25,8 @@ class ImageInlineForm(forms.ModelForm):
             pass
         else:
             for field in ['original', 'type', 'source', 'source_type', 'source_id']:
-                self.fields[field].initial = getattr(image, field)
+                attr_value = getattr(image, field)
+                if isinstance(attr_value, Enum):
+                    attr_value = attr_value.value
+                self.fields[field].initial = attr_value
+                self.fields[field].disabled = True

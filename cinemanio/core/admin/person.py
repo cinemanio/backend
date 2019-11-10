@@ -12,7 +12,9 @@ class PersonAdmin(BaseAdmin):
     """
     Person admin model
     """
-    list_display = ('id',) + translated_fields('first_name', 'last_name') + ('date_birth', 'date_death', 'view')
+    roles_name = 'career'
+    list_display = ('id',) + translated_fields('first_name', 'last_name') + ('date_birth', 'date_death',
+                                                                             'roles_count', 'view')
     list_display_links = ('id',)
     search_fields = translated_fields('first_name', 'last_name', with_base=True)
     inlines = (CastInline,)
