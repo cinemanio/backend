@@ -5,11 +5,11 @@
 #
 #    pip-compile-multi
 #
-git+https://github.com/flavors/django-graphql-jwt.git#egg=django-graphql-jwt
-git+https://github.com/deschler/django-modeltranslation.git#egg=django-modeltranslation
-git+https://github.com/graphql-python/graphene-django.git@f76f38ef30b88d921df243b09c4970528b1a4007#egg=graphene-django
-git+https://github.com/alberanid/imdbpy.git@f4c4c2d9e544ea7152c09228ca0f274248cc58b8#egg=imdbpy
-git+https://github.com/ramusus/kinopoiskpy.git#egg=kinopoiskpy
+-e git+https://github.com/flavors/django-graphql-jwt.git#egg=django-graphql-jwt
+-e git+https://github.com/deschler/django-modeltranslation.git#egg=django-modeltranslation
+-e git+https://github.com/graphql-python/graphene-django.git@f76f38ef30b88d921df243b09c4970528b1a4007#egg=graphene-django
+-e git+https://github.com/alberanid/imdbpy.git@f4c4c2d9e544ea7152c09228ca0f274248cc58b8#egg=imdbpy
+-e git+https://github.com/ramusus/kinopoiskpy.git#egg=kinopoiskpy
 algoliasearch-django==1.7.1
 algoliasearch==1.20.0     # via algoliasearch-django
 alphabet-detector==0.0.7
@@ -45,7 +45,7 @@ django-silk==3.0.4
 django-storages==1.7.2
 django-templated-email==2.3.0
 django-timezone-field==3.1  # via django-celery-beat
-django==2.2.6
+django==2.2.10
 docutils==0.15.2          # via botocore
 future==0.18.2
 gprof2dot==2017.9.19      # via django-silk
